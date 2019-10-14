@@ -7,15 +7,22 @@ from geometry_msgs.msg import Twist
 from geometry_msgs.msg import Point
 
 
-class RobotController():
-    #Initialize a controler, with repsect to:
-    #       name: The name of the node the controller is running at
-    #       frequenzy: The publishing rate the controller is publishing at its main topic
-    #       topic: the name of its main topic
-    #       multi_node: Flag if the controller should run as a single instanze or multi instanze (see Anonymous node)
+
+#Interface Class for Controllers. Without any further implementations it just gets the input and passes it to output.
+class RobotController():  
+
+
+	#callback procedure wich is called if a new input message occures	
 	def income(self,msg):
 		self.msg_in=msg
 
+
+	 #Initialize a controler, with repsect to:
+    #       node_name: The name of the node the controller is running at
+    #       frequenzy: The publishing rate the controller is publishing at its main topic
+	#		queue_size: Size of the output queue
+	#		message_type: Objeckt of type Ros-message for definition of input and output message type of the controller
+	#       topic: the name of its main topic
 	def __init__(	self,
 					node_name="my_robot_controller",
 					frequenzy=10,
@@ -35,6 +42,9 @@ class RobotController():
 		self.link_input_topic(topic_name+"_in")
 		self.link_output_topic(topic_name+"_out")
 	
+
+	#Execution prcodeure of the controller. Initialization of the node and the ros-scope runs here. 
+	#Therfore publishing runs here and as RobotCorntroller is a parent class the input is passed through as output without doing anything
 	def execute(self):
 		rospy.init_node(self.node_name)
 		rate=rospy.Rate(self.frequenzy)
@@ -45,16 +55,21 @@ class RobotController():
 			self.pub.publish(self.msg_out)
 			rate.sleep()
 
+	#links the source of the controller to the given topic_name
 	def link_input_topic(self,topic_name):
 		self.sub=rospy.Subscriber(topic_name,self.message_type,self.income)
-		
+	#links the sink of the controller to the given topic_name	
 	def link_output_topic(self,topic_name):
 		self.pub=rospy.Publisher(topic_name,self.message_type,queue_size=self.queue_size)
 
 
 
-#General PathPlanner. Provides an interface for any Pathplanner. Spezial Pathplanner can be developed by using this interface and overload the path_planning function
+# General PathPlanner. Provides an interface for any Pathplanner. 
+# Spezial Pathplanner can be developed by using this interface and overload the path_planning function
+
 class PathPlanner(RobotController):	
+	# Initializes an Pathplanner as child of RobotController and passes arguments to it. 
+	# Further a time_stamp for pathplanning purpose is determined and safed as attributes
 	def __init__(	self,
 					node_name="my_path",
 					frequenzy=10,
@@ -65,10 +80,12 @@ class PathPlanner(RobotController):
 		self.time_stamp=np.float64(1/np.float64(self.frequenzy))
 		
 
-	# Dummie funktion for path planning procedure
+	# Dummie funktion for path planning procedure. Should be implemented in child class (important: this class should determine the data for msg_out)
 	def path_planning(self):
 		return
 
+	# execution scope of this class. Initialisation of node and rates is done here and the ros-scope is runnign. 
+	# Within it the path_planning procedure is called and the determined data of msg_out is published
 	def execute(self):
 		rospy.init_node(self.node_name)
 		rate=rospy.Rate(self.frequenzy)
@@ -114,43 +131,39 @@ class PathPlannerCircular(PathPlanner):
 
 
 
-class PathPlannerRectangular(PathPlanner):
+class PathPlannerQuadratic(PathPlanner):
 	def __init__(	self,
-					lx=2,
-					ly=2,	
+					l=3,
 					velocity=1,
-					omega=0.5,	
+					omega=0.2,	
 					node_name="my_rectangular_path",
 					frequenzy=10,
 					queue_size=10,
 					topic_name="rectangular_path"):
 		PathPlanner.__init__(self,node_name,frequenzy,queue_size,Twist,topic_name)
-		self.v_max=velocity
+		self.velocity=velocity
 		self.omega=omega
-		self.ang_v_max=omega
-		self.lx=lx
-		self.ly=ly
+		self.l=l
 		self.position=Twist()
-		self.turn=False
-		self.turning_counter=0
-		self.enable=True
+		self.turn=False	
 	
 	def path_planning(self):
-		if self.turn:
-			self.turning_counter+=1
-			if self.turning_counter==4 and self.single_slope:
-				self.enable==False
-			#Turn around by 90
-			#			self.msg_out.linear.x=0.0
-			#calculate_next angular step and differecne to target (90 deg)
+		
+
+		if self.turn:					
+			#calculate next angular step and difference to target (90 deg)
+			#stop turning forward
 			self.msg_out.linear.x=0.0
 			deg=self.omega*self.time_stamp
 			dist_deg=np.pi/2-self.position.angular.z
+			
+			
 			if dist_deg<deg:
-				# do remaining turn to target angle
+				# do remaining turn to target angle and switch to forward mode
 				self.msg_out.angular.z=dist_deg/deg*self.omega
 				self.turn=False
 				self.position.angular.z=0.0
+				
 			else:
 				# do complete turning step
 				self.msg_out.angular.z=self.omega
@@ -159,18 +172,20 @@ class PathPlannerRectangular(PathPlanner):
 		
 
 		else:
+			#calculate_next linear step and difference to target l
 			#stop turning and move forward
 			self.msg_out.angular.z=0.0
-			x=self.v_max*self.time_stamp
-			diff_x=self.lx-self.position.linear.x
-			if diff_x<x:
-				#do remaining movement
-				self.msg_out.linear.x=self.v_max*diff_x/x
-				self.position.linear.x=0.0
-				self.turn=True
+			x_step=self.velocity*self.time_stamp
+			dist_x=self.l-self.position.linear.x
+			if dist_x<x_step:
+				#do remaining movement and switch to turning mode
+				self.msg_out.linear.x=self.velocity*dist_x/x_step	
+				self.turn=True		
+				self.position.linear.x=0.0	
 			else:
-				self.msg_out.linear.x=self.v_max
-				self.position.linear.x+=x
+				#do complete movement step
+				self.msg_out.linear.x=self.velocity
+				self.position.linear.x+=x_step
 
 
 
