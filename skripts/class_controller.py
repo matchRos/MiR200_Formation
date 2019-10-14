@@ -109,23 +109,21 @@ class PathPlannerCircular(PathPlanner):
 					node_name="my_circle_path",
 					frequenzy=10,
 					queue_size=10,					
-					topic_name="/circle_path"):	
+					topic_name="circle_path"):	
 		#Call the contructor of parent class
-		PathPlanner.__init__(self,node_name,frequenzy,queue_size,Twist,topic_name)
-		self.single_slope=single_slope
+		PathPlanner.__init__(self,node_name,frequenzy,queue_size,Twist,topic_name)		
 		# Attributes of a circle deskription:
 		#		phi:Angle between start of turn and current orientation
 		#		omega: Angular velocity of movement
 		#		radius: Radius of the planned circle
-		# example: unity circle with 1rad/sec -> omega=1 radius=1
-		self.phi=np.float64(0.0)
+		# example: unity circle with 1rad/sec -> omega=1 radius=1		
 		self.omega=omega
 		self.radius=radius	
 	
 	#planning the cicle trajectory (velocities)
 	def path_planning(self):
 		self.msg_out.linear.x=self.omega*self.radius
-		self.msg_out.angular=self.omega
+		self.msg_out.angular.z=self.omega
 
 
 
