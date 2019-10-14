@@ -13,15 +13,19 @@
 
   
   <remap from="robot1/mobile_base_controller/cmd_vel" to="robot1/master_out" />
-  <remap from="robot2/mobile_base_controller/cmd_vel" to="robot2/slave_out" />
+  <remap from="robot2/mobile_base_controller/cmd_vel" to="robot2/slave_out" />  
+  <remap from="robot3/mobile_base_controller/cmd_vel" to="robot3/slave_out" />
+  <remap from="robot4/mobile_base_controller/cmd_vel" to="robot4/slave_out" />  
+  <remap from="robot5/mobile_base_controller/cmd_vel" to="robot5/slave_out" />
+  
   
 
 
 
 
   <group ns="robot1" >
-    <param name="input_master" type="String" value="master_in"/>
-    <param name="output_master" type="String" value="master_out"/>
+    <param name="input_master" type="str" value="master_in"/>
+    <param name="output_master" type="str" value="master_out"/>
 
     <include file="$(find multi_robot_system)/launch/mir_gazebo_common.launch">
     <arg name="robot_x"   value="0.0" />
@@ -34,18 +38,63 @@
 
 
  <group ns="robot2" >
-    <param name="input_slave" type="String" value="/robot1/master_out"/>
-    <param name="output_slave" type="String" value="slave_out"/>
-    <param name="is_left" type="Bool" value="true" />
+    <param name="input_slave" type="str" value="/robot1/master_out"/>
+    <param name="output_slave" type="str" value="slave_out"/>
+    <param name="is_left" type="bool" value="true" />
+    <param name="distance" type="double" value="1.5"/>
 
     <include file="$(find multi_robot_system)/launch/mir_gazebo_common.launch">
      <arg name="robot_x"   value="0.0" />
-     <arg name="robot_y"   value="1.0" />
+     <arg name="robot_y"   value="1.5" />
      <arg name="controller_name" value="robot2" />
     </include>  
-  <node name="Slave_ctr_left" pkg="multi_robot_system" type="robot_slave.py"> </node>
+  <node name="Slave_ctr" pkg="multi_robot_system" type="robot_slave.py"> </node>
 </group> 
 
+
+<group ns="robot3" >
+    <param name="input_slave" type="str" value="/robot1/master_out"/>
+    <param name="output_slave" type="str" value="slave_out"/>
+    <param name="is_left" type="bool" value="false" />
+    <param name="distance" type="double" value="1.5"/>
+
+    <include file="$(find multi_robot_system)/launch/mir_gazebo_common.launch">
+     <arg name="robot_x"   value="0.0" />
+     <arg name="robot_y"   value="-1.5" />
+     <arg name="controller_name" value="robot3" />
+    </include>  
+  <node name="Slave_ctr" pkg="multi_robot_system" type="robot_slave.py"> </node>
+</group> 
+
+
+ <group ns="robot4" >
+    <param name="input_slave" type="str" value="/robot1/master_out"/>
+    <param name="output_slave" type="str" value="slave_out"/>
+    <param name="is_left" type="bool" value="true" />
+    <param name="distance" type="double" value="3.0"/>
+
+    <include file="$(find multi_robot_system)/launch/mir_gazebo_common.launch">
+     <arg name="robot_x"   value="0.0" />
+     <arg name="robot_y"   value="3.0" />
+     <arg name="controller_name" value="robot4" />
+    </include>  
+  <node name="Slave_ctr" pkg="multi_robot_system" type="robot_slave.py"> </node>
+</group> 
+
+
+<group ns="robot5" >
+    <param name="input_slave" type="str" value="/robot1/master_out"/>
+    <param name="output_slave" type="str" value="slave_out"/>
+    <param name="is_left" type="bool" value="false" />
+    <param name="distance" type="double" value="3.0"/>
+
+    <include file="$(find multi_robot_system)/launch/mir_gazebo_common.launch">
+     <arg name="robot_x"   value="0.0" />
+     <arg name="robot_y"   value="-3.0" />
+     <arg name="controller_name" value="robot5" />
+    </include>  
+  <node name="Slave_ctr" pkg="multi_robot_system" type="robot_slave.py"> </node>
+</group> 
 
 
 

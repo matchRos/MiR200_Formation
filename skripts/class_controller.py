@@ -59,11 +59,11 @@ class PathPlanner(RobotController):
 					node_name="my_path",
 					frequenzy=10,
 					queue_size=10,
-					message_type=Twist,
+					message_type=Twist,					
 					topic_name="path"):
 		RobotController.__init__(self,node_name,frequenzy,queue_size,message_type,topic_name)
 		self.time_stamp=np.float64(1/np.float64(self.frequenzy))
-
+		
 
 	# Dummie funktion for path planning procedure
 	def path_planning(self):
@@ -91,11 +91,11 @@ class PathPlannerCircular(PathPlanner):
 					omega=1,		
 					node_name="my_circle_path",
 					frequenzy=10,
-					queue_size=10,
+					queue_size=10,					
 					topic_name="/circle_path"):	
 		#Call the contructor of parent class
 		PathPlanner.__init__(self,node_name,frequenzy,queue_size,Twist,topic_name)
-		
+		self.single_slope=single_slope
 		# Attributes of a circle deskription:
 		#		phi:Angle between start of turn and current orientation
 		#		omega: Angular velocity of movement
@@ -119,7 +119,7 @@ class PathPlannerRectangular(PathPlanner):
 					lx=2,
 					ly=2,	
 					velocity=1,
-					omega=1.15,	
+					omega=0.5,	
 					node_name="my_rectangular_path",
 					frequenzy=10,
 					queue_size=10,
@@ -132,9 +132,14 @@ class PathPlannerRectangular(PathPlanner):
 		self.ly=ly
 		self.position=Twist()
 		self.turn=False
+		self.turning_counter=0
+		self.enable=True
 	
 	def path_planning(self):
 		if self.turn:
+			self.turning_counter+=1
+			if self.turning_counter==4 and self.single_slope:
+				self.enable==False
 			#Turn around by 90
 			#			self.msg_out.linear.x=0.0
 			#calculate_next angular step and differecne to target (90 deg)
@@ -150,6 +155,9 @@ class PathPlannerRectangular(PathPlanner):
 				# do complete turning step
 				self.msg_out.angular.z=self.omega
 				self.position.angular.z+=deg
+			
+		
+
 		else:
 			#stop turning and move forward
 			self.msg_out.angular.z=0.0
