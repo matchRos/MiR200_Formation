@@ -5,7 +5,7 @@ import rospy
 import numpy as np
 from geometry_msgs.msg import Twist
 from geometry_msgs.msg import Point
-
+from rospy.numpy_msg import numpy_msg
 
 
 #Interface Class for Controllers. Without any further implementations it just gets the input and passes it to output.
@@ -194,12 +194,15 @@ class PathPlannerSlave(PathPlanner):
 					node_name="my_rectangular_path",
 					frequenzy=10,
 					queue_size=10,
+					position=np.array(type=np.float64),
 					topic_name="rectangular_path"):
 		PathPlanner.__init__(self,node_name,frequenzy,queue_size,Twist,topic_name)
 		self.distance=distance
 		self.left=False
+
 	
-	def path_planning(self):
+	def path_planning(self):s
+
 		if self.left:
 			self.msg_out.angular.z=self.msg_in.angular.z
 			self.msg_out.linear.x=-self.msg_in.angular.z*self.distance+self.msg_in.linear.x
@@ -211,7 +214,6 @@ class PathPlannerSlave(PathPlanner):
 	def set_location(self,left):
 		self.left=left
 		
-
 
 	
 
