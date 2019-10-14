@@ -6,7 +6,7 @@ import numpy as np
 from geometry_msgs.msg import Twist
 from geometry_msgs.msg import Point
 from rospy.numpy_msg import numpy_msg
-
+import math
 
 #Interface Class for Controllers. Without any further implementations it just gets the input and passes it to output.
 class RobotController():  
@@ -129,6 +129,7 @@ class PathPlannerCircular(PathPlanner):
 
 
 
+
 class PathPlannerQuadratic(PathPlanner):
 	def __init__(	self,
 					l=3,
@@ -145,8 +146,7 @@ class PathPlannerQuadratic(PathPlanner):
 		self.position=Twist()
 		self.turn=False	
 	
-	def path_planning(self):
-		
+	def path_planning(self):		
 
 		if self.turn:					
 			#calculate next angular step and difference to target (90 deg)
@@ -188,21 +188,91 @@ class PathPlannerQuadratic(PathPlanner):
 
 
 
+
 class PathPlannerSlave(PathPlanner):
-	def __init__(	self,
-					distance=1.0,
+	def __init__(	self,				
 					node_name="my_rectangular_path",
 					frequenzy=10,
+					position=np.array(3,dtype=np.float64), #numpy vector x,y,z					
+					omega=1.0,
+					velocity=1.0,
 					queue_size=10,
-					position=np.array(type=np.float64),
 					topic_name="rectangular_path"):
 		PathPlanner.__init__(self,node_name,frequenzy,queue_size,Twist,topic_name)
-		self.distance=distance
 		self.left=False
+		self.omega=omega
+		self.velocity=velocity
+		self.phi=0.0
+		self.position=position
+
+		self.prepare_roation=False
+		self.prepare_translation=False
+		
+		self.rotate=False
+		self.translate=True
+		
+		self.distance=np.sqrt(self.position[0]**2+self.position[1]**2)
 
 	
-	def path_planning(self):s
+	def path_planning(self):		
+		self.prepare_translation=not(-0.1<self.msg_in.linear.x<0.1)
+		self.prepare_roation=not(-0.1<self.msg_in.angular.z<0.1)
+		
+		if self.prepare_roation:			
+			alpha=np.pi/2+np.arctan2(self.position[1],self.position[0])			
+			
+			dist_deg=alpha-self.phi
+			deg_step=self.omega*self.time_stamp
+			if dist_deg<deg_step:
+				self.msg_out.angular.z=self.omega		
+				self.rotate=True
+				self.prepare_roation=False					
+			else:				
+				self.msg_out.angular.z=self.omega	
+				self.phi+=deg_step
+		
+		elif self.prepare_translation:			
+			dist_deg=self.phi
+			deg_step=-self.omega*self.time_stamp
+			if dist_deg<deg_step:
+				self.msg_out.linear.z=self.omega*dist_deg/deg_step				
+				self.translate=True
+				self.prepare_roation=False					
+			else:
+				self.msg_out.angular.z=-self.omega
+				self.phi+=deg_step
 
+		if self.translate:
+			self.msg_out.angular.z=0.0
+			self.msg_out.linear.x=self.msg_in.linear.x
+			self.translate=not(-0.1<self.msg_in.linear.x<0.1) 
+		elif self.rotate:			
+				self.msg_out.angular.z=self.msg_in.angular.z
+				self.msg_out.linear.x=self.msg_in.angular.z*self.distance
+				self.rotate=not(-0.1<self.msg_in.angular.z<0.1)
+			
+		
+				
+
+
+	
+	def set_location(self,left):
+		self.left=left
+		
+
+class PathPlannerSlavePrimitive(PathPlanner):
+	def __init__(	self,
+					distance=1.0,
+					node_name="my_primitive_pathplanner",
+					frequenzy=10,
+					queue_size=10,
+					position=np.array(3,dtype=np.float64), #numpy vector x,y,z		
+					topic_name="primitive_path"):
+		PathPlanner.__init__(self,node_name,frequenzy,queue_size,Twist,topic_name)
+		self.distance=np.sqrt(self.position[0]**2+self.position[1]**2)	
+
+	
+	def path_planning(self):
 		if self.left:
 			self.msg_out.angular.z=self.msg_in.angular.z
 			self.msg_out.linear.x=-self.msg_in.angular.z*self.distance+self.msg_in.linear.x
@@ -213,9 +283,6 @@ class PathPlannerSlave(PathPlanner):
 	
 	def set_location(self,left):
 		self.left=left
-		
-
-	
 
 if __name__=="__main__":
 	controller=PathPlannerSlave(topic_name='cmd_vel')	
