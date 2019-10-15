@@ -1,0 +1,28 @@
+<?xml version="2.0" ?>
+<launch>
+
+<arg name="robot_name"           default="robot"/>
+<arg name="controller_type"      default="none" />
+<arg name="robot_x"              default="0.0" />
+<arg name="robot_y"              default="0.0" />
+
+ 
+
+
+
+<group ns="$(arg robot_name)" >  
+   
+
+    <include file="$(find multi_robot_system)/launch/mir_gazebo_common.launch">
+        <arg name="robot_x"   value="$(arg robot_x)" />
+        <arg name="robot_y"   value="$(arg robot_y)" />
+        <arg name="controller_name" value="/$(arg robot_name)" />
+    </include>  
+  
+    <node name="Master_ctr" pkg="multi_robot_system" type="robot_master.py" args="master_input mobile_base_controller/cmd_vel $(arg controller_type)"></node>
+
+
+</group> 
+</launch>
+
+
