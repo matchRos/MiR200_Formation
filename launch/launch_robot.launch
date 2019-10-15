@@ -1,0 +1,30 @@
+<?xml version="2.0" ?>
+<launch>
+
+<arg name="robot_name" defualt="robot"/>
+<arg name="robot_x"   default="0.0" />
+<arg name="robot_y"   default="-1.5" />
+<arg name="name_master" default="none"/>
+ 
+
+
+
+<group ns="$(arg robot_name)" >    
+  <param name="input_master" type="str" value="master_in"/>
+    <param name="output_master" type="str" value="mobile_base_controller/cmd_vel"/>
+  
+    <include file="$(find multi_robot_system)/launch/mir_gazebo_common.launch">
+     <arg name="robot_x"   value="$(arg robot_x)" />
+     <arg name="robot_y"   value="$(arg robot_y)" />
+     <arg name="controller_name" value="$(arg robot_name)" />
+    </include>  
+
+
+<xsl:choose>
+   <xsl:when test="$(arg name_master)=none"> <node name="Master_ctr" pkg="multi_robot_system" type="robot_master.py"> </node><xsl:when>
+   <xsl:otherwise> <node name="Slave_ctr" pkg="multi_robot_system" type="robot_slave.py" args="/$(arg name_master)/mobile_base_controller/cmd_vel mobile_base_controller/cmd_vel $(arg robot_x) $(arg robot_y)" > </node><xsl:otherwise>
+<xsl:choose> 
+   
+</group> 
+
+</launch>
