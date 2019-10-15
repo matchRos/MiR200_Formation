@@ -199,7 +199,7 @@ class PathPlannerSlave(PathPlanner):
 					queue_size=10,
 					topic_name="rectangular_path"):
 		PathPlanner.__init__(self,node_name,frequenzy,queue_size,Twist,topic_name)
-		self.left=False
+		
 		self.omega=omega
 		self.velocity=velocity
 		self.phi=0.0
@@ -251,13 +251,6 @@ class PathPlannerSlave(PathPlanner):
 				self.msg_out.linear.x=self.msg_in.angular.z*self.distance
 				self.rotate=not(-0.1<self.msg_in.angular.z<0.1)
 			
-		
-				
-
-
-	
-	def set_location(self,left):
-		self.left=left
 		
 
 class PathPlannerSlavePrimitive(PathPlanner):
