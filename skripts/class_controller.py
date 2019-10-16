@@ -61,7 +61,9 @@ class RobotController():
 	#links the sink of the controller to the given topic_name	
 	def link_output_topic(self,topic_name):
 		self.pub=rospy.Publisher(topic_name,self.message_type,queue_size=self.queue_size)
-
+	#Setter for Control frequenzy
+	def set_frequenzy(self,frequenzy):
+		self.frequenzy=frequenzy
 
 
 # General PathPlanner. Provides an interface for any Pathplanner. 
