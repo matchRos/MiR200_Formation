@@ -6,7 +6,7 @@ import numpy as np
 from geometry_msgs.msg import Twist
 from geometry_msgs.msg import Point
 from rospy.numpy_msg import numpy_msg
-import math
+
 
 #Interface Class for Controllers. Without any further implementations it just gets the input and passes it to output.
 class RobotController():  
@@ -194,6 +194,11 @@ class PathPlannerQuadratic(PathPlanner):
 
 #Class for a slave robot. It handles complete motion of the sleve with respect to a give input
 class PathPlannerSlave(PathPlanner):
+	def prepare_motion(req):
+		self.prepare_roation=req.prepare_roation
+		self.prepare_translation=req.prepare_translation
+		return not (self.prepare_motion and self.prepare_roation)
+
 	def __init__(	self,				
 					node_name="my_rectangular_path",
 					frequenzy=10,
@@ -220,6 +225,8 @@ class PathPlannerSlave(PathPlanner):
 		self.rotate=False
 		self.translate=False
 		self.forward=True
+
+		
 
 	
 	def path_planning(self):
@@ -329,7 +336,16 @@ class PathPlannerSlave(PathPlanner):
 		
 		self.msg_out.linear.x=self.velocity
 		self.msg_out.angular.z=self.omega
-
+	
+	def execute(self):
+		rospy.init_node(self.node_name)
+		rate=rospy.Rate(self.frequenzy)
+		self.srv_prep_motion=rospy.Service(self.node_name,srv.prepare_motion,prepare_motion)
+		rospy.loginfo("Initialized Slave"+self.node_name+ " with "+str(self.time_stamp)+" seconds time stamp!")		
+		while not rospy.is_shutdown():
+			self.path_planning()
+			self.pub.publish(self.msg_out)
+			rate.sleep()
 
 #Class for a master robot. It handles complete motion of the master while handeling the slaves
 class PathPlannerMaster(PathPlanner):
