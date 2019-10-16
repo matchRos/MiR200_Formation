@@ -14,21 +14,44 @@
 </include>
 
 
+
 <include file="$(find multi_robot_system)/launch/slave.launch">
+
   <arg name="robot_name" value="robot1"/>
-  <arg name="robot_x"   value="0.0" />
-  <arg name="robot_y"   value="-2.0" />
+  <arg name="robot_x"   value="2.0" />
+  <arg name="robot_y"   value="2.0" />
   <arg name="name_master" value="robot_master"/>
 </include>
+
+
 
 
 <include file="$(find multi_robot_system)/launch/slave.launch">
 
   <arg name="robot_name" value="robot2"/>
-  <arg name="robot_x"   value="0.0" />
-  <arg name="robot_y"   value="2.0" />
+  <arg name="robot_x"   value="2.0" />
+  <arg name="robot_y"   value="-2.0" />
   <arg name="name_master" value="robot_master"/>
 </include>
+
+
+
+
+<include file="$(find multi_robot_system)/launch/slave.launch">
+  <arg name="robot_name" value="robot5"/>
+  <arg name="robot_x"   value="-0.75" />
+  <arg name="robot_y"   value="-0.75" />
+  <arg name="name_master" value="robot_master"/>
+</include>
+
+
+<include file="$(find multi_robot_system)/launch/slave.launch">
+  <arg name="robot_name" value="robot6"/>
+  <arg name="robot_x"   value="-0.75" />
+  <arg name="robot_y"   value="0.75" />
+  <arg name="name_master" value="robot_master"/>
+</include>
+
 
 
 

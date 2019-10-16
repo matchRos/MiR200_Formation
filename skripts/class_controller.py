@@ -39,6 +39,7 @@ class RobotController():
 		self.msg_out=message_type()	
 		self.msg_in=message_type()	
 		
+
 		self.link_input_topic(topic_name+"_in")
 		self.link_output_topic(topic_name+"_out")
 	
@@ -57,12 +58,17 @@ class RobotController():
 
 	#links the source of the controller to the given topic_name
 	def link_input_topic(self,topic_name):
+		if hasattr(self, 'sub'):
+			self.sub.unregister()
 		self.sub=rospy.Subscriber(topic_name,self.message_type,self.income)
 	#links the sink of the controller to the given topic_name	
-	def link_output_topic(self,topic_name):
+	def link_output_topic(self,topic_name):		
+		if hasattr(self, 'pub'):
+			self.pub.unregister()
 		self.pub=rospy.Publisher(topic_name,self.message_type,queue_size=self.queue_size)
 	#Setter for Control frequenzy
 	def set_frequenzy(self,frequenzy):
+	
 		self.frequenzy=frequenzy
 
 
@@ -188,9 +194,6 @@ class PathPlannerQuadratic(PathPlanner):
 				self.position.linear.x+=x_step
 
 
-
-
-
 class PathPlannerSlave(PathPlanner):
 	def __init__(	self,				
 					node_name="my_rectangular_path",
@@ -209,9 +212,9 @@ class PathPlannerSlave(PathPlanner):
 		self.velocity=0.0
 
 		self.phi=0.0
+
 		self.position=position	
 		self.distance=np.sqrt(self.position[0]**2+self.position[1]**2)
-
 		self.prepare_roation=False
 		self.prepare_translation=False
 		
@@ -220,44 +223,101 @@ class PathPlannerSlave(PathPlanner):
 		self.forward=True
 
 	
-	def path_planning(self):		
+	def path_planning(self):
+		self.prepare_roation=not(-0.1<self.msg_in.angular.z<0.1)		
 		self.prepare_translation=not(-0.1<self.msg_in.linear.x<0.1)
-		self.prepare_roation=not(-0.1<self.msg_in.angular.z<0.1)
-		
-		if self.prepare_roation:			
-			alpha=np.pi/2+np.arctan2(self.position[1],self.position[0])			
-			if alpha >= np.pi/2:
-				alpha-=np.pi
-				self.forward=False
-			else:
-				self.forward=True
+	
+		if self.prepare_roation:
 			self.omega=self.omega_max
 
+			alpha=np.arctan2(self.position[1],self.position[0])		#angle between slave x-axis and master x-axis				
+			if alpha >=0:				#first or second quadrant
+				if alpha <=np.pi/2:			#first quadrant
+					alpha=np.pi/2-alpha
+					self.omega=-self.omega_max	#turn in negative dircetion
+				elif alpha>np.pi/2: 		#second quadrant
+					alpha-=np.pi/2
+					self.omega=self.omega_max	#turn in positive direction
+				else:
+					raise ValueError("Slave "+self.node_name+" angle incorrect!")
+				self.forward=False			#move backward due rotation
+			
+
+			elif alpha<0:				#third or forth quadrant
+				if alpha<=-np.pi/2:		#third quadrant
+					alpha=-np.pi/2-alpha
+					self.omega=-self.omega_max	#turn in negative dircetion
+				elif alpha>-np.pi/2:		#fourth quadrant
+					alpha=-alpha
+					self.omega=self.omega_max	#turn in positive direction
+				else:
+					raise ValueError("Slave "+self.node_name+" angle incorrect!")
+				self.forward=True			#move forward due rotation
+
+			else:							#error handling
+					raise ValueError("Slave "+self.node_name+" angle incorrect!")	
+				
+					
 			dist_deg=alpha-self.phi
-			deg_step=self.omega*self.time_stamp
-			if dist_deg<deg_step:
-				self.msg_out.angular.z=self.omega		
-				self.rotate=True
+			deg_step=self.omega_max*self.time_stamp
+			if dist_deg<=deg_step:
+				self.msg_out.angular.z=self.omega
+				if not self.rotate or self.translate:
+					self.phi+=dist_deg		
+					self.rotate=True
 				self.prepare_roation=False					
 			else:				
 				self.msg_out.angular.z=self.omega	
 				self.phi+=deg_step
-		
-		elif self.prepare_translation:			
+	
+
+
+		#Prepare the slave for a rotation around the master therefore it position vektor (relative to the master) and its orientation vektor have to be orthogonal to each other
+		elif self.prepare_translation:
+			#calculate the proper angle for get above descriped property
+			alpha=np.arctan2(self.position[1],self.position[0])		#angle between slave x-axis and master x-axis				
+			if alpha >=0:				#first or second quadrant
+				if alpha <=np.pi/2:			#first quadrant
+					self.omega=self.omega_max	#turn in negative dircetion
+				elif alpha>np.pi/2: 		#second quadrant
+					self.omega=-self.omega_max	#turn in positive direction
+				else:
+					raise ValueError("Slave "+self.node_name+" angle incorrect!")			
+
+			elif alpha<0:				#third or forth quadrant
+				if alpha<=-np.pi/2:		#third quadrant
+					self.omega=+self.omega_max	#turn in negative dircetion
+				elif alpha>-np.pi/2:		#fourth quadrant
+					self.omega=-self.omega_max	#turn in positive direction
+				else:
+					raise ValueError("Slave "+self.node_name+" angle incorrect!")				
+
+			else:							#error handling
+					raise ValueError("Slave "+self.node_name+" angle incorrect!")	
+
+
 			dist_deg=self.phi
-			deg_step=-self.omega*self.time_stamp
+			deg_step=self.omega_max*self.time_stamp
+
 			if dist_deg<=deg_step:
-				self.msg_out.linear.z=self.omega*dist_deg/deg_step				
-				self.translate=True
+				self.msg_out.linear.z=self.omega*dist_deg/deg_step
+				if not self.rotate or self.translate:
+					self.phi-=dist_deg		
+					self.translate=True	
 				self.prepare_roation=False					
 			else:
 				self.msg_out.angular.z=-self.omega
-				self.phi+=deg_step
+				self.phi-=deg_step
+		
+
+
+
 
 		if self.translate:
 			self.omega=0.0			
 			self.velocity=self.msg_in.linear.x			
 			self.translate=not(-0.1<self.msg_in.linear.x<0.1) 
+		
 		elif self.rotate:
 			if self.forward:				
 				self.omega=self.msg_in.angular.z
@@ -265,12 +325,16 @@ class PathPlannerSlave(PathPlanner):
 			else:				
 				self.omega=self.msg_in.angular.z
 				self.velocity=-self.omega*self.distance
+			
 			self.rotate=not(-0.1<self.msg_in.angular.z<0.1)
 		
 		self.msg_out.linear.x=self.velocity
 		self.msg_out.angular.z=self.omega
 			
+
 		
+			
+				
 
 class PathPlannerSlavePrimitive(PathPlanner):
 	def __init__(	self,
@@ -295,8 +359,3 @@ class PathPlannerSlavePrimitive(PathPlanner):
 	
 	def set_location(self,left):
 		self.left=left
-
-if __name__=="__main__":
-	controller=PathPlannerSlave(topic_name='cmd_vel')	
-	controller.execute()
-		
