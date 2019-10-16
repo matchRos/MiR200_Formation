@@ -3,13 +3,14 @@
   <arg name="gui" default="true" />
   <arg name="world_name" default="worlds/empty.world"/> <!-- Note: the world_name is with respect to GAZEBO_RESOURCE_PATH environmental variable, but can also be an absolute path -->
   
-
+ <param name="frequenzy" value="10" />
 
 
 <include file="$(find multi_robot_system)/launch/master.launch">
   <arg name="robot_name" value="robot_master"/>
   <arg name="robot_x"   value="0.0" />
   <arg name="robot_y"   value="0.0" />
+  <arg name="controller_type"      default="quad" />
 </include>
 
 
