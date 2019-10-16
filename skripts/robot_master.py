@@ -10,8 +10,6 @@ if __name__=="__main__":
          
     if ctr_type=="quad":
          ctr=class_controller.PathPlannerQuadratic()
-    elif ctr_type=="circ":
-         ctr=class_controller.PathPlannerCircular()
     else:
         ctr=class_controller.RobotController()
    
