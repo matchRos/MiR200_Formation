@@ -6,11 +6,17 @@
  <param name="frequenzy" value="10" />
 
 
+
+
+
+
+<node name="PathPlaner" type="pathPlanner.py" pkg="multi_robot_system" args="PathPlaner_input robot_master/master_input $(arg controller_name)"/>
+
+
 <include file="$(find multi_robot_system)/launch/master.launch">
   <arg name="robot_name" value="robot_master"/>
   <arg name="robot_x"   value="0.0" />
   <arg name="robot_y"   value="0.0" />
-  <arg name="controller_type"      value="$(arg controller_name)" />
 </include>
 
 

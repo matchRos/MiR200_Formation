@@ -90,7 +90,7 @@ class PathPlanner(RobotController):
 
 	# Dummie funktion for path planning procedure. Should be implemented in child class (important: this class should determine the data for msg_out)
 	def path_planning(self):
-		return
+		self.msg_out=self.msg_in
 
 	# execution scope of this class. Initialisation of node and rates is done here and the ros-scope is runnign. 
 	# Within it the path_planning procedure is called and the determined data of msg_out is published
@@ -132,8 +132,6 @@ class PathPlannerCircular(PathPlanner):
 	def path_planning(self):
 		self.msg_out.linear.x=self.omega*self.radius
 		self.msg_out.angular.z=self.omega
-
-
 
 
 
@@ -194,6 +192,7 @@ class PathPlannerQuadratic(PathPlanner):
 				self.position.linear.x+=x_step
 
 
+#Class for a slave robot. It handles complete motion of the sleve with respect to a give input
 class PathPlannerSlave(PathPlanner):
 	def __init__(	self,				
 					node_name="my_rectangular_path",
@@ -330,8 +329,9 @@ class PathPlannerSlave(PathPlanner):
 		
 		self.msg_out.linear.x=self.velocity
 		self.msg_out.angular.z=self.omega
-			
 
+
+#Class for a master robot. It handles complete motion of the master while handeling the slaves
 class PathPlannerMaster(PathPlanner):
 	def __init__(	self,				
 					node_name="my_rectangular_path",
@@ -342,30 +342,4 @@ class PathPlannerMaster(PathPlanner):
 					queue_size=10,
 					topic_name="rectangular_path"):
 		PathPlanner.__init__(self,node_name,frequenzy,queue_size,Twist,topic_name)
-				
-			
-				
-
-class PathPlannerSlavePrimitive(PathPlanner):
-	def __init__(	self,
-					distance=1.0,
-					node_name="my_primitive_pathplanner",
-					frequenzy=10,
-					queue_size=10,
-					position=np.array(3,dtype=np.float64), #numpy vector x,y,z		
-					topic_name="primitive_path"):
-		PathPlanner.__init__(self,node_name,frequenzy,queue_size,Twist,topic_name)
-		self.distance=np.sqrt(self.position[0]**2+self.position[1]**2)	
-
-	
-	def path_planning(self):
-		if self.left:
-			self.msg_out.angular.z=self.msg_in.angular.z
-			self.msg_out.linear.x=-self.msg_in.angular.z*self.distance+self.msg_in.linear.x
-		else:
-			self.msg_out.angular.z=self.msg_in.angular.z
-			self.msg_out.linear.x=self.msg_in.angular.z*self.distance+self.msg_in.linear.x
-
-	
-	def set_location(self,left):
-		self.left=left
+							
