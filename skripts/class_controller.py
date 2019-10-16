@@ -129,7 +129,7 @@ class PathPlannerCircular(PathPlanner):
 
 
 
-
+#General class for path planning purpose
 class PathPlannerQuadratic(PathPlanner):
 	def __init__(	self,
 					l=3,
@@ -145,8 +145,8 @@ class PathPlannerQuadratic(PathPlanner):
 		self.l=l
 		self.position=Twist()
 		self.turn=False	
-	
-	def path_planning(self):		
+
+	def path_planning(self):	
 
 		if self.turn:					
 			#calculate next angular step and difference to target (90 deg)
@@ -200,18 +200,22 @@ class PathPlannerSlave(PathPlanner):
 					topic_name="rectangular_path"):
 		PathPlanner.__init__(self,node_name,frequenzy,queue_size,Twist,topic_name)
 		
-		self.omega=omega
-		self.velocity=velocity
+		self.omega_max=omega
+		self.velocity_max=velocity
+
+		self.omega=0.0
+		self.velocity=0.0
+
 		self.phi=0.0
-		self.position=position
+		self.position=position	
+		self.distance=np.sqrt(self.position[0]**2+self.position[1]**2)
 
 		self.prepare_roation=False
 		self.prepare_translation=False
 		
 		self.rotate=False
-		self.translate=True
-		
-		self.distance=np.sqrt(self.position[0]**2+self.position[1]**2)
+		self.translate=False
+		self.forward=True
 
 	
 	def path_planning(self):		
@@ -220,7 +224,13 @@ class PathPlannerSlave(PathPlanner):
 		
 		if self.prepare_roation:			
 			alpha=np.pi/2+np.arctan2(self.position[1],self.position[0])			
-			
+			if alpha >= np.pi/2:
+				alpha-=np.pi
+				self.forward=False
+			else:
+				self.forward=True
+			self.omega=self.omega_max
+
 			dist_deg=alpha-self.phi
 			deg_step=self.omega*self.time_stamp
 			if dist_deg<deg_step:
@@ -234,7 +244,7 @@ class PathPlannerSlave(PathPlanner):
 		elif self.prepare_translation:			
 			dist_deg=self.phi
 			deg_step=-self.omega*self.time_stamp
-			if dist_deg<deg_step:
+			if dist_deg<=deg_step:
 				self.msg_out.linear.z=self.omega*dist_deg/deg_step				
 				self.translate=True
 				self.prepare_roation=False					
@@ -243,13 +253,20 @@ class PathPlannerSlave(PathPlanner):
 				self.phi+=deg_step
 
 		if self.translate:
-			self.msg_out.angular.z=0.0
-			self.msg_out.linear.x=self.msg_in.linear.x
+			self.omega=0.0			
+			self.velocity=self.msg_in.linear.x			
 			self.translate=not(-0.1<self.msg_in.linear.x<0.1) 
-		elif self.rotate:			
-				self.msg_out.angular.z=self.msg_in.angular.z
-				self.msg_out.linear.x=self.msg_in.angular.z*self.distance
-				self.rotate=not(-0.1<self.msg_in.angular.z<0.1)
+		elif self.rotate:
+			if self.forward:				
+				self.omega=self.msg_in.angular.z
+				self.velocity=self.omega*self.distance
+			else:				
+				self.omega=self.msg_in.angular.z
+				self.velocity=-self.omega*self.distance
+			self.rotate=not(-0.1<self.msg_in.angular.z<0.1)
+		
+		self.msg_out.linear.x=self.velocity
+		self.msg_out.angular.z=self.omega
 			
 		
 
