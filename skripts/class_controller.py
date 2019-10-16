@@ -332,7 +332,17 @@ class PathPlannerSlave(PathPlanner):
 		self.msg_out.angular.z=self.omega
 			
 
-		
+class PathPlannerMaster(PathPlanner):
+	def __init__(	self,				
+					node_name="my_rectangular_path",
+					frequenzy=10,
+					position=np.array(3,dtype=np.float64), #numpy vector x,y,z					
+					omega=1.0,
+					velocity=1.0,
+					queue_size=10,
+					topic_name="rectangular_path"):
+		PathPlanner.__init__(self,node_name,frequenzy,queue_size,Twist,topic_name)
+				
 			
 				
 
