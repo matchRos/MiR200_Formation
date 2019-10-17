@@ -244,6 +244,8 @@ class PathPlannerSlave(PathPlanner):
 	def path_planning(self):
 		#prepare the slave for a rotation command
 		if self.prepare_roation:
+			self.velocity=0.0
+			self.omega=0.0
 			self.rotate=False
 			self.translate=False
 			self.confirm_preparation(self.node_name,False)
@@ -293,6 +295,8 @@ class PathPlannerSlave(PathPlanner):
 
 		#Prepare the slave for a rotation around the master therefore it position vektor (relative to the master) and its orientation vektor have to be orthogonal to each other
 		elif self.prepare_translation:
+			self.velocity=0.0
+			self.omega=0.0
 			self.translate=False
 			self.rotate=False
 			self.confirm_preparation(self.node_name,False)	
