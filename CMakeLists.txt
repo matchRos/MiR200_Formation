@@ -59,6 +59,7 @@ find_package(catkin REQUIRED COMPONENTS
  add_service_files(
    FILES
    prepare_motion.srv
+   confirm_preparation.srv
 
  )
 

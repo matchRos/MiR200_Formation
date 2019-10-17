@@ -204,21 +204,21 @@ class PathPlannerQuadratic(PathPlanner):
 class PathPlannerSlave(PathPlanner):
 	
 	#service for the preparation of a motion command
-	def srv_prepare_motion(req):
-		self.prepare_roation=req.prepare_roation
+	def prepare_motion(self,req):
+		self.prepare_roation=req.prepare_rotation
 		self.prepare_translation=req.prepare_translation
-		return not (self.prepare_motion and self.prepare_roation)
+		return not (self.prepare_translation and self.prepare_rotation)
 	
 	
 	#Constructor for the Slave class
 	def __init__(	self,				
-					node_name="my_rectangular_path",
+					node_name="my_slave",
 					frequenzy=10,
 					position=np.array(3,dtype=np.float64), #numpy vector x,y,z					
 					omega=1.0,
 					velocity=1.0,
 					queue_size=10,
-					topic_name="rectangular_path"):
+					topic_name="slave"):
 		PathPlanner.__init__(self,node_name,frequenzy,queue_size,Twist,topic_name)		#calling parent constructor
 		
 		self.omega_max=omega
@@ -278,9 +278,10 @@ class PathPlannerSlave(PathPlanner):
 			deg_step=self.omega_max*self.time_stamp
 			if dist_deg<=deg_step:
 				self.msg_out.angular.z=self.omega
-				if not self.rotate or self.translate:
+				if not (self.rotate or self.translate):
 					self.phi+=dist_deg		
 					self.rotate=True
+				self.confirm_preparation(self.node_name)
 				self.prepare_roation=False					
 			else:				
 				self.msg_out.angular.z=self.omega	
@@ -318,8 +319,9 @@ class PathPlannerSlave(PathPlanner):
 				self.msg_out.linear.z=self.omega*dist_deg/deg_step
 				if not self.rotate or self.translate:
 					self.phi-=dist_deg		
-					self.translate=True	
-				self.prepare_roation=False					
+					self.translate=True
+				self.confirm_preparation(self.node_name)	
+				self.prepare_translation=False					
 			else:
 				self.msg_out.angular.z=-self.omega
 				self.phi-=deg_step
@@ -349,7 +351,8 @@ class PathPlannerSlave(PathPlanner):
 	def execute(self):
 		rospy.init_node(self.node_name)
 		rate=rospy.Rate(self.frequenzy)
-		self.srv_prep_motion=rospy.Service("srv_prep"+self.node_name,srv.prepare_motion,srv_prepare_motion)
+		self.srv_prepare_motion=rospy.Service("srv_prep_"+self.node_name,srv.prepare_motion,self.prepare_motion)
+		self.confirm_preparation=rospy.ServiceProxy("srv_confirm",srv.confirm_preparation)
 		rospy.loginfo("Initialized Slave"+self.node_name+ " with "+str(self.time_stamp)+" seconds time stamp!")		
 		while not rospy.is_shutdown():
 			self.path_planning()
@@ -359,12 +362,12 @@ class PathPlannerSlave(PathPlanner):
 #Class for a master robot. It handles complete motion of the master while handeling the slaves
 class PathPlannerMaster(PathPlanner):
 	def confirm_preparation(self,req):
-		self.slaves[req]=True
+		if req.name in self.slaves:
+			self.slaves[req.name][1]=True
+			return True
+		else:
+			return False	
 	
-	def prepare(self):
-		if -0.01<self.msg_in.angular.z<0.01:
-			rospy.wait_for_service()
-
 
 	def __init__(	self,				
 					node_name="master",
@@ -378,14 +381,24 @@ class PathPlannerMaster(PathPlanner):
 		self.slaves=dict()
 
 	def add_slave(self,name):
-		self.slaves[name]=[]
+		self.slaves[name]=list()
+
+
+	def path_planning(self):
+		if not (-0.01<self.msg_in.angular.z<0.01):
+			for slave in self.slaves:
+				self.slaves[slave][0](1,0)
+		elif not(-0.01<self.msg_in.linear.x<0.01):
+			for slave in self.slaves:
+				self.slaves[slave][0](0,1)
 
 	def execute(self):
 		rospy.init_node(self.node_name)
 		rate=rospy.Rate(self.frequenzy)
 		for key in self.slaves:
-			self.slaves[key]=rospy.ServiceProxy("srv_prep"+key,srv.prepare_motion)
-		
+			self.slaves[key].append(rospy.ServiceProxy("srv_prep_"+key,srv.prepare_motion))
+			self.slaves[key].append(False)
+		self.srv_confirm_preparation=rospy.Service("srv_confirm",srv.confirm_preparation,self.confirm_preparation)
 		rospy.loginfo("Initialized Master: "+self.node_name+ " with "+str(self.time_stamp)+" seconds time stamp!")
 		for key in self.slaves:
 			rospy.loginfo("Slave: "+key)	
