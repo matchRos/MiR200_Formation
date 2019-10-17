@@ -3,10 +3,11 @@
 
 import rospy
 import numpy as np
+import multi_robot_system.srv as srv
+
+
 from geometry_msgs.msg import Twist
 from geometry_msgs.msg import Point
-from rospy.numpy_msg import numpy_msg
-
 
 #Interface Class for Controllers. Without any further implementations it just gets the input and passes it to output.
 class RobotController():  
@@ -61,15 +62,22 @@ class RobotController():
 		if hasattr(self, 'sub'):
 			self.sub.unregister()
 		self.sub=rospy.Subscriber(topic_name,self.message_type,self.income)
+	
 	#links the sink of the controller to the given topic_name	
 	def link_output_topic(self,topic_name):		
 		if hasattr(self, 'pub'):
 			self.pub.unregister()
 		self.pub=rospy.Publisher(topic_name,self.message_type,queue_size=self.queue_size)
-	#Setter for Control frequenzy
-	def set_frequenzy(self,frequenzy):
 	
+	#Setter for Control frequenzy
+	def set_frequenzy(self,frequenzy):	
 		self.frequenzy=frequenzy
+	#Reinitialzies the given message tye to input
+	def set_input_message(self,message_type):
+		self.msg_in=message_type
+	#Reinitialzies the given message tye to input
+	def set_input_message(self,message_type):
+		self.msg_out=message_type
 
 
 # General PathPlanner. Provides an interface for any Pathplanner. 
@@ -194,11 +202,15 @@ class PathPlannerQuadratic(PathPlanner):
 
 #Class for a slave robot. It handles complete motion of the sleve with respect to a give input
 class PathPlannerSlave(PathPlanner):
-	def prepare_motion(req):
+	
+	#service for the preparation of a motion command
+	def srv_prepare_motion(req):
 		self.prepare_roation=req.prepare_roation
 		self.prepare_translation=req.prepare_translation
 		return not (self.prepare_motion and self.prepare_roation)
-
+	
+	
+	#Constructor for the Slave class
 	def __init__(	self,				
 					node_name="my_rectangular_path",
 					frequenzy=10,
@@ -207,7 +219,7 @@ class PathPlannerSlave(PathPlanner):
 					velocity=1.0,
 					queue_size=10,
 					topic_name="rectangular_path"):
-		PathPlanner.__init__(self,node_name,frequenzy,queue_size,Twist,topic_name)
+		PathPlanner.__init__(self,node_name,frequenzy,queue_size,Twist,topic_name)		#calling parent constructor
 		
 		self.omega_max=omega
 		self.velocity_max=velocity
@@ -230,9 +242,7 @@ class PathPlannerSlave(PathPlanner):
 
 	
 	def path_planning(self):
-		self.prepare_roation=not(-0.1<self.msg_in.angular.z<0.1)		
-		self.prepare_translation=not(-0.1<self.msg_in.linear.x<0.1)
-	
+		#prepare the slave for a rotation command
 		if self.prepare_roation:
 			self.omega=self.omega_max
 
@@ -304,7 +314,6 @@ class PathPlannerSlave(PathPlanner):
 
 			dist_deg=self.phi
 			deg_step=self.omega_max*self.time_stamp
-
 			if dist_deg<=deg_step:
 				self.msg_out.linear.z=self.omega*dist_deg/deg_step
 				if not self.rotate or self.translate:
@@ -317,8 +326,8 @@ class PathPlannerSlave(PathPlanner):
 		
 
 
-
-
+		
+		# execute the motion that was prepared
 		if self.translate:
 			self.omega=0.0			
 			self.velocity=self.msg_in.linear.x			
@@ -340,7 +349,7 @@ class PathPlannerSlave(PathPlanner):
 	def execute(self):
 		rospy.init_node(self.node_name)
 		rate=rospy.Rate(self.frequenzy)
-		self.srv_prep_motion=rospy.Service(self.node_name,srv.prepare_motion,prepare_motion)
+		self.srv_prep_motion=rospy.Service("srv_prep"+self.node_name,srv.prepare_motion,srv_prepare_motion)
 		rospy.loginfo("Initialized Slave"+self.node_name+ " with "+str(self.time_stamp)+" seconds time stamp!")		
 		while not rospy.is_shutdown():
 			self.path_planning()
@@ -349,13 +358,40 @@ class PathPlannerSlave(PathPlanner):
 
 #Class for a master robot. It handles complete motion of the master while handeling the slaves
 class PathPlannerMaster(PathPlanner):
+	def confirm_preparation(self,req):
+		self.slaves[req]=True
+	
+	def prepare(self):
+		if -0.01<self.msg_in.angular.z<0.01:
+			rospy.wait_for_service()
+
+
 	def __init__(	self,				
-					node_name="my_rectangular_path",
+					node_name="master",
 					frequenzy=10,
 					position=np.array(3,dtype=np.float64), #numpy vector x,y,z					
 					omega=1.0,
 					velocity=1.0,
 					queue_size=10,
-					topic_name="rectangular_path"):
+					topic_name="master"):
 		PathPlanner.__init__(self,node_name,frequenzy,queue_size,Twist,topic_name)
-							
+		self.slaves=dict()
+
+	def add_slave(self,name):
+		self.slaves[name]=[]
+
+	def execute(self):
+		rospy.init_node(self.node_name)
+		rate=rospy.Rate(self.frequenzy)
+		for key in self.slaves:
+			self.slaves[key]=rospy.ServiceProxy("srv_prep"+key,srv.prepare_motion)
+		
+		rospy.loginfo("Initialized Master: "+self.node_name+ " with "+str(self.time_stamp)+" seconds time stamp!")
+		for key in self.slaves:
+			rospy.loginfo("Slave: "+key)	
+
+		while not rospy.is_shutdown():
+			self.path_planning()
+			self.pub.publish(self.msg_out)
+			rate.sleep()
+	
