@@ -207,7 +207,7 @@ class PathPlannerSlave(PathPlanner):
 	def prepare_motion(self,req):
 		self.prepare_roation=req.prepare_rotation
 		self.prepare_translation=req.prepare_translation
-		return not (self.prepare_translation and self.prepare_rotation)
+		return not (self.prepare_translation and self.prepare_roation)
 	
 	
 	#Constructor for the Slave class
@@ -245,7 +245,7 @@ class PathPlannerSlave(PathPlanner):
 		#prepare the slave for a rotation command
 		if self.prepare_roation:
 			self.omega=self.omega_max
-
+			self.confirm_preparation(self.node_name,False)
 			alpha=np.arctan2(self.position[1],self.position[0])		#angle between slave x-axis and master x-axis				
 			if alpha >=0:				#first or second quadrant
 				if alpha <=np.pi/2:			#first quadrant
@@ -281,7 +281,7 @@ class PathPlannerSlave(PathPlanner):
 				if not (self.rotate or self.translate):
 					self.phi+=dist_deg		
 					self.rotate=True
-				self.confirm_preparation(self.node_name)
+				self.confirm_preparation(self.node_name,True)
 				self.prepare_roation=False					
 			else:				
 				self.msg_out.angular.z=self.omega	
@@ -291,6 +291,7 @@ class PathPlannerSlave(PathPlanner):
 
 		#Prepare the slave for a rotation around the master therefore it position vektor (relative to the master) and its orientation vektor have to be orthogonal to each other
 		elif self.prepare_translation:
+			self.confirm_preparation(self.node_name,True)	
 			#calculate the proper angle for get above descriped property
 			alpha=np.arctan2(self.position[1],self.position[0])		#angle between slave x-axis and master x-axis				
 			if alpha >=0:				#first or second quadrant
@@ -320,7 +321,7 @@ class PathPlannerSlave(PathPlanner):
 				if not self.rotate or self.translate:
 					self.phi-=dist_deg		
 					self.translate=True
-				self.confirm_preparation(self.node_name)	
+				self.confirm_preparation(self.node_name,True)	
 				self.prepare_translation=False					
 			else:
 				self.msg_out.angular.z=-self.omega
@@ -351,8 +352,8 @@ class PathPlannerSlave(PathPlanner):
 	def execute(self):
 		rospy.init_node(self.node_name)
 		rate=rospy.Rate(self.frequenzy)
-		self.srv_prepare_motion=rospy.Service("srv_prep_"+self.node_name,srv.prepare_motion,self.prepare_motion)
-		self.confirm_preparation=rospy.ServiceProxy("srv_confirm",srv.confirm_preparation)
+		self.srv_prepare_motion=rospy.Service("srv_prepare_motion" ,srv.prepare_motion,self.prepare_motion)
+		self.confirm_preparation=rospy.ServiceProxy("/srv_confirm",srv.confirm_preparation)
 		rospy.loginfo("Initialized Slave"+self.node_name+ " with "+str(self.time_stamp)+" seconds time stamp!")		
 		while not rospy.is_shutdown():
 			self.path_planning()
@@ -363,7 +364,7 @@ class PathPlannerSlave(PathPlanner):
 class PathPlannerMaster(PathPlanner):
 	def confirm_preparation(self,req):
 		if req.name in self.slaves:
-			self.slaves[req.name][1]=True
+			self.slaves[req.name][1]=req.state
 			return True
 		else:
 			return False	
@@ -392,16 +393,23 @@ class PathPlannerMaster(PathPlanner):
 			for slave in self.slaves:
 				self.slaves[slave][0](0,1)
 
+		
+
 	def execute(self):
 		rospy.init_node(self.node_name)
-		rate=rospy.Rate(self.frequenzy)
+		rate=rospy.Rate(self.frequenzy)		
 		for key in self.slaves:
-			self.slaves[key].append(rospy.ServiceProxy("srv_prep_"+key,srv.prepare_motion))
-			self.slaves[key].append(False)
-		self.srv_confirm_preparation=rospy.Service("srv_confirm",srv.confirm_preparation,self.confirm_preparation)
+			try:
+				self.slaves[key].append(rospy.ServiceProxy("/"+key+"/"+"srv_prepare_motion",srv.prepare_motion))
+				self.slaves[key].append(False)
+			except:
+				raise Exception("problem with slave-key: "+key)
+				rospy.logwarn("Problems due setup of slave: "+key)
+		self.srv_confirm_preparation=rospy.Service("/srv_confirm",srv.confirm_preparation,self.confirm_preparation)
 		rospy.loginfo("Initialized Master: "+self.node_name+ " with "+str(self.time_stamp)+" seconds time stamp!")
 		for key in self.slaves:
 			rospy.loginfo("Slave: "+key)	
+		
 
 		while not rospy.is_shutdown():
 			self.path_planning()

@@ -3,10 +3,8 @@
 
 <arg name="robot_name"           default="robot"/>
 <arg name="robot_x"              default="0.0" />
-<arg name="robot_y"              default="0.0" />
-
- 
-
+<arg name="robot_y"              default="0.0" /> 
+<arg name="slaves"              default="" />
 
 
 <group ns="$(arg robot_name)" >     
@@ -17,7 +15,7 @@
         <arg name="controller_name" value="/$(arg robot_name)" />
     </include>  
 
-    <node name="Master_ctr" pkg="multi_robot_system" type="robot_master.py" args="master_input mobile_base_controller/cmd_vel"></node>
+    <node name="Master_ctr" pkg="multi_robot_system" type="robot_master.py" args="master_input mobile_base_controller/cmd_vel $(arg slaves)" output="screen"></node>
 
 
 </group> 
