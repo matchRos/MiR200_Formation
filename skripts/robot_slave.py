@@ -7,7 +7,7 @@ import sys
 
 
 if __name__=="__main__":    
-   ctr=class_controller.PathPlannerSlave(frequenzy=20,position=np.array([float(sys.argv[3]),float(sys.argv[4]),0.0]))
-   ctr.link_input_topic(sys.argv[1])
-   ctr.link_output_topic(sys.argv[2])
+   ctr=class_controller.PathPlannerSlave(node_name=sys.argv[1],frequenzy=20,position=np.array([float(sys.argv[4]),float(sys.argv[5]),0.0]))
+   ctr.link_input_topic(sys.argv[2])
+   ctr.link_output_topic(sys.argv[3])
    ctr.execute()

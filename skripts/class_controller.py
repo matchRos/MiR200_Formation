@@ -244,8 +244,10 @@ class PathPlannerSlave(PathPlanner):
 	def path_planning(self):
 		#prepare the slave for a rotation command
 		if self.prepare_roation:
-			self.omega=self.omega_max
+			self.rotate=False
+			self.translate=False
 			self.confirm_preparation(self.node_name,False)
+			self.omega=self.omega_max			
 			alpha=np.arctan2(self.position[1],self.position[0])		#angle between slave x-axis and master x-axis				
 			if alpha >=0:				#first or second quadrant
 				if alpha <=np.pi/2:			#first quadrant
@@ -291,7 +293,9 @@ class PathPlannerSlave(PathPlanner):
 
 		#Prepare the slave for a rotation around the master therefore it position vektor (relative to the master) and its orientation vektor have to be orthogonal to each other
 		elif self.prepare_translation:
-			self.confirm_preparation(self.node_name,True)	
+			self.translate=False
+			self.rotate=False
+			self.confirm_preparation(self.node_name,False)	
 			#calculate the proper angle for get above descriped property
 			alpha=np.arctan2(self.position[1],self.position[0])		#angle between slave x-axis and master x-axis				
 			if alpha >=0:				#first or second quadrant
@@ -333,8 +337,8 @@ class PathPlannerSlave(PathPlanner):
 		# execute the motion that was prepared
 		if self.translate:
 			self.omega=0.0			
-			self.velocity=self.msg_in.linear.x			
-			self.translate=not(-0.1<self.msg_in.linear.x<0.1) 
+			self.velocity=self.msg_in.linear.x		
+	
 		
 		elif self.rotate:
 			if self.forward:				
@@ -344,7 +348,7 @@ class PathPlannerSlave(PathPlanner):
 				self.omega=self.msg_in.angular.z
 				self.velocity=-self.omega*self.distance
 			
-			self.rotate=not(-0.1<self.msg_in.angular.z<0.1)
+
 		
 		self.msg_out.linear.x=self.velocity
 		self.msg_out.angular.z=self.omega
@@ -365,6 +369,8 @@ class PathPlannerMaster(PathPlanner):
 	def confirm_preparation(self,req):
 		if req.name in self.slaves:
 			self.slaves[req.name][1]=req.state
+			print(self.slaves[req.name][1])
+
 			return True
 		else:
 			return False	
@@ -380,18 +386,53 @@ class PathPlannerMaster(PathPlanner):
 					topic_name="master"):
 		PathPlanner.__init__(self,node_name,frequenzy,queue_size,Twist,topic_name)
 		self.slaves=dict()
+		self.translation=False
+		self.rotation=False
+		self.prepare_rotation=False
+		self.prepare_translation=False
 
 	def add_slave(self,name):
 		self.slaves[name]=list()
 
 
 	def path_planning(self):
-		if not (-0.01<self.msg_in.angular.z<0.01):
+		motion=True
+		for slave in self.slaves:
+			motion*=self.slaves[slave][1]
+
+		if not (-0.01<self.msg_in.angular.z<0.01) and not self.rotation:			#Check if rotation is nessesarry
+			self.prepare_rotation=True
+		
+
+		elif not(-0.01<self.msg_in.linear.x<0.01) and not self.translation:		#Check if translation is nessesarry
+			self.prepare_translation=True
+
+
+		if self.prepare_rotation:									#Prepare rotation
+			print("IN")									
 			for slave in self.slaves:
 				self.slaves[slave][0](1,0)
-		elif not(-0.01<self.msg_in.linear.x<0.01):
+				self.slaves[slave][1]=False
+			self.prepare_rotation=False
+			self.rotation=True
+
+
+		elif self.prepare_translation:										#Prepare translation
 			for slave in self.slaves:
 				self.slaves[slave][0](0,1)
+				self.slaves[slave][1]=False
+			self.prepare_translation=False
+			self.translation=True
+
+		if (self.rotation or self.translation) and motion:													# Move
+			self.msg_out=self.msg_in
+		else:
+			self.msg_out=self.message_type()
+		
+		
+
+		
+	
 
 		
 
