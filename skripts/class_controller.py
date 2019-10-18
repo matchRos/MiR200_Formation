@@ -205,11 +205,17 @@ class PathPlannerSlave(PathPlanner):
 	
 	#service for the preparation of a motion command
 	def prepare_motion(self,req):
-		self.prepare_roation=req.prepare_rotation
-		self.prepare_translation=req.prepare_translation
-		return not (self.prepare_translation and self.prepare_roation)
+		if req.prepare_roation:
+			self.state="prepare_rotation"
+		elif req.prepare_translation:
+			self.state="prepare_translation"
+		else
+			raise rospy.ServiceException(self.node_name+": Wrong reqest send!")
+			return False
+		return True
 	
-	
+
+
 	#Constructor for the Slave class
 	def __init__(	self,				
 					node_name="my_slave",
@@ -238,18 +244,18 @@ class PathPlannerSlave(PathPlanner):
 		self.translate=False
 		self.forward=True
 
+		self.state="wait"
+
 		
 
 	
 	def path_planning(self):
 		#prepare the slave for a rotation command
-		if self.prepare_roation:
-			self.velocity=0.0
-			self.omega=0.0
-			self.rotate=False
-			self.translate=False
-			self.confirm_preparation(self.node_name,False)
-			self.omega=self.omega_max			
+		if state=="wait":
+			pass
+		
+		elif state=="prepare_rotation":			
+			self.confirm_preparation(self.node_name,False)	
 			alpha=np.arctan2(self.position[1],self.position[0])		#angle between slave x-axis and master x-axis				
 			if alpha >=0:				#first or second quadrant
 				if alpha <=np.pi/2:			#first quadrant
@@ -280,25 +286,15 @@ class PathPlannerSlave(PathPlanner):
 					
 			dist_deg=alpha-self.phi
 			deg_step=self.omega_max*self.time_stamp
-			if dist_deg<=deg_step:
-				self.msg_out.angular.z=self.omega
-				if not (self.rotate or self.translate):
-					self.phi+=dist_deg		
-					self.rotate=True
+			if dist_deg<=deg_step:		
+				self.phi+=dist_deg
+				self.omega=self.omega*dist_deg/deg_step	
 				self.confirm_preparation(self.node_name,True)
-				self.prepare_roation=False					
+				self.state="rotate"					
 			else:				
-				self.msg_out.angular.z=self.omega	
 				self.phi+=deg_step
-	
 
-
-		#Prepare the slave for a rotation around the master therefore it position vektor (relative to the master) and its orientation vektor have to be orthogonal to each other
-		elif self.prepare_translation:
-			self.velocity=0.0
-			self.omega=0.0
-			self.translate=False
-			self.rotate=False
+		elif state=="prepare_translation":	#Prepare the slave for a rotation around the master therefore it position vektor (relative to the master) and its orientation vektor have to be orthogonal to each other
 			self.confirm_preparation(self.node_name,False)	
 			#calculate the proper angle for get above descriped property
 			alpha=np.arctan2(self.position[1],self.position[0])		#angle between slave x-axis and master x-axis				
@@ -321,39 +317,29 @@ class PathPlannerSlave(PathPlanner):
 			else:							#error handling
 					raise ValueError("Slave "+self.node_name+" angle incorrect!")	
 
-
 			dist_deg=self.phi
 			deg_step=self.omega_max*self.time_stamp
 			if dist_deg<=deg_step:
-				self.msg_out.linear.z=self.omega*dist_deg/deg_step
-				if not self.rotate or self.translate:
-					self.phi-=dist_deg		
-					self.translate=True
-				self.confirm_preparation(self.node_name,True)	
-				self.prepare_translation=False					
+				self.omega=self.omega*dist_deg/deg_step			
+				self.phi-=dist_deg			
+				self.confirm_preparation(self.node_name,True)
+				self.state="translate"							
 			else:
-				self.msg_out.angular.z=-self.omega
 				self.phi-=deg_step
-		
 
-
-		
-		# execute the motion that was prepared
-		if self.translate:
-			self.omega=0.0			
-			self.velocity=self.msg_in.linear.x		
-	
-		
-		elif self.rotate:
-			if self.forward:				
+		elif self.state=="rotate":					#Do the forced rotation around master
+			if self.forward:
 				self.omega=self.msg_in.angular.z
 				self.velocity=self.omega*self.distance
-			else:				
+			else:
 				self.omega=self.msg_in.angular.z
 				self.velocity=-self.omega*self.distance
-			
 
-		
+		elif self.state=="translate":				#Do the forced translation wih master
+			self.omega=0.0			
+			self.velocity=self.msg_in.linear.x		
+
+		#Write out velocities		
 		self.msg_out.linear.x=self.velocity
 		self.msg_out.angular.z=self.omega
 	
