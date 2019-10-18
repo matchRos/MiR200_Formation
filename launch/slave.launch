@@ -5,6 +5,7 @@
 <arg name="robot_x"     default="0.0" />
 <arg name="robot_y"     default="0.0" />
 <arg name="name_master" default="master"/>
+<arg name="displ"       default="log"/>
  
 
 
@@ -17,7 +18,7 @@
         <arg name="controller_name" value="/$(arg robot_name)" />
     </include>  
   
-    <node name="Slave_ctr" pkg="multi_robot_system" type="robot_slave.py" args="$(arg robot_name) /$(arg name_master)/mobile_base_controller/cmd_vel mobile_base_controller/cmd_vel $(arg robot_x) $(arg robot_y)" ></node>
+    <node name="Slave_ctr" pkg="multi_robot_system" type="robot_slave.py" args="$(arg robot_name) /$(arg name_master)/mobile_base_controller/cmd_vel mobile_base_controller/cmd_vel $(arg robot_x) $(arg robot_y)" output="$(arg displ)"></node>
     
    
 </group> 

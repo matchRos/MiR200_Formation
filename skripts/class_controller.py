@@ -207,15 +207,15 @@ class PathPlannerSlave(PathPlanner):
 	
 	#service for the preparation of a motion command
 	def prepare_motion(self,req):
-		if req.prepare_rotation:
+		if req.prepare_rotation and req.prepare_translation:
+			self.combined=True
+			self.state="prepare_translation"
+		elif req.prepare_rotation:
 			self.state="prepare_rotation"
 		elif req.prepare_translation:
 			self.state="prepare_translation"
-		elif not req.prepare_motion and not req.prepare_translation:
-			self.state="wait"
-		elif req.prepare_motion and req.prepare_translation:
-			self.combined=true
-			self.state="prepare_translation"
+		elif not req.prepare_rotation and not req.prepare_translation:
+			self.state="wait"		
 		else:	
 			raise rospy.ServiceException(self.node_name+": Wrong reqest send!")
 			return False
@@ -249,7 +249,7 @@ class PathPlannerSlave(PathPlanner):
 		
 		self.rotate=False
 		self.translate=False
-		self.combined=True
+		self.combined=False
 		self.forward=True
 
 		self.state="wait"
@@ -338,7 +338,7 @@ class PathPlannerSlave(PathPlanner):
 			else:
 				self.phi-=deg_step
 
-		elif self.state=="rotate":					#Do the forced rotation around master
+		elif self.state=="rotate":					#Do the forced rotation around master				
 			if self.forward:
 				self.omega=self.msg_in.angular.z
 				self.velocity=self.omega*self.distance
@@ -346,11 +346,11 @@ class PathPlannerSlave(PathPlanner):
 				self.omega=self.msg_in.angular.z
 				self.velocity=-self.omega*self.distance
 
-		elif self.state=="translate":				#Do the forced translation wih master
-			self.omega=0.0			
+		elif self.state=="translate":				#Do the forced translation wih master			
+			self.omega=0.0				
 			self.velocity=self.msg_in.linear.x		
 		
-		elif self.state=="combined":
+		elif self.state=="combined":				#Do the forced combination wih master
 			self.omega=self.msg_in.angular.z
 			self.velocity=self.msg_in.linear.x
 		else:
@@ -405,13 +405,23 @@ class PathPlannerMaster(PathPlanner):
 
 
 	def path_planning(self):
+		
 		if self.state=="wait":
-			if not (-0.01<self.msg_in.angular.z<0.01):			#Check if rotation is nessesarry
+			if not (-0.01<self.msg_in.angular.z<0.01) and not (-0.01<self.msg_in.linear.x<0.01): #check if combination is nessesarry
+				self.state="prepare_combination"
+			elif not (-0.01<self.msg_in.angular.z<0.01):			#Check if rotation is nessesarry
 				self.state="prepare_rotation"
 			elif not (-0.01<self.msg_in.linear.x<0.01):			#Check if rotation is nessesarry
 				self.state="prepare_translation"
 			else:
-				pass
+				self.sate="wait"
+
+		elif self.state=="prepare_combination":
+			for slave in self.slaves:
+				self.slaves[slave][0](1,1)
+				self.slaves[slave][1]=False
+			self.state="wait_response"
+			self.combination=True
 
 		elif self.state=="prepare_rotation":
 			for slave in self.slaves:
@@ -427,7 +437,8 @@ class PathPlannerMaster(PathPlanner):
 				self.slaves[slave][1]=False
 			self.state="wait_response"
 			self.translation=True
-		
+			
+	
 		elif self.state=="wait_response":			
 			motion=True
 			for slave in self.slaves:
@@ -439,24 +450,46 @@ class PathPlannerMaster(PathPlanner):
 					self.state="translate"
 				elif self.rotation:
 					self.state="rotate"
+				elif self.combination:
+					self.state="combined"
 				self.rotation=False
 				self.translation=False
+				self.combination=False
 		
 		elif self.state=="rotate":		
 			self.msg_out.angular.z=self.msg_in.angular.z
-			if not (-0.01<self.msg_in.linear.x<0.01):			#Check if rotation is nessesarry
+			if not (-0.01<self.msg_in.angular.z<0.01) and not (-0.01<self.msg_in.linear.x<0.01): 	#check if combination is nessesarry
+				self.state="prepare_combination"
+			elif not (-0.01<self.msg_in.angular.z<0.01):											#Check if rotation is nessesarry
+				self.state="rotate"
+			elif not (-0.01<self.msg_in.linear.x<0.01):												#Check if translation is nessesarry
 				self.state="prepare_translation"
-				self.msg_out=self.message_type()
 			
 		
 		elif self.state=="translate":
 			self.msg_out.linear.x=self.msg_in.linear.x			
-			if not (-0.01<self.msg_in.angular.z<0.01):			#Check if rotation is nessesarry
+			if not (-0.01<self.msg_in.angular.z<0.01) and not (-0.01<self.msg_in.linear.x<0.01): 	#check if combination is nessesarry
+				self.state="prepare_combination"
+			elif not (-0.01<self.msg_in.angular.z<0.01):											#Check if rotation is nessesarry
 				self.state="prepare_rotation"
-				self.msg_out=self.message_type()
+			elif not (-0.01<self.msg_in.linear.x<0.01):												#Check if translation is nessesarry
+				self.state="translate"
+		
+			
+		elif self.state=="combined":
+			self.msg_out=self.msg_in
+			if not (-0.01<self.msg_in.angular.z<0.01) and not (-0.01<self.msg_in.linear.x<0.01): 	#check if combination is nessesarry
+				self.state="combined"
+			elif not (-0.01<self.msg_in.angular.z<0.01):											#Check if rotation is nessesarry
+				self.state="prepare_rotation"
+			elif not (-0.01<self.msg_in.linear.x<0.01):												#Check if translation is nessesarry
+				self.state="prepare_translation"
+		
 		
 		else:
 			raise Exception("Master is in undefined state!")
+
+		print(self.state)
 
 		
 
