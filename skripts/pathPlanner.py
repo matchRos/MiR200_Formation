@@ -12,7 +12,7 @@ if __name__=="__main__":
     else:
         pp=class_controller.PathPlanner()
    
-    pp.set_frequenzy(rospy.get_param("/frequenzy"))
+    pp.set_frequenzy(rospy.get_param("/frequency"))
     pp.link_input_topic(sys.argv[1])
     pp.link_output_topic(sys.argv[2])
     pp.execute()

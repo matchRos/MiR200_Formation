@@ -7,7 +7,7 @@
 <arg name="slaves"              default="" />
 
 
-<group ns="$(arg robot_name)" >     
+<group ns="$(arg robot_name)" >    
 
     <include file="$(find multi_robot_system)/launch/setup_mir_controller.launch">
         <arg name="robot_x"   value="$(arg robot_x)" />
