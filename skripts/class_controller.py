@@ -353,10 +353,10 @@ class PathPlannerSlave(PathPlanner):
 		elif self.state=="combined":				#Do the forced combination wih master
 			if self.forward:
 				self.omega=self.msg_in.angular.z
-				self.velocity=(self.omega+self.msg_in.linear.x)*self.distance
+				self.velocity=self.msg_in.linear.x
 			else:
 				self.omega=self.msg_in.angular.z
-				self.velocity=(-self.omega+self.msg_in.linear.x)*self.distance
+				self.velocity=-self.msg_in.linear.x
 		else:
 			raise Exception(self.node_name+" in undefined state!")
 		#Write out velocities
