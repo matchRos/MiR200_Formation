@@ -98,6 +98,8 @@ class PathPlanner(RobotController):
 
 	# Dummie funktion for path planning procedure. Should be implemented in child class (important: this class should determine the data for msg_out)
 	def path_planning(self):
+		if self.msg_in.angular.z>0.5:
+			self.msg_in.angular.z=0.5
 		self.msg_out=self.msg_in
 
 	# execution scope of this class. Initialisation of node and rates is done here and the ros-scope is runnign. 
@@ -205,11 +207,13 @@ class PathPlannerSlave(PathPlanner):
 	
 	#service for the preparation of a motion command
 	def prepare_motion(self,req):
-		if req.prepare_roation:
+		if req.prepare_rotation:
 			self.state="prepare_rotation"
 		elif req.prepare_translation:
 			self.state="prepare_translation"
-		else
+		elif not req.prepare_motion and not req.prepare_translation:
+			self.state="wait"
+		else:	
 			raise rospy.ServiceException(self.node_name+": Wrong reqest send!")
 			return False
 		return True
@@ -251,10 +255,10 @@ class PathPlannerSlave(PathPlanner):
 	
 	def path_planning(self):
 		#prepare the slave for a rotation command
-		if state=="wait":
+		if self.state=="wait":
 			pass
 		
-		elif state=="prepare_rotation":			
+		elif self.state=="prepare_rotation":			
 			self.confirm_preparation(self.node_name,False)	
 			alpha=np.arctan2(self.position[1],self.position[0])		#angle between slave x-axis and master x-axis				
 			if alpha >=0:				#first or second quadrant
@@ -294,7 +298,7 @@ class PathPlannerSlave(PathPlanner):
 			else:				
 				self.phi+=deg_step
 
-		elif state=="prepare_translation":	#Prepare the slave for a rotation around the master therefore it position vektor (relative to the master) and its orientation vektor have to be orthogonal to each other
+		elif self.state=="prepare_translation":	#Prepare the slave for a rotation around the master therefore it position vektor (relative to the master) and its orientation vektor have to be orthogonal to each other
 			self.confirm_preparation(self.node_name,False)	
 			#calculate the proper angle for get above descriped property
 			alpha=np.arctan2(self.position[1],self.position[0])		#angle between slave x-axis and master x-axis				
@@ -338,7 +342,8 @@ class PathPlannerSlave(PathPlanner):
 		elif self.state=="translate":				#Do the forced translation wih master
 			self.omega=0.0			
 			self.velocity=self.msg_in.linear.x		
-
+		else:
+			raise Exception(self.node_name+" in undefined state!")
 		#Write out velocities		
 		self.msg_out.linear.x=self.velocity
 		self.msg_out.angular.z=self.omega

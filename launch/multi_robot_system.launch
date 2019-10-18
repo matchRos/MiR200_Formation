@@ -14,8 +14,8 @@
 <include file="$(find multi_robot_system)/launch/slave.launch">
 
   <arg name="robot_name" value="robot1"/>
-  <arg name="robot_x"   value="2.0" />
-  <arg name="robot_y"   value="2.0" />
+  <arg name="robot_x"   value="1.25" />
+  <arg name="robot_y"   value="1.25" />
   <arg name="name_master" value="robot_master"/>
 </include>
 
@@ -25,8 +25,8 @@
 <include file="$(find multi_robot_system)/launch/slave.launch">
 
   <arg name="robot_name" value="robot2"/>
-  <arg name="robot_x"   value="2.0" />
-  <arg name="robot_y"   value="-2.0" />
+  <arg name="robot_x"   value="1.25" />
+  <arg name="robot_y"   value="-1.25" />
   <arg name="name_master" value="robot_master"/>
 </include>
 
@@ -62,7 +62,7 @@
 
 
 
-<node name="PathPlaner" type="pathPlanner.py" pkg="multi_robot_system" args="PathPlaner_input robot_master/master_input $(arg controller_name)"/>
+<node name="PathPlaner" type="pathPlanner.py" pkg="multi_robot_system" args="/key_vel robot_master/master_input $(arg controller_name)"/>
 
 <include file="$(find multi_robot_system)/launch/master.launch">
   <arg name="robot_name" value="robot_master"/>
