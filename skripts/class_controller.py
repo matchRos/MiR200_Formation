@@ -213,6 +213,9 @@ class PathPlannerSlave(PathPlanner):
 			self.state="prepare_translation"
 		elif not req.prepare_motion and not req.prepare_translation:
 			self.state="wait"
+		elif req.prepare_motion and req.prepare_translation:
+			self.combined=true
+			self.state="prepare_translation"
 		else:	
 			raise rospy.ServiceException(self.node_name+": Wrong reqest send!")
 			return False
@@ -246,6 +249,7 @@ class PathPlannerSlave(PathPlanner):
 		
 		self.rotate=False
 		self.translate=False
+		self.combined=True
 		self.forward=True
 
 		self.state="wait"
@@ -327,7 +331,10 @@ class PathPlannerSlave(PathPlanner):
 				self.omega=self.omega*dist_deg/deg_step			
 				self.phi-=dist_deg			
 				self.confirm_preparation(self.node_name,True)
-				self.state="translate"							
+				if self.combined:
+					self.state="combined"
+				else:
+					self.state="translate"							
 			else:
 				self.phi-=deg_step
 
@@ -342,9 +349,15 @@ class PathPlannerSlave(PathPlanner):
 		elif self.state=="translate":				#Do the forced translation wih master
 			self.omega=0.0			
 			self.velocity=self.msg_in.linear.x		
+		
+		elif self.state=="combined":
+			self.omega=self.msg_in.angular.z
+			self.velocity=self.msg_in.linear.x
 		else:
 			raise Exception(self.node_name+" in undefined state!")
-		#Write out velocities		
+		#Write out velocities
+
+
 		self.msg_out.linear.x=self.velocity
 		self.msg_out.angular.z=self.omega
 	
@@ -363,9 +376,7 @@ class PathPlannerSlave(PathPlanner):
 class PathPlannerMaster(PathPlanner):
 	def confirm_preparation(self,req):
 		if req.name in self.slaves:
-			self.slaves[req.name][1]=req.state
-			print(self.slaves[req.name][1])
-
+			self.slaves[req.name][1]=req.state		
 			return True
 		else:
 			return False	
@@ -386,47 +397,77 @@ class PathPlannerMaster(PathPlanner):
 		self.prepare_rotation=False
 		self.prepare_translation=False
 
+
+		self.state="wait"
+
 	def add_slave(self,name):
 		self.slaves[name]=list()
 
 
 	def path_planning(self):
-		motion=True
-		for slave in self.slaves:
-			motion*=self.slaves[slave][1]
+		if self.state=="wait":
+			if not (-0.01<self.msg_in.angular.z<0.01):			#Check if rotation is nessesarry
+				self.state="prepare_rotation"
+			elif not (-0.01<self.msg_in.linear.x<0.01):			#Check if rotation is nessesarry
+				self.state="prepare_translation"
+			else:
+				pass
 
-		if not (-0.01<self.msg_in.angular.z<0.01) and not self.rotation:			#Check if rotation is nessesarry
-			self.prepare_rotation=True
-		
-
-		elif not(-0.01<self.msg_in.linear.x<0.01) and not self.translation:		#Check if translation is nessesarry
-			self.prepare_translation=True
-
-
-		if self.prepare_rotation:									#Prepare rotation
-			print("IN")									
+		elif self.state=="prepare_rotation":
 			for slave in self.slaves:
 				self.slaves[slave][0](1,0)
 				self.slaves[slave][1]=False
-			self.prepare_rotation=False
+			self.state="wait_response"
 			self.rotation=True
-
-
-		elif self.prepare_translation:										#Prepare translation
+			
+		
+		elif self.state=="prepare_translation":
 			for slave in self.slaves:
 				self.slaves[slave][0](0,1)
 				self.slaves[slave][1]=False
-			self.prepare_translation=False
+			self.state="wait_response"
 			self.translation=True
-
-		if (self.rotation or self.translation) and motion:													# Move
-			self.msg_out=self.msg_in
+		
+		elif self.state=="wait_response":			
+			motion=True
+			for slave in self.slaves:
+				motion*=self.slaves[slave][1]
+			if motion:
+				for slave in self.slaves:
+					self.slaves[slave][1]=False
+				if self.translation:
+					self.state="translate"
+				elif self.rotation:
+					self.state="rotate"
+				self.rotation=False
+				self.translation=False
+		
+		elif self.state=="rotate":		
+			self.msg_out.angular.z=self.msg_in.angular.z
+			if not (-0.01<self.msg_in.linear.x<0.01):			#Check if rotation is nessesarry
+				self.state="prepare_translation"
+				self.msg_out=self.message_type()
+			
+		
+		elif self.state=="translate":
+			self.msg_out.linear.x=self.msg_in.linear.x			
+			if not (-0.01<self.msg_in.angular.z<0.01):			#Check if rotation is nessesarry
+				self.state="prepare_rotation"
+				self.msg_out=self.message_type()
+		
 		else:
-			self.msg_out=self.message_type()
-		
-		
+			raise Exception("Master is in undefined state!")
 
 		
+
+
+
+
+
+
+
+		
+
 	
 
 		
