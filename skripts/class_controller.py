@@ -351,12 +351,8 @@ class PathPlannerSlave(PathPlanner):
 			self.velocity=self.msg_in.linear.x		
 		
 		elif self.state=="combined":				#Do the forced combination wih master
-			if self.forward:
-				self.omega=self.msg_in.angular.z
-				self.velocity=self.msg_in.linear.x
-			else:
-				self.omega=self.msg_in.angular.z
-				self.velocity=-self.msg_in.linear.x
+				self.msg_out=self.message_type()	#Not implemented. Kinamtik too difficult yet
+			
 		else:
 			raise Exception(self.node_name+" in undefined state!")
 		#Write out velocities
@@ -481,13 +477,14 @@ class PathPlannerMaster(PathPlanner):
 		
 			
 		elif self.state=="combined":
-			self.msg_out=self.msg_in
-			if not (-0.01<self.msg_in.angular.z<0.01) and not (-0.01<self.msg_in.linear.x<0.01): 	#check if combination is nessesarry
-				self.state="combined"
-			elif not (-0.01<self.msg_in.angular.z<0.01):											#Check if rotation is nessesarry
-				self.state="prepare_rotation"
-			elif not (-0.01<self.msg_in.linear.x<0.01):												#Check if translation is nessesarry
-				self.state="prepare_translation"
+			self.msg_out=self.message_type()
+			# self.msg_out=self.msg_in
+			# if not (-0.01<self.msg_in.angular.z<0.01) and not (-0.01<self.msg_in.linear.x<0.01): 	#check if combination is nessesarry
+			# 	self.state="combined"
+			# elif not (-0.01<self.msg_in.angular.z<0.01):											#Check if rotation is nessesarry
+			# 	self.state="prepare_rotation"
+			# elif not (-0.01<self.msg_in.linear.x<0.01):												#Check if translation is nessesarry
+			# 	self.state="prepare_translation"
 		
 		
 		else:
