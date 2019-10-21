@@ -12,7 +12,6 @@
 
 
 <include file="$(find multi_robot_system)/launch/slave.launch">
-
   <arg name="robot_name" value="robot1"/>
   <arg name="robot_x"   value="1.25" />
   <arg name="robot_y"   value="1.25" />

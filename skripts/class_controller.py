@@ -490,7 +490,7 @@ class PathPlannerMaster(PathPlanner):
 		else:
 			raise Exception("Master is in undefined state!")
 
-		print(self.state)
+
 
 		
 
