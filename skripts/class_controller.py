@@ -376,7 +376,7 @@ class PathPlannerSlave(PathPlanner):
 								tf.transformations.quaternion_from_euler(0,0,0),
 								rospy.Time.now(),
 								self.node_name+"/base_footprint",
-								"/map"	)		
+								"/base_footprint"	)		
 			self.path_planning()
 			self.pub.publish(self.msg_out)
 			self.rate.sleep()
@@ -511,7 +511,7 @@ class PathPlannerMaster(PathPlanner):
 								tf.transformations.quaternion_from_euler(0,0,0),
 								rospy.Time.now(),
 								self.node_name+"/base_footprint",
-								"/map"	)		
+								"/base_footprint"	)		
 			self.path_planning()
 			self.pub.publish(self.msg_out)
 			self.rate.sleep()
