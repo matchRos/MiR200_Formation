@@ -4,7 +4,7 @@
 import rospy
 import numpy as np
 import multi_robot_system.srv as srv
-
+import tf
 
 from geometry_msgs.msg import Twist
 from geometry_msgs.msg import Point
@@ -361,17 +361,31 @@ class PathPlannerSlave(PathPlanner):
 		self.msg_out.linear.x=self.velocity
 		self.msg_out.angular.z=self.omega
 	
-	def execute(self):
+	def initialise_ros(self):
 		rospy.init_node(self.node_name)
-		rate=rospy.Rate(self.frequenzy)
+		self.rate=rospy.Rate(self.frequenzy)
 		self.srv_prepare_motion=rospy.Service("srv_prepare_motion" ,srv.prepare_motion,self.prepare_motion)
 		self.confirm_preparation=rospy.ServiceProxy("/srv_confirm",srv.confirm_preparation)
-		rospy.loginfo("Initialized Slave"+self.node_name+ " with "+str(self.time_stamp)+" seconds time stamp!")		
+		rospy.loginfo("Initialized Slave"+self.node_name+ " with "+str(self.time_stamp)+" seconds time stamp!")	
+
+		self.bc=tf.TransformBroadcaster()
+		
+	def ros_scope(self):
 		while not rospy.is_shutdown():
+			self.bc.sendTransform(	(self.position[0],self.position[1],0),
+								tf.transformations.quaternion_from_euler(0,0,0),
+								rospy.Time.now(),
+								self.node_name+"/base_footprint",
+								"/map"	)		
 			self.path_planning()
 			self.pub.publish(self.msg_out)
-			rate.sleep()
+			self.rate.sleep()
 
+	
+	def execute(self):
+		self.initialise_ros()
+		self.ros_scope()
+		
 #Class for a master robot. It handles complete motion of the master while handeling the slaves
 class PathPlannerMaster(PathPlanner):
 	def confirm_preparation(self,req):
@@ -491,24 +505,20 @@ class PathPlannerMaster(PathPlanner):
 			raise Exception("Master is in undefined state!")
 
 
+	def ros_scope(self):
+		while not rospy.is_shutdown():
+			self.bc.sendTransform(	(0,0,0),
+								tf.transformations.quaternion_from_euler(0,0,0),
+								rospy.Time.now(),
+								self.node_name+"/base_footprint",
+								"/map"	)		
+			self.path_planning()
+			self.pub.publish(self.msg_out)
+			self.rate.sleep()
 
-		
-
-
-
-
-
-
-
-		
-
-	
-
-		
-
-	def execute(self):
+	def initialise_ros(self):
 		rospy.init_node(self.node_name)
-		rate=rospy.Rate(self.frequenzy)		
+		self.rate=rospy.Rate(self.frequenzy)
 		for key in self.slaves:
 			try:
 				self.slaves[key].append(rospy.ServiceProxy("/"+key+"/"+"srv_prepare_motion",srv.prepare_motion))
@@ -520,10 +530,11 @@ class PathPlannerMaster(PathPlanner):
 		rospy.loginfo("Initialized Master: "+self.node_name+ " with "+str(self.time_stamp)+" seconds time stamp!")
 		for key in self.slaves:
 			rospy.loginfo("Slave: "+key)	
+		self.bc=tf.TransformBroadcaster()
+
+	def execute(self):
+		self.initialise_ros()
+		self.ros_scope()
+	
 		
 
-		while not rospy.is_shutdown():
-			self.path_planning()
-			self.pub.publish(self.msg_out)
-			rate.sleep()
-	
