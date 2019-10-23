@@ -273,7 +273,6 @@ class Slave(RobotController):
 								"/base_footprint"	)		
 			self.path_planning()							#calculate the output velocity wich is input for slaves
 			
-
 		
 #Class for a master robot. It handles complete motion of the master while handeling the slaves
 class Master(RobotController):

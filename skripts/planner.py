@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 import rospy
-from class_controller import RobotController
+from controller import RobotController
 
 
 
@@ -15,7 +15,7 @@ class PathPlannerCircular(RobotController):
 					queue_size=10,					
 					topic_name="circle_path"):	
 		#Call the contructor of parent class
-		PathPlanner.__init__(self,node_name,frequenzy,queue_size,Twist,topic_name)		
+		RobotController.__init__(self,node_name,frequenzy,queue_size,Twist,topic_name)		
 		# Attributes of a circle deskription:
 		#		phi:Angle between start of turn and current orientation
 		#		omega: Angular velocity of movement
@@ -32,7 +32,7 @@ class PathPlannerCircular(RobotController):
 
 
 #General class for path planning purpose
-class PathPlannerQuadratic(PathPlanner):
+class PathPlannerQuadratic(RobotController):
 	def __init__(	self,
 					l=3,
 					velocity=1,
@@ -41,7 +41,7 @@ class PathPlannerQuadratic(PathPlanner):
 					frequenzy=10,
 					queue_size=10,
 					topic_name="rectangular_path"):
-		PathPlanner.__init__(self,node_name,frequenzy,queue_size,Twist,topic_name)
+		RobotController.__init__(self,node_name,frequenzy,queue_size,Twist,topic_name)
 		self.velocity=velocity
 		self.omega=omega
 		self.l=l

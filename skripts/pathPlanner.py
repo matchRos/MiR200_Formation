@@ -2,7 +2,7 @@
 
 import rospy
 import planner
-import class_controller
+import controller
 import sys
 
 if __name__=="__main__": 
@@ -10,7 +10,7 @@ if __name__=="__main__":
     if pp_type=="quad":
          pp=planner.PathPlannerQuadratic()
     else:
-        pp=class_controller.RobotController()
+        pp=controller.RobotController()
     
     pp.set_frequenzy(rospy.get_param("/frequency"))
     pp.link_input_topic(sys.argv[1])
