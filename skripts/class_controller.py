@@ -4,6 +4,8 @@
 import rospy
 import numpy as np
 import multi_robot_system.srv as srv
+import rosbag
+
 import tf
 
 from geometry_msgs.msg import Twist
@@ -23,7 +25,6 @@ class RobotController():
 					queue_size=10,
 					message_type=Twist,
 					topic_name="ctr"):
-
 		self.node_name=node_name
 		rospy.init_node(self.node_name)
 
@@ -44,6 +45,7 @@ class RobotController():
 	#callback procedure wich is called if a new input message occures	
 	def income(self,msg):
 		self.msg_in=msg
+
 
 	#Initializes an rate object for ros timing
 	def set_rate(self,rate):
@@ -66,20 +68,29 @@ class RobotController():
 		self.frequenzy=frequenzy
 		self.set_rate(self.frequenzy)
 		self.time_step=np.float64(1/np.float64(self.frequenzy))
+
 	#Reinitialzies the given message tye to input
 	def set_input_message_type(self,MessageType):
 		self.message_type_in=MessageType
 		self.msg_in=MessageType()
+
 	#Reinitialzies the given message tye to input
 	def set_output_message_type(self,MessageType):
 		self.message_type_out=MessageType		
 		self.msg_out=MessageType()
-
+	
+	#is called every ros cycle
 	def execute(self):
 		self.msg_out=self.msg_in
+
+	#is called just before ros cycle starts
 	def startup(self):
 		rospy.loginfo("Initialised pass trhough controller"+self.node_name+ " at "+str(self.frequenzy)+"Hz!")	
 
+	#Setter for the flag of measureing data. If measure is true input and output topic are logged
+	def set_measure(self):
+		self.set_measure=True
+		self.bag=ros
 	#Execution prcodeure of the controller. Initialization of the node and the ros-scope runs here. 
 	#Therfore publishing runs here and as RobotCorntroller is a parent class the input is passed through as output without doing anything
 	def run(self):		
@@ -213,7 +224,7 @@ class PathPlannerQuadratic(PathPlanner):
 
 
 #Class for a slave robot. It handles complete motion of the sleve with respect to a give input
-class PathPlannerSlave(RobotController):
+class Slave(RobotController):
 	#Constructor for the Slave class
 	def __init__(	self,				
 					node_name="my_slave",
@@ -357,7 +368,8 @@ class PathPlannerSlave(RobotController):
 			self.velocity=self.msg_in.linear.x		
 		
 		elif self.state=="combined":				#Do the forced combination wih master
-				self.msg_out=self.message_type()	#Not implemented. Kinamtik too difficult yet
+			self.omega=0.0
+			self.velocity=0.0	#Not implemented. Kinamtik too difficult yet
 			
 		else:
 			raise Exception(self.node_name+" in undefined state!")
@@ -367,25 +379,27 @@ class PathPlannerSlave(RobotController):
 		self.msg_out.linear.x=self.velocity
 		self.msg_out.angular.z=self.omega
 	
+
 	def startup(self):
-		self.srv_prepare_motion=rospy.Service("srv_prepare_motion" ,srv.prepare_motion,self.prepare_motion)
-		self.confirm_preparation=rospy.ServiceProxy("/srv_confirm",srv.confirm_preparation)
+		self.srv_prepare_motion=rospy.Service("srv_prepare_motion" ,srv.prepare_motion,self.prepare_motion)		#Prepare ros service for rekonfiguration of slave
+		self.confirm_preparation=rospy.ServiceProxy("/srv_confirm",srv.confirm_preparation)						#prepare ros service for confirmation of slaves after reconfiguration
 		rospy.loginfo("Initialized Slave"+self.node_name+ " with "+str(self.time_step)+" seconds time stamp!")	
 
-		self.bc=tf.TransformBroadcaster()
+		self.bc=tf.TransformBroadcaster()					#Broatcaster for transformation of robot frame basefootprint to a global base_footprint
 		
 	def execute(self):		
-			self.bc.sendTransform(	(self.position[0],self.position[1],0),
+			self.bc.sendTransform(	(self.position[0],self.position[1],0),				#send the transform of robot frame to global base footprint (not correct yet)
 								tf.transformations.quaternion_from_euler(0,0,0),
 								rospy.Time.now(),
 								self.node_name+"/base_footprint",
 								"/base_footprint"	)		
-			self.path_planning()
+			self.path_planning()							#calculate the output velocity wich is input for slaves
 			
 
 		
 #Class for a master robot. It handles complete motion of the master while handeling the slaves
-class PathPlannerMaster(RobotController):
+class Master(RobotController):
+	#Service routine that lists the rsponse of slaves after reconfiguration
 	def confirm_preparation(self,req):
 		if req.name in self.slaves:
 			self.slaves[req.name][1]=req.state		
@@ -414,13 +428,16 @@ class PathPlannerMaster(RobotController):
 
 		self.state="wait"
 
+	#registers a slave for the master
 	def add_slave(self,name):
 		self.slaves[name]=list()
 
+	#sets motion limits of the master
 	def set_limits(self,v_max,omega_max):
 		self.velocity_max=v_max
 		self.omega_max=omega_max
 
+	#calculates the output of the master from given input
 	def path_planning(self):		
 		if self.state=="wait":
 			if not (-0.01<self.msg_in.angular.z<0.01) and not (-0.01<self.msg_in.linear.x<0.01): #check if combination is nessesarry
@@ -432,14 +449,14 @@ class PathPlannerMaster(RobotController):
 			else:
 				self.sate="wait"
 
-		elif self.state=="prepare_combination":
+		elif self.state=="prepare_combination":				#Prepares the slaves for a combinational motion
 			for slave in self.slaves:
 				self.slaves[slave][0](1,1)
 				self.slaves[slave][1]=False
 			self.state="wait_response"
 			self.combination=True
 
-		elif self.state=="prepare_rotation":
+		elif self.state=="prepare_rotation":			#Prepares the slaves for a rotation
 			for slave in self.slaves:
 				self.slaves[slave][0](1,0)
 				self.slaves[slave][1]=False
@@ -447,7 +464,7 @@ class PathPlannerMaster(RobotController):
 			self.rotation=True
 			
 		
-		elif self.state=="prepare_translation":
+		elif self.state=="prepare_translation":			#prepares the slaves for a translation
 			for slave in self.slaves:
 				self.slaves[slave][0](0,1)
 				self.slaves[slave][1]=False
@@ -455,7 +472,7 @@ class PathPlannerMaster(RobotController):
 			self.translation=True
 			
 	
-		elif self.state=="wait_response":			
+		elif self.state=="wait_response":				#waits for finishig preparations of the slaves
 			motion=True
 			for slave in self.slaves:
 				motion*=self.slaves[slave][1]
@@ -499,14 +516,14 @@ class PathPlannerMaster(RobotController):
 		
 			
 		elif self.state=="combined":
-			self.msg_out=self.message_type()
+			self.msg_out=self.message_type_out()
 			# self.msg_out=self.msg_in
-			# if not (-0.01<self.msg_in.angular.z<0.01) and not (-0.01<self.msg_in.linear.x<0.01): 	#check if combination is nessesarry
-			# 	self.state="combined"
-			# elif not (-0.01<self.msg_in.angular.z<0.01):											#Check if rotation is nessesarry
-			# 	self.state="prepare_rotation"
-			# elif not (-0.01<self.msg_in.linear.x<0.01):												#Check if translation is nessesarry
-			# 	self.state="prepare_translation"
+			if not (-0.01<self.msg_in.angular.z<0.01) and not (-0.01<self.msg_in.linear.x<0.01): 	#check if combination is nessesarry
+				self.state="combined"
+			elif not (-0.01<self.msg_in.angular.z<0.01):											#Check if rotation is nessesarry
+				self.state="prepare_rotation"
+			elif not (-0.01<self.msg_in.linear.x<0.01):												#Check if translation is nessesarry
+				self.state="prepare_translation"
 		
 		
 		else:
