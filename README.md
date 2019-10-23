@@ -6,6 +6,7 @@
 ## Troubleshooting:
 
 1. if gazebo crashes it may has to be killed by "killall gzserver"
+2. if laserscanner do not produce any data in rviz -> change gpu settings in sick_s300.urdf.xacro
 
 
 ## Important nodes:
