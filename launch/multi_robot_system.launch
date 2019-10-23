@@ -8,18 +8,12 @@
 
 
 
-
-
-
 <include file="$(find multi_robot_system)/launch/slave.launch">
   <arg name="robot_name" value="robot1"/>
   <arg name="robot_x"   value="1.25" />
   <arg name="robot_y"   value="1.25" />
   <arg name="name_master" value="robot_master"/>
-  <arg name="displ"        value="screen"/>
 </include>
-
-
 
 
 <include file="$(find multi_robot_system)/launch/slave.launch">
@@ -29,8 +23,6 @@
   <arg name="robot_y"   value="-1.25" />
   <arg name="name_master" value="robot_master"/>
 </include>
-
-
 
 
 <include file="$(find multi_robot_system)/launch/slave.launch">
@@ -49,21 +41,13 @@
 </include>
 
 
-
-
 <include file="$(find gazebo_ros)/launch/empty_world.launch">
       <arg name="world_name" value="$(arg world_name)"/>
       <arg name="paused" value="false" />
       <arg name="gui" value="$(arg gui)" />
 </include>
 
-  
 
-
-
-<!--
-<node name="PathPlaner" type="pathPlanner.py" pkg="multi_robot_system" args="/key_vel robot_master/master_input $(arg controller_name)"/>
--->
 <include file="$(find multi_robot_system)/launch/master.launch">
   <arg name="robot_name" value="robot_master"/>
   <arg name="robot_x"   value="0.0" />
