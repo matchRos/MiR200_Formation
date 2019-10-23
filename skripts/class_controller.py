@@ -11,13 +11,6 @@ from geometry_msgs.msg import Point
 
 #Interface Class for Controllers. Without any further implementations it just gets the input and passes it to output.
 class RobotController():  
-
-
-	#callback procedure wich is called if a new input message occures	
-	def income(self,msg):
-		self.msg_in=msg
-
-
 	 #Initialize a controler, with repsect to:
     #       node_name: The name of the node the controller is running at
     #       frequenzy: The publishing rate the controller is publishing at its main topic
@@ -31,61 +24,78 @@ class RobotController():
 					message_type=Twist,
 					topic_name="ctr"):
 
-		self.node_name=node_name		
-		self.frequenzy=frequenzy
-		self.queue_size=queue_size
-		
-		self.message_type=message_type
+		self.node_name=node_name
+		rospy.init_node(self.node_name)
 
-		self.msg_out=message_type()	
-		self.msg_in=message_type()	
+		self.queue_size=queue_size
+
+		self.set_frequenzy(frequenzy)		
+	
+
+		self.set_input_message_type(message_type)	
+		self.set_output_message_type(message_type)
 		
 
 		self.link_input_topic(topic_name+"_in")
 		self.link_output_topic(topic_name+"_out")
-	
 
-	#Execution prcodeure of the controller. Initialization of the node and the ros-scope runs here. 
-	#Therfore publishing runs here and as RobotCorntroller is a parent class the input is passed through as output without doing anything
-	def execute(self):
-		rospy.init_node(self.node_name)
-		rate=rospy.Rate(self.frequenzy)
-		rospy.loginfo("Initialized pass trought Controller"+self.node_name+ " at "+str(self.frequenzy)+"Hz!")
 		
-		while not rospy.is_shutdown():
-			self.msg_out=self.msg_in			
-			self.pub.publish(self.msg_out)
-			rate.sleep()
 
+	#callback procedure wich is called if a new input message occures	
+	def income(self,msg):
+		self.msg_in=msg
+
+	#Initializes an rate object for ros timing
+	def set_rate(self,rate):
+		self.rate=rospy.Rate(self.frequenzy)
+	
 	#links the source of the controller to the given topic_name
 	def link_input_topic(self,topic_name):
 		if hasattr(self, 'sub'):
 			self.sub.unregister()
-		self.sub=rospy.Subscriber(topic_name,self.message_type,self.income)
+		self.sub=rospy.Subscriber(topic_name,self.message_type_in,self.income)
 	
 	#links the sink of the controller to the given topic_name	
 	def link_output_topic(self,topic_name):		
 		if hasattr(self, 'pub'):
 			self.pub.unregister()
-		self.pub=rospy.Publisher(topic_name,self.message_type,queue_size=self.queue_size)
+		self.pub=rospy.Publisher(topic_name,self.message_type_out,queue_size=self.queue_size)
 	
 	#Setter for Control frequenzy
 	def set_frequenzy(self,frequenzy):	
 		self.frequenzy=frequenzy
+		self.set_rate(self.frequenzy)
+		self.time_step=np.float64(1/np.float64(self.frequenzy))
 	#Reinitialzies the given message tye to input
-	def set_input_message(self,message_type):
-		self.msg_in=message_type
+	def set_input_message_type(self,MessageType):
+		self.message_type_in=MessageType
+		self.msg_in=MessageType()
 	#Reinitialzies the given message tye to input
-	def set_input_message(self,message_type):
-		self.msg_out=message_type
+	def set_output_message_type(self,MessageType):
+		self.message_type_out=MessageType		
+		self.msg_out=MessageType()
+
+	def execute(self):
+		self.msg_out=self.msg_in
+	def startup(self):
+		rospy.loginfo("Initialised pass trhough controller"+self.node_name+ " at "+str(self.frequenzy)+"Hz!")	
+
+	#Execution prcodeure of the controller. Initialization of the node and the ros-scope runs here. 
+	#Therfore publishing runs here and as RobotCorntroller is a parent class the input is passed through as output without doing anything
+	def run(self):		
+		self.startup()
+		while not rospy.is_shutdown():
+			self.execute()
+			self.pub.publish(self.msg_out)
+			self.rate.sleep()
+
 
 
 # General PathPlanner. Provides an interface for any Pathplanner. 
 # Spezial Pathplanner can be developed by using this interface and overload the path_planning function
-
 class PathPlanner(RobotController):	
 	# Initializes an Pathplanner as child of RobotController and passes arguments to it. 
-	# Further a time_stamp for pathplanning purpose is determined and safed as attributes
+	# Further a time_step for pathplanning purpose is determined and safed as attributes
 	def __init__(	self,
 					node_name="my_path",
 					frequenzy=10,
@@ -93,7 +103,7 @@ class PathPlanner(RobotController):
 					message_type=Twist,					
 					topic_name="path"):
 		RobotController.__init__(self,node_name,frequenzy,queue_size,message_type,topic_name)
-		self.time_stamp=np.float64(1/np.float64(self.frequenzy))
+		self.time_step=np.float64(1/np.float64(self.frequenzy))
 		
 
 	# Dummie funktion for path planning procedure. Should be implemented in child class (important: this class should determine the data for msg_out)
@@ -107,7 +117,7 @@ class PathPlanner(RobotController):
 	def execute(self):
 		rospy.init_node(self.node_name)
 		rate=rospy.Rate(self.frequenzy)
-		rospy.loginfo("Initialized Pathplanner"+self.node_name+ " with "+str(self.time_stamp)+" seconds time stamp!")
+		rospy.loginfo("Initialized Pathplanner"+self.node_name+ " with "+str(self.time_step)+" seconds time stamp!")
 		
 		while not rospy.is_shutdown():
 			self.path_planning()
@@ -168,7 +178,7 @@ class PathPlannerQuadratic(PathPlanner):
 			#calculate next angular step and difference to target (90 deg)
 			#stop turning forward
 			self.msg_out.linear.x=0.0
-			deg=self.omega*self.time_stamp
+			deg=self.omega*self.time_step
 			dist_deg=np.pi/2-self.position.angular.z
 			
 			
@@ -189,7 +199,7 @@ class PathPlannerQuadratic(PathPlanner):
 			#calculate_next linear step and difference to target l
 			#stop turning and move forward
 			self.msg_out.angular.z=0.0
-			x_step=self.velocity*self.time_stamp
+			x_step=self.velocity*self.time_step
 			dist_x=self.l-self.position.linear.x
 			if dist_x<x_step:
 				#do remaining movement and switch to turning mode
@@ -203,26 +213,7 @@ class PathPlannerQuadratic(PathPlanner):
 
 
 #Class for a slave robot. It handles complete motion of the sleve with respect to a give input
-class PathPlannerSlave(PathPlanner):
-	
-	#service for the preparation of a motion command
-	def prepare_motion(self,req):
-		if req.prepare_rotation and req.prepare_translation:
-			self.combined=True
-			self.state="prepare_translation"
-		elif req.prepare_rotation:
-			self.state="prepare_rotation"
-		elif req.prepare_translation:
-			self.state="prepare_translation"
-		elif not req.prepare_rotation and not req.prepare_translation:
-			self.state="wait"		
-		else:	
-			raise rospy.ServiceException(self.node_name+": Wrong reqest send!")
-			return False
-		return True
-	
-
-
+class PathPlannerSlave(RobotController):
 	#Constructor for the Slave class
 	def __init__(	self,				
 					node_name="my_slave",
@@ -232,7 +223,7 @@ class PathPlannerSlave(PathPlanner):
 					velocity=1.0,
 					queue_size=10,
 					topic_name="slave"):
-		PathPlanner.__init__(self,node_name,frequenzy,queue_size,Twist,topic_name)		#calling parent constructor
+		RobotController.__init__(self,node_name,frequenzy,queue_size,Twist,topic_name)		#calling parent constructor
 		
 		self.omega_max=omega
 		self.velocity_max=velocity
@@ -254,6 +245,21 @@ class PathPlannerSlave(PathPlanner):
 
 		self.state="wait"
 
+	#service for the preparation of a motion command
+	def prepare_motion(self,req):
+		if req.prepare_rotation and req.prepare_translation:
+			self.combined=True
+			self.state="prepare_translation"
+		elif req.prepare_rotation:
+			self.state="prepare_rotation"
+		elif req.prepare_translation:
+			self.state="prepare_translation"
+		elif not req.prepare_rotation and not req.prepare_translation:
+			self.state="wait"		
+		else:	
+			raise rospy.ServiceException(self.node_name+": Wrong reqest send!")
+			return False
+		return True
 		
 
 	
@@ -293,7 +299,7 @@ class PathPlannerSlave(PathPlanner):
 				
 					
 			dist_deg=alpha-self.phi
-			deg_step=self.omega_max*self.time_stamp
+			deg_step=self.omega_max*self.time_step
 			if dist_deg<=deg_step:		
 				self.phi+=dist_deg
 				self.omega=self.omega*dist_deg/deg_step	
@@ -326,7 +332,7 @@ class PathPlannerSlave(PathPlanner):
 					raise ValueError("Slave "+self.node_name+" angle incorrect!")	
 
 			dist_deg=self.phi
-			deg_step=self.omega_max*self.time_stamp
+			deg_step=self.omega_max*self.time_step
 			if dist_deg<=deg_step:
 				self.omega=self.omega*dist_deg/deg_step			
 				self.phi-=dist_deg			
@@ -361,33 +367,25 @@ class PathPlannerSlave(PathPlanner):
 		self.msg_out.linear.x=self.velocity
 		self.msg_out.angular.z=self.omega
 	
-	def initialise_ros(self):
-		rospy.init_node(self.node_name)
-		self.rate=rospy.Rate(self.frequenzy)
+	def startup(self):
 		self.srv_prepare_motion=rospy.Service("srv_prepare_motion" ,srv.prepare_motion,self.prepare_motion)
 		self.confirm_preparation=rospy.ServiceProxy("/srv_confirm",srv.confirm_preparation)
-		rospy.loginfo("Initialized Slave"+self.node_name+ " with "+str(self.time_stamp)+" seconds time stamp!")	
+		rospy.loginfo("Initialized Slave"+self.node_name+ " with "+str(self.time_step)+" seconds time stamp!")	
 
 		self.bc=tf.TransformBroadcaster()
 		
-	def ros_scope(self):
-		while not rospy.is_shutdown():
+	def execute(self):		
 			self.bc.sendTransform(	(self.position[0],self.position[1],0),
 								tf.transformations.quaternion_from_euler(0,0,0),
 								rospy.Time.now(),
 								self.node_name+"/base_footprint",
 								"/base_footprint"	)		
 			self.path_planning()
-			self.pub.publish(self.msg_out)
-			self.rate.sleep()
+			
 
-	
-	def execute(self):
-		self.initialise_ros()
-		self.ros_scope()
 		
 #Class for a master robot. It handles complete motion of the master while handeling the slaves
-class PathPlannerMaster(PathPlanner):
+class PathPlannerMaster(RobotController):
 	def confirm_preparation(self,req):
 		if req.name in self.slaves:
 			self.slaves[req.name][1]=req.state		
@@ -404,22 +402,26 @@ class PathPlannerMaster(PathPlanner):
 					velocity=1.0,
 					queue_size=10,
 					topic_name="master"):
-		PathPlanner.__init__(self,node_name,frequenzy,queue_size,Twist,topic_name)
+		RobotController.__init__(self,node_name,frequenzy,queue_size,Twist,topic_name)
 		self.slaves=dict()
 		self.translation=False
 		self.rotation=False
 		self.prepare_rotation=False
 		self.prepare_translation=False
-
+		self.bc=tf.TransformBroadcaster()
+		
+		self.set_limits(velocity,omega)
 
 		self.state="wait"
 
 	def add_slave(self,name):
 		self.slaves[name]=list()
 
+	def set_limits(self,v_max,omega_max):
+		self.velocity_max=v_max
+		self.omega_max=omega_max
 
-	def path_planning(self):
-		
+	def path_planning(self):		
 		if self.state=="wait":
 			if not (-0.01<self.msg_in.angular.z<0.01) and not (-0.01<self.msg_in.linear.x<0.01): #check if combination is nessesarry
 				self.state="prepare_combination"
@@ -470,8 +472,11 @@ class PathPlannerMaster(PathPlanner):
 				self.translation=False
 				self.combination=False
 		
-		elif self.state=="rotate":		
-			self.msg_out.angular.z=self.msg_in.angular.z
+		elif self.state=="rotate":																	#Do a rotation with limitation of angular velocity
+			if np.abs(self.msg_in.angular.z)>self.omega_max:
+				self.msg_out.angular.z=np.sign(self.msg_in.angular.z)*self.omega_max
+			else:		
+				self.msg_out.angular.z=self.msg_in.angular.z
 			if not (-0.01<self.msg_in.angular.z<0.01) and not (-0.01<self.msg_in.linear.x<0.01): 	#check if combination is nessesarry
 				self.state="prepare_combination"
 			elif not (-0.01<self.msg_in.angular.z<0.01):											#Check if rotation is nessesarry
@@ -480,8 +485,11 @@ class PathPlannerMaster(PathPlanner):
 				self.state="prepare_translation"
 			
 		
-		elif self.state=="translate":
-			self.msg_out.linear.x=self.msg_in.linear.x			
+		elif self.state=="translate":																#Do a translation with limitation of angular velocity
+			if np.abs(self.msg_in.linear.x)>self.velocity_max:
+				self.msg_out.linear.x=np.sign(self.msg_in.linear.x)*self.velocity_max
+			self.msg_out.linear.x=self.msg_in.linear.x		
+				
 			if not (-0.01<self.msg_in.angular.z<0.01) and not (-0.01<self.msg_in.linear.x<0.01): 	#check if combination is nessesarry
 				self.state="prepare_combination"
 			elif not (-0.01<self.msg_in.angular.z<0.01):											#Check if rotation is nessesarry
@@ -505,20 +513,16 @@ class PathPlannerMaster(PathPlanner):
 			raise Exception("Master is in undefined state!")
 
 
-	def ros_scope(self):
-		while not rospy.is_shutdown():
-			self.bc.sendTransform(	(0,0,0),
-								tf.transformations.quaternion_from_euler(0,0,0),
-								rospy.Time.now(),
-								self.node_name+"/base_footprint",
-								"/base_footprint"	)		
-			self.path_planning()
-			self.pub.publish(self.msg_out)
-			self.rate.sleep()
+	def execute(self):
+		self.bc.sendTransform(	(0,0,0),
+							tf.transformations.quaternion_from_euler(0,0,0),
+							rospy.Time.now(),
+							self.node_name+"/base_footprint",
+							"/base_footprint"	)		
+		self.path_planning()
+	
 
-	def initialise_ros(self):
-		rospy.init_node(self.node_name)
-		self.rate=rospy.Rate(self.frequenzy)
+	def startup(self):	
 		for key in self.slaves:
 			try:
 				self.slaves[key].append(rospy.ServiceProxy("/"+key+"/"+"srv_prepare_motion",srv.prepare_motion))
@@ -527,14 +531,11 @@ class PathPlannerMaster(PathPlanner):
 				raise Exception("problem with slave-key: "+key)
 				rospy.logwarn("Problems due setup of slave: "+key)
 		self.srv_confirm_preparation=rospy.Service("/srv_confirm",srv.confirm_preparation,self.confirm_preparation)
-		rospy.loginfo("Initialized Master: "+self.node_name+ " with "+str(self.time_stamp)+" seconds time stamp!")
+		rospy.loginfo("Initialized Master: "+self.node_name+ " with "+str(self.time_step)+" seconds time stamp!")
 		for key in self.slaves:
 			rospy.loginfo("Slave: "+key)	
-		self.bc=tf.TransformBroadcaster()
+		
 
-	def execute(self):
-		self.initialise_ros()
-		self.ros_scope()
-	
+
 		
 

@@ -11,4 +11,4 @@ if __name__=="__main__":
    ctr.set_frequenzy(rospy.get_param("/frequency"))
    ctr.link_input_topic(sys.argv[2])
    ctr.link_output_topic(sys.argv[3])
-   ctr.execute()
+   ctr.run()

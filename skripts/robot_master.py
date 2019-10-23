@@ -13,5 +13,5 @@ if __name__=="__main__":
         if name[0:2]!="__":
             ctr.add_slave(name)
     
-
-    ctr.execute()
+    ctr.set_limits(1.0,0.5)
+    ctr.run()
