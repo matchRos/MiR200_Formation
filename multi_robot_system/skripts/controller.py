@@ -269,8 +269,8 @@ class Slave(RobotController):
 			self.bc.sendTransform(	(self.position[0],self.position[1],0),				#send the transform of robot frame to global base footprint (not correct yet)
 								tf.transformations.quaternion_from_euler(0,0,0),
 								rospy.Time.now(),
-								self.node_name+"/base_footprint",
-								"/base_footprint"	)		
+								self.node_name+"/base_link",
+								"/map"	)		
 			self.path_planning()							#calculate the output velocity wich is input for slaves
 			
 		
@@ -411,8 +411,8 @@ class Master(RobotController):
 		self.bc.sendTransform(	(0,0,0),
 							tf.transformations.quaternion_from_euler(0,0,0),
 							rospy.Time.now(),
-							self.node_name+"/base_footprint",
-							"/base_footprint"	)		
+							self.node_name+"/base_link",
+							"/map"	)		
 		self.path_planning()
 	
 
