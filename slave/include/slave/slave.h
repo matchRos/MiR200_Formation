@@ -4,13 +4,16 @@
 #include <string>
 #include <vector>
 
+
+
      
 class Slave{
-    public:       
+    public:
+        Slave(ros::NodeHandle &nh);    
         struct state{
-            double x=0.0;
-            double y=0.0;
-            double z=0.0;
+            double x;
+            double y;
+            double z;
         };
      
         void set_name(std::string);
@@ -21,7 +24,7 @@ class Slave{
         
         void run();
 
-        void input_callback(msg);
+        void input_callback(geometry_msgs::Twist msg);
     
     private:
         ros::NodeHandle nh;

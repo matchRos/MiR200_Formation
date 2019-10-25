@@ -53,7 +53,9 @@
   <arg name="slaves" value="robot1 robot2"/>
 </include>
 
- <node type="rviz" name="rviz" pkg="rviz" args="-d $(find multi_robot_system)/config/rviz.rviz" />
 
+<!--
+ <node type="rviz" name="rviz" pkg="rviz" args="-d $(find multi_robot_system)/config/rviz.rviz" />
+-->
 
 </launch>
