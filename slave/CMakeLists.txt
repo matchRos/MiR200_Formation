@@ -123,6 +123,7 @@ include_directories(
 ## Declare a C++ library
 add_library(slave include/slave/slave.h src/slave.cpp)
 
+
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
@@ -131,7 +132,7 @@ add_library(slave include/slave/slave.h src/slave.cpp)
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-
+add_executable(slave_node src/slave_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -145,6 +146,9 @@ add_library(slave include/slave/slave.h src/slave.cpp)
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(slave ${catkin_LIBRARIES})
+target_link_libraries(slave_node ${catkin_LIBRARIES})
+target_link_libraries(slave_node slave)
+
 
 #############
 ## Install ##
