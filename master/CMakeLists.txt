@@ -10,10 +10,7 @@ project(master)
 find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   roscpp
-  std_msgs
-  tf
-  costmap_2d
-  base_local_planner
+  slave
 )
 
 ## System dependencies are found with CMake's conventions
@@ -73,7 +70,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate added messages and services with any dependencies listed here
 # generate_messages(
 #   DEPENDENCIES
-#   geometr_msgs#   std_msgs
+#   geometry_msgs
 # )
 
 ################################################
@@ -106,9 +103,9 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES master
-#  CATKIN_DEPENDS geometr_msgs roscpp std_msgs
+  INCLUDE_DIRS include
+  LIBRARIES master
+#  CATKIN_DEPENDS geometry_msgs roscpp
 #  DEPENDS system_lib
 )
 
@@ -124,9 +121,8 @@ include_directories(
 )
 
 ## Declare a C++ library
-# add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/master.cpp
-# )
+ add_library(master include/master/master.h src/master.cpp
+ )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -136,7 +132,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(local_planner src/local_planner.cpp)
+# add_executable(${PROJECT_NAME}_node src/master_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -149,8 +145,10 @@ add_executable(local_planner src/local_planner.cpp)
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(local_planner ${catkin_LIBRARIES})
-
+ target_link_libraries(
+   master
+   ${catkin_LIBRARIES}
+ )
 
 #############
 ## Install ##

@@ -7,9 +7,6 @@
 
 
 
-
-
-
 <include file="$(find gazebo_ros)/launch/empty_world.launch">
   <arg name="paused" value="false" />
   <arg name="world_name" value="$(arg world_name)"/>
@@ -17,7 +14,7 @@
 </include>
 
 
-<include file="$(find multi_robot_system)/launch/slave.launch">
+<include file="$(find slave)/launch/slave.launch">
   <arg name="robot_name" value="robot1"/>
   <arg name="robot_x"   value="1.25" />
   <arg name="robot_y"   value="1.25" />
@@ -25,7 +22,7 @@
 </include>
 
 
-<include file="$(find multi_robot_system)/launch/slave.launch">
+<include file="$(find slave)/launch/slave.launch">
   <arg name="robot_name" value="robot2"/>
   <arg name="robot_x"   value="1.25" />
   <arg name="robot_y"   value="-1.25" />
@@ -57,8 +54,8 @@
 </include>
 
 
-<node type="locl_planner" name="test_planner" pkg="master"/>
+<!--
  <node type="rviz" name="rviz" pkg="rviz" args="-d $(find multi_robot_system)/config/rviz.rviz" />
-
+-->
 
 </launch>
