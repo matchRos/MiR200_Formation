@@ -1,10 +1,4 @@
 #include <slave/slave.h>
-#include <ros/ros.h>
-#include <geometry_msgs/Twist.h>
-
-#include <math.h>
-#include <stdio.h>
-
 
 Slave::Slave(ros::NodeHandle &nh):nh(nh)
 {
@@ -39,64 +33,48 @@ void Slave::set_master_name(std::string name)
     this->master_name=name;
 }
 
-void Slave::set_orientation(double x,double y,double z)
+//################################################################################################
+//Setter for states
+
+void Slave::set_cart_state(double x,double y,double z,Slave::cart_state &state)
 {
-    this->set_orientation(x,y,z,this->cart_ori);
+    state.x=x;
+    state.y=y;
+    state.z=z;
 }
 
-void Slave::set_orientation(double x,double y,double z,Slave::cart_state &ori)
+
+void Slave::set_orientation(double x,double y,double z)
 {
-    ori.x=x;
-    ori.y=y;
-    ori.z=z;
+    this->set_cart_state(x,y,z,this->cart_ori);
 }
+
 
 void Slave::set_position(double x,double y,double z)
 {
-    this->set_position(x,y,z,this->cart_pos);
-}
-
-void Slave::set_position(double x,double y,double z,Slave::cart_state &pos)
-{
-    pos.x=x;
-    pos.y=y;
-    pos.z=z;
+    this->set_cart_state(x,y,z,this->cart_pos);
 }
 
 void Slave::set_reference(double x,double y,double z)
 {
-    this->set_position(x,y,z,this->ref_pos);
+    this->set_cart_state(x,y,z,this->ref_pos);
 }
-
-
 
 void Slave::set_translation(double x,double y,double z)
 {
-    this->set_translation(x,y,z,this->cart_vel_in);
+    this->set_cart_state(x,y,z,this->cart_vel_in);
 }
-
-void Slave::set_translation(double x,double y,double z,Slave::cart_state &trans)
-{
-     trans.x=x;
-     trans.y=y;
-     trans.z=z;
-}
-
-
 
 void Slave::set_rotation(double x,double y,double z)
 {
-    this->set_rotation(x,y,z,this->cart_rot_in);
-}
-
-void Slave::set_rotation(double x,double y,double z,Slave::cart_state &rot)
-{
-    rot.x=x;
-    rot.y=y;
-    rot.z=z;
+    this->set_cart_state(x,y,z,this->cart_rot_in);
 }
 
 
+
+
+//################################################################################################
+//Linking important topics/transformations
 
 void Slave::link_input(std::string topic_name)
 {
@@ -112,8 +90,17 @@ void Slave::link_output(std::string topic_name)
     this->output=this->nh.advertise<geometry_msgs::Twist>(topic_name,10);
 }
 
+void Slave::link_transform(std::string transform_name1,std::string transform_name2) 
+{
+    this->reference=transform_name1;
+    this->reference=transform_name2;
+}
 
 
+
+
+//################################################################################################
+//callback methods
 
 void Slave::input_callback(geometry_msgs::Twist msg)
 {
@@ -124,10 +111,21 @@ void Slave::input_callback(geometry_msgs::Twist msg)
     this->forward_propagation();
 }
 
-///<summary>
-///This implements a least sqaures determination of control vector [v,omega] [control.v control.omega] 
-///from the given cartesian velocity state d/dt[x,y,phi] (cart_vel)
-///</summary>
+void Slave::odom_callback(nav_msgs::Odometry msg)
+{   
+    double x=msg.pose.pose.position.x;
+    double y=msg.pose.pose.position.y;
+    double z=msg.pose.pose.position.z;
+    
+    double x_o=msg.pose.pose.orientation.x;
+    double y_o=msg.pose.pose.orientation.y;
+    double z_o=msg.pose.pose.orientation.z;
+    double w=msg.pose.pose.orientation.w;
+
+}
+
+
+
 void Slave::optimal_control()
 {
     //calculate the ideal velocity state
