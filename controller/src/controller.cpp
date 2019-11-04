@@ -1,26 +1,26 @@
-#include <slave/slave.h>
+#include <Controller/Controller.h>
 
-Slave::Slave(ros::NodeHandle &nh):nh(nh)
+Controller::Controller(ros::NodeHandle &nh):nh(nh)
 {
 
     set_name("my_slave");
  
     this->output=this->nh.advertise<geometry_msgs::Twist>("out",10);
 
-    this->input=this->nh.subscribe("in",10,&Slave::input_velocities_callback,this);
-    this->odom=this->nh.subscribe("mobile_base_controller/odom",10,&Slave::input_odom_callback,this);
+    this->input=this->nh.subscribe("in",10,&Controller::input_velocities_callback,this);
+    this->odom=this->nh.subscribe("mobile_base_controller/odom",10,&Controller::input_odom_callback,this);
 
    
 } 
 
-void Slave::set_reference(double x,double y,double z)
+void Controller::set_reference(double x,double y,double z)
 {
     this->reference.position.x=x;
     this->reference.position.y=y;
     this->reference.position.z=z;
 }
 
-void Slave::set_name(std::string name)
+void Controller::set_name(std::string name)
 {
     this->name=name;
     this->nh.resolveName(name);
@@ -29,21 +29,21 @@ void Slave::set_name(std::string name)
 //################################################################################################
 //Linking important topics/transformations
 
-void Slave::link_input_velocity(std::string topic_name)
+void Controller::link_input_velocity(std::string topic_name)
 {
     this->input.shutdown();
     ROS_INFO("Linking input %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
-    this->input=this->nh.subscribe(topic_name,10,&Slave::input_velocities_callback,this);
+    this->input=this->nh.subscribe(topic_name,10,&Controller::input_velocities_callback,this);
 }
 
-void Slave::link_input_odom(std::string topic_name)
+void Controller::link_input_odom(std::string topic_name)
 {
     this->odom.shutdown();
     ROS_INFO("Linking odom %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
-    this->odom=this->nh.subscribe(topic_name,10,&Slave::input_odom_callback,this);
+    this->odom=this->nh.subscribe(topic_name,10,&Controller::input_odom_callback,this);
 }
 
-void Slave::link_output_velocity(std::string topic_name)
+void Controller::link_output_velocity(std::string topic_name)
 {
     this->output.shutdown();
     ROS_INFO("Linking output %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
@@ -56,12 +56,12 @@ void Slave::link_output_velocity(std::string topic_name)
 //################################################################################################
 //callback methods
 
-void Slave::input_velocities_callback(geometry_msgs::Twist msg)
+void Controller::input_velocities_callback(geometry_msgs::Twist msg)
 {
     this->msg_velocities_in=msg;
 }
 
-void Slave::input_odom_callback(nav_msgs::Odometry msg)
+void Controller::input_odom_callback(nav_msgs::Odometry msg)
 {   
     this->msg_odom=msg;
     this->msg_odom.pose.pose.position.x+=this->reference.position.x;
@@ -71,7 +71,7 @@ void Slave::input_odom_callback(nav_msgs::Odometry msg)
 
 
 
-void Slave::optimal_control()
+void Controller::optimal_control()
 {   
 
     //Calcualte ideal velocities
@@ -97,7 +97,7 @@ void Slave::optimal_control()
 
 
 
-void Slave::scope()
+void Controller::scope()
 {
     //publish
     geometry_msgs::Twist msg;
