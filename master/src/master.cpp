@@ -4,10 +4,7 @@ Master::Master(ros::NodeHandle &nh):Slave(nh)
 {
 
 }
-
-
-void Master::input_callback(geometry_msgs::Twist msg)
+void Master::scope()
 {
-    this->control.v=msg.linear.x;
-    this->control.omega=msg.angular.z;
-}  
+    this->msg_velocities_out=this->msg_velocities_in;
+}

@@ -5,9 +5,6 @@
 class Master:public Slave{
     public:
         Master(ros::NodeHandle &nh);        
-        void input_callback(geometry_msgs::Twist msg);  
+        void scope();
     private:
-    
-
-
 };

@@ -202,3 +202,4 @@ target_link_libraries(master_node master)
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+
