@@ -3,6 +3,8 @@
 #include <ros/ros.h>
 #include <geometry_msgs/Twist.h>
 #include <nav_msgs/Odometry.h>
+#include <tf2_ros/static_transform_broadcaster.h>
+#include <tf/tf.h>
 #include <tf/transform_listener.h>
 
 
@@ -14,7 +16,7 @@
      
 class Controller{
     public:
-     Controller(ros::NodeHandle &nh);    
+        Controller(ros::NodeHandle &nh);    
       
         ///setting the name of the Controller and its node
         void set_name(std::string);  
@@ -58,7 +60,7 @@ class Controller{
      
 
         std::string name;                                       //Name of the node and Controller
-
+        std::string world_frame;                                //Name of the world frame
         nav_msgs::Odometry msg_odom;                            //Odometry message 
 
 
@@ -68,12 +70,5 @@ class Controller{
         
         
         geometry_msgs::Pose reference;                          //Reference position
-        geometry_msgs::Pose current_pose;                       //Pose of Controller at the moment
-
-       
-
-
-        ///This implements a least sqaures determination of control vector [v,omega] [control.v control.omega] 
-        ///from the given cartesian velocity state d/dt[x,y,phi] (cart_vel)
-        void optimal_control();
+        tf::Pose current_pose;                                   //Pose of Controller at the moment in world
 };

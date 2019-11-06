@@ -1,8 +1,8 @@
 #include <ros/ros.h>
 #include <geometry_msgs/Twist.h>
-#include <slave/slave.h>
+#include <controller/controller.h>
 
-class Master:public Slave{
+class Master:public Controller{
     public:
         Master(ros::NodeHandle &nh);        
         void scope();

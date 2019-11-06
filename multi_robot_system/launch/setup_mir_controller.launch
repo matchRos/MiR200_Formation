@@ -3,8 +3,8 @@
   <arg name="robot_x"   default="0.0" />
   <arg name="robot_y"   default="0.0" />
   <arg name="robot_yaw" default="0.0" />
-  <arg name="prefix"    value="" />   <!-- this has to be "value", not "default", otherwise subst_value doesn't work -->
   <arg name="controller_name" default="my_controller" />
+  <arg name="prefix"    value="$(arg controller_name)/" />   <!-- this has to be "value", not "default", otherwise subst_value doesn't work -->
   <!-- Load URDF -->
   <include file="$(find mir_description)/launch/upload_mir_urdf.launch" />
 
@@ -17,7 +17,7 @@
 
   <!-- Load ros_control controller configurations -->
   <rosparam file="$(find mir_description)/config/joint_state_controller.yaml" command="load" />
-  <rosparam file="$(find mir_description)/config/diffdrive_controller.yaml" command="load" subst_value="true" />
+  <rosparam file="$(find multi_robot_launcher)/config/diffdrive_controller.yaml" command="load" subst_value="true"/>
 
   <!-- Start the controllers -->
   <node name="controller_spawner" pkg="controller_manager" type="spawner" output="screen"

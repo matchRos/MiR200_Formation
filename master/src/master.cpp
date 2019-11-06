@@ -1,8 +1,7 @@
 #include <master/master.h>
 
-Master::Master(ros::NodeHandle &nh):Slave(nh)
+Master::Master(ros::NodeHandle &nh):Controller(nh)
 {
-
 }
 void Master::scope()
 {

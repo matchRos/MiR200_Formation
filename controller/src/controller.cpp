@@ -1,4 +1,4 @@
-#include <Controller/Controller.h>
+#include <controller/controller.h>
 
 Controller::Controller(ros::NodeHandle &nh):nh(nh)
 {
@@ -10,14 +10,33 @@ Controller::Controller(ros::NodeHandle &nh):nh(nh)
     this->input=this->nh.subscribe("in",10,&Controller::input_velocities_callback,this);
     this->odom=this->nh.subscribe("mobile_base_controller/odom",10,&Controller::input_odom_callback,this);
 
+    this->world_frame="/map";
    
 } 
 
 void Controller::set_reference(double x,double y,double z)
 {
-    this->reference.position.x=x;
-    this->reference.position.y=y;
-    this->reference.position.z=z;
+    this->reference.position.x;
+    this->reference.position.y;
+    this->reference.position.z;
+
+    tf2::Quaternion quat;
+    quat.setRPY(0,0,0);
+
+    static tf2_ros::StaticTransformBroadcaster static_broadcaster;
+    geometry_msgs::TransformStamped static_transformStamped;
+
+    static_transformStamped.header.stamp = ros::Time::now();
+    static_transformStamped.header.frame_id ="/map" ;
+    static_transformStamped.child_frame_id = this->name+"/odom_comb";
+    static_transformStamped.transform.translation.x=x;
+    static_transformStamped.transform.translation.y=y;
+    static_transformStamped.transform.translation.z=z;
+    static_transformStamped.transform.rotation.x=quat.getX();
+    static_transformStamped.transform.rotation.y=quat.getY();
+    static_transformStamped.transform.rotation.z=quat.getZ();
+    static_transformStamped.transform.rotation.w=quat.getW();
+    static_broadcaster.sendTransform(static_transformStamped);
 }
 
 void Controller::set_name(std::string name)
@@ -62,46 +81,19 @@ void Controller::input_velocities_callback(geometry_msgs::Twist msg)
 }
 
 void Controller::input_odom_callback(nav_msgs::Odometry msg)
-{   
-    this->msg_odom=msg;
-    this->msg_odom.pose.pose.position.x+=this->reference.position.x;
-    this->msg_odom.pose.pose.position.y+=this->reference.position.y;
-    this->msg_odom.pose.pose.position.z+=this->reference.position.z;
+{
+    tf::TransformListener listener;
+    tf::StampedTransform trafo;
+    listener.lookupTransform(this->name+"/odom_comb","/map",ros::Time(0),trafo);
+    this->current_pose.setOrigin(trafo.getOrigin());
+    this->current_pose.setRotation(trafo.getRotation());
 }
-
-
-
-void Controller::optimal_control()
-{   
-
-    //Calcualte ideal velocities
-    geometry_msgs::Vector3 linear;
-    geometry_msgs::Vector3 angular;
-    
-    linear=this->msg_velocities_in.linear;
-    angular=this->msg_velocities_in.angular;
-
-    this->msg_velocities_ideal.angular.x=angular.x;
-    this->msg_velocities_ideal.angular.y=angular.y;
-    this->msg_velocities_ideal.angular.z=angular.z;
-
-    this->msg_velocities_ideal.linear.x=linear.x-angular.z*this->reference.position.y;
-    this->msg_velocities_ideal.linear.y=linear.y+angular.z*this->reference.position.x;
-    this->msg_velocities_ideal.linear.z=linear.z;
-    
-
-    //Calculate controlvector
-    this->msg_velocities_out.linear.x=cos(this->current_pose.orientation.z)*msg_velocities_ideal.linear.x +sin(this->current_pose.orientation.z)*this->msg_velocities_ideal.linear.y;
-    this->msg_velocities_out.angular.z=angular.z;
-}
-
 
 
 void Controller::scope()
 {
     //publish
-    geometry_msgs::Twist msg;
-    this->optimal_control();
+    geometry_msgs::Twist msg;  
 
     this->output.publish(this->msg_velocities_out);
 
