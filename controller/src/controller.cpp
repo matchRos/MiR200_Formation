@@ -6,6 +6,7 @@ Controller::Controller(ros::NodeHandle &nh):nh(nh)
     set_name("my_slave");
  
     this->output=this->nh.advertise<geometry_msgs::Twist>("out",10);
+    this->state=this->nh.advertise<geometry_msgs::PoseStamped>("state",10);
 
     this->input=this->nh.subscribe("in",10,&Controller::input_velocities_callback,this);
     this->odom=this->nh.subscribe("mobile_base_controller/odom",10,&Controller::input_odom_callback,this);
@@ -13,13 +14,16 @@ Controller::Controller(ros::NodeHandle &nh):nh(nh)
     this->world_frame="/map";
    
 } 
+//################################################################################################
+//Setter
+
 
 void Controller::set_reference(double x,double y,double z)
 {
-    this->reference.position.x;
-    this->reference.position.y;
-    this->reference.position.z;
-
+    this->reference.position.x=x;
+    this->reference.position.y=y;
+    this->reference.position.z=z;
+    
     tf2::Quaternion quat;
     quat.setRPY(0,0,0);
 
@@ -37,6 +41,8 @@ void Controller::set_reference(double x,double y,double z)
     static_transformStamped.transform.rotation.z=quat.getZ();
     static_transformStamped.transform.rotation.w=quat.getW();
     static_broadcaster.sendTransform(static_transformStamped);
+
+
 }
 
 void Controller::set_name(std::string name)
@@ -44,6 +50,8 @@ void Controller::set_name(std::string name)
     this->name=name;
     this->nh.resolveName(name);
 }
+
+
 
 //################################################################################################
 //Linking important topics/transformations
@@ -69,6 +77,15 @@ void Controller::link_output_velocity(std::string topic_name)
     this->output=this->nh.advertise<geometry_msgs::Twist>(topic_name,10);
 }
 
+void Controller::link_state(std::string topic_name)
+{
+    this->state.shutdown();
+    ROS_INFO("Linking state %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
+    this->state=this->nh.advertise<geometry_msgs::PoseStamped>(topic_name,10);
+}
+
+
+
 
 
 
@@ -82,20 +99,70 @@ void Controller::input_velocities_callback(geometry_msgs::Twist msg)
 
 void Controller::input_odom_callback(nav_msgs::Odometry msg)
 {
-    tf::TransformListener listener;
-    tf::StampedTransform trafo;
-    listener.lookupTransform(this->name+"/odom_comb","/map",ros::Time(0),trafo);
-    this->current_pose.setOrigin(trafo.getOrigin());
-    this->current_pose.setRotation(trafo.getRotation());
+    tf::Point point;
+    tf::pointMsgToTF(msg.pose.pose.position,point);
+    tf::Quaternion quat;
+    tf::quaternionMsgToTF(msg.pose.pose.orientation,quat);
+    
+    this->current_pose.setOrigin(this->robot2world.getOrigin()+point);
+    this->current_pose.setRotation(this->robot2world.getRotation()*quat.normalize());
 }
 
 
+
+
+//################################################################################################
+//calculations and scope functions
+
+void Controller::getTransformation()
+{
+    tf::TransformListener listener;      
+    try{
+        listener.waitForTransform("/map",this->name+"/odom_comb",ros::Time(0),ros::Duration(0.05));
+        listener.lookupTransform("/map",this->name+"/odom_comb", 
+                               ros::Time(0), this->robot2world);
+        
+    }
+    catch (tf::TransformException ex){
+      ROS_ERROR("%s",ex.what());
+      ros::Duration(1.0).sleep();
+    }
+}
+
+void Controller::publish()
+{
+    //publish 
+    this->output.publish(this->msg_velocities_out);
+    
+    geometry_msgs::PoseStamped msg; 
+   
+    tf::Quaternion quat;
+    quat=this->current_pose.getRotation();
+    quat.normalize();
+    tf::quaternionTFToMsg(quat,msg.pose.orientation);
+
+
+
+    tf::pointTFToMsg(this->current_pose.getOrigin(), msg.pose.position);
+
+    
+    msg.header.frame_id=this->world_frame;
+    msg.header.stamp=ros::Time::now();
+   
+    this->state.publish(msg);   
+
+}
+
 void Controller::scope()
 {
-    //publish
-    geometry_msgs::Twist msg;  
+    return;
+}
 
-    this->output.publish(this->msg_velocities_out);
-
+void Controller::execute()
+{
+    this->getTransformation();
+    this->scope();
+    this->publish();
     ros::spinOnce();
+   
 }

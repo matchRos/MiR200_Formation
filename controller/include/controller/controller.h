@@ -3,10 +3,10 @@
 #include <ros/ros.h>
 #include <geometry_msgs/Twist.h>
 #include <nav_msgs/Odometry.h>
-#include <tf2_ros/static_transform_broadcaster.h>
 #include <tf/tf.h>
 #include <tf/transform_listener.h>
-
+#include <tf/transform_broadcaster.h>
+#include <tf2_ros/static_transform_broadcaster.h>
 
 
 #include <math.h>
@@ -36,24 +36,28 @@ class Controller{
         void link_input_odom(std::string topic_name); 
         ///link Controller to it's input topic
         ///'topic_name'Name of the topic the Controller writes its output to                       
-        void link_output_velocity(std::string topic_name);        
+        void link_output_velocity(std::string topic_name);      
+         ///link Controller to it's state topic
+        ///'topic_name' Name of the topic the Controller writes its state to                       
+        void link_state(std::string topic_name);      
         
         
         virtual void scope();
-
+        void execute();
 
 
         //Callbacks
 
         void input_velocities_callback(geometry_msgs::Twist msg);          //Callback routine for incomung data: Writes data to input state
 
-        void input_odom_callback(nav_msgs::Odometry msg);
+        void input_odom_callback(nav_msgs::Odometry msg);                   //Callback routine for incoming odom msgs
 
         
     protected:
         ros::NodeHandle nh;                                     //Node Handle
 
         ros::Publisher output;                                  //publisher object for output topic
+        ros::Publisher state;                                  //publisher object for output topic
         ros::Subscriber input;                                  //Subscirber object for input topic
         ros::Subscriber odom;                                   //Subscriber object for odometry
     
@@ -61,14 +65,17 @@ class Controller{
 
         std::string name;                                       //Name of the node and Controller
         std::string world_frame;                                //Name of the world frame
-        nav_msgs::Odometry msg_odom;                            //Odometry message 
 
 
         geometry_msgs::Twist msg_velocities_in;                 //Input velocities
         geometry_msgs::Twist msg_velocities_out;                //output velocities
         geometry_msgs::Twist msg_velocities_ideal;              //Ideal velocity state
         
-        
+        tf::StampedTransform robot2world;
+
         geometry_msgs::Pose reference;                          //Reference position
         tf::Pose current_pose;                                   //Pose of Controller at the moment in world
+
+        void getTransformation();
+        void publish();
 };

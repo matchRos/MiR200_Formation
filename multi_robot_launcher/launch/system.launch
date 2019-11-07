@@ -29,22 +29,7 @@
   <arg name="name_master" value="robot_master"/>
 </include>
 
-<!--
-<include file="$(find multi_robot_system)/launch/slave.launch">
-  <arg name="robot_name" value="robot3"/>
-  <arg name="robot_x"   value="-1" />
-  <arg name="robot_y"   value="-1" />
-  <arg name="name_master" value="robot_master"/>
-</include>
 
-
-<include file="$(find multi_robot_system)/launch/slave.launch">
-  <arg name="robot_name" value="robot4"/>
-  <arg name="robot_x"   value="-1" />
-  <arg name="robot_y"   value="1" />
-  <arg name="name_master" value="robot_master"/>
-</include>
--->
 
 <include file="$(find master)/launch/master.launch">
   <arg name="robot_name" value="robot_master"/>

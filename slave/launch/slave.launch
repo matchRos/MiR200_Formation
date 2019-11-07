@@ -15,10 +15,10 @@
     <include file="$(find multi_robot_system)/launch/setup_mir_controller.launch">
         <arg name="robot_x"   value="$(arg robot_x)" />
         <arg name="robot_y"   value="$(arg robot_y)" />
-        <arg name="controller_name" value="/$(arg robot_name)" />
+        <arg name="controller_name" value="$(arg robot_name)" />
     </include>  
   
-<node name="Slave_ctr" pkg="slave" type="slave_node" args="$(arg robot_name) /$(arg name_master)/mobile_base_controller/cmd_vel /$(arg robot_name)/mobile_base_controller/cmd_vel $(arg robot_x) $(arg robot_y)" output="screen"></node>
+<node name="Slave_ctr" pkg="slave" type="slave_node" args="$(arg robot_name) $(arg name_master) $(arg robot_x) $(arg robot_y)" output="screen"></node>
     
    
 </group> 

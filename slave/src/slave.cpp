@@ -4,10 +4,13 @@ Slave::Slave(ros::NodeHandle &nh):Controller(nh)
 {
 } 
 
+void Slave::set_type(Slave::controllerType type)
+{
+    this->type=type;
+}
 
 void Slave::optimal_control()
 {   
-
     //Calcualte ideal velocities
     geometry_msgs::Vector3 linear;
     geometry_msgs::Vector3 angular;
@@ -26,19 +29,18 @@ void Slave::optimal_control()
 
     //Calculate controlvector
     double phi=this->current_pose.getRotation().getAngle();
-    this->msg_velocities_out.linear.x=cos(phi)*msg_velocities_ideal.linear.x +sin(phi)*this->msg_velocities_ideal.linear.y;
+    this->msg_velocities_out.linear.x=cos(phi)*msg_velocities_ideal.linear.x+sin(phi)*this->msg_velocities_ideal.linear.y;
     this->msg_velocities_out.angular.z=angular.z;
 }
 
 
-
 void Slave::scope()
-{
-    //publish
-    geometry_msgs::Twist msg;
-    this->optimal_control();
-
-    this->output.publish(this->msg_velocities_out);
-
-    ros::spinOnce();
+{   
+    switch(this->type)
+    {
+        case pseudo_inverse: this->optimal_control();break;
+        case lypanov: break;
+        default: break;
+    }
+    
 }
