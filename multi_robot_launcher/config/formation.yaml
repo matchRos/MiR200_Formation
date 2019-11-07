@@ -5,8 +5,8 @@ robot1:
   topic_input_odometry: "mobile_base_controller/odom"
   topic_output_state: "state"
 
-  x_coord: 1.0
-  y_coord: 0.0
+  x_coord: -1.25
+  y_coord: 1.25
 
   ctr_type: 1                            # 1-> pseudo_invers 2->lyapov
 
@@ -20,8 +20,8 @@ robot2:
   topic_input_odometry: "mobile_base_controller/odom"
   topic_output_state: "state"
   
-  x_coord: -1.0
-  y_coord: 0.0
+  x_coord: -1.25
+  y_coord: -1.25
 
   ctr_type: 1                            # 1-> pseudo_invers 2->lyapov
 
