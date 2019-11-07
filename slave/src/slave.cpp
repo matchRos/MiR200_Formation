@@ -9,6 +9,15 @@ void Slave::set_type(Slave::controllerType type)
     this->type=type;
 }
 
+void Slave::load_parameter()
+{
+    int type;   
+    ros::param::get(PARAM_TYPE,type);    
+    ROS_INFO("Load controller type for %s as %i",this->name.c_str(),type);
+    this->set_type((Slave::controllerType)type);
+    
+}
+
 void Slave::optimal_control()
 {   
     //Calcualte ideal velocities

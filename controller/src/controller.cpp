@@ -70,8 +70,17 @@ void Controller::load()
     ROS_INFO("Loading %s ",PARAM_OUT_VEL);
     this->link_output_velocity(topic);
 
+    double x;
+    double y;
+    ros::param::get(PARAM_X,x);
+    ros::param::get(PARAM_Y,y);
+    ROS_INFO("Loading coordinates %s : %lf , %lf ",this->name.c_str(),x,y);
+    this->set_reference(x,y,0.0);
+
+
     load_parameter();
 }
+
 
 void Controller::load_parameter()
 {

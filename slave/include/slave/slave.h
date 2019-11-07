@@ -11,7 +11,7 @@
 #include <math.h>
 #include <stdio.h>
 
-
+#define PARAM_TYPE  "ctr_type"
      
 class Slave:public Controller{
     public:
@@ -22,6 +22,7 @@ class Slave:public Controller{
             lypanov=2,
         };
         void set_type(Slave::controllerType);
+        void load_parameter();
 
     private:
         ///This implements a least sqaures determination of control vector [v,omega] [control.v control.omega] 

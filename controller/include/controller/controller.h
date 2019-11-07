@@ -17,24 +17,25 @@
 #define PARAM_OUT_VEL "topic_output_velocity"
 #define PARAM_IN_ODOM "topic_input_odometry"
 #define PARAM_OUT_STATE "topic_output_state"
-
-
+#define PARAM_X  "x_coord"
+#define PARAM_Y  "y_coord"
      
 class Controller{
     public:
-        Controller(ros::NodeHandle &nh);    
-      
+        Controller(ros::NodeHandle &nh); 
+        
+    
         ///setting the name of the Controller and its node
         void set_name(std::string);  
 
         void set_frequenzy(double frequenzy);
 
-        void set_reference(double x,double y,double z);                        
+        void set_reference(double x,double y,double z);                
 
-        
+    
 
         //Methods for linking the Controller with important topics as input output an odom
-
+        
         ///link Controller to it's input topic
         ///'topic_name': Name of tjhe topic the Controller gets input from
         void link_input_velocity(std::string topic_name);   

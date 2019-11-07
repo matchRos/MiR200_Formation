@@ -8,7 +8,6 @@ int main(int argc, char **argv)
 
     Master master=Master(nh);
     master.set_name(argv[1]);   
-    master.set_reference(0.0,0.0,0.0);
 
     master.load();
 

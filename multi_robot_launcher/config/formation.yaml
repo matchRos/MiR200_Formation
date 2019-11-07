@@ -1,10 +1,15 @@
 # -----------------------------------
-#Input topic have to be decalred gloabelly while output topics are defined relative to the robots namespace
 robot1:
   topic_input_velocity: "/robot_master/mobile_base_controller/cmd_vel"
   topic_output_velocity: "mobile_base_controller/cmd_vel"
   topic_input_odometry: "mobile_base_controller/odom"
   topic_output_state: "state"
+
+  x_coord: 1.0
+  y_coord: 0.0
+
+  ctr_type: 1                            # 1-> pseudo_invers 2->lyapov
+
 
 
 
@@ -14,6 +19,11 @@ robot2:
 
   topic_input_odometry: "mobile_base_controller/odom"
   topic_output_state: "state"
+  
+  x_coord: -1.0
+  y_coord: 0.0
+
+  ctr_type: 1                            # 1-> pseudo_invers 2->lyapov
 
 
 
@@ -24,7 +34,8 @@ robot_master:
   topic_input_odometry: "mobile_base_controller/odom"
   topic_output_state: "state"
 
-
+  x_coord: 0.0
+  y_coord: 0.0
 
 
 
