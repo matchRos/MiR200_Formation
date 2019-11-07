@@ -6,12 +6,18 @@
  <param name="/frequency" value="10" />
 
 
+<rosparam file="$(find multi_robot_launcher)/config/formation.yaml" command="load"></rosparam>
+
+
+ <include file="$(find mir_description)/launch/upload_mir_urdf.launch" />
+
 
 <include file="$(find gazebo_ros)/launch/empty_world.launch">
   <arg name="paused" value="false" />
   <arg name="world_name" value="$(arg world_name)"/>
   <arg name="gui" value="$(arg gui)" />
 </include>
+
 
 
 <include file="$(find slave)/launch/slave.launch">

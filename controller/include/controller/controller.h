@@ -13,6 +13,12 @@
 #include <stdio.h>
 
 
+#define PARAM_IN_VEL "topic_input_velocity"
+#define PARAM_OUT_VEL "topic_output_velocity"
+#define PARAM_IN_ODOM "topic_input_odometry"
+#define PARAM_OUT_STATE "topic_output_state"
+
+
      
 class Controller{
     public:
@@ -25,6 +31,7 @@ class Controller{
 
         void set_reference(double x,double y,double z);                        
 
+        
 
         //Methods for linking the Controller with important topics as input output an odom
 
@@ -39,12 +46,14 @@ class Controller{
         void link_output_velocity(std::string topic_name);      
          ///link Controller to it's state topic
         ///'topic_name' Name of the topic the Controller writes its state to                       
-        void link_state(std::string topic_name);      
+        void link_output_state(std::string topic_name);      
         
         
         virtual void scope();
-        void execute();
+        virtual void load_parameter();
 
+        void execute();
+        void load();
 
         //Callbacks
 

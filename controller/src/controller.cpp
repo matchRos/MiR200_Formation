@@ -5,11 +5,11 @@ Controller::Controller(ros::NodeHandle &nh):nh(nh)
 
     set_name("my_slave");
  
-    this->output=this->nh.advertise<geometry_msgs::Twist>("out",10);
-    this->state=this->nh.advertise<geometry_msgs::PoseStamped>("state",10);
+    this->output=this->nh.advertise<geometry_msgs::Twist>("/out",10);
+    this->state=this->nh.advertise<geometry_msgs::PoseStamped>("/state",10);
 
-    this->input=this->nh.subscribe("in",10,&Controller::input_velocities_callback,this);
-    this->odom=this->nh.subscribe("mobile_base_controller/odom",10,&Controller::input_odom_callback,this);
+    this->input=this->nh.subscribe("/in",10,&Controller::input_velocities_callback,this);
+    this->odom=this->nh.subscribe("/odom",10,&Controller::input_odom_callback,this);
 
     this->world_frame="/map";
    
@@ -51,7 +51,32 @@ void Controller::set_name(std::string name)
     this->nh.resolveName(name);
 }
 
+void Controller::load()
+{
+    std::string topic;
+    ROS_INFO("Loading %s ",PARAM_IN_ODOM);
+    ros::param::get(PARAM_IN_ODOM,topic);
+    this->link_input_odom(topic);
+    
+    ros::param::get(PARAM_OUT_STATE,topic);
+    ROS_INFO("Loading %s ",PARAM_OUT_STATE);
+    this->link_output_state(topic);
 
+    ros::param::get(PARAM_IN_VEL,topic);
+    ROS_INFO("Loading %s ",PARAM_IN_VEL);
+    this->link_input_velocity(topic);
+
+    ros::param::get(PARAM_OUT_VEL,topic);
+    ROS_INFO("Loading %s ",PARAM_OUT_VEL);
+    this->link_output_velocity(topic);
+
+    load_parameter();
+}
+
+void Controller::load_parameter()
+{
+    
+}
 
 //################################################################################################
 //Linking important topics/transformations
@@ -59,28 +84,28 @@ void Controller::set_name(std::string name)
 void Controller::link_input_velocity(std::string topic_name)
 {
     this->input.shutdown();
-    ROS_INFO("Linking input %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
+    ROS_INFO("Linking input velocity %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
     this->input=this->nh.subscribe(topic_name,10,&Controller::input_velocities_callback,this);
 }
 
 void Controller::link_input_odom(std::string topic_name)
 {
     this->odom.shutdown();
-    ROS_INFO("Linking odom %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
+    ROS_INFO("Linking input odom %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
     this->odom=this->nh.subscribe(topic_name,10,&Controller::input_odom_callback,this);
 }
 
 void Controller::link_output_velocity(std::string topic_name)
 {
     this->output.shutdown();
-    ROS_INFO("Linking output %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
+    ROS_INFO("Linking output velocity %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
     this->output=this->nh.advertise<geometry_msgs::Twist>(topic_name,10);
 }
 
-void Controller::link_state(std::string topic_name)
+void Controller::link_output_state(std::string topic_name)
 {
     this->state.shutdown();
-    ROS_INFO("Linking state %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
+    ROS_INFO("Linking output state %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
     this->state=this->nh.advertise<geometry_msgs::PoseStamped>(topic_name,10);
 }
 
