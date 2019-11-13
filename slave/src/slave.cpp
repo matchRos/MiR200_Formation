@@ -4,10 +4,6 @@ Slave::Slave(ros::NodeHandle &nh):Controller(nh)
 {
 } 
 
-void Slave::set_type(Slave::controllerType type)
-{
-    this->type=type;
-}
 
 void Slave::load_parameter()
 {

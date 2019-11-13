@@ -23,7 +23,11 @@
 class Controller{
     public:
         Controller(ros::NodeHandle &nh); 
-        
+        enum controllerType{
+            pseudo_inverse=1,
+            lypanov=2,
+        };
+        void set_type(Controller::controllerType);
     
         ///setting the name of the Controller and its node
         void set_name(std::string);  
@@ -76,6 +80,7 @@ class Controller{
         std::string name;                                       //Name of the node and Controller
         std::string world_frame;                                //Name of the world frame
 
+        controllerType type;                                    //Type of control algorythm that is used
 
         geometry_msgs::Twist msg_velocities_in;                 //Input velocities
         geometry_msgs::Twist msg_velocities_out;                //output velocities
@@ -86,6 +91,7 @@ class Controller{
         geometry_msgs::Pose reference;                          //Reference position
         tf::Pose current_pose;                                   //Pose of Controller at the moment in world
 
+        
         void getTransformation();
         void publish();
 };

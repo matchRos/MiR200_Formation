@@ -51,6 +51,12 @@ void Controller::set_name(std::string name)
     this->nh.resolveName(name);
 }
 
+void Controller::set_type(Controller::controllerType type)
+{
+    this->type=type;
+}
+
+
 void Controller::load()
 {
     std::string topic;

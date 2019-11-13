@@ -4,7 +4,6 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
-        - /TF1/Frames1
         - /Robot1/Pose_True1/Shape1
         - /Robot2/Pose_True1/Shape1
         - /Master/Pose_True1/Shape1
@@ -62,7 +61,7 @@ Visualization Manager:
         robot1/back_laser_link:
           Value: false
         robot1/base_footprint:
-          Value: false
+          Value: true
         robot1/base_link:
           Value: false
         robot1/camera_link:
@@ -78,7 +77,7 @@ Visualization Manager:
         robot1/left_wheel_link:
           Value: false
         robot1/odom_comb:
-          Value: false
+          Value: true
         robot1/right_wheel_link:
           Value: false
         robot1/surface:
@@ -90,7 +89,7 @@ Visualization Manager:
         robot2/back_laser_link:
           Value: false
         robot2/base_footprint:
-          Value: false
+          Value: true
         robot2/base_link:
           Value: false
         robot2/camera_link:
@@ -106,7 +105,7 @@ Visualization Manager:
         robot2/left_wheel_link:
           Value: false
         robot2/odom_comb:
-          Value: false
+          Value: true
         robot2/right_wheel_link:
           Value: false
         robot2/surface:
@@ -118,7 +117,7 @@ Visualization Manager:
         robot_master/back_laser_link:
           Value: false
         robot_master/base_footprint:
-          Value: false
+          Value: true
         robot_master/base_link:
           Value: false
         robot_master/camera_link:
@@ -134,7 +133,7 @@ Visualization Manager:
         robot_master/left_wheel_link:
           Value: false
         robot_master/odom_comb:
-          Value: false
+          Value: true
         robot_master/right_wheel_link:
           Value: false
         robot_master/surface:
@@ -238,7 +237,7 @@ Visualization Manager:
           Scale: 1
           Value: true
         Value: true
-      Enabled: true
+      Enabled: false
       Keep: 1
       Name: Robot1/Pose_True
       Position Tolerance: 0.100000001
@@ -254,7 +253,7 @@ Visualization Manager:
         Value: Arrow
       Topic: /robot1/base_pose_ground_truth
       Unreliable: false
-      Value: true
+      Value: false
     - Angle Tolerance: 0.100000001
       Class: rviz/Odometry
       Covariance:
@@ -272,7 +271,7 @@ Visualization Manager:
           Scale: 1
           Value: true
         Value: true
-      Enabled: true
+      Enabled: false
       Keep: 1
       Name: Robot2/Pose_True
       Position Tolerance: 0.100000001
@@ -288,7 +287,7 @@ Visualization Manager:
         Value: Arrow
       Topic: /robot2/base_pose_ground_truth
       Unreliable: false
-      Value: true
+      Value: false
     - Angle Tolerance: 0.100000001
       Class: rviz/Odometry
       Covariance:
@@ -306,7 +305,7 @@ Visualization Manager:
           Scale: 1
           Value: true
         Value: true
-      Enabled: true
+      Enabled: false
       Keep: 1
       Name: Master/Pose_True
       Position Tolerance: 0.100000001
@@ -322,7 +321,7 @@ Visualization Manager:
         Value: Arrow
       Topic: /robot_master/base_pose_ground_truth
       Unreliable: false
-      Value: true
+      Value: false
     - Angle Tolerance: 0.100000001
       Class: rviz/Odometry
       Covariance:
@@ -340,7 +339,7 @@ Visualization Manager:
           Scale: 1
           Value: true
         Value: false
-      Enabled: true
+      Enabled: false
       Keep: 1
       Name: Robot1/Odom
       Position Tolerance: 0.100000001
@@ -356,7 +355,7 @@ Visualization Manager:
         Value: Arrow
       Topic: /robot1/mobile_base_controller/odom
       Unreliable: false
-      Value: true
+      Value: false
     - Angle Tolerance: 0.100000001
       Class: rviz/Odometry
       Covariance:
@@ -374,7 +373,7 @@ Visualization Manager:
           Scale: 1
           Value: true
         Value: false
-      Enabled: true
+      Enabled: false
       Keep: 1
       Name: Robot2/Odom
       Position Tolerance: 0.100000001
@@ -390,7 +389,7 @@ Visualization Manager:
         Value: Arrow
       Topic: /robot2/mobile_base_controller/odom
       Unreliable: false
-      Value: true
+      Value: false
     - Angle Tolerance: 0.100000001
       Class: rviz/Odometry
       Covariance:
@@ -408,7 +407,7 @@ Visualization Manager:
           Scale: 1
           Value: true
         Value: false
-      Enabled: true
+      Enabled: false
       Keep: 1
       Name: Master/Odom
       Position Tolerance: 0.100000001
@@ -424,7 +423,7 @@ Visualization Manager:
         Value: Arrow
       Topic: /robot_master/mobile_base_controller/odom
       Unreliable: false
-      Value: true
+      Value: false
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -450,7 +449,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 10.4265041
+      Distance: 6.25272608
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
@@ -465,10 +464,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 1.23039782
+      Pitch: 1.06479681
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 6.16357708
+      Yaw: 3.4967165
     Saved: ~
 Window Geometry:
   Displays:
@@ -476,7 +475,7 @@ Window Geometry:
   Height: 1182
   Hide Left Dock: false
   Hide Right Dock: false
-  QMainWindow State: 000000ff00000000fd00000004000000000000016400000421fc0200000008fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000006100fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000002200000421000000d500fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261000000010000010f00000421fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073010000002200000421000000a900fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000074f0000003efc0100000002fb0000000800540069006d006501000000000000074f0000024800fffffffb0000000800540069006d00650100000000000004500000000000000000000004d40000042100000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd00000004000000000000032700000421fc0200000008fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000006100fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000002200000421000000d500fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261000000010000010f00000421fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073010000002200000421000000a900fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000074f0000003efc0100000002fb0000000800540069006d006501000000000000074f0000024800fffffffb0000000800540069006d00650100000000000004500000000000000000000003110000042100000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:
