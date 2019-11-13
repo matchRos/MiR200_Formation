@@ -164,8 +164,8 @@ void Controller::getTransformation()
         
     }
     catch (tf::TransformException ex){
-      ROS_ERROR("%s",ex.what());
-      ros::Duration(1.0).sleep();
+            ROS_ERROR("%s",ex.what());
+            ros::Duration(1.0).sleep();
     }
 }
 
@@ -195,7 +195,12 @@ void Controller::publish()
 
 void Controller::scope()
 {
-    return;
+    switch(this->type)
+    {
+        case pseudo_inverse: break;
+        case lypanov: break;
+        default: break;
+    }
 }
 
 void Controller::execute()
