@@ -1,4 +1,0 @@
-bool prepare_rotation
-bool prepare_translation
----
-bool prepared
