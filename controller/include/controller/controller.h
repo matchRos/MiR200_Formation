@@ -60,12 +60,15 @@ class Controller{
         ///link Controller to it's odom input topic
         ///'topic_name'Name of the topic the Controller reads its oddom from                       
         void link_input_odom(std::string topic_name); 
+        ///link Controller to it's state topic
+        ///'topic_name' Name of the topic the Controller gets its target state from                       
+        void link_input_state(std::string topic_name);      
         ///link Controller to it's input topic
         ///'topic_name'Name of the topic the Controller writes its output to                       
         void link_output_velocity(std::string topic_name);      
-         ///link Controller to it's state topic
+        ///link Controller to it's state topic
         ///'topic_name' Name of the topic the Controller writes its state to                       
-        void link_output_state(std::string topic_name);      
+        void link_output_state(std::string topic_name);
         
         
 
@@ -76,23 +79,28 @@ class Controller{
         ///Controller scope
         void execute();
 
+        virtual void calc_Lyapunov(double kx, double kphi,double vd,double omegad);
+
         
 
         //Callbacks
         /// Callback for input velocitiy message. Is executed everytima a velocitiy input is incoming. Writes data to input state
         void input_velocities_callback(geometry_msgs::Twist msg);         
-        /// Callback for input odometry message. Is executed everytima a Odometry input is incoming. Writes data to input state
+        /// Callback for input odometry message. Is executed everytima a Odometry input is incoming. Writes data to input current_pose
         void input_odom_callback(nav_msgs::Odometry msg);              
+         /// Callback for input target state message. Is executed everytima a target state input is incoming. Writes data to target_pose state
+        void input_state_callback(nav_msgs::Odometry msg);              
 
         
     protected:
         ros::NodeHandle nh;                                     //Node Handle
 
         ros::Publisher output;                                  //publisher object for output topic
-        ros::Publisher state;                                   //publisher object for output topic
+        ros::Publisher state_out;                                   //publisher object for output topic
+        
         ros::Subscriber input;                                  //Subscirber object for input topic
         ros::Subscriber odom;                                   //Subscriber object for odometry
-    
+        ros::Subscriber state_in;                               //Subscriber object for target state of controller
      
 
         std::string name;                                       //Name of the node and Controller
@@ -107,8 +115,8 @@ class Controller{
         tf::StampedTransform robot2world;
 
         geometry_msgs::Pose reference;                          //Reference position
-        tf::Pose current_pose;                                   //Pose of Controller at the moment in world
-
+        tf::Pose current_pose;                                  //Pose of Controller at the moment in world
+        tf::Pose target_pose;                                   //The Target for the Controller poses
         
         void getTransformation();
         void publish();

@@ -6,12 +6,11 @@ Controller::Controller(ros::NodeHandle &nh):nh(nh)
     set_name("my_slave");
  
     this->output=this->nh.advertise<geometry_msgs::Twist>("/out",10);
-    this->state=this->nh.advertise<geometry_msgs::PoseStamped>("/state",10);
+    this->state_out=this->nh.advertise<geometry_msgs::PoseStamped>("/state",10);
 
     this->input=this->nh.subscribe("/in",10,&Controller::input_velocities_callback,this);
     this->odom=this->nh.subscribe("/odom",10,&Controller::input_odom_callback,this);
-
-    this->world_frame="/map";
+    this->state_in=this->nh.subscribe("/state_in",10,&Controller::input_odom_callback,this);
    
 } 
 //################################################################################################
@@ -123,6 +122,14 @@ void Controller::link_input_odom(std::string topic_name)
     this->odom=this->nh.subscribe(topic_name,10,&Controller::input_odom_callback,this);
 }
 
+
+void Controller::link_input_state(std::string topic_name)
+{
+    this->state_in.shutdown();
+    ROS_INFO("Linking input state %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
+    this->state_in=this->nh.subscribe(topic_name,10,&Controller::input_state_callback,this);
+}
+
 void Controller::link_output_velocity(std::string topic_name)
 {
     this->output.shutdown();
@@ -130,11 +137,12 @@ void Controller::link_output_velocity(std::string topic_name)
     this->output=this->nh.advertise<geometry_msgs::Twist>(topic_name,10);
 }
 
+
 void Controller::link_output_state(std::string topic_name)
 {
-    this->state.shutdown();
+    this->state_out.shutdown();
     ROS_INFO("Linking output state %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
-    this->state=this->nh.advertise<geometry_msgs::PoseStamped>(topic_name,10);
+    this->state_out=this->nh.advertise<geometry_msgs::PoseStamped>(topic_name,10);
 }
 
 
@@ -159,6 +167,17 @@ void Controller::input_odom_callback(nav_msgs::Odometry msg)
     
     this->current_pose.setOrigin(this->robot2world.getOrigin()+point);
     this->current_pose.setRotation(this->robot2world.getRotation()*quat.normalize());
+}
+
+void Controller::input_state_callback(nav_msgs::Odometry msg)
+{
+    tf::Point point;
+    tf::pointMsgToTF(msg.pose.pose.position,point);
+    tf::Quaternion quat;
+    tf::quaternionMsgToTF(msg.pose.pose.orientation,quat);
+    
+    this->target_pose.setOrigin(this->robot2world.getOrigin()+point);
+    this->target_pose.setRotation(this->robot2world.getRotation()*quat.normalize());
 }
 
 
@@ -202,16 +221,35 @@ void Controller::publish()
     msg.header.frame_id=this->world_frame;
     msg.header.stamp=ros::Time::now();
    
-    this->state.publish(msg);   
+    this->state_out.publish(msg);   
 
 }
+
+void Controller::calc_Lyapunov(double kx, double kphi,double vd,double omegad)
+{
+   
+
+    tf::Vector3 posr;   //Control differences in postion
+    posr=this->current_pose.getOrigin()-this->target_pose.getOrigin();
+    tf::Quaternion quatr;   //Control difference in orientation;
+    quatr=this->target_pose.getRotation()-this->current_pose.getRotation();
+
+    this->msg_velocities_out.linear.x=kx*posr.getX()+vd*cos(quatr.getAngle());
+    this->msg_velocities_out.angular.z=kphi*sin(quatr.getAngle()+vd*posr.getY())+omegad;
+
+
+
+}
+
+
+
 
 void Controller::scope()
 {
     switch(this->type)
     {
         case pseudo_inverse: break;
-        case lypanov: break;
+        case lypanov: this->calc_Lyapunov(0.3,0.3,0.3,0.3);
         default: break;
     }
 }
