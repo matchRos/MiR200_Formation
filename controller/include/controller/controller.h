@@ -19,6 +19,8 @@
 #define PARAM_OUT_STATE "topic_output_state"
 #define PARAM_X  "x_coord"
 #define PARAM_Y  "y_coord"
+#define PARAM_GAINS
+
      
 class Controller{
     public:
@@ -29,15 +31,24 @@ class Controller{
         };
         void set_type(Controller::controllerType);
     
+        
+        
+        //Setter and parametring methods
+
         ///setting the name of the Controller and its node
         void set_name(std::string);  
 
         void set_frequenzy(double frequenzy);
 
         void set_reference(double x,double y,double z);                
+        
+        ///Loading parameter for a specified Controller. Empty for Controller base class and implemented in inheriting classes.
+        virtual void load_parameter();
+        ///Loading ros parameter and calling load_parameter inside
+        void load();
 
-    
 
+        
         //Methods for linking the Controller with important topics as input output an odom
         
         ///link Controller to it's input topic
@@ -54,24 +65,28 @@ class Controller{
         void link_output_state(std::string topic_name);      
         
         
-        virtual void scope();
-        virtual void load_parameter();
 
+
+        /// A Scope within the execute function. Repeating calculation in inheriting classes are implemented here
+        virtual void scope();
+       
+        ///Controller scope
         void execute();
-        void load();
+
+        
 
         //Callbacks
-
-        void input_velocities_callback(geometry_msgs::Twist msg);          //Callback routine for incomung data: Writes data to input state
-
-        void input_odom_callback(nav_msgs::Odometry msg);                   //Callback routine for incoming odom msgs
+        /// Callback for input velocitiy message. Is executed everytima a velocitiy input is incoming. Writes data to input state
+        void input_velocities_callback(geometry_msgs::Twist msg);         
+        /// Callback for input odometry message. Is executed everytima a Odometry input is incoming. Writes data to input state
+        void input_odom_callback(nav_msgs::Odometry msg);              
 
         
     protected:
         ros::NodeHandle nh;                                     //Node Handle
 
         ros::Publisher output;                                  //publisher object for output topic
-        ros::Publisher state;                                  //publisher object for output topic
+        ros::Publisher state;                                   //publisher object for output topic
         ros::Subscriber input;                                  //Subscirber object for input topic
         ros::Subscriber odom;                                   //Subscriber object for odometry
     

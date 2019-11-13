@@ -17,7 +17,7 @@ class Slave:public Controller{
     public:
         Slave(ros::NodeHandle &nh);                 
         void scope();        
-        
+        ///Loading specified ros parameter for a explicit slave objcect
         void load_parameter();
 
     private:
