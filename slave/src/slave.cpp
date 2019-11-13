@@ -2,17 +2,9 @@
 
 Slave::Slave(ros::NodeHandle &nh):Controller(nh)
 {
+    this->type=pseudo_inverse;
 } 
 
-
-void Slave::load_parameter()
-{
-    int type;   
-    ros::param::get(PARAM_TYPE,type);    
-    ROS_INFO("Load controller type for %s as %i",this->name.c_str(),type);
-    this->set_type((Slave::controllerType)type);
-    
-}
 
 void Slave::optimal_control()
 {   
@@ -44,7 +36,7 @@ void Slave::scope()
     switch(this->type)
     {
         case pseudo_inverse: this->optimal_control();break;
-        case lypanov: break;
+        case lypanov: this->calc_Lyapunov(0.3,0.3,0.3,0.3); break;
         default: break;
     }
     

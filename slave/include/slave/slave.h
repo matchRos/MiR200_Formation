@@ -11,14 +11,11 @@
 #include <math.h>
 #include <stdio.h>
 
-#define PARAM_TYPE  "ctr_type"
      
 class Slave:public Controller{
     public:
         Slave(ros::NodeHandle &nh);                 
         void scope();        
-        ///Loading specified ros parameter for a explicit slave objcect
-        void load_parameter();
 
     private:
         ///This implements a least sqaures determination of control vector [v,omega] [control.v control.omega] 

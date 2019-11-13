@@ -6,12 +6,13 @@ Controller::Controller(ros::NodeHandle &nh):nh(nh)
     set_name("my_slave");
  
     this->output=this->nh.advertise<geometry_msgs::Twist>("/out",10);
-    this->state_out=this->nh.advertise<geometry_msgs::PoseStamped>("/state",10);
+    this->state_out=this->nh.advertise<geometry_msgs::PoseStamped>("/state_out",10);
 
     this->input=this->nh.subscribe("/in",10,&Controller::input_velocities_callback,this);
     this->odom=this->nh.subscribe("/odom",10,&Controller::input_odom_callback,this);
-    this->state_in=this->nh.subscribe("/state_in",10,&Controller::input_odom_callback,this);
-   
+    this->state_in=this->nh.subscribe("/state_in",10,&Controller::input_state_callback,this);
+
+    this->current_pose=tf::Pose();
 } 
 //################################################################################################
 //Setter
@@ -22,10 +23,15 @@ void Controller::set_reference(double x,double y,double z)
     this->reference.position.x=x;
     this->reference.position.y=y;
     this->reference.position.z=z;
-    
+
+    this->current_pose=tf::Pose();
+    this->current_pose.setOrigin(tf::Vector3(x,y,z));
+     
+
     tf2::Quaternion quat;
     quat.setRPY(0,0,0);
-
+   
+    
     static tf2_ros::StaticTransformBroadcaster static_broadcaster;
     geometry_msgs::TransformStamped static_transformStamped;
 
@@ -42,6 +48,8 @@ void Controller::set_reference(double x,double y,double z)
     static_broadcaster.sendTransform(static_transformStamped);
 
 
+
+
 }
 
 void Controller::set_name(std::string name)
@@ -52,7 +60,9 @@ void Controller::set_name(std::string name)
 
 void Controller::set_type(Controller::controllerType type)
 {
-  
+    int i;
+
+    ROS_INFO("Setting controller type of %s to: %i",this->name.c_str(),this->type);
     this->type=type;
 }
 
@@ -88,12 +98,19 @@ void Controller::load()
     ROS_INFO("Loading %s ",PARAM_OUT_VEL);
     this->link_output_velocity(param);
 
+    int i;
+    ros::param::get(PARAM_TYPE,i);
+    ROS_INFO("Loading %s ",PARAM_TYPE);
+    this->set_type(static_cast<Controller::controllerType>(i));
+
     double x;
     double y;
     ros::param::get(PARAM_X,x);
     ros::param::get(PARAM_Y,y);
     ROS_INFO("Loading coordinates %s : %lf , %lf ",this->name.c_str(),x,y);
     this->set_reference(x,y,0.0);
+
+
 
 
     load_parameter();
@@ -163,10 +180,10 @@ void Controller::input_odom_callback(nav_msgs::Odometry msg)
     tf::Point point;
     tf::pointMsgToTF(msg.pose.pose.position,point);
     tf::Quaternion quat;
+    quat.normalize();
     tf::quaternionMsgToTF(msg.pose.pose.orientation,quat);
-    
     this->current_pose.setOrigin(this->robot2world.getOrigin()+point);
-    this->current_pose.setRotation(this->robot2world.getRotation()*quat.normalize());
+    this->current_pose.setRotation(this->robot2world.getRotation()*quat);
 }
 
 void Controller::input_state_callback(nav_msgs::Odometry msg)
@@ -174,10 +191,10 @@ void Controller::input_state_callback(nav_msgs::Odometry msg)
     tf::Point point;
     tf::pointMsgToTF(msg.pose.pose.position,point);
     tf::Quaternion quat;
-    tf::quaternionMsgToTF(msg.pose.pose.orientation,quat);
-    
-    this->target_pose.setOrigin(this->robot2world.getOrigin()+point);
-    this->target_pose.setRotation(this->robot2world.getRotation()*quat.normalize());
+    quat.normalize();  
+    tf::quaternionMsgToTF(msg.pose.pose.orientation,quat);      
+    this->target_pose.setOrigin(point);
+    this->target_pose.setRotation(quat);
 }
 
 
@@ -212,9 +229,6 @@ void Controller::publish()
     quat=this->current_pose.getRotation();
     quat.normalize();
     tf::quaternionTFToMsg(quat,msg.pose.orientation);
-
-
-
     tf::pointTFToMsg(this->current_pose.getOrigin(), msg.pose.position);
 
     
@@ -227,18 +241,20 @@ void Controller::publish()
 
 void Controller::calc_Lyapunov(double kx, double kphi,double vd,double omegad)
 {
-   
-
-    tf::Vector3 posr;   //Control differences in postion
-    posr=this->current_pose.getOrigin()-this->target_pose.getOrigin();
+    tf::Vector3 pos_temp;   //Control differences in postion
+    pos_temp=this->target_pose.getOrigin()-this->current_pose.getOrigin();
     tf::Quaternion quatr;   //Control difference in orientation;
     quatr=this->target_pose.getRotation()-this->current_pose.getRotation();
+    tf::Vector3 posr;
+    double phi =this->current_pose.getRotation().getAngle();
+    posr.setX(pos_temp.getX()*cos(phi)+pos_temp.getX()*sin(phi));
+    posr.setY(-pos_temp.getY()*sin(phi)+pos_temp.getY()*cos(phi));
 
+    
+    
+    
     this->msg_velocities_out.linear.x=kx*posr.getX()+vd*cos(quatr.getAngle());
     this->msg_velocities_out.angular.z=kphi*sin(quatr.getAngle()+vd*posr.getY())+omegad;
-
-
-
 }
 
 
@@ -249,7 +265,7 @@ void Controller::scope()
     switch(this->type)
     {
         case pseudo_inverse: break;
-        case lypanov: this->calc_Lyapunov(0.3,0.3,0.3,0.3);
+        case lypanov:this->calc_Lyapunov(0.7,0.7,0.3,0.3);break;
         default: break;
     }
 }

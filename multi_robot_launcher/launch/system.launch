@@ -41,6 +41,7 @@
   <arg name="robot_name" value="robot_master"/>
   <arg name="robot_x"   value="0.0" />
   <arg name="robot_y"   value="0.0" />
+  <arg name="displ" value="screen"/>
 
 </include>
 

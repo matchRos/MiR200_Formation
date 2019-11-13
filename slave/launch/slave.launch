@@ -18,7 +18,7 @@
         <arg name="controller_name" value="$(arg robot_name)" />
     </include>  
   
-<node name="Slave_ctr" pkg="slave" type="slave_node" args="$(arg robot_name) $(arg name_master) $(arg robot_x) $(arg robot_y)" output="screen"></node>
+<node name="Slave_ctr" pkg="slave" type="slave_node" args="$(arg robot_name) $(arg name_master) $(arg robot_x) $(arg robot_y)" output="$(arg displ)"></node>
     
    
 </group> 

@@ -21,6 +21,7 @@
 #define PARAM_Y  "y_coord"
 #define PARAM_GAINS
 #define PARAM_WORLD_FRAME "world_frame"
+#define PARAM_TYPE "controller_type"
 
      
 class Controller{
@@ -30,8 +31,8 @@ class Controller{
             pseudo_inverse=1,
             lypanov=2,
         };
-        void set_type(Controller::controllerType);
-    
+
+        
         
         
         //Setter and parametring methods
@@ -43,7 +44,9 @@ class Controller{
 
         void set_reference(double x,double y,double z);   
 
-        void set_world_frame(std::string frame);             
+        void set_world_frame(std::string frame);      
+
+        void set_type(Controller::controllerType);
         
         ///Loading parameter for a specified Controller. Empty for Controller base class and implemented in inheriting classes.
         virtual void load_parameter();
