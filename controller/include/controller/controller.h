@@ -20,6 +20,7 @@
 #define PARAM_X  "x_coord"
 #define PARAM_Y  "y_coord"
 #define PARAM_GAINS
+#define PARAM_WORLD_FRAME "world_frame"
 
      
 class Controller{
@@ -40,7 +41,9 @@ class Controller{
 
         void set_frequenzy(double frequenzy);
 
-        void set_reference(double x,double y,double z);                
+        void set_reference(double x,double y,double z);   
+
+        void set_world_frame(std::string frame);             
         
         ///Loading parameter for a specified Controller. Empty for Controller base class and implemented in inheriting classes.
         virtual void load_parameter();

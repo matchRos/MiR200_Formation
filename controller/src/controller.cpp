@@ -31,7 +31,7 @@ void Controller::set_reference(double x,double y,double z)
     geometry_msgs::TransformStamped static_transformStamped;
 
     static_transformStamped.header.stamp = ros::Time::now();
-    static_transformStamped.header.frame_id ="/map" ;
+    static_transformStamped.header.frame_id =this->world_frame ;
     static_transformStamped.child_frame_id = this->name+"/odom_comb";
     static_transformStamped.transform.translation.x=x;
     static_transformStamped.transform.translation.y=y;
@@ -53,28 +53,41 @@ void Controller::set_name(std::string name)
 
 void Controller::set_type(Controller::controllerType type)
 {
+  
     this->type=type;
+}
+
+void Controller::set_world_frame(std::string frame)
+{
+    this->world_frame=frame;
+    ROS_INFO("Setting world frame of %s to: %s",this->name.c_str(),this->world_frame.c_str());
 }
 
 
 void Controller::load()
 {
-    std::string topic;
+    std::string param;
+
+    ros::param::get(PARAM_WORLD_FRAME,param);
+    ROS_INFO("Loading %s",PARAM_WORLD_FRAME);
+    this->set_world_frame(param);   
+
+   
     ROS_INFO("Loading %s ",PARAM_IN_ODOM);
-    ros::param::get(PARAM_IN_ODOM,topic);
-    this->link_input_odom(topic);
+    ros::param::get(PARAM_IN_ODOM,param);
+    this->link_input_odom(param);
     
-    ros::param::get(PARAM_OUT_STATE,topic);
+    ros::param::get(PARAM_OUT_STATE,param);
     ROS_INFO("Loading %s ",PARAM_OUT_STATE);
-    this->link_output_state(topic);
+    this->link_output_state(param);
 
-    ros::param::get(PARAM_IN_VEL,topic);
+    ros::param::get(PARAM_IN_VEL,param);
     ROS_INFO("Loading %s ",PARAM_IN_VEL);
-    this->link_input_velocity(topic);
+    this->link_input_velocity(param);
 
-    ros::param::get(PARAM_OUT_VEL,topic);
+    ros::param::get(PARAM_OUT_VEL,param);
     ROS_INFO("Loading %s ",PARAM_OUT_VEL);
-    this->link_output_velocity(topic);
+    this->link_output_velocity(param);
 
     double x;
     double y;
@@ -158,8 +171,8 @@ void Controller::getTransformation()
 {
     tf::TransformListener listener;      
     try{
-        listener.waitForTransform("/map",this->name+"/odom_comb",ros::Time(0),ros::Duration(0.05));
-        listener.lookupTransform("/map",this->name+"/odom_comb", 
+        listener.waitForTransform(this->world_frame,this->name+"/odom_comb",ros::Time(0),ros::Duration(0.05));
+        listener.lookupTransform(this->world_frame,this->name+"/odom_comb", 
                                ros::Time(0), this->robot2world);
         
     }
