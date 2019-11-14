@@ -26,13 +26,13 @@
 
 class Controller{
     public:
-        Controller(ros::NodeHandle &nh); 
+        Controller(ros::NodeHandle &nh);
+        ~Controller();
         enum controllerType{
             pseudo_inverse=1,
             lypanov=2,
         };
-
-        
+       
         
         
         //Setter and parametring methods
@@ -67,7 +67,7 @@ class Controller{
         void link_input_velocity(std::string topic_name);   
         ///link Controller to it's odom input topic
         ///'topic_name'Name of the topic the Controller reads its oddom from                       
-        void link_input_odom(std::string topic_name); 
+     //   void link_input_odom(std::string topic_name); 
         ///link Controller to it's state topic
         ///'topic_name' Name of the topic the Controller gets its target state from                       
         void link_input_state(std::string topic_name);      
@@ -111,7 +111,8 @@ class Controller{
         
     protected:
         ros::NodeHandle nh;                                     //Node Handle
-        tf::TransformListener listener;
+        tf::TransformListener* listener;
+        
 
         ros::Publisher vel_out;                                  //publisher object for velocity outoput topic
         ros::Publisher state_out;                               //publisher object for state output topic

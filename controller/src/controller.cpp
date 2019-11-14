@@ -2,7 +2,8 @@
 
 Controller::Controller(ros::NodeHandle &nh):nh(nh)
 {
-
+    this->listener=new tf::TransformListener(nh);
+    
     set_name("my_slave");
  
     this->vel_out=this->nh.advertise<geometry_msgs::Twist>("/out",10);
@@ -10,11 +11,16 @@ Controller::Controller(ros::NodeHandle &nh):nh(nh)
     this->control_difference= this->control_difference=this->nh.advertise<geometry_msgs::PoseStamped>("/control_difference",10);
 
     this->vel_in=this->nh.subscribe("/in",10,&Controller::input_velocities_callback,this);
-    this->odom=this->nh.subscribe("/odom",10,&Controller::input_odom_callback,this);
+    //this->odom=this->nh.subscribe("/odom",10,&Controller::input_odom_callback,this);
     this->state_in=this->nh.subscribe("/state_in",10,&Controller::input_state_callback,this);
 
     this->current_pose=tf::Pose();
 } 
+
+Controller::~Controller()
+{
+    delete this->listener;
+}
 //################################################################################################
 //Setter
 
@@ -83,9 +89,9 @@ void Controller::load()
     this->set_world_frame(param);   
 
    
-    ROS_INFO("Loading %s ",PARAM_IN_ODOM);
-    ros::param::get(PARAM_IN_ODOM,param);
-    this->link_input_odom(param);
+    // ROS_INFO("Loading %s ",PARAM_IN_ODOM);
+    // ros::param::get(PARAM_IN_ODOM,param);
+    // this->link_input_odom(param);
     
     ros::param::get(PARAM_OUT_STATE,param);
     ROS_INFO("Loading %s ",PARAM_OUT_STATE);
@@ -133,12 +139,12 @@ void Controller::link_input_velocity(std::string topic_name)
     this->vel_in=this->nh.subscribe(topic_name,10,&Controller::input_velocities_callback,this);
 }
 
-void Controller::link_input_odom(std::string topic_name)
-{
-    this->odom.shutdown();
-    ROS_INFO("Linking input odom %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
-    this->odom=this->nh.subscribe(topic_name,10,&Controller::input_odom_callback,this);
-}
+// void Controller::link_input_odom(std::string topic_name)
+// {
+//     this->odom.shutdown();
+//     ROS_INFO("Linking input odom %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
+//     this->odom=this->nh.subscribe(topic_name,10,&Controller::input_odom_callback,this);
+// }
 
 
 void Controller::link_input_state(std::string topic_name)
@@ -182,18 +188,18 @@ void Controller::input_velocities_callback(geometry_msgs::Twist msg)
     this->msg_velocities_in=msg;
 }
 
-void Controller::input_odom_callback(nav_msgs::Odometry msg)
-{
-    // tf::Point point;
-    // tf::pointMsgToTF(msg.pose.pose.position,point);
-    // tf::Quaternion quat;
-    // quat.normalize();
-    // tf::quaternionMsgToTF(msg.pose.pose.orientation,quat);
-    // this->current_pose.setOrigin(this->robot2world.getOrigin()+point);
-    // this->current_pose.setRotation(this->robot2world.getRotation()*quat);
+// void Controller::input_odom_callback(nav_msgs::Odometry msg)
+// {
+//     tf::Point point;
+//     tf::pointMsgToTF(msg.pose.pose.position,point);
+//     tf::Quaternion quat;
+//     quat.normalize();
+//     tf::quaternionMsgToTF(msg.pose.pose.orientation,quat);
+//     this->current_pose.setOrigin(this->robot2world.getOrigin()+point);
+//     this->current_pose.setRotation(this->robot2world.getRotation()*quat);
 
     
-}
+// }
 
 void Controller::input_state_callback(nav_msgs::Odometry msg)
 {
@@ -221,10 +227,8 @@ void Controller::getTransformation()
         //                             this->world_frame,
         //                             ros::Time(0),
         //                             ros::Duration(0.2));
-
-        Controller::listener.lookupTransform(   this->name+"/base_footprint",
-                                    this->world_frame,                                    
-                                    ros::Time(0), this->robot2world);
+        
+        this->listener->lookupTransform(this->name+"/base_footprint",this->world_frame,ros::Time(0),this->robot2world);
         
     }
     catch (tf::TransformException ex){
