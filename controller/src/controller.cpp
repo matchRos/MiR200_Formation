@@ -267,7 +267,7 @@ void Controller::calc_Lyapunov(double kx, double kphi,double vd,double omegad)
     world2target.setRotation(this->target_pose.getRotation());
 
     this->control_dif.setOrigin(this->world2robot.inverse()*(target_pose.getOrigin()-current_pose.getOrigin()));
-    this->control_dif.setRotation((target_pose.getRotation()-current_pose.getRotation()));
+    this->control_dif.setRotation((this->world2robot.inverse()*target_pose.getRotation()-current_pose.getRotation()));
 
     tf::Vector3 posr=this->control_dif.getOrigin();
     double rot=control_dif.getRotation().getAngle();
