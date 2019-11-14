@@ -136,7 +136,8 @@ class Controller{
         tf::Vector3 lin_vel_out;
         tf::Vector3 ang_vel_out;
         
-        tf::StampedTransform robot2world;
+        tf::StampedTransform world2robot;
+        tf::Transform control_dif;
 
         tf::Pose reference_pose;
         tf::Pose current_pose;                                  //Pose of Controller at the moment in world

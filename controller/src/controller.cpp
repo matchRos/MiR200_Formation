@@ -10,13 +10,18 @@ Controller::Controller(ros::NodeHandle &nh):    nh(nh),
  
     this->vel_out=this->nh.advertise<geometry_msgs::Twist>("/out",10);
     this->state_out=this->nh.advertise<geometry_msgs::PoseStamped>("/state_out",10);
-    this->control_difference= this->control_difference=this->nh.advertise<geometry_msgs::PoseStamped>("/control_difference",10);
+    this->control_difference=this->nh.advertise<geometry_msgs::Transform>("/control_difference",10);
 
     this->vel_in=this->nh.subscribe("/in",10,&Controller::input_velocities_callback,this);
     //this->odom=this->nh.subscribe("/odom",10,&Controller::input_odom_callback,this);
     this->state_in=this->nh.subscribe("/state_in",10,&Controller::input_state_callback,this);
 
-    this->current_pose=tf::Pose();
+    this->current_pose.setOrigin(tf::Vector3(0,0,0));
+     this->current_pose.setRotation(tf::Quaternion(0,0,0,1));
+    this->target_pose.setOrigin(tf::Vector3(0,0,0));   
+    this->target_pose.setRotation(tf::Quaternion(0,0,0,1));
+    this->control_dif.setOrigin(tf::Vector3(0,0,0));
+    this->control_dif.setRotation(tf::Quaternion(0,0,0,1));
 } 
 
 Controller::~Controller()
@@ -220,16 +225,14 @@ void Controller::input_state_callback(nav_msgs::Odometry msg)
 
 void Controller::getTransformation()
 {
-    try{
-        // listener.waitForTransform(  this->name+"/base_footprint",
-        //                             this->world_frame,
-        //                             ros::Time(0),
-        //                             ros::Duration(0.2));
-        
-        this->listener->lookupTransform(this->name+"/base_footprint",this->world_frame,ros::Time(0),this->robot2world);
-        
+    try
+    {
+        this->listener->lookupTransform(this->world_frame,this->name+"/base_footprint",ros::Time(0),this->world2robot);
+        this->current_pose.setOrigin(this->world2robot.getOrigin());
+        this->current_pose.setRotation(this->world2robot.getRotation());
     }
-    catch (tf::TransformException ex){
+    catch (tf::TransformException ex)
+    {
             ROS_ERROR("%s",ex.what());
             ros::Duration(1.0).sleep();
     }
@@ -237,38 +240,40 @@ void Controller::getTransformation()
 
 void Controller::publish()
 {
-    //publish 
+    //publish output velocities 
     geometry_msgs::Twist msg_vel;
     tf::vector3TFToMsg(this->lin_vel_out,msg_vel.linear);
     tf::vector3TFToMsg(this->ang_vel_out,msg_vel.angular);
     this->vel_out.publish(msg_vel);
 
-
+    //publish output pose state
     geometry_msgs::PoseStamped msg_pose;    
     msg_pose.header.frame_id=this->world_frame;
-    msg_pose.header.stamp=ros::Time::now();   
-    
-    tf::Quaternion quat;
-    quat=this->current_pose.getRotation();
-    quat.normalize();
-    tf::quaternionTFToMsg(quat,msg_pose.pose.orientation);
-    tf::pointTFToMsg(this->current_pose.getOrigin(), msg_pose.pose.position);   
+    msg_pose.header.stamp=ros::Time::now();    
+    tf::poseTFToMsg(this->current_pose,msg_pose.pose);
     this->state_out.publish(msg_pose);   
+
+    //publish control difference
+    geometry_msgs::Transform trafo;
+    tf::transformTFToMsg(this->control_dif,trafo);
+    this->control_difference.publish(trafo);
 }
 
 void Controller::calc_Lyapunov(double kx, double kphi,double vd,double omegad)
 {
-    tf::Vector3 pos_temp;   //Control differences in postion
-    pos_temp=this->target_pose.getOrigin()-this->current_pose.getOrigin();
-    tf::Quaternion quatr;   //Control difference in orientation;
-    quatr=this->target_pose.getRotation()-this->current_pose.getRotation();
-    tf::Vector3 posr;
-    double phi =this->current_pose.getRotation().getAngle();
-    posr.setX(pos_temp.getX()*cos(phi)+pos_temp.getX()*sin(phi));
-    posr.setY(-pos_temp.getY()*sin(phi)+pos_temp.getY()*cos(phi));
+    //calculate control differences
+    tf::Transform world2target;
+    world2target.setOrigin(this->target_pose.getOrigin());
+    world2target.setRotation(this->target_pose.getRotation());
 
-    this->lin_vel_out.setX(kx*posr.getX()+vd*cos(quatr.getAngle()));
-    this->ang_vel_out.setZ(kphi*sin(quatr.getAngle()+vd*posr.getY())+omegad);
+    this->control_dif.setOrigin(this->world2robot.inverse()*(target_pose.getOrigin()-current_pose.getOrigin()));
+    this->control_dif.setRotation((target_pose.getRotation()-current_pose.getRotation()));
+
+    tf::Vector3 posr=this->control_dif.getOrigin();
+    double rot=control_dif.getRotation().getAngle();
+
+    this->lin_vel_out.setX(kx*posr.getX()+vd*cos(rot));
+    this->ang_vel_out.setZ(kphi*sin(rot)+vd*posr.getY()+omegad);
 }
 
 

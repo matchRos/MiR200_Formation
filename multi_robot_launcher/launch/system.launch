@@ -3,6 +3,7 @@
   <arg name="gui" default="true" />
   <arg name="world_name" default="worlds/empty.world"/> <!-- Note: the world_name is with respect to GAZEBO_RESOURCE_PATH environmental variable, but can also be an absolute path -->
   <arg name="controller_name" default="none"/>
+  <arg name="pause" value="true"/>
  <param name="/frequency" value="10" />
 
 
@@ -18,7 +19,7 @@
   <arg name="gui" value="$(arg gui)" />
 </include>
 
-
+<!--
 
 <include file="$(find slave)/launch/slave.launch">
   <arg name="robot_name" value="robot1"/>
@@ -35,7 +36,7 @@
   <arg name="name_master" value="robot_master"/>
 </include>
 
-
+-->
 
 <include file="$(find master)/launch/master.launch">
   <arg name="robot_name" value="robot_master"/>
