@@ -23,7 +23,7 @@
 #define PARAM_WORLD_FRAME "world_frame"
 #define PARAM_TYPE "controller_type"
 
-     
+
 class Controller{
     public:
         Controller(ros::NodeHandle &nh); 
@@ -39,15 +39,20 @@ class Controller{
 
         ///setting the name of the Controller and its node
         void set_name(std::string);  
-
+        ///setting the frequenzy of the controller to
+        ///param: double frequenzy
         void set_frequenzy(double frequenzy);
-
+        ///Initialise the coordinate system of the Controller to position
+        ///param: double x: x Position
+        ///param: double y: y Position
+        ///param: double z: z Position
         void set_reference(double x,double y,double z);   
-
+        ///Set the name of the reference/world frame
+        ///param: frame : Name of the frame in tf tree
         void set_world_frame(std::string frame);      
-
-        void set_type(Controller::controllerType);
-        
+        ///Set the type of the controllaw 
+        ///param: type: Controllaw type (see Controller::controllerType)
+        void set_type(Controller::controllerType type);        
         ///Loading parameter for a specified Controller. Empty for Controller base class and implemented in inheriting classes.
         virtual void load_parameter();
         ///Loading ros parameter and calling load_parameter inside
@@ -72,17 +77,26 @@ class Controller{
         ///link Controller to it's state topic
         ///'topic_name' Name of the topic the Controller writes its state to                       
         void link_output_state(std::string topic_name);
+        ///link Controller to it's control difference topic
+        ///'topic_name' Name of the topic the Controller writes its control difference to                       
+        void link_control_difference(std::string topic_name);
         
         
+
+        ///Calculate the control vector with the Lyapunov method
+        ///param: kx: gain in x direction
+        ///param kphi: gain in angular direction
+        ///param vd: tangential velocity
+        ///param omegad : rotational velocity
+        virtual void calc_Lyapunov(double kx, double kphi,double vd,double omegad);
 
 
         /// A Scope within the execute function. Repeating calculation in inheriting classes are implemented here
-        virtual void scope();
-       
+        virtual void scope();       
         ///Controller scope
         void execute();
 
-        virtual void calc_Lyapunov(double kx, double kphi,double vd,double omegad);
+      
 
         
 
@@ -97,14 +111,18 @@ class Controller{
         
     protected:
         ros::NodeHandle nh;                                     //Node Handle
+        tf::TransformListener listener;
 
-        ros::Publisher output;                                  //publisher object for output topic
-        ros::Publisher state_out;                                   //publisher object for output topic
+        ros::Publisher vel_out;                                  //publisher object for velocity outoput topic
+        ros::Publisher state_out;                               //publisher object for state output topic
+        ros::Publisher control_difference;                      //publisher object for control difference topic
         
-        ros::Subscriber input;                                  //Subscirber object for input topic
+        ros::Subscriber vel_in;                                  //Subscirber object for input topic
         ros::Subscriber odom;                                   //Subscriber object for odometry
         ros::Subscriber state_in;                               //Subscriber object for target state of controller
-     
+
+
+      
 
         std::string name;                                       //Name of the node and Controller
         std::string world_frame;                                //Name of the world frame

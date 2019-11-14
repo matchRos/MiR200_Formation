@@ -4,8 +4,8 @@ int main(int argc, char **argv)
 {
     ros::init(argc,argv,"master");
     ros::NodeHandle nh;
-
-
+    
+    
     Master master=Master(nh);
     master.set_name(argv[1]);   
 
@@ -14,7 +14,7 @@ int main(int argc, char **argv)
 
 
 
-    ros::Rate rate(10);
+    ros::Rate rate(50);
     while(ros::ok())
     {
         master.execute();    

@@ -8,7 +8,7 @@ int main (int argc,char** argv)
     slave.set_name(argv[1]);   
 
     slave.load();
-    ros::Rate rate(10);
+    ros::Rate rate(100);
     while(ros::ok())
     {       
         slave.execute();      
