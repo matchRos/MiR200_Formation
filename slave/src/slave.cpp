@@ -9,25 +9,26 @@ Slave::Slave(ros::NodeHandle &nh):Controller(nh)
 void Slave::optimal_control()
 {   
     //Calcualte ideal velocities
-    geometry_msgs::Vector3 linear;
-    geometry_msgs::Vector3 angular;
+    // geometry_msgs::Vector3 linear;
+    // geometry_msgs::Vector3 angular;
     
-    linear=this->msg_velocities_in.linear;
-    angular=this->msg_velocities_in.angular;
+    // linear=this->msg_velocities_in.linear;
+    // angular=this->msg_velocities_in.angular;
 
-    this->msg_velocities_ideal.angular.x=angular.x;
-    this->msg_velocities_ideal.angular.y=angular.y;
-    this->msg_velocities_ideal.angular.z=angular.z;
-
-    this->msg_velocities_ideal.linear.x=linear.x-angular.z*this->reference.position.y;
-    this->msg_velocities_ideal.linear.y=linear.y+angular.z*this->reference.position.x;
-    this->msg_velocities_ideal.linear.z=linear.z;
+    // this->msg_velocities_ideal.angular.x=angular.x;
+    // this->msg_velocities_ideal.angular.y=angular.y;
+    // this->msg_velocities_ideal.angular.z=angular.z;
     
+    tf::Vector3 ideal_trans;
+    ideal_trans=this->lin_vel_in+this->ang_vel_in.cross(this->reference_pose.getOrigin());
+    tf::Vector3 ideal_rot;
+    ideal_rot=this->ang_vel_in;
 
     //Calculate controlvector
-    double phi=this->current_pose.getRotation().getAngle();
-    this->msg_velocities_out.linear.x=cos(phi)*msg_velocities_ideal.linear.x+sin(phi)*this->msg_velocities_ideal.linear.y;
-    this->msg_velocities_out.angular.z=angular.z;
+    double phi;
+    phi=this->current_pose.getRotation().getAngle(); 
+    this->lin_vel_out.setX(cos(phi)*ideal_trans.x()+sin(phi)*ideal_trans.y());
+    this->ang_vel_out=ideal_rot;
 }
 
 

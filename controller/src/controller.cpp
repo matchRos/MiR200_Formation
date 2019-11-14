@@ -1,6 +1,8 @@
 #include <controller/controller.h>
 
-Controller::Controller(ros::NodeHandle &nh):nh(nh)
+Controller::Controller(ros::NodeHandle &nh):    nh(nh),
+                                                lin_vel_in{0,0,0},
+                                                ang_vel_in{0,0,0}
 {
     this->listener=new tf::TransformListener(nh);
     
@@ -27,18 +29,16 @@ Controller::~Controller()
 
 void Controller::set_reference(double x,double y,double z)
 {
-    this->reference.position.x=x;
-    this->reference.position.y=y;
-    this->reference.position.z=z;
 
-    this->current_pose=tf::Pose();
-    this->current_pose.setOrigin(tf::Vector3(x,y,z));
-     
+    this->reference_pose=tf::Pose();
+    this->reference_pose.setOrigin(tf::Vector3(x,y,z));
+    this->reference_pose.setRotation(tf::Quaternion(0,0,0,1));
 
-    tf2::Quaternion quat;
-    quat.setRPY(0,0,0);
-   
-    
+    this->current_pose=this->reference_pose;
+
+
+
+    //Publis the trasnformation of a single controller instance to its refernece coordinate system
     static tf2_ros::StaticTransformBroadcaster static_broadcaster;
     geometry_msgs::TransformStamped static_transformStamped;
 
@@ -48,13 +48,11 @@ void Controller::set_reference(double x,double y,double z)
     static_transformStamped.transform.translation.x=x;
     static_transformStamped.transform.translation.y=y;
     static_transformStamped.transform.translation.z=z;
-    static_transformStamped.transform.rotation.x=quat.getX();
-    static_transformStamped.transform.rotation.y=quat.getY();
-    static_transformStamped.transform.rotation.z=quat.getZ();
-    static_transformStamped.transform.rotation.w=quat.getW();
+    static_transformStamped.transform.rotation.x=0;
+    static_transformStamped.transform.rotation.y=0;
+    static_transformStamped.transform.rotation.z=0;
+    static_transformStamped.transform.rotation.w=1;
     static_broadcaster.sendTransform(static_transformStamped);
-
-
 
 
 }
@@ -185,7 +183,8 @@ void Controller::link_control_difference(std::string topic_name)
 
 void Controller::input_velocities_callback(geometry_msgs::Twist msg)
 {
-    this->msg_velocities_in=msg;
+    tf::vector3MsgToTF(msg.linear,this->lin_vel_in);
+    tf::vector3MsgToTF(msg.angular,this->ang_vel_in);
 }
 
 // void Controller::input_odom_callback(nav_msgs::Odometry msg)
@@ -209,10 +208,9 @@ void Controller::input_state_callback(nav_msgs::Odometry msg)
     quat.normalize();  
     tf::quaternionMsgToTF(msg.pose.pose.orientation,quat);      
     this->target_pose.setOrigin(point);
-    this->target_pose.setRotation(quat);
-
-   
+    this->target_pose.setRotation(quat);   
 }
+
 
 
 
@@ -240,20 +238,22 @@ void Controller::getTransformation()
 void Controller::publish()
 {
     //publish 
-    this->vel_out.publish(this->msg_velocities_out);
+    geometry_msgs::Twist msg_vel;
+    tf::vector3TFToMsg(this->lin_vel_out,msg_vel.linear);
+    tf::vector3TFToMsg(this->ang_vel_out,msg_vel.angular);
+    this->vel_out.publish(msg_vel);
 
-    geometry_msgs::PoseStamped msg;    
+
+    geometry_msgs::PoseStamped msg_pose;    
+    msg_pose.header.frame_id=this->world_frame;
+    msg_pose.header.stamp=ros::Time::now();   
+    
     tf::Quaternion quat;
     quat=this->current_pose.getRotation();
     quat.normalize();
-    tf::quaternionTFToMsg(quat,msg.pose.orientation);
-    tf::pointTFToMsg(this->current_pose.getOrigin(), msg.pose.position);
-
-    
-    msg.header.frame_id=this->world_frame;
-    msg.header.stamp=ros::Time::now();   
-    this->state_out.publish(msg);   
-
+    tf::quaternionTFToMsg(quat,msg_pose.pose.orientation);
+    tf::pointTFToMsg(this->current_pose.getOrigin(), msg_pose.pose.position);   
+    this->state_out.publish(msg_pose);   
 }
 
 void Controller::calc_Lyapunov(double kx, double kphi,double vd,double omegad)
@@ -267,11 +267,8 @@ void Controller::calc_Lyapunov(double kx, double kphi,double vd,double omegad)
     posr.setX(pos_temp.getX()*cos(phi)+pos_temp.getX()*sin(phi));
     posr.setY(-pos_temp.getY()*sin(phi)+pos_temp.getY()*cos(phi));
 
-    
-    
-    
-    this->msg_velocities_out.linear.x=kx*posr.getX()+vd*cos(quatr.getAngle());
-    this->msg_velocities_out.angular.z=kphi*sin(quatr.getAngle()+vd*posr.getY())+omegad;
+    this->lin_vel_out.setX(kx*posr.getX()+vd*cos(quatr.getAngle()));
+    this->ang_vel_out.setZ(kphi*sin(quatr.getAngle()+vd*posr.getY())+omegad);
 }
 
 

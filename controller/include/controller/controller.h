@@ -105,14 +105,16 @@ class Controller{
         void input_velocities_callback(geometry_msgs::Twist msg);         
         /// Callback for input odometry message. Is executed everytima a Odometry input is incoming. Writes data to input current_pose
         void input_odom_callback(nav_msgs::Odometry msg);              
-         /// Callback for input target state message. Is executed everytima a target state input is incoming. Writes data to target_pose state
-        void input_state_callback(nav_msgs::Odometry msg);              
+        /// Callback for input target state message. Is executed everytima a target state input is incoming. Writes data to target_pose state
+        void input_state_callback(nav_msgs::Odometry msg);   
+                
 
         
     protected:
         ros::NodeHandle nh;                                     //Node Handle
         tf::TransformListener* listener;
-        
+        controllerType type;                                    //Type of control algorythm that is used
+
 
         ros::Publisher vel_out;                                  //publisher object for velocity outoput topic
         ros::Publisher state_out;                               //publisher object for state output topic
@@ -127,16 +129,16 @@ class Controller{
 
         std::string name;                                       //Name of the node and Controller
         std::string world_frame;                                //Name of the world frame
+        
+        tf::Vector3 ang_vel_in;
+        tf::Vector3 lin_vel_in;
 
-        controllerType type;                                    //Type of control algorythm that is used
-
-        geometry_msgs::Twist msg_velocities_in;                 //Input velocities
-        geometry_msgs::Twist msg_velocities_out;                //output velocities
-        geometry_msgs::Twist msg_velocities_ideal;              //Ideal velocity state
+        tf::Vector3 lin_vel_out;
+        tf::Vector3 ang_vel_out;
         
         tf::StampedTransform robot2world;
 
-        geometry_msgs::Pose reference;                          //Reference position
+        tf::Pose reference_pose;
         tf::Pose current_pose;                                  //Pose of Controller at the moment in world
         tf::Pose target_pose;                                   //The Target for the Controller poses
         
