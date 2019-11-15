@@ -2,6 +2,11 @@
 
 Master::Master(ros::NodeHandle &nh):Controller(nh)
 {
+    this->kx=3;
+    this->kphi=3;
+    this->omegad=1.0;
+    this->vd=1.0;
+
 }
 void Master::scope()
 {
@@ -12,7 +17,7 @@ void Master::scope()
             this->ang_vel_out=this->ang_vel_in;
             break;
         case lypanov:
-            this->calc_Lyapunov(0.3,0.3,0.3,0.3);
+            this->calc_Lyapunov(this->kx,this->kphi,this->vd,this->omegad);
             break;
         default: 
             break;

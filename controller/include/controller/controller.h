@@ -22,6 +22,12 @@
 #define PARAM_GAINS
 #define PARAM_WORLD_FRAME "world_frame"
 #define PARAM_TYPE "controller_type"
+#define PARAM_CONTROL_DIFF "control_diff"
+
+#define PARAM_CONTROLLER_KX "Kx"
+#define PARAM_CONTROLLER_KPHI "Kphi"
+#define PARAM_CONTROLLER_OMEGAD "omegad" 
+#define PARAM_CONTROLLER_VD "vd"
 
 
 class Controller{
@@ -67,7 +73,7 @@ class Controller{
         void link_input_velocity(std::string topic_name);   
         ///link Controller to it's odom input topic
         ///'topic_name'Name of the topic the Controller reads its oddom from                       
-     //   void link_input_odom(std::string topic_name); 
+        void link_input_odom(std::string topic_name); 
         ///link Controller to it's state topic
         ///'topic_name' Name of the topic the Controller gets its target state from                       
         void link_input_state(std::string topic_name);      
@@ -137,6 +143,8 @@ class Controller{
         tf::Vector3 ang_vel_out;
         
         tf::StampedTransform world2robot;
+        tf::StampedTransform world2odom;
+
         tf::Transform control_dif;
 
         tf::Pose reference_pose;
@@ -145,4 +153,9 @@ class Controller{
         
         void getTransformation();
         void publish();
+
+        double kx;
+        double kphi;
+        double omegad;
+        double vd;
 };

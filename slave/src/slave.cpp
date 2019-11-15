@@ -36,8 +36,8 @@ void Slave::scope()
 {   
     switch(this->type)
     {
-        case pseudo_inverse: this->optimal_control();break;
-        case lypanov: this->calc_Lyapunov(0.3,0.3,0.3,0.3); break;
+        case pseudo_inverse: break;
+        case lypanov:this->calc_Lyapunov(0.7,0.7,0.3,0.3);break;
         default: break;
     }
     

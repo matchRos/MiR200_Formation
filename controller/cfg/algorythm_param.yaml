@@ -1,1 +1,4 @@
-nonlinear_kinematic_tracking_control:
+Kx: "2.0" 
+Kphi: "2.0"
+vd: "1.0"
+omegad: "1.0"

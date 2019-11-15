@@ -4,8 +4,11 @@ robot1:
 
   topic_input_velocity: "/robot_master/mobile_base_controller/cmd_vel"
   topic_output_velocity: "mobile_base_controller/cmd_vel"
+
   topic_input_odometry: "mobile_base_controller/odom"
   topic_output_state: "state"
+
+  topic_output_control_dif: "control_diff"
 
   x_coord: -1.25
   y_coord: 1.25
@@ -23,6 +26,8 @@ robot2:
 
   topic_input_odometry: "mobile_base_controller/odom"
   topic_output_state: "state"
+
+  topic_output_control_dif: "control_diff"
   
   x_coord: -1.25
   y_coord: -1.25
@@ -39,6 +44,9 @@ robot_master:
 
   topic_input_odometry: "mobile_base_controller/odom"
   topic_output_state: "state"
+
+  topic_output_control_dif: "control_diff"  
+
 
   x_coord: 0.0
   y_coord: 0.0

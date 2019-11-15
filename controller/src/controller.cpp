@@ -66,6 +66,13 @@ void Controller::set_name(std::string name)
 {
     this->name=name;
     this->nh.resolveName(name);
+
+    this->link_output_velocity("mobile_base_controller/cmd_vel");
+    this->link_output_state("state");
+    this->link_control_difference("control_dif");
+    this->link_input_state("state_in");
+
+   
 }
 
 void Controller::set_type(Controller::controllerType type)
@@ -92,21 +99,25 @@ void Controller::load()
     this->set_world_frame(param);   
 
    
-    // ROS_INFO("Loading %s ",PARAM_IN_ODOM);
-    // ros::param::get(PARAM_IN_ODOM,param);
-    // this->link_input_odom(param);
+    ROS_INFO("Loading %s ",PARAM_IN_ODOM);
+    ros::param::get(PARAM_IN_ODOM,param);
+    this->link_input_odom(param);
     
-    ros::param::get(PARAM_OUT_STATE,param);
-    ROS_INFO("Loading %s ",PARAM_OUT_STATE);
-    this->link_output_state(param);
+    // ros::param::get(PARAM_OUT_STATE,param);
+    // ROS_INFO("Loading %s ",PARAM_OUT_STATE);
+    // this->link_output_state(param);
 
     ros::param::get(PARAM_IN_VEL,param);
     ROS_INFO("Loading %s ",PARAM_IN_VEL);
     this->link_input_velocity(param);
 
-    ros::param::get(PARAM_OUT_VEL,param);
-    ROS_INFO("Loading %s ",PARAM_OUT_VEL);
-    this->link_output_velocity(param);
+    // ros::param::get(PARAM_OUT_VEL,param);
+    // ROS_INFO("Loading %s ",PARAM_OUT_VEL);
+    // this->link_output_velocity(param);
+
+    // ros::param::get(PARAM_CONTROL_DIFF,param);
+    // ROS_INFO("Loading %s ",PARAM_CONTROL_DIFF);
+    // this->link_(param);
 
     int i;
     ros::param::get(PARAM_TYPE,i);
@@ -121,6 +132,11 @@ void Controller::load()
     this->set_reference(x,y,0.0);
 
 
+    // ros::param::get(PARAM_CONTROLLER_KX,this->kx);
+    // ros::param::get(PARAM_CONTROLLER_KPHI,this->kphi);
+    // ros::param::get(PARAM_CONTROLLER_OMEGAD,this->kx);
+    // ros::param::get(PARAM_CONTROLLER_VD,this->kx);
+    
 
 
     load_parameter();
@@ -135,6 +151,7 @@ void Controller::load_parameter()
 //################################################################################################
 //Linking important topics/transformations
 
+//INPUTS
 void Controller::link_input_velocity(std::string topic_name)
 {
     this->vel_in.shutdown();
@@ -142,12 +159,12 @@ void Controller::link_input_velocity(std::string topic_name)
     this->vel_in=this->nh.subscribe(topic_name,10,&Controller::input_velocities_callback,this);
 }
 
-// void Controller::link_input_odom(std::string topic_name)
-// {
-//     this->odom.shutdown();
-//     ROS_INFO("Linking input odom %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
-//     this->odom=this->nh.subscribe(topic_name,10,&Controller::input_odom_callback,this);
-// }
+void Controller::link_input_odom(std::string topic_name)
+{
+    this->odom.shutdown();
+    ROS_INFO("Linking input odom %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
+    this->odom=this->nh.subscribe(topic_name,10,&Controller::input_odom_callback,this);
+}
 
 
 void Controller::link_input_state(std::string topic_name)
@@ -157,6 +174,10 @@ void Controller::link_input_state(std::string topic_name)
     this->state_in=this->nh.subscribe(topic_name,10,&Controller::input_state_callback,this);
 }
 
+
+
+
+///OUTPUTS
 void Controller::link_output_velocity(std::string topic_name)
 {
     this->vel_out.shutdown();
@@ -176,7 +197,7 @@ void Controller::link_control_difference(std::string topic_name)
 {
     this->control_difference.shutdown();
     ROS_INFO("Linking control difference %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
-    this->control_difference=this->nh.advertise<geometry_msgs::PoseStamped>(topic_name,10);
+    this->control_difference=this->nh.advertise<geometry_msgs::Transform>(topic_name,10);
 }
 
 
@@ -192,18 +213,17 @@ void Controller::input_velocities_callback(geometry_msgs::Twist msg)
     tf::vector3MsgToTF(msg.angular,this->ang_vel_in);
 }
 
-// void Controller::input_odom_callback(nav_msgs::Odometry msg)
-// {
-//     tf::Point point;
-//     tf::pointMsgToTF(msg.pose.pose.position,point);
-//     tf::Quaternion quat;
-//     quat.normalize();
-//     tf::quaternionMsgToTF(msg.pose.pose.orientation,quat);
-//     this->current_pose.setOrigin(this->robot2world.getOrigin()+point);
-//     this->current_pose.setRotation(this->robot2world.getRotation()*quat);
-
+void Controller::input_odom_callback(nav_msgs::Odometry msg)
+{
+    tf::Point point;
+    tf::pointMsgToTF(msg.pose.pose.position,point);
+    tf::Quaternion quat;
+    quat.normalize();
+    tf::quaternionMsgToTF(msg.pose.pose.orientation,quat);
+    this->current_pose.setOrigin(this->world2odom.getOrigin()+point);
+    this->current_pose.setRotation(this->world2odom.getRotation()*quat);
     
-// }
+}
 
 void Controller::input_state_callback(nav_msgs::Odometry msg)
 {
@@ -228,8 +248,8 @@ void Controller::getTransformation()
     try
     {
         this->listener->lookupTransform(this->world_frame,this->name+"/base_footprint",ros::Time(0),this->world2robot);
-        this->current_pose.setOrigin(this->world2robot.getOrigin());
-        this->current_pose.setRotation(this->world2robot.getRotation());
+
+        this->listener->lookupTransform(this->world_frame,this->name+"/odom_comb",ros::Time(0),this->world2odom);
     }
     catch (tf::TransformException ex)
     {
@@ -267,10 +287,13 @@ void Controller::calc_Lyapunov(double kx, double kphi,double vd,double omegad)
     world2target.setRotation(this->target_pose.getRotation());
 
     this->control_dif.setOrigin(this->world2robot.inverse()*(target_pose.getOrigin()-current_pose.getOrigin()));
-    this->control_dif.setRotation((this->world2robot.inverse()*target_pose.getRotation()-current_pose.getRotation()));
+    this->control_dif.setRotation(this->world2robot.inverse()*(target_pose.getRotation()-current_pose.getRotation()));
 
     tf::Vector3 posr=this->control_dif.getOrigin();
-    double rot=control_dif.getRotation().getAngle();
+    double rot=this->target_pose.getRotation().getAngle()-this->current_pose.getRotation().getAngle();
+    ROS_INFO("dx: %lf dy: %lf",posr.x(),posr.y());
+    ROS_INFO("Angle: %lf",rot);
+
 
     this->lin_vel_out.setX(kx*posr.getX()+vd*cos(rot));
     this->ang_vel_out.setZ(kphi*sin(rot)+vd*posr.getY()+omegad);
@@ -284,7 +307,7 @@ void Controller::scope()
     switch(this->type)
     {
         case pseudo_inverse: break;
-        case lypanov:this->calc_Lyapunov(0.7,0.7,0.3,0.3);break;
+        case lypanov:this->calc_Lyapunov(0.1,0.1,1.0,1.0);break;
         default: break;
     }
 }
