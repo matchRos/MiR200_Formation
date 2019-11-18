@@ -18,7 +18,6 @@
     </include>  
   
 <node name="Master_ctr" pkg="master" type="master_node" args="$(arg robot_name) /key_vel " output="$(arg displ)"></node>
-<node name="record" pkg="rosbag" type="record" args="record -o $(find multi_robot_launcher)/bag/controller $(arg robot_name)/mobile_base_controller/odom $(arg robot_name)/control_dif /tf"  /> 
    
 </group> 
 </launch>

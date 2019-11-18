@@ -2,17 +2,17 @@
 robot1:
   world_frame: "/map"
 
-  topic_input_velocity: "/robot_master/mobile_base_controller/cmd_vel"
-  topic_output_velocity: "mobile_base_controller/cmd_vel"
-
   topic_input_odometry: "mobile_base_controller/odom"
-  topic_output_state: "state"
 
-  topic_output_control_dif: "control_diff"
+  topic_target_velocity: "/key_vel"
+  
+
+  topic_target_state: "/dummie"
+  
 
   coord: [-1.25,1.25,0.0]
 
-  controller_type: 1                            # 1-> pseudo_invers 2->lyapov
+  controller_type: 2                            # 1-> pseudo_invers 2->lyapov
 
 
 
@@ -20,28 +20,28 @@ robot1:
 robot2:
   world_frame: "/map"
 
-  topic_input_velocity: "/robot_master/mobile_base_controller/cmd_vel"
-  topic_output_velocity: "mobile_base_controller/cmd_vel"    
+  topic_input_odometry:  "mobile_base_controller/odom"
 
-  topic_input_odometry: "mobile_base_controller/odom"
-  topic_output_state: "state"
-
-  topic_output_control_dif: "control_diff"
+  topic_target_velocity: "/key_vel"
   
+
+  topic_target_state: "/dummie" 
+  
+
   coord: [-1.25,-1.25,0.0]
 
-  controller_type: 1                            # 1-> pseudo_invers 2->lyapov
+  controller_type: 2                            # 1-> pseudo_invers 2->lyapov
+
 
 
 
 robot_master:
   world_frame: "/map"
 
-  topic_input_odometry: "base_pose_ground_truth"
+  topic_input_odometry: "mobile_base_controller/odom"
 
   topic_target_velocity: "/key_vel"
   
-  topic_current_state: "none_odom_state"
   topic_target_state: "/move_base_simple/goal"
   
 

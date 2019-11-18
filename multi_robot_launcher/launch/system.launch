@@ -6,8 +6,6 @@
  <param name="/frequency" value="10" />
 
 
-<!-- HARD CODED!!! DANGER -->
-<node name="record" pkg="rosbag" type="record" args="record -O $(find multi_robot_launcher)/bag/controller /robot_master/mobile_base_controller/odom /robot_master/control_dif /tf"  /> 
 
 
 <rosparam file="$(find multi_robot_launcher)/config/formation.yaml" command="load"></rosparam>
@@ -23,7 +21,7 @@
 </include>
 
 
-<!-- 
+
 <include file="$(find slave)/launch/slave.launch">
   <arg name="robot_name" value="robot1"/>
   <arg name="robot_x"   value="-1.25" />
@@ -37,7 +35,7 @@
   <arg name="robot_x"   value="-1.25" />
   <arg name="robot_y"   value="-1.25" />
   <arg name="name_master" value="robot_master"/>
-</include> -->
+</include>
 
 
 

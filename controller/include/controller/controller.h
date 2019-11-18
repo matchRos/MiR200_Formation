@@ -78,7 +78,7 @@ class Controller{
         ///link Controller to it's current state input topic
         ///'topic_name'Name of the topic the Controller reads its state from                       
         void link_current_state(std::string topic_name); 
-        ///link Controller to it's state topic
+         ///link Controller to it's state topic
         ///'topic_name' Name of the topic the Controller gets its target state from                       
         void link_target_state(std::string topic_name);      
         ///link Controller to it's input topic
@@ -115,11 +115,13 @@ class Controller{
         /// Callback for input velocitiy message. Is executed everytima a velocitiy input is incoming. Writes data to input state
         void target_velocities_callback(geometry_msgs::Twist msg);         
         /// Callback for input odometry message. Is executed everytima a Odometry input is incoming. Writes data to input current_pose
-        void current_odom_callback(nav_msgs::Odometry msg);     
+        void current_odom_callback(nav_msgs::Odometry msg);
         /// Callback for input current state message. Is executed everytima a Odometry input is incoming. Writes data to input current_pose
-        void current_state_callback(geometry_msgs::PoseStamped msg);                  
+        void current_state_callback(geometry_msgs::PoseStamped msg);          
         /// Callback for input target state message. Is executed everytima a target state input is incoming. Writes data to target_pose state
         void target_state_callback(geometry_msgs::PoseStamped msg);   
+
+      
                 
 
         
@@ -137,9 +139,9 @@ class Controller{
         ros::Subscriber odom_current;                                    //Subscriber object for odometry
         ros::Subscriber state_target;                                //Subscriber object for target state of controller
         ros::Subscriber state_current;                           //Subscriber object for current robot state
-
-
       
+
+
 
         std::string name;                                       //Name of the node and Controller
         std::string world_frame;                                //Name of the world frame
@@ -167,4 +169,7 @@ class Controller{
         double kphi;
         double omegad;
         double vd;
+
+
+        
 };

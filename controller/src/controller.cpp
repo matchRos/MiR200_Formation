@@ -14,7 +14,7 @@ Controller::Controller(ros::NodeHandle &nh):    nh(nh),
     
     this->vel_target=this->nh.subscribe("/in",10,&Controller::target_velocities_callback,this);
     this->state_target=this->nh.subscribe("/state_target",10,&Controller::target_state_callback,this);
-    this->state_current=this->nh.subscribe("/state_current",10,&Controller::current_state_callback,this);
+     this->state_current=this->nh.subscribe("/state_current",10,&Controller::current_state_callback,this);
     this->odom_current=this->nh.subscribe("/odom_current",10,&Controller::current_odom_callback,this);
 
     this->current_pose.setOrigin(tf::Vector3(0,0,0));
@@ -58,7 +58,9 @@ void Controller::set_reference(double x,double y,double z)
     this->reference_pose.setRotation(tf::Quaternion(0,0,0,1));
 
     this->current_pose=this->reference_pose;
-
+    this->target_pose=this->current_pose;
+    ROS_INFO("CURRENT: %lf %lf %lf",this->current_pose.getOrigin().getX(),this->current_pose.getOrigin().getY(),this->current_pose.getOrigin().getZ());
+    
 
 
     //Publis the trasnformation of a single controller instance to its refernece coordinate system
@@ -88,19 +90,13 @@ void Controller::set_reference(double x,double y,double z)
 
 void Controller::set_reference(std::vector<double> coord)
 {
-    double x=coord[0];
-    double y=coord[1];
-    double z=coord[2];
-    this->set_reference(x,y,z);
-
+    this->set_reference(coord[0],coord[1],coord[2]);
 }
 
 
 
 void Controller::set_type(Controller::controllerType type)
 {
-    int i;
-
     ROS_INFO("Setting controller type of %s to: %i",this->name.c_str(),this->type);
     this->type=type;
 }
@@ -118,11 +114,12 @@ void Controller::load()
 
     ros::param::get(PARAM_WORLD_FRAME,param);
     ROS_INFO("Loading %s",PARAM_WORLD_FRAME);
-    this->set_world_frame(param);   
-   
+    this->set_world_frame(param); 
+
     ros::param::get(PARAM_CURRENT_STATE,param);
     ROS_INFO("Loading %s",PARAM_CURRENT_STATE);
     this->link_current_state(param);  
+
 
     ros::param::get(PARAM_CURRENT_ODOM,param);
     ROS_INFO("Loading %s",PARAM_CURRENT_ODOM);
@@ -254,12 +251,15 @@ void Controller::current_odom_callback(nav_msgs::Odometry msg)
     quat.normalize();
     this->current_pose.setOrigin(this->world2odom.getOrigin()+point);
     this->current_pose.setRotation(this->world2odom.getRotation()*quat);
+    ROS_INFO("ODOM: %lf %lf %lf",this->current_pose.getOrigin().getX(),this->current_pose.getOrigin().getY(),this->current_pose.getOrigin().getZ());
+    
     
 }
 
 void Controller::target_state_callback(geometry_msgs::PoseStamped msg)
 {
     tf::poseMsgToTF(msg.pose,this->target_pose);
+    this->target_pose=this->reference_pose;
 }
 
 void Controller::current_state_callback(geometry_msgs::PoseStamped msg)
@@ -313,17 +313,20 @@ void Controller::publish()
 
 void Controller::calc_Lyapunov(double kx, double ky, double kphi,double vd,double omegad)
 {
+   
     tf::Pose relative;
     relative=this->current_pose.inverseTimes(this->target_pose);
+    this->control_dif=relative;
+
     double x=relative.getOrigin().getX();
     double y=relative.getOrigin().getY();
     double phi=tf::getYaw(relative.getRotation());
 
-    ROS_INFO("Controller: x: %lf /t y: %lf /t phi: %lf",x,y,phi);
+    ROS_INFO("Controller: x: %lf  y: %lf  phi: %lf",x,y,phi);
     this->lin_vel_out.setX(kx*x+vd*cos(phi));
     this->ang_vel_out.setZ(kphi*sin(phi)+ky*vd*y+omegad);
 
-    this->control_dif=relative;
+ 
 }
 
 
