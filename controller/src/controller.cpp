@@ -259,12 +259,11 @@ void Controller::current_odom_callback(nav_msgs::Odometry msg)
 void Controller::target_state_callback(geometry_msgs::PoseStamped msg)
 {
     tf::poseMsgToTF(msg.pose,this->target_pose);
-    this->target_pose=this->reference_pose;
 }
 
 void Controller::current_state_callback(geometry_msgs::PoseStamped msg)
 {
-    //tf::poseMsgToTF(msg.pose,this->current_pose);
+    tf::poseMsgToTF(msg.pose,this->current_pose);
 }
 
 

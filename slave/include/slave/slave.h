@@ -14,20 +14,13 @@
      
 class Slave:public Controller{
     public:
-        Slave(ros::NodeHandle &nh); 
-
-        ///link Controller to it's masters odom input topic
-        ///'topic_name'Name of the topic the Controller reads its oddom from                       
-        void link_master_odom(std::string topic_name); 
-
+        Slave(ros::NodeHandle &nh);        
         void scope();        
 
     private:
-        /// Callback for master odometry message. Is executed everytima a Odometry input is incoming. Writes data to input current_pose
-        void master_odom_callback(nav_msgs::Odometry msg);
-        ///This implements a least sqaures determination of control vector [v,omega] [control.v control.omega] 
+         ///This implements a least sqaures determination of control vector [v,omega] [control.v control.omega] 
         ///from the given cartesian velocity state d/dt[x,y,phi] (cart_vel)
         void optimal_control();
-       
-       ros::Subscriber master_odom;
+        void target_state_callback(geometry_msgs::PoseStamped msg) ; 
+
 };

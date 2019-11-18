@@ -119,7 +119,7 @@ class Controller{
         /// Callback for input current state message. Is executed everytima a Odometry input is incoming. Writes data to input current_pose
         void current_state_callback(geometry_msgs::PoseStamped msg);          
         /// Callback for input target state message. Is executed everytima a target state input is incoming. Writes data to target_pose state
-        void target_state_callback(geometry_msgs::PoseStamped msg);   
+        virtual void target_state_callback(geometry_msgs::PoseStamped msg);   
 
       
                 
