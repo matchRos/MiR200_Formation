@@ -10,9 +10,7 @@ Panels:
         - /Master/Pose_True1/Shape1
         - /Robot1_truth1/Shape1
         - /Robot2_truth1
-        - /Robot2_truth1/Status1
         - /Master_truth1
-        - /Master_truth1/Status1
       Splitter Ratio: 0.5
     Tree Height: 916
   - Class: rviz/Selection
@@ -63,94 +61,6 @@ Visualization Manager:
       Frames:
         All Enabled: false
         map:
-          Value: false
-        robot1/back_laser_link:
-          Value: false
-        robot1/base_footprint:
-          Value: false
-        robot1/base_link:
-          Value: true
-        robot1/bl_caster_rotation_link:
-          Value: false
-        robot1/bl_caster_wheel_link:
-          Value: false
-        robot1/br_caster_rotation_link:
-          Value: false
-        robot1/br_caster_wheel_link:
-          Value: false
-        robot1/camera_link:
-          Value: false
-        robot1/camera_link_optical:
-          Value: false
-        robot1/fl_caster_rotation_link:
-          Value: false
-        robot1/fl_caster_wheel_link:
-          Value: false
-        robot1/fr_caster_rotation_link:
-          Value: false
-        robot1/fr_caster_wheel_link:
-          Value: false
-        robot1/front_laser_link:
-          Value: false
-        robot1/imu_frame:
-          Value: false
-        robot1/imu_link:
-          Value: false
-        robot1/left_wheel_link:
-          Value: false
-        robot1/odom_comb:
-          Value: false
-        robot1/right_wheel_link:
-          Value: false
-        robot1/surface:
-          Value: false
-        robot1/us_1_frame:
-          Value: false
-        robot1/us_2_frame:
-          Value: false
-        robot2/back_laser_link:
-          Value: false
-        robot2/base_footprint:
-          Value: false
-        robot2/base_link:
-          Value: true
-        robot2/bl_caster_rotation_link:
-          Value: false
-        robot2/bl_caster_wheel_link:
-          Value: false
-        robot2/br_caster_rotation_link:
-          Value: false
-        robot2/br_caster_wheel_link:
-          Value: false
-        robot2/camera_link:
-          Value: false
-        robot2/camera_link_optical:
-          Value: false
-        robot2/fl_caster_rotation_link:
-          Value: false
-        robot2/fl_caster_wheel_link:
-          Value: false
-        robot2/fr_caster_rotation_link:
-          Value: false
-        robot2/fr_caster_wheel_link:
-          Value: false
-        robot2/front_laser_link:
-          Value: false
-        robot2/imu_frame:
-          Value: false
-        robot2/imu_link:
-          Value: false
-        robot2/left_wheel_link:
-          Value: false
-        robot2/odom_comb:
-          Value: false
-        robot2/right_wheel_link:
-          Value: false
-        robot2/surface:
-          Value: false
-        robot2/us_1_frame:
-          Value: false
-        robot2/us_2_frame:
           Value: false
         robot_master/back_laser_link:
           Value: false
@@ -203,76 +113,6 @@ Visualization Manager:
       Show Names: false
       Tree:
         map:
-          robot1/odom_comb:
-            robot1/base_footprint:
-              robot1/base_link:
-                robot1/back_laser_link:
-                  {}
-                robot1/bl_caster_rotation_link:
-                  robot1/bl_caster_wheel_link:
-                    {}
-                robot1/br_caster_rotation_link:
-                  robot1/br_caster_wheel_link:
-                    {}
-                robot1/camera_link:
-                  robot1/camera_link_optical:
-                    {}
-                robot1/fl_caster_rotation_link:
-                  robot1/fl_caster_wheel_link:
-                    {}
-                robot1/fr_caster_rotation_link:
-                  robot1/fr_caster_wheel_link:
-                    {}
-                robot1/front_laser_link:
-                  {}
-                robot1/imu_link:
-                  robot1/imu_frame:
-                    {}
-                robot1/left_wheel_link:
-                  {}
-                robot1/right_wheel_link:
-                  {}
-                robot1/surface:
-                  {}
-                robot1/us_1_frame:
-                  {}
-                robot1/us_2_frame:
-                  {}
-          robot2/odom_comb:
-            robot2/base_footprint:
-              robot2/base_link:
-                robot2/back_laser_link:
-                  {}
-                robot2/bl_caster_rotation_link:
-                  robot2/bl_caster_wheel_link:
-                    {}
-                robot2/br_caster_rotation_link:
-                  robot2/br_caster_wheel_link:
-                    {}
-                robot2/camera_link:
-                  robot2/camera_link_optical:
-                    {}
-                robot2/fl_caster_rotation_link:
-                  robot2/fl_caster_wheel_link:
-                    {}
-                robot2/fr_caster_rotation_link:
-                  robot2/fr_caster_wheel_link:
-                    {}
-                robot2/front_laser_link:
-                  {}
-                robot2/imu_link:
-                  robot2/imu_frame:
-                    {}
-                robot2/left_wheel_link:
-                  {}
-                robot2/right_wheel_link:
-                  {}
-                robot2/surface:
-                  {}
-                robot2/us_1_frame:
-                  {}
-                robot2/us_2_frame:
-                  {}
           robot_master/odom_comb:
             {}
         robot_master/base_footprint:
@@ -518,230 +358,34 @@ Visualization Manager:
     - Alpha: 0.5
       Class: rviz/RobotModel
       Collision Enabled: false
-      Enabled: true
+      Enabled: false
       Links:
         All Links Enabled: true
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
-        back_laser_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        base_footprint:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        bl_caster_rotation_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        bl_caster_wheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        br_caster_rotation_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        br_caster_wheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        camera_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        camera_link_optical:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        fl_caster_rotation_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        fl_caster_wheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        fr_caster_rotation_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        fr_caster_wheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        front_laser_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        imu_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        imu_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        left_wheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        right_wheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        surface:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        us_1_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        us_2_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
       Name: Robot1
       Robot Description: robot_description
       TF Prefix: robot1
       Update Interval: 0
-      Value: true
+      Value: false
       Visual Enabled: true
     - Alpha: 0.5
       Class: rviz/RobotModel
       Collision Enabled: false
-      Enabled: true
+      Enabled: false
       Links:
         All Links Enabled: true
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
-        back_laser_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        base_footprint:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        bl_caster_rotation_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        bl_caster_wheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        br_caster_rotation_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        br_caster_wheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        camera_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        camera_link_optical:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        fl_caster_rotation_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        fl_caster_wheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        fr_caster_rotation_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        fr_caster_wheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        front_laser_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        imu_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        imu_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        left_wheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        right_wheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        surface:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        us_1_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        us_2_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
       Name: Robot2
       Robot Description: robot_description
       TF Prefix: robot2
       Update Interval: 0
-      Value: true
+      Value: false
       Visual Enabled: true
     - Alpha: 0.5
       Class: rviz/RobotModel
@@ -963,7 +607,7 @@ Visualization Manager:
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: robot_master/base_link
+    Fixed Frame: map
     Frame Rate: 30
   Name: root
   Tools:
@@ -984,7 +628,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 7.27499199
+      Distance: 17.2456207
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1

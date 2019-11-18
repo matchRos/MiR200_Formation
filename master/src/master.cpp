@@ -2,11 +2,6 @@
 
 Master::Master(ros::NodeHandle &nh):Controller(nh)
 {
-    this->kx=3;
-    this->kphi=3;
-    this->omegad=1.0;
-    this->vd=1.0;
-
 }
 void Master::scope()
 {

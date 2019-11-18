@@ -14,20 +14,13 @@
 
 
 #define PARAM_IN_VEL "topic_input_velocity"
-#define PARAM_OUT_VEL "topic_output_velocity"
 #define PARAM_IN_ODOM "topic_input_odometry"
-#define PARAM_OUT_STATE "topic_output_state"
-#define PARAM_X  "x_coord"
-#define PARAM_Y  "y_coord"
-#define PARAM_GAINS
+#define PARAM_IN_STATE "topic_input_state"
+
+#define PARAM_COORD "coord"
 #define PARAM_WORLD_FRAME "world_frame"
 #define PARAM_TYPE "controller_type"
-#define PARAM_CONTROL_DIFF "control_diff"
-
-#define PARAM_CONTROLLER_KX "Kx"
-#define PARAM_CONTROLLER_KPHI "Kphi"
-#define PARAM_CONTROLLER_OMEGAD "omegad" 
-#define PARAM_CONTROLLER_VD "vd"
+#define PARAM_LYAPUNOV "/algorythm/lyapunov"
 
 
 class Controller{
@@ -52,7 +45,10 @@ class Controller{
         ///param: double x: x Position
         ///param: double y: y Position
         ///param: double z: z Position
-        void set_reference(double x,double y,double z);   
+        void set_reference(double x,double y,double z); 
+        ///Initialise the coordinate system of the Controller to position
+        ///param: vector<double> coord: Position vector    
+        void set_reference(std::vector<double> coord);     
         ///Set the name of the reference/world frame
         ///param: frame : Name of the frame in tf tree
         void set_world_frame(std::string frame);      
@@ -64,6 +60,8 @@ class Controller{
         ///Loading ros parameter and calling load_parameter inside
         void load();
 
+
+        
 
         
         //Methods for linking the Controller with important topics as input output an odom
@@ -112,7 +110,7 @@ class Controller{
         /// Callback for input odometry message. Is executed everytima a Odometry input is incoming. Writes data to input current_pose
         void input_odom_callback(nav_msgs::Odometry msg);              
         /// Callback for input target state message. Is executed everytima a target state input is incoming. Writes data to target_pose state
-        void input_state_callback(nav_msgs::Odometry msg);   
+        void input_state_callback(geometry_msgs::PoseStamped msg);   
                 
 
         

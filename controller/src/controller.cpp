@@ -13,7 +13,6 @@ Controller::Controller(ros::NodeHandle &nh):    nh(nh),
     this->control_difference=this->nh.advertise<geometry_msgs::Transform>("/control_difference",10);
 
     this->vel_in=this->nh.subscribe("/in",10,&Controller::input_velocities_callback,this);
-    //this->odom=this->nh.subscribe("/odom",10,&Controller::input_odom_callback,this);
     this->state_in=this->nh.subscribe("/state_in",10,&Controller::input_state_callback,this);
 
     this->current_pose.setOrigin(tf::Vector3(0,0,0));
@@ -28,9 +27,13 @@ Controller::~Controller()
 {
     delete this->listener;
 }
+
+
+
+
+
 //################################################################################################
 //Setter
-
 
 void Controller::set_reference(double x,double y,double z)
 {
@@ -59,8 +62,19 @@ void Controller::set_reference(double x,double y,double z)
     static_transformStamped.transform.rotation.w=1;
     static_broadcaster.sendTransform(static_transformStamped);
 
+    ROS_INFO("Set coordiantes of: %s to: %lf %lf %lf",this->name.c_str(),x,y,z);
 
 }
+
+void Controller::set_reference(std::vector<double> coord)
+{
+    double x=coord[0];
+    double y=coord[1];
+    double z=coord[2];
+    this->set_reference(x,y,z);
+
+}
+
 
 void Controller::set_name(std::string name)
 {
@@ -97,47 +111,39 @@ void Controller::load()
     ros::param::get(PARAM_WORLD_FRAME,param);
     ROS_INFO("Loading %s",PARAM_WORLD_FRAME);
     this->set_world_frame(param);   
-
    
-    ROS_INFO("Loading %s ",PARAM_IN_ODOM);
     ros::param::get(PARAM_IN_ODOM,param);
-    this->link_input_odom(param);
+    ROS_INFO("Loading %s ",PARAM_IN_ODOM);
+    this->link_input_odom(param);    
     
-    // ros::param::get(PARAM_OUT_STATE,param);
-    // ROS_INFO("Loading %s ",PARAM_OUT_STATE);
-    // this->link_output_state(param);
 
     ros::param::get(PARAM_IN_VEL,param);
     ROS_INFO("Loading %s ",PARAM_IN_VEL);
     this->link_input_velocity(param);
 
-    // ros::param::get(PARAM_OUT_VEL,param);
-    // ROS_INFO("Loading %s ",PARAM_OUT_VEL);
-    // this->link_output_velocity(param);
+    ros::param::get(PARAM_IN_STATE,param);
+    ROS_INFO("Loading %s ",PARAM_IN_STATE);
+    this->link_input_state(param);
 
-    // ros::param::get(PARAM_CONTROL_DIFF,param);
-    // ROS_INFO("Loading %s ",PARAM_CONTROL_DIFF);
-    // this->link_(param);
+
 
     int i;
     ros::param::get(PARAM_TYPE,i);
     ROS_INFO("Loading %s ",PARAM_TYPE);
     this->set_type(static_cast<Controller::controllerType>(i));
 
-    double x;
-    double y;
-    ros::param::get(PARAM_X,x);
-    ros::param::get(PARAM_Y,y);
-    ROS_INFO("Loading coordinates %s : %lf , %lf ",this->name.c_str(),x,y);
-    this->set_reference(x,y,0.0);
+    std::vector<double> coord;
+    ros::param::get(PARAM_COORD,coord);
+    ROS_INFO("Loading %s ",PARAM_COORD);
+    this->set_reference(coord);
 
 
-    // ros::param::get(PARAM_CONTROLLER_KX,this->kx);
-    // ros::param::get(PARAM_CONTROLLER_KPHI,this->kphi);
-    // ros::param::get(PARAM_CONTROLLER_OMEGAD,this->kx);
-    // ros::param::get(PARAM_CONTROLLER_VD,this->kx);
-    
-
+    std::vector<double> temp;
+    ros::param::get(PARAM_LYAPUNOV,temp);
+    this->kx=temp[0];
+    this->kphi=temp[1];
+    this->vd=temp[2];
+    this->omegad=temp[3];
 
     load_parameter();
 }
@@ -147,6 +153,11 @@ void Controller::load_parameter()
 {
     
 }
+
+
+
+
+
 
 //################################################################################################
 //Linking important topics/transformations
@@ -225,15 +236,9 @@ void Controller::input_odom_callback(nav_msgs::Odometry msg)
     
 }
 
-void Controller::input_state_callback(nav_msgs::Odometry msg)
+void Controller::input_state_callback(geometry_msgs::PoseStamped msg)
 {
-    tf::Point point;
-    tf::pointMsgToTF(msg.pose.pose.position,point);
-    tf::Quaternion quat;
-    quat.normalize();  
-    tf::quaternionMsgToTF(msg.pose.pose.orientation,quat);      
-    this->target_pose.setOrigin(point);
-    this->target_pose.setRotation(quat);   
+    tf::poseMsgToTF(msg.pose,this->target_pose);
 }
 
 

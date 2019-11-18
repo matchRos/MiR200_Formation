@@ -10,8 +10,7 @@ robot1:
 
   topic_output_control_dif: "control_diff"
 
-  x_coord: -1.25
-  y_coord: 1.25
+  coord: [-1.25,1.25,0.0]
 
   controller_type: 1                            # 1-> pseudo_invers 2->lyapov
 
@@ -29,8 +28,7 @@ robot2:
 
   topic_output_control_dif: "control_diff"
   
-  x_coord: -1.25
-  y_coord: -1.25
+  coord: [-1.25,-1.25,0.0]
 
   controller_type: 1                            # 1-> pseudo_invers 2->lyapov
 
@@ -43,13 +41,9 @@ robot_master:
   topic_output_velocity: "mobile_base_controller/cmd_vel"
 
   topic_input_odometry: "mobile_base_controller/odom"
-  topic_output_state: "state"
+  topic_input_state: "/move_base_simple/goal"
 
-  topic_output_control_dif: "control_diff"  
-
-
-  x_coord: 0.0
-  y_coord: 0.0
+  coord: [0.0,0.0,0.0]
 
   controller_type: 2                            # 1-> pseudo_invers 2->lyapov
 
