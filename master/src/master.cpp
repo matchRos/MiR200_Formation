@@ -12,7 +12,7 @@ void Master::scope()
             this->ang_vel_out=this->ang_vel_in;
             break;
         case lypanov:
-            this->calc_Lyapunov(this->kx,this->kphi,this->vd,this->omegad);
+            this->calc_Lyapunov(this->kx,this->ky,this->kphi,this->vd,this->omegad);
             break;
         default: 
             break;

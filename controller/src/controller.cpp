@@ -6,17 +6,19 @@ Controller::Controller(ros::NodeHandle &nh):    nh(nh),
 {
     this->listener=new tf::TransformListener(nh);
     
-    set_name("my_slave");
+    this->name="my_slave";
  
     this->vel_out=this->nh.advertise<geometry_msgs::Twist>("/out",10);
     this->state_out=this->nh.advertise<geometry_msgs::PoseStamped>("/state_out",10);
     this->control_difference=this->nh.advertise<geometry_msgs::Transform>("/control_difference",10);
-
-    this->vel_in=this->nh.subscribe("/in",10,&Controller::input_velocities_callback,this);
-    this->state_in=this->nh.subscribe("/state_in",10,&Controller::input_state_callback,this);
+    
+    this->vel_target=this->nh.subscribe("/in",10,&Controller::target_velocities_callback,this);
+    this->state_target=this->nh.subscribe("/state_target",10,&Controller::target_state_callback,this);
+    this->state_current=this->nh.subscribe("/state_current",10,&Controller::current_state_callback,this);
+    this->odom_current=this->nh.subscribe("/odom_current",10,&Controller::current_odom_callback,this);
 
     this->current_pose.setOrigin(tf::Vector3(0,0,0));
-     this->current_pose.setRotation(tf::Quaternion(0,0,0,1));
+    this->current_pose.setRotation(tf::Quaternion(0,0,0,1));
     this->target_pose.setOrigin(tf::Vector3(0,0,0));   
     this->target_pose.setRotation(tf::Quaternion(0,0,0,1));
     this->control_dif.setOrigin(tf::Vector3(0,0,0));
@@ -35,6 +37,19 @@ Controller::~Controller()
 //################################################################################################
 //Setter
 
+void Controller::set_name(std::string name)
+{
+    this->name=name;
+    this->nh.resolveName(name);
+
+    this->link_output_velocity("mobile_base_controller/cmd_vel");
+    this->link_output_state("state");
+    this->link_output_ctrldiff("control_dif");
+    this->link_target_state("state_in");
+
+   
+}
+
 void Controller::set_reference(double x,double y,double z)
 {
 
@@ -50,12 +65,17 @@ void Controller::set_reference(double x,double y,double z)
     static tf2_ros::StaticTransformBroadcaster static_broadcaster;
     geometry_msgs::TransformStamped static_transformStamped;
 
+    
+
+
     static_transformStamped.header.stamp = ros::Time::now();
     static_transformStamped.header.frame_id =this->world_frame ;
     static_transformStamped.child_frame_id = this->name+"/odom_comb";
     static_transformStamped.transform.translation.x=x;
     static_transformStamped.transform.translation.y=y;
     static_transformStamped.transform.translation.z=z;
+    
+
     static_transformStamped.transform.rotation.x=0;
     static_transformStamped.transform.rotation.y=0;
     static_transformStamped.transform.rotation.z=0;
@@ -76,18 +96,6 @@ void Controller::set_reference(std::vector<double> coord)
 }
 
 
-void Controller::set_name(std::string name)
-{
-    this->name=name;
-    this->nh.resolveName(name);
-
-    this->link_output_velocity("mobile_base_controller/cmd_vel");
-    this->link_output_state("state");
-    this->link_control_difference("control_dif");
-    this->link_input_state("state_in");
-
-   
-}
 
 void Controller::set_type(Controller::controllerType type)
 {
@@ -112,18 +120,22 @@ void Controller::load()
     ROS_INFO("Loading %s",PARAM_WORLD_FRAME);
     this->set_world_frame(param);   
    
-    ros::param::get(PARAM_IN_ODOM,param);
-    ROS_INFO("Loading %s ",PARAM_IN_ODOM);
-    this->link_input_odom(param);    
-    
+    ros::param::get(PARAM_CURRENT_STATE,param);
+    ROS_INFO("Loading %s",PARAM_CURRENT_STATE);
+    this->link_current_state(param);  
 
-    ros::param::get(PARAM_IN_VEL,param);
-    ROS_INFO("Loading %s ",PARAM_IN_VEL);
-    this->link_input_velocity(param);
+    ros::param::get(PARAM_CURRENT_ODOM,param);
+    ROS_INFO("Loading %s",PARAM_CURRENT_ODOM);
+    this->link_current_odom(param);
 
-    ros::param::get(PARAM_IN_STATE,param);
-    ROS_INFO("Loading %s ",PARAM_IN_STATE);
-    this->link_input_state(param);
+
+    ros::param::get(PARAM_TARGET_VEL,param);
+    ROS_INFO("Loading %s ",PARAM_TARGET_VEL);
+    this->link_target_velocity(param);
+
+    ros::param::get(PARAM_TARGET_STATE,param);
+    ROS_INFO("Loading %s ",PARAM_TARGET_STATE);
+    this->link_target_state(param);
 
 
 
@@ -141,9 +153,10 @@ void Controller::load()
     std::vector<double> temp;
     ros::param::get(PARAM_LYAPUNOV,temp);
     this->kx=temp[0];
-    this->kphi=temp[1];
-    this->vd=temp[2];
-    this->omegad=temp[3];
+    this->ky=temp[1];
+    this->kphi=temp[2];
+    this->vd=temp[3];
+    this->omegad=temp[4];
 
     load_parameter();
 }
@@ -159,33 +172,39 @@ void Controller::load_parameter()
 
 
 
-//################################################################################################
-//Linking important topics/transformations
-
+ /*Linking topics #################################################################################################################################
+##################################################################################################################################################*/
+        
 //INPUTS
-void Controller::link_input_velocity(std::string topic_name)
+
+void Controller::link_current_odom(std::string topic_name)
 {
-    this->vel_in.shutdown();
+    this->odom_current.shutdown();
+    ROS_INFO("Linking input currnet odometry of %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
+    this->odom_current=this->nh.subscribe(topic_name,10,&Controller::current_odom_callback,this);
+}
+
+void Controller::link_current_state(std::string topic_name)
+{
+    this->state_current.shutdown();
+    ROS_INFO("Linking current state of %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
+    this->state_current=this->nh.subscribe(topic_name,10,&Controller::current_state_callback,this);
+}
+
+
+void Controller::link_target_state(std::string topic_name)
+{
+    this->state_target.shutdown();
+    ROS_INFO("Linking target state %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
+    this->state_target=this->nh.subscribe(topic_name,10,&Controller::target_state_callback,this);
+}
+
+void Controller::link_target_velocity(std::string topic_name)
+{
+    this->vel_target.shutdown();
     ROS_INFO("Linking input velocity %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
-    this->vel_in=this->nh.subscribe(topic_name,10,&Controller::input_velocities_callback,this);
+    this->vel_target=this->nh.subscribe(topic_name,10,&Controller::target_velocities_callback,this);
 }
-
-void Controller::link_input_odom(std::string topic_name)
-{
-    this->odom.shutdown();
-    ROS_INFO("Linking input odom %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
-    this->odom=this->nh.subscribe(topic_name,10,&Controller::input_odom_callback,this);
-}
-
-
-void Controller::link_input_state(std::string topic_name)
-{
-    this->state_in.shutdown();
-    ROS_INFO("Linking input state %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
-    this->state_in=this->nh.subscribe(topic_name,10,&Controller::input_state_callback,this);
-}
-
-
 
 
 ///OUTPUTS
@@ -204,7 +223,7 @@ void Controller::link_output_state(std::string topic_name)
     this->state_out=this->nh.advertise<geometry_msgs::PoseStamped>(topic_name,10);
 }
 
-void Controller::link_control_difference(std::string topic_name)
+void Controller::link_output_ctrldiff(std::string topic_name)
 {
     this->control_difference.shutdown();
     ROS_INFO("Linking control difference %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
@@ -215,38 +234,46 @@ void Controller::link_control_difference(std::string topic_name)
 
 
 
-//################################################################################################
-//callback methods
+ /*Callbacks########################################################################################################################################
+##################################################################################################################################################*/
+        
 
-void Controller::input_velocities_callback(geometry_msgs::Twist msg)
+void Controller::target_velocities_callback(geometry_msgs::Twist msg)
 {
     tf::vector3MsgToTF(msg.linear,this->lin_vel_in);
     tf::vector3MsgToTF(msg.angular,this->ang_vel_in);
 }
 
-void Controller::input_odom_callback(nav_msgs::Odometry msg)
+void Controller::current_odom_callback(nav_msgs::Odometry msg)
 {
     tf::Point point;
     tf::pointMsgToTF(msg.pose.pose.position,point);
     tf::Quaternion quat;
     quat.normalize();
     tf::quaternionMsgToTF(msg.pose.pose.orientation,quat);
+    quat.normalize();
     this->current_pose.setOrigin(this->world2odom.getOrigin()+point);
     this->current_pose.setRotation(this->world2odom.getRotation()*quat);
     
 }
 
-void Controller::input_state_callback(geometry_msgs::PoseStamped msg)
+void Controller::target_state_callback(geometry_msgs::PoseStamped msg)
 {
     tf::poseMsgToTF(msg.pose,this->target_pose);
+}
+
+void Controller::current_state_callback(geometry_msgs::PoseStamped msg)
+{
+    //tf::poseMsgToTF(msg.pose,this->current_pose);
 }
 
 
 
 
 
-//################################################################################################
-//calculations and scope functions
+
+/*Calculations and executions ####################################################################################################################
+##################################################################################################################################################*/
 
 void Controller::getTransformation()
 {
@@ -284,24 +311,19 @@ void Controller::publish()
     this->control_difference.publish(trafo);
 }
 
-void Controller::calc_Lyapunov(double kx, double kphi,double vd,double omegad)
+void Controller::calc_Lyapunov(double kx, double ky, double kphi,double vd,double omegad)
 {
-    //calculate control differences
-    tf::Transform world2target;
-    world2target.setOrigin(this->target_pose.getOrigin());
-    world2target.setRotation(this->target_pose.getRotation());
+    tf::Pose relative;
+    relative=this->current_pose.inverseTimes(this->target_pose);
+    double x=relative.getOrigin().getX();
+    double y=relative.getOrigin().getY();
+    double phi=tf::getYaw(relative.getRotation());
 
-    this->control_dif.setOrigin(this->world2robot.inverse()*(target_pose.getOrigin()-current_pose.getOrigin()));
-    this->control_dif.setRotation(this->world2robot.inverse()*(target_pose.getRotation()-current_pose.getRotation()));
+    ROS_INFO("Controller: x: %lf /t y: %lf /t phi: %lf",x,y,phi);
+    this->lin_vel_out.setX(kx*x+vd*cos(phi));
+    this->ang_vel_out.setZ(kphi*sin(phi)+ky*vd*y+omegad);
 
-    tf::Vector3 posr=this->control_dif.getOrigin();
-    double rot=this->target_pose.getRotation().getAngle()-this->current_pose.getRotation().getAngle();
-    ROS_INFO("dx: %lf dy: %lf",posr.x(),posr.y());
-    ROS_INFO("Angle: %lf",rot);
-
-
-    this->lin_vel_out.setX(kx*posr.getX()+vd*cos(rot));
-    this->ang_vel_out.setZ(kphi*sin(rot)+vd*posr.getY()+omegad);
+    this->control_dif=relative;
 }
 
 
@@ -312,7 +334,7 @@ void Controller::scope()
     switch(this->type)
     {
         case pseudo_inverse: break;
-        case lypanov:this->calc_Lyapunov(0.1,0.1,1.0,1.0);break;
+        case lypanov:this->calc_Lyapunov(this->kx, this->ky, this->kphi,this->vd,this->omegad);break;
         default: break;
     }
 }

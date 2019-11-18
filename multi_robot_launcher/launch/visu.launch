@@ -1,0 +1,9 @@
+<launch>
+    <arg name="filename" default="controller"/>
+
+
+<node name="play" pkg="rosbag" type="play" args="$(find multi_robot_launcher)/bag/$(arg filename)"/> 
+
+<node type="rviz" name="rviz" pkg="rviz" args="-d $(find multi_robot_launcher)/rviz/system.rviz" />
+
+</launch>

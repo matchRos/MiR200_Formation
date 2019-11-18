@@ -6,6 +6,10 @@
  <param name="/frequency" value="10" />
 
 
+<!-- HARD CODED!!! DANGER -->
+<node name="record" pkg="rosbag" type="record" args="record -O $(find multi_robot_launcher)/bag/controller /robot_master/mobile_base_controller/odom /robot_master/control_dif /tf"  /> 
+
+
 <rosparam file="$(find multi_robot_launcher)/config/formation.yaml" command="load"></rosparam>
 
 

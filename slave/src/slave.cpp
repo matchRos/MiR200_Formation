@@ -2,7 +2,6 @@
 
 Slave::Slave(ros::NodeHandle &nh):Controller(nh)
 {
-    this->type=pseudo_inverse;
 } 
 
 
@@ -37,7 +36,7 @@ void Slave::scope()
     switch(this->type)
     {
         case pseudo_inverse: break;
-        case lypanov:this->calc_Lyapunov(0.7,0.7,0.3,0.3);break;
+        case lypanov: this->calc_Lyapunov(this->kx,this->ky,this->kphi,this->vd,this->omegad);break;
         default: break;
     }
     

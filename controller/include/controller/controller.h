@@ -13,9 +13,10 @@
 #include <stdio.h>
 
 
-#define PARAM_IN_VEL "topic_input_velocity"
-#define PARAM_IN_ODOM "topic_input_odometry"
-#define PARAM_IN_STATE "topic_input_state"
+#define PARAM_TARGET_VEL "topic_target_velocity"
+#define PARAM_CURRENT_ODOM "topic_input_odometry"
+#define PARAM_TARGET_STATE "topic_target_state"
+#define PARAM_CURRENT_STATE "topic_current_state"
 
 #define PARAM_COORD "coord"
 #define PARAM_WORLD_FRAME "world_frame"
@@ -34,7 +35,8 @@ class Controller{
        
         
         
-        //Setter and parametring methods
+        /*Setter and parameter methods ###################################################################################################################
+        ##################################################################################################################################################*/
 
         ///setting the name of the Controller and its node
         void set_name(std::string);  
@@ -64,17 +66,21 @@ class Controller{
         
 
         
-        //Methods for linking the Controller with important topics as input output an odom
+        /*Linking topics #################################################################################################################################
+        ##################################################################################################################################################*/
         
         ///link Controller to it's input topic
         ///'topic_name': Name of tjhe topic the Controller gets input from
-        void link_input_velocity(std::string topic_name);   
+        void link_target_velocity(std::string topic_name);   
         ///link Controller to it's odom input topic
         ///'topic_name'Name of the topic the Controller reads its oddom from                       
-        void link_input_odom(std::string topic_name); 
+        void link_current_odom(std::string topic_name); 
+        ///link Controller to it's current state input topic
+        ///'topic_name'Name of the topic the Controller reads its state from                       
+        void link_current_state(std::string topic_name); 
         ///link Controller to it's state topic
         ///'topic_name' Name of the topic the Controller gets its target state from                       
-        void link_input_state(std::string topic_name);      
+        void link_target_state(std::string topic_name);      
         ///link Controller to it's input topic
         ///'topic_name'Name of the topic the Controller writes its output to                       
         void link_output_velocity(std::string topic_name);      
@@ -83,34 +89,37 @@ class Controller{
         void link_output_state(std::string topic_name);
         ///link Controller to it's control difference topic
         ///'topic_name' Name of the topic the Controller writes its control difference to                       
-        void link_control_difference(std::string topic_name);
+        void link_output_ctrldiff(std::string topic_name);
         
         
+         
+        /*Calculations and executions ####################################################################################################################
+        ##################################################################################################################################################*/
 
         ///Calculate the control vector with the Lyapunov method
         ///param: kx: gain in x direction
         ///param kphi: gain in angular direction
         ///param vd: tangential velocity
         ///param omegad : rotational velocity
-        virtual void calc_Lyapunov(double kx, double kphi,double vd,double omegad);
-
+        void calc_Lyapunov(double kx, double ky, double kphi,double vd,double omegad);
 
         /// A Scope within the execute function. Repeating calculation in inheriting classes are implemented here
         virtual void scope();       
         ///Controller scope
-        void execute();
-
-      
+        void execute();     
 
         
 
-        //Callbacks
+        /*Callbacks########################################################################################################################################
+        ##################################################################################################################################################*/
         /// Callback for input velocitiy message. Is executed everytima a velocitiy input is incoming. Writes data to input state
-        void input_velocities_callback(geometry_msgs::Twist msg);         
+        void target_velocities_callback(geometry_msgs::Twist msg);         
         /// Callback for input odometry message. Is executed everytima a Odometry input is incoming. Writes data to input current_pose
-        void input_odom_callback(nav_msgs::Odometry msg);              
+        void current_odom_callback(nav_msgs::Odometry msg);     
+        /// Callback for input current state message. Is executed everytima a Odometry input is incoming. Writes data to input current_pose
+        void current_state_callback(geometry_msgs::PoseStamped msg);                  
         /// Callback for input target state message. Is executed everytima a target state input is incoming. Writes data to target_pose state
-        void input_state_callback(geometry_msgs::PoseStamped msg);   
+        void target_state_callback(geometry_msgs::PoseStamped msg);   
                 
 
         
@@ -121,12 +130,13 @@ class Controller{
 
 
         ros::Publisher vel_out;                                  //publisher object for velocity outoput topic
-        ros::Publisher state_out;                               //publisher object for state output topic
-        ros::Publisher control_difference;                      //publisher object for control difference topic
+        ros::Publisher state_out;                                //publisher object for state output topic
+        ros::Publisher control_difference;                       //publisher object for control difference topic
         
-        ros::Subscriber vel_in;                                  //Subscirber object for input topic
-        ros::Subscriber odom;                                   //Subscriber object for odometry
-        ros::Subscriber state_in;                               //Subscriber object for target state of controller
+        ros::Subscriber vel_target;                                  //Subscirber object for input topic
+        ros::Subscriber odom_current;                                    //Subscriber object for odometry
+        ros::Subscriber state_target;                                //Subscriber object for target state of controller
+        ros::Subscriber state_current;                           //Subscriber object for current robot state
 
 
       
@@ -153,6 +163,7 @@ class Controller{
         void publish();
 
         double kx;
+        double ky;
         double kphi;
         double omegad;
         double vd;
