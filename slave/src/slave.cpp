@@ -34,17 +34,20 @@ void Slave::master_odom_callback(nav_msgs::Odometry msg)
 
 
 void Slave::optimal_control()
-{      
-    tf::Vector3 ideal_trans;
-    ideal_trans=this->lin_vel_in+this->ang_vel_in.cross(this->world2odom*this->reference_pose.getOrigin());
-    tf::Vector3 ideal_rot;
-    ideal_rot=this->ang_vel_in;
+{ 
+    tf::StampedTransform trafo_master;   
+    this->listener->lookupTransform(this->world_frame,"/robot_master/base_footprint",ros::Time(0),trafo_master);
+    trafo_master.setOrigin(tf::Vector3(0,0,0));
+    this->lin_vel_in=trafo_master*this->lin_vel_in;
+    
+
+    tf::Vector3 ideal_trans=this->lin_vel_in+this->ang_vel_in.cross(trafo_master*this->reference_pose.getOrigin());
+   
 
     //Calculate controlvector
-    double phi;
-    phi=tf::getYaw(this->current_pose.getRotation());
+    double phi=tf::getYaw(this->current_pose.getRotation());
     this->lin_vel_out.setX(cos(phi)*ideal_trans.x()+sin(phi)*ideal_trans.y());
-    this->ang_vel_out=ideal_rot;
+    this->ang_vel_out=this->ang_vel_in;
 }
 
 

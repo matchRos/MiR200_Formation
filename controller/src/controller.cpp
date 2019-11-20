@@ -329,23 +329,18 @@ void Controller::calc_Lyapunov(double kx, double ky, double kphi,double vd,doubl
 
 void Controller::calc_angle_distance(double kr,double kphi)
 {
-    tf::Vector3 difference;
-    difference=this->target_pose.getOrigin()-this->current_pose.getOrigin();
     tf::Pose relative;
     relative=this->current_pose.inverseTimes(this->target_pose);
+    this->control_dif=relative;
 
-    double sign_angle=atan2(difference.y(),difference.x());
-    ROS_INFO("%lf",sign_angle);
-    if(abs(sign_angle)>M_PI/2)
+    if(abs(atan2(relative.getOrigin().y(),relative.getOrigin().x()))>M_PI/2)
     {
-        kr=-kr;
+        kr*=-1;
     }
+    this->lin_vel_out.setX(kr*relative.getOrigin().length());
+    this->ang_vel_out.setZ(kphi*tf::getYaw(relative.getRotation()));   
+    //this->ang_vel_out.setZ(kphi*atan2(relative.getOrigin().y(),relative.getOrigin().x()));   
     
-    this->lin_vel_out.setX(kr*difference.length());
-    this->ang_vel_out.setZ(kphi*tf::getYaw(relative.getRotation()));
-
-    this->control_dif.setOrigin(tf::Vector3(difference.length(),0,0));
-    this->control_dif.setRotation(relative.getRotation());
     
 }
 

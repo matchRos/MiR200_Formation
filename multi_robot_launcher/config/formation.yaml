@@ -9,9 +9,9 @@ robot1:
   topic_target_state:  "/robot_master/state"
   
 
-  coord: [-1.25,1.25,0.0]
+  coord: [0,1.25,0.0]
 
-  controller_type: 3                            # 1-> pseudo_invers 2->lyapov
+  controller_type: 1                            # 1-> pseudo_invers 2->lyapov
 
 
 
@@ -26,9 +26,9 @@ robot2:
   topic_target_state: "/robot_master/state" 
   
 
-  coord: [-1.25,-1.25,0.0]
+  coord: [0,-1.25,0.0]
 
-  controller_type: 3                            # 1-> pseudo_invers 2->lyapov
+  controller_type: 1                            # 1-> pseudo_invers 2->lyapov
 
 
 
@@ -45,6 +45,6 @@ robot_master:
 
   coord: [0.0,0.0,0.0]
 
-  controller_type: 3                          # 1-> pseudo_invers 2->lyapov
+  controller_type: 1                          # 1-> pseudo_invers 2->lyapov
 
 
