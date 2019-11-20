@@ -75,9 +75,6 @@ class Controller{
         ///link Controller to it's odom input topic
         ///'topic_name'Name of the topic the Controller reads its oddom from                       
         void link_current_odom(std::string topic_name); 
-        ///link Controller to it's current state input topic
-        ///'topic_name'Name of the topic the Controller reads its state from                       
-        void link_current_state(std::string topic_name); 
          ///link Controller to it's state topic
         ///'topic_name' Name of the topic the Controller gets its target state from                       
         void link_target_state(std::string topic_name);      

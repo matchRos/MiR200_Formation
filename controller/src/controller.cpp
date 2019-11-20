@@ -61,10 +61,7 @@ void Controller::set_reference(double x,double y,double z)
 
     this->current_pose=this->reference_pose;
     this->target_pose=this->current_pose;
-    ROS_INFO("CURRENT: %lf %lf %lf",this->current_pose.getOrigin().getX(),this->current_pose.getOrigin().getY(),this->current_pose.getOrigin().getZ());
-    
-
-
+   
     //Publis the trasnformation of a single controller instance to its refernece coordinate system
     static tf2_ros::StaticTransformBroadcaster static_broadcaster;
     geometry_msgs::TransformStamped static_transformStamped;
@@ -120,12 +117,7 @@ void Controller::load()
         this->set_world_frame(param);     
     }
 
-    // if(ros::param::get(PARAM_CURRENT_STATE,param));
-    // {
-    //     ROS_INFO("Loading %s",PARAM_CURRENT_STATE);
-    //     this->link_current_state(param);  
-    // }
-    
+   
     if(ros::param::get(PARAM_CURRENT_ODOM,param))
     {
         ROS_INFO("Loading %s",PARAM_CURRENT_ODOM);
@@ -182,11 +174,6 @@ void Controller::load_parameter()
     
 }
 
-
-
-
-
-
  /*Linking topics #################################################################################################################################
 ##################################################################################################################################################*/
         
@@ -197,14 +184,6 @@ void Controller::link_current_odom(std::string topic_name)
     ROS_INFO("Linking input currnet odometry of %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
     this->odom_current=this->nh.subscribe(topic_name,10,&Controller::current_odom_callback,this);
 }
-
-// void Controller::link_current_state(std::string topic_name)
-// {
-//     this->state_current.shutdown();
-//     ROS_INFO("Linking current state of %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
-//     this->state_current=this->nh.subscribe(topic_name,10,&Controller::current_state_callback,this);
-// }
-
 
 void Controller::link_target_state(std::string topic_name)
 {
@@ -271,12 +250,6 @@ void Controller::current_odom_callback(nav_msgs::Odometry msg)
    
 }
 
-// void Controller::current_state_callback(geometry_msgs::PoseStamped msg)
-// {
-//     tf::poseMsgToTF(msg.pose,this->current_pose);
-// }
-
-
 void Controller::target_velocities_callback(geometry_msgs::Twist msg)
 {
     tf::vector3MsgToTF(msg.linear,this->lin_vel_in);
@@ -296,7 +269,6 @@ void Controller::target_state_callback(geometry_msgs::PoseStamped msg)
 
 /*Calculations and executions ####################################################################################################################
 ##################################################################################################################################################*/
-
 void Controller::getTransformation()
 {
     try
