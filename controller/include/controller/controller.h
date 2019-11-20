@@ -21,7 +21,9 @@
 #define PARAM_COORD "coord"
 #define PARAM_WORLD_FRAME "world_frame"
 #define PARAM_TYPE "controller_type"
-#define PARAM_LYAPUNOV "/algorythm/lyapunov"
+
+#define PARAM_LYAPUNOV "/algorithm/lyapunov"
+#define PARAM_ANG_DIST "/algorithm/angle_distance"
 
 
 class Controller{
@@ -32,6 +34,7 @@ class Controller{
         enum controllerType{
             pseudo_inverse=1,
             lypanov=2,
+            angle_distance=3
         };
        
         
@@ -98,6 +101,7 @@ class Controller{
         ///param omegad : rotational velocity
         void calc_Lyapunov(double kx, double ky, double kphi,double vd,double omegad);
 
+        void calc_angle_distance(double kr,double kphi);
         ///Controller scope
         void execute();     
 
@@ -163,6 +167,9 @@ class Controller{
         double kphi;
         double omegad;
         double vd;
+
+        double kr;
+        double kang;
 
 
         //Use the 

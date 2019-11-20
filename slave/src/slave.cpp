@@ -54,6 +54,7 @@ void Slave::scope()
     {
         case pseudo_inverse: this->optimal_control();break;
         case lypanov: this->calc_Lyapunov(this->kx,this->ky,this->kphi,this->vd,this->omegad);break;
+        case angle_distance: this->calc_angle_distance(this->kr,this->kang);break;
         default: break;
     }
     

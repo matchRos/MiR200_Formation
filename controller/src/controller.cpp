@@ -90,8 +90,6 @@ void Controller::set_reference(std::vector<double> coord)
     this->set_reference(coord[0],coord[1],coord[2]);
 }
 
-
-
 void Controller::set_type(Controller::controllerType type)
 {
     ROS_INFO("Setting controller type of %s to: %i",this->name.c_str(),this->type);
@@ -151,14 +149,24 @@ void Controller::load()
     }   
 
 
-    std::vector<double> temp;
-    if( ros::param::get(PARAM_LYAPUNOV,temp))
+    std::vector<double> lyapunov;
+    if( ros::param::get(PARAM_LYAPUNOV,lyapunov))
     {
-        this->kx=temp[0];
-        this->ky=temp[1];
-        this->kphi=temp[2];
-        this->vd=temp[3];
-        this->omegad=temp[4];
+        this->kx=lyapunov[0];
+        this->ky=lyapunov[1];
+        this->kphi=lyapunov[2];
+        this->vd=lyapunov[3];
+        this->omegad=lyapunov[4];
+        ROS_INFO("LOADED LYAPUNOV PARAM: %lf %lf %lf %lf %lf", this->kx,this->ky,this->kphi,this->vd,this->omegad);
+
+    }   
+
+    std::vector<double> ang_dist;
+    if( ros::param::get(PARAM_ANG_DIST,ang_dist))
+    {
+       this->kr=ang_dist[0]; 
+       this->kang=ang_dist[1];
+       ROS_INFO("LOADED ANG_DIST PARAM: %lf %lf ", this->kr,this->kang);
 
     }   
     
@@ -303,7 +311,6 @@ void Controller::publish()
 
 void Controller::calc_Lyapunov(double kx, double ky, double kphi,double vd,double omegad)
 {
-   
     tf::Pose relative;
     relative=this->current_pose.inverseTimes(this->target_pose);
     this->control_dif=relative;
@@ -312,13 +319,35 @@ void Controller::calc_Lyapunov(double kx, double ky, double kphi,double vd,doubl
     double y=relative.getOrigin().getY();
     double phi=tf::getYaw(relative.getRotation());
 
-    ROS_INFO("Controller: x: %lf  y: %lf  phi: %lf",x,y,phi);
+    
+
     this->lin_vel_out.setX(kx*x+vd*cos(phi));
     this->ang_vel_out.setZ(kphi*sin(phi)+ky*vd*y+omegad);
 
  
 }
 
+void Controller::calc_angle_distance(double kr,double kphi)
+{
+    tf::Vector3 difference;
+    difference=this->target_pose.getOrigin()-this->current_pose.getOrigin();
+    tf::Pose relative;
+    relative=this->current_pose.inverseTimes(this->target_pose);
+
+    double sign_angle=atan2(difference.y(),difference.x());
+    ROS_INFO("%lf",sign_angle);
+    if(abs(sign_angle)>M_PI/2)
+    {
+        kr=-kr;
+    }
+    
+    this->lin_vel_out.setX(kr*difference.length());
+    this->ang_vel_out.setZ(kphi*tf::getYaw(relative.getRotation()));
+
+    this->control_dif.setOrigin(tf::Vector3(difference.length(),0,0));
+    this->control_dif.setRotation(relative.getRotation());
+    
+}
 
 void Controller::execute()
 {
