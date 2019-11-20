@@ -14,7 +14,7 @@ Controller::Controller(ros::NodeHandle &nh):    nh(nh),
     
     this->vel_target=this->nh.subscribe("/in",10,&Controller::target_velocities_callback,this);
     this->state_target=this->nh.subscribe("/state_target",10,&Controller::target_state_callback,this);
-     this->state_current=this->nh.subscribe("/state_current",10,&Controller::current_state_callback,this);
+    //this->state_current=this->nh.subscribe("/state_current",10,&Controller::current_state_callback,this);
     this->odom_current=this->nh.subscribe("/odom_current",10,&Controller::current_odom_callback,this);
 
     this->current_pose.setOrigin(tf::Vector3(0,0,0));
@@ -23,6 +23,8 @@ Controller::Controller(ros::NodeHandle &nh):    nh(nh),
     this->target_pose.setRotation(tf::Quaternion(0,0,0,1));
     this->control_dif.setOrigin(tf::Vector3(0,0,0));
     this->control_dif.setRotation(tf::Quaternion(0,0,0,1));
+
+    this->use_odom=true;
 } 
 
 Controller::~Controller()
@@ -112,49 +114,65 @@ void Controller::load()
 {
     std::string param;
 
-    ros::param::get(PARAM_WORLD_FRAME,param);
-    ROS_INFO("Loading %s",PARAM_WORLD_FRAME);
-    this->set_world_frame(param); 
+    if(ros::param::get(PARAM_WORLD_FRAME,param));
+    {
+        ROS_INFO("Loading %s",PARAM_WORLD_FRAME);
+        this->set_world_frame(param);     
+    }
 
-    ros::param::get(PARAM_CURRENT_STATE,param);
-    ROS_INFO("Loading %s",PARAM_CURRENT_STATE);
-    this->link_current_state(param);  
+    // if(ros::param::get(PARAM_CURRENT_STATE,param));
+    // {
+    //     ROS_INFO("Loading %s",PARAM_CURRENT_STATE);
+    //     this->link_current_state(param);  
+    // }
+    
+    if(ros::param::get(PARAM_CURRENT_ODOM,param))
+    {
+        ROS_INFO("Loading %s",PARAM_CURRENT_ODOM);
+        this->link_current_odom(param);
+    }
 
+    if(ros::param::get(PARAM_TARGET_VEL,param))
+    {
+        ROS_INFO("Loading %s ",PARAM_TARGET_VEL);
+        this->link_target_velocity(param);
+    } 
 
-    ros::param::get(PARAM_CURRENT_ODOM,param);
-    ROS_INFO("Loading %s",PARAM_CURRENT_ODOM);
-    this->link_current_odom(param);
-
-
-    ros::param::get(PARAM_TARGET_VEL,param);
-    ROS_INFO("Loading %s ",PARAM_TARGET_VEL);
-    this->link_target_velocity(param);
-
-    ros::param::get(PARAM_TARGET_STATE,param);
-    ROS_INFO("Loading %s ",PARAM_TARGET_STATE);
-    this->link_target_state(param);
-
+    if(ros::param::get(PARAM_TARGET_STATE,param))
+    {
+        ROS_INFO("Loading %s ",PARAM_TARGET_STATE);
+        this->link_target_state(param);
+    }
 
 
     int i;
-    ros::param::get(PARAM_TYPE,i);
-    ROS_INFO("Loading %s ",PARAM_TYPE);
-    this->set_type(static_cast<Controller::controllerType>(i));
+    if(ros::param::get(PARAM_TYPE,i))
+    {
+        ROS_INFO("Loading %s ",PARAM_TYPE);
+        this->set_type(static_cast<Controller::controllerType>(i));
+    }
 
+   
     std::vector<double> coord;
-    ros::param::get(PARAM_COORD,coord);
-    ROS_INFO("Loading %s ",PARAM_COORD);
-    this->set_reference(coord);
+    if(ros::param::get(PARAM_COORD,coord))
+    {
+        ROS_INFO("Loading %s ",PARAM_COORD);
+        this->set_reference(coord);
+    }   
 
 
     std::vector<double> temp;
-    ros::param::get(PARAM_LYAPUNOV,temp);
-    this->kx=temp[0];
-    this->ky=temp[1];
-    this->kphi=temp[2];
-    this->vd=temp[3];
-    this->omegad=temp[4];
+    if( ros::param::get(PARAM_LYAPUNOV,temp))
+    {
+        this->kx=temp[0];
+        this->ky=temp[1];
+        this->kphi=temp[2];
+        this->vd=temp[3];
+        this->omegad=temp[4];
 
+    }
+   
+    
     load_parameter();
 }
 
@@ -173,7 +191,6 @@ void Controller::load_parameter()
 ##################################################################################################################################################*/
         
 //INPUTS
-
 void Controller::link_current_odom(std::string topic_name)
 {
     this->odom_current.shutdown();
@@ -181,12 +198,12 @@ void Controller::link_current_odom(std::string topic_name)
     this->odom_current=this->nh.subscribe(topic_name,10,&Controller::current_odom_callback,this);
 }
 
-void Controller::link_current_state(std::string topic_name)
-{
-    this->state_current.shutdown();
-    ROS_INFO("Linking current state of %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
-    this->state_current=this->nh.subscribe(topic_name,10,&Controller::current_state_callback,this);
-}
+// void Controller::link_current_state(std::string topic_name)
+// {
+//     this->state_current.shutdown();
+//     ROS_INFO("Linking current state of %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
+//     this->state_current=this->nh.subscribe(topic_name,10,&Controller::current_state_callback,this);
+// }
 
 
 void Controller::link_target_state(std::string topic_name)
@@ -233,14 +250,6 @@ void Controller::link_output_ctrldiff(std::string topic_name)
 
  /*Callbacks########################################################################################################################################
 ##################################################################################################################################################*/
-        
-
-void Controller::target_velocities_callback(geometry_msgs::Twist msg)
-{
-    tf::vector3MsgToTF(msg.linear,this->lin_vel_in);
-    tf::vector3MsgToTF(msg.angular,this->ang_vel_in);
-}
-
 void Controller::current_odom_callback(nav_msgs::Odometry msg)
 {
     tf::Point point;
@@ -249,11 +258,29 @@ void Controller::current_odom_callback(nav_msgs::Odometry msg)
     quat.normalize();
     tf::quaternionMsgToTF(msg.pose.pose.orientation,quat);
     quat.normalize();
-    this->current_pose.setOrigin(this->world2odom.getOrigin()+point);
-    this->current_pose.setRotation(this->world2odom.getRotation()*quat);
-    ROS_INFO("ODOM: %lf %lf %lf",this->current_pose.getOrigin().getX(),this->current_pose.getOrigin().getY(),this->current_pose.getOrigin().getZ());
-    
-    
+    if(use_odom)
+    {
+        this->current_pose.setOrigin(this->world2odom.getOrigin()+point);
+        this->current_pose.setRotation(this->world2odom.getRotation()*quat);
+    }
+    else
+    {
+        this->current_pose.setOrigin(point);
+        this->current_pose.setRotation(quat);
+    }
+   
+}
+
+// void Controller::current_state_callback(geometry_msgs::PoseStamped msg)
+// {
+//     tf::poseMsgToTF(msg.pose,this->current_pose);
+// }
+
+
+void Controller::target_velocities_callback(geometry_msgs::Twist msg)
+{
+    tf::vector3MsgToTF(msg.linear,this->lin_vel_in);
+    tf::vector3MsgToTF(msg.angular,this->ang_vel_in);
 }
 
 void Controller::target_state_callback(geometry_msgs::PoseStamped msg)
@@ -261,10 +288,6 @@ void Controller::target_state_callback(geometry_msgs::PoseStamped msg)
     tf::poseMsgToTF(msg.pose,this->target_pose);
 }
 
-void Controller::current_state_callback(geometry_msgs::PoseStamped msg)
-{
-    tf::poseMsgToTF(msg.pose,this->current_pose);
-}
 
 
 

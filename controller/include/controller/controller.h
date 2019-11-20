@@ -14,8 +14,8 @@
 
 
 #define PARAM_TARGET_VEL "topic_target_velocity"
-#define PARAM_CURRENT_ODOM "topic_input_odometry"
 #define PARAM_TARGET_STATE "topic_target_state"
+#define PARAM_CURRENT_ODOM "topic_input_odometry"
 #define PARAM_CURRENT_STATE "topic_current_state"
 
 #define PARAM_COORD "coord"
@@ -169,6 +169,8 @@ class Controller{
         double kphi;
         double omegad;
         double vd;
+
+        bool use_odom;
 
 
         

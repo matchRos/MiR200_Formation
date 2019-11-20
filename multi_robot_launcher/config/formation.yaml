@@ -4,15 +4,14 @@ robot1:
 
   topic_input_odometry: "mobile_base_controller/odom"
 
-  topic_target_velocity: "/key_vel"
-  
+  topic_target_velocity: "/robot_master/mobile_base_controller/cmd_vel"   
 
   topic_target_state:  "/robot_master/state"
   
 
   coord: [-1.25,1.25,0.0]
 
-  controller_type: 2                            # 1-> pseudo_invers 2->lyapov
+  controller_type: 1                            # 1-> pseudo_invers 2->lyapov
 
 
 
@@ -22,15 +21,14 @@ robot2:
 
   topic_input_odometry:  "mobile_base_controller/odom"
 
-  topic_target_velocity: "/key_vel"
-  
+  topic_target_velocity: "/robot_master/mobile_base_controller/cmd_vel"  
 
   topic_target_state: "/robot_master/state" 
   
 
   coord: [-1.25,-1.25,0.0]
 
-  controller_type: 2                            # 1-> pseudo_invers 2->lyapov
+  controller_type: 1                            # 1-> pseudo_invers 2->lyapov
 
 
 
@@ -47,6 +45,6 @@ robot_master:
 
   coord: [0.0,0.0,0.0]
 
-  controller_type: 2                            # 1-> pseudo_invers 2->lyapov
+  controller_type: 1                          # 1-> pseudo_invers 2->lyapov
 
 
