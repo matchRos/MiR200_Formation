@@ -36,8 +36,7 @@ Controller::~Controller()
 
 
 //################################################################################################
-//Setter
-
+//Setters
 void Controller::set_name(std::string name)
 {
     this->name=name;
