@@ -28,7 +28,7 @@ class Controller{
     public:
         Controller(ros::NodeHandle &nh);
         ~Controller();
-        
+
         enum controllerType{
             pseudo_inverse=1,
             lypanov=2,
@@ -122,9 +122,9 @@ class Controller{
 
         
     protected:
-        ros::NodeHandle nh;                                     //Node Handle
+        ros::NodeHandle nh;                                      //Node Handle
         tf::TransformListener* listener;
-        controllerType type;                                    //Type of control algorythm that is used
+        controllerType type;                                     //Type of control algorythm that is used
 
 
         ros::Publisher vel_out;                                  //publisher object for velocity outoput topic

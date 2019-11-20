@@ -14,7 +14,6 @@ Controller::Controller(ros::NodeHandle &nh):    nh(nh),
     
     this->vel_target=this->nh.subscribe("/in",10,&Controller::target_velocities_callback,this);
     this->state_target=this->nh.subscribe("/state_target",10,&Controller::target_state_callback,this);
-    //this->state_current=this->nh.subscribe("/state_current",10,&Controller::current_state_callback,this);
     this->odom_current=this->nh.subscribe("/odom_current",10,&Controller::current_odom_callback,this);
 
     this->current_pose.setOrigin(tf::Vector3(0,0,0));
@@ -162,16 +161,14 @@ void Controller::load()
         this->vd=temp[3];
         this->omegad=temp[4];
 
-    }
-   
+    }   
     
     load_parameter();
 }
 
-
 void Controller::load_parameter()
 {
-    
+    return;
 }
 
  /*Linking topics #################################################################################################################################

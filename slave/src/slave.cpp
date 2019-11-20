@@ -20,12 +20,17 @@ void Slave::link_master_odom(std::string topic_name)
     ROS_INFO("Linking input currnet odometry of %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
     this->master_odom=this->nh.subscribe(topic_name,10,&Slave::master_odom_callback,this);
 }
+
 void Slave::master_odom_callback(nav_msgs::Odometry msg)
 {
     tf::poseMsgToTF(msg.pose.pose,this->master_pose);
     tf::vector3MsgToTF(msg.twist.twist.linear,this->master_lin_vel);
     tf::vector3MsgToTF(msg.twist.twist.angular,this->master_ang_vel);
 }
+
+
+
+
 
 
 void Slave::optimal_control()

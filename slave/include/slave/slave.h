@@ -11,6 +11,8 @@
 #include <math.h>
 #include <stdio.h>
 
+#define PARAM_MASTER_ODOM "topic_master_odometry"
+
      
 class Slave:public Controller{
     public:
