@@ -324,18 +324,6 @@ void Controller::calc_Lyapunov(double kx, double ky, double kphi,double vd,doubl
 }
 
 
-
-
-void Controller::scope()
-{
-    switch(this->type)
-    {
-        case pseudo_inverse: break;
-        case lypanov:this->calc_Lyapunov(this->kx, this->ky, this->kphi,this->vd,this->omegad);break;
-        default: break;
-    }
-}
-
 void Controller::execute()
 {
     this->getTransformation();

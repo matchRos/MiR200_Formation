@@ -28,6 +28,7 @@ class Controller{
     public:
         Controller(ros::NodeHandle &nh);
         ~Controller();
+        
         enum controllerType{
             pseudo_inverse=1,
             lypanov=2,
@@ -37,7 +38,6 @@ class Controller{
         
         /*Setter and parameter methods ###################################################################################################################
         ##################################################################################################################################################*/
-
         ///setting the name of the Controller and its node
         void set_name(std::string);  
         ///setting the frequenzy of the controller to
@@ -68,13 +68,12 @@ class Controller{
         
         /*Linking topics #################################################################################################################################
         ##################################################################################################################################################*/
-        
+        ///link Controller to it's odom input topic
+        ///'topic_name'Name of the topic the Controller reads its oddom from                       
+        void link_current_odom(std::string topic_name);       
         ///link Controller to it's input topic
         ///'topic_name': Name of tjhe topic the Controller gets input from
         void link_target_velocity(std::string topic_name);   
-        ///link Controller to it's odom input topic
-        ///'topic_name'Name of the topic the Controller reads its oddom from                       
-        void link_current_odom(std::string topic_name); 
          ///link Controller to it's state topic
         ///'topic_name' Name of the topic the Controller gets its target state from                       
         void link_target_state(std::string topic_name);      
@@ -92,7 +91,6 @@ class Controller{
          
         /*Calculations and executions ####################################################################################################################
         ##################################################################################################################################################*/
-
         ///Calculate the control vector with the Lyapunov method
         ///param: kx: gain in x direction
         ///param kphi: gain in angular direction
@@ -100,8 +98,6 @@ class Controller{
         ///param omegad : rotational velocity
         void calc_Lyapunov(double kx, double ky, double kphi,double vd,double omegad);
 
-        /// A Scope within the execute function. Repeating calculation in inheriting classes are implemented here
-        virtual void scope();       
         ///Controller scope
         void execute();     
 
@@ -113,12 +109,15 @@ class Controller{
         void target_velocities_callback(geometry_msgs::Twist msg);         
         /// Callback for input odometry message. Is executed everytima a Odometry input is incoming. Writes data to input current_pose
         void current_odom_callback(nav_msgs::Odometry msg);
-        /// Callback for input current state message. Is executed everytima a Odometry input is incoming. Writes data to input current_pose
-        void current_state_callback(geometry_msgs::PoseStamped msg);          
         /// Callback for input target state message. Is executed everytima a target state input is incoming. Writes data to target_pose state
         virtual void target_state_callback(geometry_msgs::PoseStamped msg);   
 
-      
+
+
+
+        /// A Scope within the execute function. Repeating calculation in inheriting classes are implemented here
+        virtual void scope()=0;       
+       
                 
 
         
@@ -132,41 +131,41 @@ class Controller{
         ros::Publisher state_out;                                //publisher object for state output topic
         ros::Publisher control_difference;                       //publisher object for control difference topic
         
-        ros::Subscriber vel_target;                                  //Subscirber object for input topic
-        ros::Subscriber odom_current;                                    //Subscriber object for odometry
-        ros::Subscriber state_target;                                //Subscriber object for target state of controller
-        ros::Subscriber state_current;                           //Subscriber object for current robot state
-      
+        ros::Subscriber vel_target;                              //Subscirber object for input topic
+        ros::Subscriber odom_current;                            //Subscriber object for odometry
+        ros::Subscriber state_target;                            //Subscriber object for target state of controller
 
 
-
-        std::string name;                                       //Name of the node and Controller
-        std::string world_frame;                                //Name of the world frame
+        std::string name;                                        //Name of the node respective Controller
+        std::string world_frame;                                 //Name of the world frame
         
-        tf::Vector3 ang_vel_in;
-        tf::Vector3 lin_vel_in;
+        tf::Vector3 ang_vel_in;                                  //target angular velocity
+        tf::Vector3 lin_vel_in;                                  //target linear velocity
 
-        tf::Vector3 lin_vel_out;
-        tf::Vector3 ang_vel_out;
+        tf::Vector3 lin_vel_out;                                 //Outgoing linear velocity
+        tf::Vector3 ang_vel_out;                                 //Outgoing angular velocity
         
-        tf::StampedTransform world2robot;
+        tf::StampedTransform world2robot;                   
         tf::StampedTransform world2odom;
 
-        tf::Transform control_dif;
+        tf::Transform control_dif;                              //Transformation from current to target
 
-        tf::Pose reference_pose;
+        tf::Pose reference_pose;                                //Reference pose to a global system
         tf::Pose current_pose;                                  //Pose of Controller at the moment in world
         tf::Pose target_pose;                                   //The Target for the Controller poses
         
-        void getTransformation();
-        void publish();
+        void getTransformation();                               //Listen to all neccesary trasnformations
+        void publish();                                         //Publish all outgoing data
 
+        //Control algorithm parameter
         double kx;
         double ky;
         double kphi;
         double omegad;
         double vd;
 
+
+        //Use the 
         bool use_odom;
 
 
