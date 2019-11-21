@@ -17,7 +17,7 @@
         <arg name="controller_name" value="$(arg robot_name)" />
     </include>  
   
-<node name="Master_ctr" pkg="master" type="master_node" args="$(arg robot_name) /key_vel " output="$(arg displ)"></node>
+<node name="Master_ctr" pkg="master" type="master_node" args="$(arg robot_name) $(arg robot_x) $(arg robot_y) " output="$(arg displ)"></node>
    
 </group> 
 </launch>

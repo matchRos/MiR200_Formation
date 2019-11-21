@@ -20,11 +20,11 @@
   <arg name="gui" value="$(arg gui)" />
 </include>
 
-
+<!-- 
 
 <include file="$(find slave)/launch/slave.launch">
   <arg name="robot_name" value="robot1"/>
-  <arg name="robot_x"   value="-0" />
+  <arg name="robot_x"   value="-1.25" />
   <arg name="robot_y"   value="1.25" />
   <arg name="name_master" value="robot_master"/>
 </include>
@@ -32,11 +32,12 @@
 
 <include file="$(find slave)/launch/slave.launch">
   <arg name="robot_name" value="robot2"/>
-  <arg name="robot_x"   value="-0" />
+  <arg name="robot_x"   value="-1.25" />
   <arg name="robot_y"   value="-1.25" />
   <arg name="name_master" value="robot_master"/>
+  <arg name="displ" value="screen"/>
 </include>
-
+ -->
 
 
 <include file="$(find master)/launch/master.launch">

@@ -109,7 +109,7 @@ class Controller{
 
         /*Callbacks########################################################################################################################################
         ##################################################################################################################################################*/
-        /// Callback for input velocitiy message. Is executed everytima a velocitiy input is incoming. Writes data to input state
+        /// Callback for input velocitiy message. Is executed everytime a velocitiy input is incoming. Writes data to input state
         void target_velocities_callback(geometry_msgs::Twist msg);         
         /// Callback for input odometry message. Is executed everytima a Odometry input is incoming. Writes data to input current_pose
         void current_odom_callback(nav_msgs::Odometry msg);
@@ -126,40 +126,40 @@ class Controller{
 
         
     protected:
-        ros::NodeHandle nh;                                      //Node Handle
+        ros::NodeHandle nh;                                          //Node Handle
         tf::TransformListener* listener;
-        controllerType type;                                     //Type of control algorythm that is used
+        controllerType type;                                         //Type of control algorythm that is used
 
 
-        ros::Publisher vel_out;                                  //publisher object for velocity outoput topic
-        ros::Publisher state_out;                                //publisher object for state output topic
-        ros::Publisher control_difference;                       //publisher object for control difference topic
+        ros::Publisher pub_vel_out;                                  //publisher object for velocity outoput topic
+        ros::Publisher pub_state_out;                                //publisher object for state output topic
+        ros::Publisher pub_control_difference;                       //publisher object for control difference topic
         
-        ros::Subscriber vel_target;                              //Subscirber object for input topic
-        ros::Subscriber odom_current;                            //Subscriber object for odometry
-        ros::Subscriber state_target;                            //Subscriber object for target state of controller
+        ros::Subscriber sub_vel_target;                              //Subscirber object for input topic
+        ros::Subscriber sub_odom_current;                            //Subscriber object for odometry
+        ros::Subscriber sub_state_target;                            //Subscriber object for target state of controller
 
 
-        std::string name;                                        //Name of the node respective Controller
-        std::string world_frame;                                 //Name of the world frame
+        std::string name;                                           //Name of the node respective Controller
+        std::string world_frame;                                    //Name of the world frame
         
-        tf::Vector3 ang_vel_in;                                  //target angular velocity
-        tf::Vector3 lin_vel_in;                                  //target linear velocity
+        tf::Vector3 ang_vel_in;                                     //target angular velocity
+        tf::Vector3 lin_vel_in;                                     //target linear velocity
 
-        tf::Vector3 lin_vel_out;                                 //Outgoing linear velocity
-        tf::Vector3 ang_vel_out;                                 //Outgoing angular velocity
+        tf::Vector3 lin_vel_out;                                    //Outgoing linear velocity
+        tf::Vector3 ang_vel_out;                                    //Outgoing angular velocity
         
         tf::StampedTransform world2robot;                   
         tf::StampedTransform world2odom;
 
-        tf::Transform control_dif;                              //Transformation from current to target
+        tf::Transform control_dif;                                  //Transformation from current to target
 
-        tf::Pose reference_pose;                                //Reference pose to a global system
-        tf::Pose current_pose;                                  //Pose of Controller at the moment in world
-        tf::Pose target_pose;                                   //The Target for the Controller poses
+        tf::Pose reference_pose;                                    //Reference pose to a global system
+        tf::Pose current_pose;                                      //Pose of Controller at the moment in world
+        tf::Pose target_pose;                                       //The Target for the Controller poses
         
-        void getTransformation();                               //Listen to all neccesary trasnformations
-        void publish();                                         //Publish all outgoing data
+        void getTransformation();                                   //Listen to all neccesary trasnformations
+        void publish();                                             //Publish all outgoing data
 
         //Control algorithm parameter
         double kx;

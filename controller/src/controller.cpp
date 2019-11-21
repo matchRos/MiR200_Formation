@@ -8,13 +8,13 @@ Controller::Controller(ros::NodeHandle &nh):    nh(nh),
     
     this->name="my_slave";
  
-    this->vel_out=this->nh.advertise<geometry_msgs::Twist>("/out",10);
-    this->state_out=this->nh.advertise<geometry_msgs::PoseStamped>("/state_out",10);
-    this->control_difference=this->nh.advertise<geometry_msgs::Transform>("/control_difference",10);
+    this->pub_vel_out=this->nh.advertise<geometry_msgs::Twist>("/out",10);
+    this->pub_state_out=this->nh.advertise<geometry_msgs::PoseStamped>("/state_out",10);
+    this->pub_control_difference=this->nh.advertise<geometry_msgs::Transform>("/control_difference",10);
     
-    this->vel_target=this->nh.subscribe("/in",10,&Controller::target_velocities_callback,this);
-    this->state_target=this->nh.subscribe("/state_target",10,&Controller::target_state_callback,this);
-    this->odom_current=this->nh.subscribe("/odom_current",10,&Controller::current_odom_callback,this);
+    this->sub_vel_target=this->nh.subscribe("/in",10,&Controller::target_velocities_callback,this);
+    this->sub_state_target=this->nh.subscribe("/state_target",10,&Controller::target_state_callback,this);
+    this->sub_odom_current=this->nh.subscribe("/odom_current",10,&Controller::current_odom_callback,this);
 
     this->current_pose.setOrigin(tf::Vector3(0,0,0));
     this->current_pose.setRotation(tf::Quaternion(0,0,0,1));
@@ -81,7 +81,9 @@ void Controller::set_reference(double x,double y,double z)
     static_transformStamped.transform.rotation.w=1;
     static_broadcaster.sendTransform(static_transformStamped);
 
-    ROS_INFO("Set coordiantes of: %s to: %lf %lf %lf",this->name.c_str(),x,y,z);
+    ROS_INFO("Set coordiantes of: %s to: %lf %lf %lf",this->name.c_str(),   this->reference_pose.getOrigin().x(),
+                                                                            this->reference_pose.getOrigin().y(),
+                                                                            this->reference_pose.getOrigin().z());
 
 }
 
@@ -141,14 +143,6 @@ void Controller::load()
     }
 
    
-    std::vector<double> coord;
-    if(ros::param::get(PARAM_COORD,coord))
-    {
-        ROS_INFO("Loading %s ",PARAM_COORD);
-        this->set_reference(coord);
-    }   
-
-
     std::vector<double> lyapunov;
     if( ros::param::get(PARAM_LYAPUNOV,lyapunov))
     {
@@ -184,47 +178,47 @@ void Controller::load_parameter()
 //INPUTS
 void Controller::link_current_odom(std::string topic_name)
 {
-    this->odom_current.shutdown();
+    this->sub_odom_current.shutdown();
     ROS_INFO("Linking input currnet odometry of %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
-    this->odom_current=this->nh.subscribe(topic_name,10,&Controller::current_odom_callback,this);
+    this->sub_odom_current=this->nh.subscribe(topic_name,10,&Controller::current_odom_callback,this);
 }
 
 void Controller::link_target_state(std::string topic_name)
 {
-    this->state_target.shutdown();
+    this->sub_state_target.shutdown();
     ROS_INFO("Linking target state %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
-    this->state_target=this->nh.subscribe(topic_name,10,&Controller::target_state_callback,this);
+    this->sub_state_target=this->nh.subscribe(topic_name,10,&Controller::target_state_callback,this);
 }
 
 void Controller::link_target_velocity(std::string topic_name)
 {
-    this->vel_target.shutdown();
+    this->sub_vel_target.shutdown();
     ROS_INFO("Linking input velocity %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
-    this->vel_target=this->nh.subscribe(topic_name,10,&Controller::target_velocities_callback,this);
+    this->sub_vel_target=this->nh.subscribe(topic_name,10,&Controller::target_velocities_callback,this);
 }
 
 
 ///OUTPUTS
 void Controller::link_output_velocity(std::string topic_name)
 {
-    this->vel_out.shutdown();
+    this->pub_vel_out.shutdown();
     ROS_INFO("Linking output velocity %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
-    this->vel_out=this->nh.advertise<geometry_msgs::Twist>(topic_name,10);
+    this->pub_vel_out=this->nh.advertise<geometry_msgs::Twist>(topic_name,10);
 }
 
 
 void Controller::link_output_state(std::string topic_name)
 {
-    this->state_out.shutdown();
+    this->pub_state_out.shutdown();
     ROS_INFO("Linking output state %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
-    this->state_out=this->nh.advertise<geometry_msgs::PoseStamped>(topic_name,10);
+    this->pub_state_out=this->nh.advertise<geometry_msgs::PoseStamped>(topic_name,10);
 }
 
 void Controller::link_output_ctrldiff(std::string topic_name)
 {
-    this->control_difference.shutdown();
+    this->pub_control_difference.shutdown();
     ROS_INFO("Linking control difference %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
-    this->control_difference=this->nh.advertise<geometry_msgs::Transform>(topic_name,10);
+    this->pub_control_difference=this->nh.advertise<geometry_msgs::Transform>(topic_name,10);
 }
 
 
@@ -294,19 +288,19 @@ void Controller::publish()
     geometry_msgs::Twist msg_vel;
     tf::vector3TFToMsg(this->lin_vel_out,msg_vel.linear);
     tf::vector3TFToMsg(this->ang_vel_out,msg_vel.angular);
-    this->vel_out.publish(msg_vel);
+    this->pub_vel_out.publish(msg_vel);
 
     //publish output pose state
     geometry_msgs::PoseStamped msg_pose;    
     msg_pose.header.frame_id=this->world_frame;
     msg_pose.header.stamp=ros::Time::now();    
     tf::poseTFToMsg(this->current_pose,msg_pose.pose);
-    this->state_out.publish(msg_pose);   
+    this->pub_state_out.publish(msg_pose);   
 
     //publish control difference
     geometry_msgs::Transform trafo;
     tf::transformTFToMsg(this->control_dif,trafo);
-    this->control_difference.publish(trafo);
+    this->pub_control_difference.publish(trafo);
 }
 
 void Controller::calc_Lyapunov(double kx, double ky, double kphi,double vd,double omegad)
@@ -322,9 +316,7 @@ void Controller::calc_Lyapunov(double kx, double ky, double kphi,double vd,doubl
     
 
     this->lin_vel_out.setX(kx*x+vd*cos(phi));
-    this->ang_vel_out.setZ(kphi*sin(phi)+ky*vd*y+omegad);
-
- 
+    this->ang_vel_out.setZ(kphi*sin(phi)+ky*vd*y+omegad); 
 }
 
 void Controller::calc_angle_distance(double kr,double kphi)

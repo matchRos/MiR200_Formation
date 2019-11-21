@@ -9,25 +9,8 @@ void Slave::target_state_callback(geometry_msgs::PoseStamped msg)
 {
     tf::Transform trafo;  
     tf::poseMsgToTF(msg.pose,trafo);
-    this->target_pose.setOrigin(trafo*this->reference_pose.getOrigin());
-    this->target_pose.setRotation(trafo*this->reference_pose.getRotation());
-    
+    this->target_pose=trafo*this->reference_pose;    
 }
-
-void Slave::link_master_odom(std::string topic_name)
-{
-     this->master_odom.shutdown();
-    ROS_INFO("Linking input currnet odometry of %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
-    this->master_odom=this->nh.subscribe(topic_name,10,&Slave::master_odom_callback,this);
-}
-
-void Slave::master_odom_callback(nav_msgs::Odometry msg)
-{
-    tf::poseMsgToTF(msg.pose.pose,this->master_pose);
-    tf::vector3MsgToTF(msg.twist.twist.linear,this->master_lin_vel);
-    tf::vector3MsgToTF(msg.twist.twist.angular,this->master_ang_vel);
-}
-
 
 
 
