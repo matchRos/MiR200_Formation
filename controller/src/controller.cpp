@@ -10,7 +10,7 @@ Controller::Controller(ros::NodeHandle &nh):    nh(nh),
  
     this->pub_vel_out=this->nh.advertise<geometry_msgs::Twist>("/out",10);
     this->pub_state_out=this->nh.advertise<geometry_msgs::PoseStamped>("/state_out",10);
-    this->pub_control_difference=this->nh.advertise<geometry_msgs::Transform>("/control_difference",10);
+    this->pub_control_difference=this->nh.advertise<geometry_msgs::TransformStamped>("/control_difference",10);
     
     this->sub_vel_target=this->nh.subscribe("/in",10,&Controller::target_velocities_callback,this);
     this->sub_state_target=this->nh.subscribe("/state_target",10,&Controller::target_state_callback,this);
@@ -218,7 +218,7 @@ void Controller::link_output_ctrldiff(std::string topic_name)
 {
     this->pub_control_difference.shutdown();
     ROS_INFO("Linking control difference %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
-    this->pub_control_difference=this->nh.advertise<geometry_msgs::Transform>(topic_name,10);
+    this->pub_control_difference=this->nh.advertise<geometry_msgs::TransformStamped>(topic_name,10);
 }
 
 
@@ -229,22 +229,13 @@ void Controller::link_output_ctrldiff(std::string topic_name)
 ##################################################################################################################################################*/
 void Controller::current_odom_callback(nav_msgs::Odometry msg)
 {
-    tf::Point point;
-    tf::pointMsgToTF(msg.pose.pose.position,point);
-    tf::Quaternion quat;
-    quat.normalize();
-    tf::quaternionMsgToTF(msg.pose.pose.orientation,quat);
-    quat.normalize();
-    if(use_odom)
-    {
-        this->current_pose.setOrigin(this->world2odom.getOrigin()+point);
-        this->current_pose.setRotation(this->world2odom.getRotation()*quat);
-    }
-    else
-    {
-        this->current_pose.setOrigin(point);
-        this->current_pose.setRotation(quat);
-    }
+    tf::Pose pose;
+    tf::poseMsgToTF(msg.pose.pose,pose);
+    
+    tf::StampedTransform trafo;
+    this->listener->lookupTransform(this->world_frame,msg.header.frame_id,ros::Time(0),trafo);
+
+    this->current_pose=trafo*pose;
    
 }
 
@@ -298,8 +289,10 @@ void Controller::publish()
     this->pub_state_out.publish(msg_pose);   
 
     //publish control difference
-    geometry_msgs::Transform trafo;
-    tf::transformTFToMsg(this->control_dif,trafo);
+    geometry_msgs::TransformStamped trafo;
+    tf::transformTFToMsg(this->control_dif,trafo.transform);
+    trafo.child_frame_id="target_frame";
+    trafo.header.stamp=ros::Time::now();
     this->pub_control_difference.publish(trafo);
 }
 
@@ -331,8 +324,6 @@ void Controller::calc_angle_distance(double kr,double kphi)
     }
     this->lin_vel_out.setX(kr*relative.getOrigin().length());
     this->ang_vel_out.setZ(kphi*tf::getYaw(relative.getRotation()));   
-    //this->ang_vel_out.setZ(kphi*atan2(relative.getOrigin().y(),relative.getOrigin().x()));   
-    
     
 }
 
