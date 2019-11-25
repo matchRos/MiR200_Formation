@@ -1,6 +1,5 @@
-<!-- Start a none recorded simulation without any planner-->
-
 <?xml version="2.0" ?>
+<!-- Start a none recorded simulation without any planner-->
 <launch>  
 
 

@@ -50,17 +50,10 @@ class Controller{
         ///param: double x: x Position
         ///param: double y: y Position
         ///param: double z: z Position
-<<<<<<< HEAD
         void set_reference(double x,double y,double z,double angle); 
         ///Initialise the coordinate system of the Controller to position
         ///param: vector<double> coord: Position vector    
         void set_reference(std::vector<double> coord,double angle);     
-=======
-        void set_reference(double x,double y,double z); 
-        ///Initialise the coordinate system of the Controller to position
-        ///param: vector<double> coord: Position vector    
-        void set_reference(std::vector<double> coord);     
->>>>>>> 47fe403a204362736da9611652b746f3fcc8d0f2
         ///Set the name of the reference/world frame
         ///param: frame : Name of the frame in tf tree
         void set_world_frame(std::string frame);      
@@ -71,11 +64,8 @@ class Controller{
         virtual void load_parameter();
         ///Loading ros parameter and calling load_parameter inside
         void load();
-<<<<<<< HEAD
         ///Adding a transformation to the map frame, the reference pose is defined in
         void add_map();
-=======
->>>>>>> 47fe403a204362736da9611652b746f3fcc8d0f2
 
 
         
@@ -115,13 +105,9 @@ class Controller{
 
         void calc_angle_distance(double kr,double kphi);
         ///Controller scope
-<<<<<<< HEAD
         void execute();
 
         void reset();     
-=======
-        void execute();     
->>>>>>> 47fe403a204362736da9611652b746f3fcc8d0f2
 
         
 
@@ -191,11 +177,7 @@ class Controller{
 
 
         //Use the 
-<<<<<<< HEAD
         bool loaded_parameter;
-=======
-        bool use_odom;
->>>>>>> 47fe403a204362736da9611652b746f3fcc8d0f2
 
 
         
