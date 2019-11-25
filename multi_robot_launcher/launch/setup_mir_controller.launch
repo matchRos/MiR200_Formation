@@ -38,7 +38,14 @@
    <param name="tf_prefix" value="$(arg controller_name)"/>
   </node>
  
+<<<<<<< HEAD
+<!-- create combined scan topic (like on real MiR) -->
+  <node pkg="topic_tools" type="relay" name="b_scan_relay" args="b_scan scan"/>
+  <node pkg="topic_tools" type="relay" name="f_scan_relay" args="f_scan scan"/>
+  
+=======
 
+>>>>>>> 47fe403a204362736da9611652b746f3fcc8d0f2
 <!-- EKF: extended Kalman filter that predicts the state of the robot in time
   <include file="$(find mir_gazebo)/launch/includes/ekf.launch.xml">
   <arg name="tf_prefix" value="$(arg controller_name)/" />

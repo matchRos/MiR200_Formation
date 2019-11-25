@@ -1,3 +1,13 @@
+<<<<<<< HEAD
+<?xml version="1.0" ?>
+<!-- This file launches a system with below defined masters and slaves.-->
+<launch>
+
+<!-- Load the formation parameter file-->
+<rosparam file="$(find multi_robot_launcher)/config/formation.yaml" command="load"></rosparam>
+
+<!-- Setup a slave mobile robot-->
+=======
 <?xml version="2.0" ?>
 <launch>
   <arg name="gui" default="true" />
@@ -22,18 +32,45 @@
 
 <!-- 
 
+>>>>>>> 47fe403a204362736da9611652b746f3fcc8d0f2
 <include file="$(find slave)/launch/slave.launch">
   <arg name="robot_name" value="robot1"/>
   <arg name="robot_x"   value="-1.25" />
   <arg name="robot_y"   value="1.25" />
+<<<<<<< HEAD
+  <arg name="robot_yaw" value="0" />
+  <arg name="displ" value="screen"/>
+</include>
+
+
+
+<!-- Setup a slave mobile robot-->
+=======
   <arg name="name_master" value="robot_master"/>
 </include>
 
 
+>>>>>>> 47fe403a204362736da9611652b746f3fcc8d0f2
 <include file="$(find slave)/launch/slave.launch">
   <arg name="robot_name" value="robot2"/>
   <arg name="robot_x"   value="-1.25" />
   <arg name="robot_y"   value="-1.25" />
+<<<<<<< HEAD
+  <arg name="robot_yaw" value="0" />
+  <arg name="displ" value="screen"/>
+</include>
+
+
+<!-- Setup a master mobile robot-->
+<include file="$(find master)/launch/master.launch">
+  <arg name="robot_name" value="robot_master"/>
+  <arg name="robot_x"   value="0.0" />  
+  <arg name="robot_y"   value="0.0" />
+  <arg name="robot_yaw" value="0" />
+  <arg name="displ" value="screen"/>
+</include>
+
+=======
   <arg name="name_master" value="robot_master"/>
   <arg name="displ" value="screen"/>
 </include> -->
@@ -52,4 +89,5 @@
 <node type="rviz" name="rviz" pkg="rviz" args="-d $(find multi_robot_launcher)/rviz/system.rviz" />
 
 
+>>>>>>> 47fe403a204362736da9611652b746f3fcc8d0f2
 </launch>

@@ -23,7 +23,11 @@ Controller::Controller(ros::NodeHandle &nh):    nh(nh),
     this->control_dif.setOrigin(tf::Vector3(0,0,0));
     this->control_dif.setRotation(tf::Quaternion(0,0,0,1));
 
+<<<<<<< HEAD
+    this->loaded_parameter=false;
+=======
     this->use_odom=true;
+>>>>>>> 47fe403a204362736da9611652b746f3fcc8d0f2
 } 
 
 Controller::~Controller()
@@ -50,26 +54,64 @@ void Controller::set_name(std::string name)
    
 }
 
+<<<<<<< HEAD
+void Controller::set_reference(double x,double y,double z,double angle)
+=======
 void Controller::set_reference(double x,double y,double z)
+>>>>>>> 47fe403a204362736da9611652b746f3fcc8d0f2
 {
 
     this->reference_pose=tf::Pose();
     this->reference_pose.setOrigin(tf::Vector3(x,y,z));
+<<<<<<< HEAD
+    this->reference_pose.setRotation(tf::Quaternion(angle,0,0));
+
+    this->current_pose=this->reference_pose;
+    this->target_pose=this->current_pose;    
+
+    ROS_INFO("Set coordiantes of: %s to: %lf %lf %lf",this->name.c_str(),   this->reference_pose.getOrigin().x(),
+                                                                            this->reference_pose.getOrigin().y(),
+                                                                            this->reference_pose.getOrigin().z());
+
+    this->add_map();
+
+   
+   
+}
+
+void Controller::add_map()
+{
+=======
     this->reference_pose.setRotation(tf::Quaternion(0,0,0,1));
 
     this->current_pose=this->reference_pose;
     this->target_pose=this->current_pose;
    
+>>>>>>> 47fe403a204362736da9611652b746f3fcc8d0f2
     //Publis the trasnformation of a single controller instance to its refernece coordinate system
     static tf2_ros::StaticTransformBroadcaster static_broadcaster;
     geometry_msgs::TransformStamped static_transformStamped;
 
     
+<<<<<<< HEAD
+    tf::Transform trafo(this->reference_pose);
+=======
 
+>>>>>>> 47fe403a204362736da9611652b746f3fcc8d0f2
 
     static_transformStamped.header.stamp = ros::Time::now();
     static_transformStamped.header.frame_id =this->world_frame ;
     static_transformStamped.child_frame_id = this->name+"/odom_comb";
+<<<<<<< HEAD
+    tf::transformTFToMsg(trafo,static_transformStamped.transform);
+    static_broadcaster.sendTransform(static_transformStamped);
+}
+
+
+void Controller::set_reference(std::vector<double> coord,double angle)
+{
+    this->set_reference(coord[0],coord[1],coord[2],angle);
+=======
     static_transformStamped.transform.translation.x=x;
     static_transformStamped.transform.translation.y=y;
     static_transformStamped.transform.translation.z=z;
@@ -90,6 +132,7 @@ void Controller::set_reference(double x,double y,double z)
 void Controller::set_reference(std::vector<double> coord)
 {
     this->set_reference(coord[0],coord[1],coord[2]);
+>>>>>>> 47fe403a204362736da9611652b746f3fcc8d0f2
 }
 
 void Controller::set_type(Controller::controllerType type)
@@ -165,6 +208,11 @@ void Controller::load()
     }   
     
     load_parameter();
+<<<<<<< HEAD
+    this->loaded_parameter=true;
+
+=======
+>>>>>>> 47fe403a204362736da9611652b746f3fcc8d0f2
 }
 
 void Controller::load_parameter()
@@ -172,6 +220,22 @@ void Controller::load_parameter()
     return;
 }
 
+<<<<<<< HEAD
+void Controller::reset()
+{
+    if(loaded_parameter)
+    {
+        this->load();
+    }
+    else
+    {
+        this->add_map();
+    }
+    
+}
+
+=======
+>>>>>>> 47fe403a204362736da9611652b746f3fcc8d0f2
  /*Linking topics #################################################################################################################################
 ##################################################################################################################################################*/
         

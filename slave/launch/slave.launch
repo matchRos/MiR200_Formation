@@ -1,4 +1,21 @@
 <?xml version="2.0" ?>
+<<<<<<< HEAD
+<!-- 
+  Setup a slave robot specified by:
+    robot_name: name of the robot and ros namespace
+    robot_x: x coordinate of the robot
+    robot_y: y coordinate of the robot
+    robot_yaw: coordinate of the robot angle
+    displ: show ros information at this slave ? screen/log
+-->
+
+<launch>
+<arg name="robot_name"  default="robot"/>
+<arg name="robot_x"     default="0.0" />
+<arg name="robot_y"     default="0.0" />
+<arg name="robot_yaw"   default="0.0" />
+<arg name="displ"       default="log"/> 
+=======
 <launch>
 
 <arg name="robot_name"  default="robot"/>
@@ -7,12 +24,24 @@
 <arg name="name_master" default="master"/>
 <arg name="displ"       default="log"/>
  
+>>>>>>> 47fe403a204362736da9611652b746f3fcc8d0f2
 
 
 <rosparam file="$(find controller)/cfg/algorythm_param.yaml" command="load"></rosparam>
 
 <group ns="$(arg robot_name)" > 
     <include file="$(find multi_robot_launcher)/launch/setup_mir_controller.launch">
+<<<<<<< HEAD
+        <arg name="robot_x"             value="$(arg robot_x)" />
+        <arg name="robot_y"             value="$(arg robot_y)" />
+        <arg name="robot_yaw"           value="$(arg robot_yaw)" />
+        <arg name="controller_name"     value="$(arg robot_name)" />
+    </include>  
+  
+    <node name="Slave_ctr" pkg="slave" type="slave_node" args="$(arg robot_name) $(arg robot_x) $(arg robot_y)  $(arg robot_yaw)" output="$(arg displ)"></node>
+</group> 
+
+=======
         <arg name="robot_x"   value="$(arg robot_x)" />
         <arg name="robot_y"   value="$(arg robot_y)" />
         <arg name="controller_name" value="$(arg robot_name)" />
@@ -22,6 +51,7 @@
     
    
 </group> 
+>>>>>>> 47fe403a204362736da9611652b746f3fcc8d0f2
 </launch>
 
 

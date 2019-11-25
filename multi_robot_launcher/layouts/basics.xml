@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<root version="2.3.0">
+ <tabbed_widget parent="main_window" name="Main Window">
+  <plotmatrix tab_name="overview" columns="4" rows="2">
+   <plot row="0" col="0">
+    <range left="-2.103164" top="6.664021" bottom="-1.381630" right="3.958881"/>
+    <limitY min="-1.38163"/>
+    <curve R="214" B="40" curve_y="/robot1/state/pose/position/y" name="/robot1/state/pose/position/[x;y]" custom_transform="XYPlot" G="39" curve_x="/robot1/state/pose/position/x"/>
+    <curve R="26" B="56" curve_y="/robot2/state/pose/position/y" name="/robot2/state/pose/position/[x;y]" custom_transform="XYPlot" G="201" curve_x="/robot2/state/pose/position/x"/>
+    <curve R="255" B="14" curve_y="/robot_master/state/pose/position/y" name="/robot_master/state/pose/position/[x;y]" custom_transform="XYPlot" G="127" curve_x="/robot_master/state/pose/position/x"/>
+    <transform value="XYPlot"/>
+   </plot>
+   <plot row="1" col="0">
+    <range left="-0.147540" top="4.775554" bottom="-3.563306" right="6.149936"/>
+    <limitY/>
+    <curve R="148" B="189" curve_y="/trajectory/pose/position/x" name="/trajectory/pose/position/[x;y]" custom_transform="XYPlot" G="103" curve_x="/trajectory/pose/position/y"/>
+    <transform value="XYPlot"/>
+   </plot>
+   <plot row="0" col="1">
+    <range left="0.000000" top="0.500000" bottom="-0.500000" right="36.630000"/>
+    <limitY min="-0.5" max="0.5"/>
+    <curve R="188" B="34" name="/robot1/control_dif/transform/translation/x" custom_transform="noTransform" G="189"/>
+    <transform value="noTransform"/>
+   </plot>
+   <plot row="1" col="1">
+    <range left="0.000000" top="1.000000" bottom="-1.000000" right="36.630000"/>
+    <limitY min="-1" max="1"/>
+    <curve R="31" B="180" name="/robot1/control_dif/transform/translation/y" custom_transform="noTransform" G="119"/>
+    <transform value="noTransform"/>
+   </plot>
+   <plot row="0" col="2">
+    <range left="0.000000" top="0.500000" bottom="-0.500000" right="36.630000"/>
+    <limitY min="-0.5" max="0.5"/>
+    <curve R="214" B="40" name="/robot2/control_dif/transform/translation/x" custom_transform="noTransform" G="39"/>
+    <transform value="Custom::noTransform"/>
+   </plot>
+   <plot row="1" col="2">
+    <range left="0.000000" top="1.000000" bottom="-1.000000" right="36.630000"/>
+    <limitY min="-1" max="1"/>
+    <curve R="26" B="56" name="/robot2/control_dif/transform/translation/y" custom_transform="noTransform" G="201"/>
+    <transform value="noTransform"/>
+   </plot>
+   <plot row="0" col="3">
+    <range left="0.000000" top="0.500000" bottom="-0.500000" right="36.620000"/>
+    <limitY min="-0.5" max="0.5"/>
+    <curve R="23" B="207" name="/robot_master/control_dif/transform/translation/x" custom_transform="noTransform" G="190"/>
+    <transform value="noTransform"/>
+   </plot>
+   <plot row="1" col="3">
+    <range left="0.000000" top="1.000000" bottom="-1.000000" right="36.620000"/>
+    <limitY min="-1" max="1"/>
+    <curve R="148" B="189" name="/robot_master/control_dif/transform/translation/y" custom_transform="noTransform" G="103"/>
+    <transform value="noTransform"/>
+   </plot>
+  </plotmatrix>
+  <currentPlotMatrix index="0"/>
+ </tabbed_widget>
+ <use_relative_time_offset enabled="1"/>
+ <!-- - - - - - - - - - - - - - - -->
+ <!-- - - - - - - - - - - - - - - -->
+ <Plugins>
+  <plugin ID="DataLoad_CSV">
+   <default time_axis=""/>
+  </plugin>
+  <plugin ID="DataLoad_ROS_bags">
+   <use_header_stamp value="true"/>
+   <use_renaming_rules value="true"/>
+   <discard_large_arrays value="true"/>
+   <max_array_size value="100"/>
+  </plugin>
+  <plugin ID="DataLoad_ULog"/>
+  <plugin ID="ROS_Topic_Streamer">
+   <use_header_stamp value="false"/>
+   <use_renaming_rules value="true"/>
+   <discard_large_arrays value="true"/>
+   <max_array_size value="100"/>
+  </plugin>
+  <plugin status="idle" ID="RosoutPublisherROS"/>
+  <plugin status="idle" ID="TopicPublisherROS"/>
+ </Plugins>
+ <!-- - - - - - - - - - - - - - - -->
+ <previouslyLoaded_Datafiles>
+  <fileInfo prefix="" filename="/home/rosmatch/catkin_ws/src/multi_robot_system/multi_robot_launcher/bag/[3.0,3.0,3.0,1.0,1.0].bag">
+   <selected_datasources value="/robot_master/base_pose_ground_truth;/robot_master/control_dif;/robot_master/state;/robot1/base_pose_ground_truth;/robot1/control_dif;/robot1/state;/robot2/base_pose_ground_truth;/robot2/control_dif;/robot2/state;/trajectory"/>
+   <plugin ID="DataLoad_ROS_bags">
+    <use_header_stamp value="true"/>
+    <use_renaming_rules value="true"/>
+    <discard_large_arrays value="true"/>
+    <max_array_size value="100"/>
+   </plugin>
+  </fileInfo>
+ </previouslyLoaded_Datafiles>
+ <!-- - - - - - - - - - - - - - - -->
+ <customMathEquations/>
+ <snippets>
+  <snippet name="1st_derivative">
+   <global>var prevX = 0
+var prevY = 0</global>
+   <equation>dx = time - prevX
+dy = value - prevY
+prevX = time
+prevY = value
+
+return dy/dx</equation>
+  </snippet>
+  <snippet name="1st_order_lowpass">
+   <global>var prevY = 0
+var alpha = 0.1</global>
+   <equation>prevY = alpha * value + (1.-alpha) * prevY
+
+return prevY</equation>
+  </snippet>
+  <snippet name="sum_A_B">
+   <global></global>
+   <equation>return $$PLOT_A$$ + $$PLOT_B$$</equation>
+  </snippet>
+  <snippet name="yaw_from_quaternion">
+   <global>// source: https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
+
+function quaternionToYaw(x, y, z, w)
+{
+  // yaw (z-axis rotation)
+  t1 = 2.0 * (w * z + x * y);
+  t2 = 1.0 - 2.0 * (y * y + z * z);
+  yaw = Math.atan2(t1, t2);
+
+  return yaw
+}</global>
+   <equation>return quaternionToYaw(x, y, z, w);</equation>
+  </snippet>
+ </snippets>
+ <!-- - - - - - - - - - - - - - - -->
+</root>
+

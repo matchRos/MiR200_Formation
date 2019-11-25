@@ -4,9 +4,12 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
+<<<<<<< HEAD
+=======
         - /Global Options1
         - /Grid1
         - /TF1
+>>>>>>> 47fe403a204362736da9611652b746f3fcc8d0f2
         - /TF1/Frames1
         - /Robot1/Pose_True1/Shape1
         - /Robot2/Pose_True1/Shape1
