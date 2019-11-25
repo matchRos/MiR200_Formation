@@ -13,24 +13,24 @@ int main(int argc, char **argv)
     ros::NodeHandle nh;
 
     ros::Publisher pub=nh.advertise<geometry_msgs::PoseStamped>("/trajectory",10);
-    ros::Rate rate(10);
+    ros::Rate rate(100);
 
     double curve_parameter =3;
     double t;
     long int steps;
     double phi;
-    double v=0.03;
+    double v=0.3;
 
     tf::Vector3 x;
     while(nh.ok())
     {
-        t=steps/10;
+        t=steps/100;
         t*=v;
         x.setX(curve_parameter*sin(t));
         x.setY(curve_parameter*sin(t)*cos(t));
        
        
-        phi=atan(sqrt(7)-4*cos(t))+atan(sqrt(7)+4*cos(t))-atan(4-sqrt(7))+atan(4+sqrt(7));
+        phi=curve(t);
         tf::Quaternion quat;
         quat.setRPY(0,0,phi);
 
