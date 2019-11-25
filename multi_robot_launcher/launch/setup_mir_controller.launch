@@ -19,7 +19,7 @@
 
   <!-- Load ros_control controller configurations -->
   <rosparam file="$(find mir_description)/config/joint_state_controller.yaml" command="load" />  
-  <rosparam file="$(find multi_robot_launcher)/config/diffdrive_controller.yaml" command="load" subst_value="true"/>
+  <rosparam file="$(find mir_description)/config/diffdrive_controller.yaml" command="load" subst_value="true"/>
 
   <!-- Start the controllers -->
   <node name="controller_spawner" pkg="controller_manager" type="spawner" output="screen"
@@ -32,6 +32,12 @@
     <rosparam param="source_list">[mir/joint_states]</rosparam>
     <param name="rate" value="200.0" />
   </node>
+ 
+<!-- Robot state publisher: This publisher  Calculates the kinematik of the mir platform--> 
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen">  
+   <param name="tf_prefix" value="$(arg controller_name)"/>
+  </node>
+ 
 
 <!-- EKF: extended Kalman filter that predicts the state of the robot in time
   <include file="$(find mir_gazebo)/launch/includes/ekf.launch.xml">
@@ -39,10 +45,6 @@
   </include>-->
 
 
-<!-- Robot state publisher: This publisher  Calculates the kinematik of the mir platform--> 
-  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen">  
-   <param name="tf_prefix" value="$(arg controller_name)"/>
-  </node>
- 
+
 
 </launch>
