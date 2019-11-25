@@ -2,7 +2,7 @@
 robot1:
   world_frame: "/map"
 
-  topic_input_odometry: "mobile_base_controller/odom"
+  topic_input_odometry:  "base_pose_ground_truth"
 
   topic_target_velocity: "/robot_master/mobile_base_controller/cmd_vel"   
 
@@ -18,11 +18,12 @@ robot1:
 robot2:
   world_frame: "/map"
 
-  topic_input_odometry:  "mobile_base_controller/odom"
+  topic_input_odometry:  "base_pose_ground_truth"
 
   topic_target_velocity: "/robot_master/mobile_base_controller/cmd_vel"  
 
-  topic_target_state: "/robot_master/state" 
+  topic_target_state:  "/robot_master/state"
+
   
 
   controller_type: 2                             # 1-> pseudo_invers 2->lyapov 3->angl_dist
@@ -32,11 +33,11 @@ robot2:
 robot_master:
   world_frame: "/map"
 
-  topic_input_odometry: "mobile_base_controller/odom"
+  topic_input_odometry: "base_pose_ground_truth"
 
   topic_target_velocity: "/key_vel"
   
-  topic_target_state: "/trajectory"
+  topic_target_state: "/move_base_simple/goal"
 
 
   controller_type: 2                        # 1-> pseudo_invers 2->lyapov 3->angl_dist
