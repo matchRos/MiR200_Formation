@@ -31,22 +31,29 @@ class Controller{
     public:
         Controller(ros::NodeHandle &nh);
         ~Controller();
-
+        //Control law identifier
         enum controllerType{
             pseudo_inverse=1,
             lypanov=2,
             angle_distance=3
         };
-       
+        
+        //Control algorithm parameter
+        struct lyapunov
+        {
+            float kx;
+            float ky;
+            float ktheta;
+            float omega;
+            float v;
+        };
         
         
         /*Setter and parameter methods ###################################################################################################################
         ##################################################################################################################################################*/
         ///setting the name of the Controller and its node
-        void set_name(std::string);  
-        ///setting the frequenzy of the controller to
-        ///param: double frequenzy
-        void set_frequenzy(double frequenzy);
+        void set_name(std::string);       
+
         ///Initialise the coordinate system of the Controller to position
         ///param: double x: x Position
         ///param: double y: y Position
@@ -54,19 +61,31 @@ class Controller{
         void set_reference(double x,double y,double z,double angle); 
         ///Initialise the coordinate system of the Controller to position
         ///param: vector<double> coord: Position vector    
-        void set_reference(std::vector<double> coord,double angle);     
+        void set_reference(std::vector<double> coord,double angle);
+
+         ///Adding a transformation to the map frame, the reference pose is defined in
+        void add_map();
+
         ///Set the name of the reference/world frame
         ///param: frame : Name of the frame in tf tree
-        void set_world_frame(std::string frame);      
+        void set_world_frame(std::string frame);
+
         ///Set the type of the controllaw 
         ///param: type: Controllaw type (see Controller::controllerType)
-        void set_type(Controller::controllerType type);        
+        void set_type(Controller::controllerType type);
+
+        ///Setting parameters for the lyapunov control law
+        ///param param: struct that hold the parameters for the law: kx,ky,ktheta,omega,v in that order        
+        void set_lyapunov(Controller::lyapunov param);
+        ///Setting parameters for the lyapunov control law
+        ///param param: std::vector that hold the parameters for the law: kx,ky,ktheta,omega,v in that order        
+        void set_lyapunov(std::vector<float> param);
+
         ///Loading parameter for a specified Controller. Empty for Controller base class and implemented in inheriting classes.
         virtual void load_parameter();
         ///Loading ros parameter and calling load_parameter inside
         void load();
-        ///Adding a transformation to the map frame, the reference pose is defined in
-        void add_map();
+        
 
 
         
@@ -165,8 +184,9 @@ class Controller{
         
         void getTransformation();                                   //Listen to all neccesary trasnformations
         void publish();                                             //Publish all outgoing data
+        lyapunov lyapunov_parameter;
+       
 
-        //Control algorithm parameter
         double kx;
         double ky;
         double kphi;

@@ -104,6 +104,20 @@ void Controller::set_world_frame(std::string frame)
     ROS_INFO("Setting world frame of %s to: %s",this->name.c_str(),this->world_frame.c_str());
 }
 
+void Controller::set_lyapunov(Controller::lyapunov param)
+{
+    this->lyapunov_parameter.kx=param.kx;
+    this->lyapunov_parameter.ky=param.ky;
+    this->lyapunov_parameter.ktheta=param.ktheta;
+    this->lyapunov_parameter.v=param.v;
+    this->lyapunov_parameter.omega=param.omega;
+    
+}
+void Controller::set_lyapunov(std::vector<float> param)
+{
+    Controller::lyapunov parameter{param[0],param[1],param[2],param[3],param[4]};
+    this->set_lyapunov(parameter);
+}
 
 void Controller::load()
 {
@@ -143,14 +157,10 @@ void Controller::load()
     }
 
    
-    std::vector<double> lyapunov;
+    std::vector<float> lyapunov;
     if( ros::param::get(PARAM_LYAPUNOV,lyapunov))
     {
-        this->kx=lyapunov[0];
-        this->ky=lyapunov[1];
-        this->kphi=lyapunov[2];
-        this->vd=lyapunov[3];
-        this->omegad=lyapunov[4];
+        this->set_lyapunov(lyapunov);
         ROS_INFO("LOADED LYAPUNOV PARAM: %lf %lf %lf %lf %lf", this->kx,this->ky,this->kphi,this->vd,this->omegad);
 
     }   
