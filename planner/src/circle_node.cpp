@@ -34,6 +34,10 @@ int main(int argc, char **argv)
         pub.publish(msg);
         rate.sleep();
         steps++;
+        if((steps+1)/10*omega>=2*M_PI)
+        {
+            ros::shutdown();
+        }
     }
 
 
