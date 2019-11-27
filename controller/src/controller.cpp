@@ -10,7 +10,7 @@ Controller::Controller(ros::NodeHandle &nh):    nh(nh),
  
     this->pub_vel_out=this->nh.advertise<geometry_msgs::Twist>("/out",10);
     this->pub_state_out=this->nh.advertise<geometry_msgs::PoseStamped>("/state_out",10);
-    this->pub_control_difference=this->nh.advertise<geometry_msgs::TransformStamped>("/control_difference",10);
+    this->pub_control_difference=this->nh.advertise<geometry_msgs::Pose2D>("/control_difference",10);
     
     this->sub_vel_target=this->nh.subscribe("/in",10,&Controller::target_velocities_callback,this);
     this->sub_state_target=this->nh.subscribe("/state_target",10,&Controller::target_state_callback,this);
@@ -233,7 +233,7 @@ void Controller::link_output_ctrldiff(std::string topic_name)
 {
     this->pub_control_difference.shutdown();
     ROS_INFO("Linking control difference %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
-    this->pub_control_difference=this->nh.advertise<geometry_msgs::TransformStamped>(topic_name,10);
+    this->pub_control_difference=this->nh.advertise<geometry_msgs::Pose2D>(topic_name,10);
 }
 
 
@@ -304,11 +304,11 @@ void Controller::publish()
     this->pub_state_out.publish(msg_pose);   
 
     //publish control difference
-    geometry_msgs::TransformStamped trafo;
-    tf::transformTFToMsg(this->control_dif,trafo.transform);
-    trafo.child_frame_id="target_frame";
-    trafo.header.stamp=ros::Time::now();
-    this->pub_control_difference.publish(trafo);
+    geometry_msgs::Pose2D dif;
+    dif.x=this->control_dif.getOrigin().x();
+    dif.y=this->control_dif.getOrigin().y();
+    dif.theta=tf::getYaw(this->control_dif.getRotation());
+    this->pub_control_difference.publish(dif);
 }
 
 void Controller::calc_Lyapunov(double kx, double ky, double kphi,double vd,double omegad)
