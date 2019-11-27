@@ -338,7 +338,8 @@ void Controller::calc_angle_distance(double kr,double kphi)
         kr*=-1;
     }
     this->lin_vel_out.setX(kr*relative.getOrigin().length());
-    this->ang_vel_out.setZ(kphi*tf::getYaw(relative.getRotation()));   
+    this->ang_vel_out.setZ(kphi*tf::getYaw(relative.getRotation())); 
+      
     
 }
 
