@@ -5,7 +5,10 @@
 <!-- Load the formation parameter file-->
 <rosparam file="$(find multi_robot_launcher)/config/formation.yaml" command="load"></rosparam>
 
+
+
 <!-- Setup a slave mobile robot-->
+
 <include file="$(find controller)/launch/slave.launch">
   <arg name="robot_name" value="robot1"/>
   <arg name="robot_x"   value="-1.25" />
@@ -13,7 +16,6 @@
   <arg name="robot_yaw" value="0" />
   <arg name="displ" value="screen"/>
 </include>
-
 
 
 <!-- Setup a slave mobile robot-->

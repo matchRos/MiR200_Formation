@@ -124,15 +124,13 @@ include_directories(
 
 ## Declare a C++ library
 add_library(controller
+
   include/controller/controller.h
   src/controller.cpp
-)
 
-add_library(master
   include/controller/master.h
   src/master.cpp
-)
-add_library(slave
+
   include/controller/slave.h
   src/slave.cpp
 )
@@ -162,21 +160,12 @@ add_executable(master_node src/master_node.cpp)
 target_link_libraries(controller
   ${catkin_LIBRARIES}
 )
-target_link_libraries(master
-  controller 
-  ${catkin_LIBRARIES}
-)
-target_link_libraries(slave
-  controller 
-  ${catkin_LIBRARIES}
-)
-
 target_link_libraries(slave_node
-  slave
+  controller
   ${catkin_LIBRARIES}
 )
 target_link_libraries(master_node
-  master
+  controller
   ${catkin_LIBRARIES}
 )
 
