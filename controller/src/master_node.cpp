@@ -1,16 +1,14 @@
-#include <master/master.h>
+#include <controller/master.h>
 
 int main(int argc, char **argv)
 {
     ros::init(argc,argv,"master");
-    ros::NodeHandle nh;
-    
+    ros::NodeHandle nh;   
     
     Master master=Master(nh);
     master.set_name(argv[1]); 
     master.load();
     master.set_reference(atof(argv[2]),atof(argv[3]),0.0,atof(argv[4]));  
-
 
 
 

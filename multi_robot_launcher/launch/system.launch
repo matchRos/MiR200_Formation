@@ -6,7 +6,7 @@
 <rosparam file="$(find multi_robot_launcher)/config/formation.yaml" command="load"></rosparam>
 
 <!-- Setup a slave mobile robot-->
-<include file="$(find slave)/launch/slave.launch">
+<include file="$(find controller)/launch/slave.launch">
   <arg name="robot_name" value="robot1"/>
   <arg name="robot_x"   value="-1.25" />
   <arg name="robot_y"   value="1.25" />
@@ -17,7 +17,7 @@
 
 
 <!-- Setup a slave mobile robot-->
-<include file="$(find slave)/launch/slave.launch">
+<include file="$(find controller)/launch/slave.launch">
   <arg name="robot_name" value="robot2"/>
   <arg name="robot_x"   value="-1.25" />
   <arg name="robot_y"   value="-1.25" />
@@ -27,7 +27,7 @@
 
 
 <!-- Setup a master mobile robot-->
-<include file="$(find master)/launch/master.launch">
+<include file="$(find controller)/launch/master.launch">
   <arg name="robot_name" value="robot_master"/>
   <arg name="robot_x"   value="0.0" />  
   <arg name="robot_y"   value="0.0" />

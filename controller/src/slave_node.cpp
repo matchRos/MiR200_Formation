@@ -1,4 +1,4 @@
-#include <slave/slave.h>
+#include <controller/slave.h>
 
 int main (int argc,char** argv)
 {

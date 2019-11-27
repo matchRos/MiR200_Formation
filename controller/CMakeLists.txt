@@ -128,6 +128,15 @@ add_library(controller
   src/controller.cpp
 )
 
+add_library(master
+  include/controller/master.h
+  src/master.cpp
+)
+add_library(slave
+  include/controller/slave.h
+  src/slave.cpp
+)
+
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
@@ -136,7 +145,8 @@ add_library(controller
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(truth_frame_publisher src/truth_frame_publisher.cpp)
+add_executable(slave_node src/slave_node.cpp)
+add_executable(master_node src/master_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -152,6 +162,26 @@ add_library(controller
 target_link_libraries(controller
   ${catkin_LIBRARIES}
 )
+target_link_libraries(master
+  controller 
+  ${catkin_LIBRARIES}
+)
+target_link_libraries(slave
+  controller 
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(slave_node
+  slave
+  ${catkin_LIBRARIES}
+)
+target_link_libraries(master_node
+  master
+  ${catkin_LIBRARIES}
+)
+
+
+
 
 #############
 ## Install ##

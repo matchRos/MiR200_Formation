@@ -1,4 +1,4 @@
-#include <slave/slave.h>
+#include <controller/slave.h>
 
 Slave::Slave(ros::NodeHandle &nh):Controller(nh)
 {
