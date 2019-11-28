@@ -85,6 +85,8 @@ class Controller{
         virtual void load_parameter();
         ///Loading ros parameter and calling load_parameter inside
         void load();
+        ///Reset procedure for the controller
+        void reset();
         
 
 

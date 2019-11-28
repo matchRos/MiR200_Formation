@@ -79,18 +79,16 @@ void Planner::set_start_pose(tf::Pose pose)
     ROS_INFO("Trafo: %lf ",tf::getYaw(start_reference.getRotation()));
 }
 
+
 //Implementation of a Planner that gives a circle########################################################################################
 //#######################################################################################################################################
-
 CirclePlanner::CirclePlanner(ros::NodeHandle &nh):Planner(nh)
 {
  
 }
-void CirclePlanner::set_parameter(double r, double x,double y,double omega)
+void CirclePlanner::set_parameter(double r, double omega)
 {
     this->plan.r=r;
-    this->plan.x=x;
-    this->plan.y=y;
     this->plan.omega=omega;
 }
 
@@ -99,8 +97,8 @@ tf::Pose CirclePlanner::get_current_pose(ros::Duration time)
     double t=time.toSec();
 
     tf::Pose pose;
-    tf::Vector3 pos(sin(this->plan.omega*t)*this->plan.r+this->plan.x,
-                    -cos(this->plan.omega*t)*this->plan.r+this->plan.y,
+    tf::Vector3 pos(sin(this->plan.omega*t)*this->plan.r,
+                    -cos(this->plan.omega*t)*this->plan.r,
                     0);
 
 
@@ -115,9 +113,9 @@ tf::Pose CirclePlanner::get_current_pose(ros::Duration time)
 }
 
 
+
 //Implementation of a Planner that gives a Euler spiral########################################################################################
 //#############################################################################################################################################
-
 LissajousPlanner::LissajousPlanner(ros::NodeHandle &nh):Planner(nh)
 {
 
