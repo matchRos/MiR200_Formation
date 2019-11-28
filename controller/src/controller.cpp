@@ -5,24 +5,19 @@ Controller::Controller(ros::NodeHandle &nh):    nh(nh),
                                                 ang_vel_in{0,0,0}
 {
     this->listener=new tf::TransformListener(nh);
-    
-    this->name="my_slave";
- 
+    this->name=nh.getNamespace();
+
     this->pub_vel_out=this->nh.advertise<geometry_msgs::Twist>("/out",10);
     this->pub_state_out=this->nh.advertise<geometry_msgs::PoseStamped>("/state_out",10);
     this->pub_control_difference=this->nh.advertise<geometry_msgs::Pose2D>("/control_difference",10);
     
     this->sub_vel_target=this->nh.subscribe("/in",10,&Controller::target_velocities_callback,this);
     this->sub_state_target=this->nh.subscribe("/state_target",10,&Controller::target_state_callback,this);
-    this->sub_odom_current=this->nh.subscribe("/odom_current",10,&Controller::current_odom_callback,this);
+    this->sub_odom_current=this->nh.subscribe("/odom_current",10,&Controller::current_odom_callback,this);   
 
-    this->current_pose.setOrigin(tf::Vector3(0,0,0));
-    this->current_pose.setRotation(tf::Quaternion(0,0,0,1));
-    this->target_pose.setOrigin(tf::Vector3(0,0,0));   
-    this->target_pose.setRotation(tf::Quaternion(0,0,0,1));
-    this->control_dif.setOrigin(tf::Vector3(0,0,0));
-    this->control_dif.setRotation(tf::Quaternion(0,0,0,1));
+    this->reset_service=nh.advertiseService("reset",&Controller::srv_reset,this);
 
+    
     this->loaded_parameter=false;
 } 
 
@@ -31,7 +26,18 @@ Controller::~Controller()
     delete this->listener;
 }
 
-
+void Controller::reset()
+{  
+    if(loaded_parameter)
+    {
+        this->load();       
+    }
+    else
+    {
+        this->set_reference();
+    }
+    
+}
 
 
 
@@ -52,7 +58,6 @@ void Controller::set_name(std::string name)
 
 void Controller::set_reference(double x,double y,double z,double angle)
 {
-
     this->reference_pose=tf::Pose();
     this->reference_pose.setOrigin(tf::Vector3(x,y,z));
     this->reference_pose.setRotation(tf::Quaternion(angle,0,0));
@@ -64,15 +69,30 @@ void Controller::set_reference(double x,double y,double z,double angle)
                                                                             this->reference_pose.getOrigin().y(),
                                                                             this->reference_pose.getOrigin().z());
 
-    this->add_map();
-
-   
-   
+    this->add_map();   
 }
+
+void Controller::set_reference(std::vector<double> coord,double angle)
+{
+    this->set_reference(coord[0],coord[1],coord[2],angle);
+}
+
+
+void Controller::set_reference()
+{
+    this->current_pose=this->reference_pose;
+    this->target_pose=this->current_pose;    
+
+    ROS_INFO("Set coordiantes of: %s to: %lf %lf %lf",this->name.c_str(),   this->reference_pose.getOrigin().x(),
+                                                                            this->reference_pose.getOrigin().y(),
+                                                                            this->reference_pose.getOrigin().z());
+    this->add_map();   
+}
+
 
 void Controller::add_map()
 {
-    //Publis the trasnformation of a single controller instance to its refernece coordinate system
+    //Publish the trasnformation of a single controller instance to its refernece coordinate system
     static tf2_ros::StaticTransformBroadcaster static_broadcaster;
     geometry_msgs::TransformStamped static_transformStamped;
 
@@ -86,11 +106,6 @@ void Controller::add_map()
     static_broadcaster.sendTransform(static_transformStamped);
 }
 
-
-void Controller::set_reference(std::vector<double> coord,double angle)
-{
-    this->set_reference(coord[0],coord[1],coord[2],angle);
-}
 
 void Controller::set_type(Controller::controllerType type)
 {
@@ -140,7 +155,7 @@ void Controller::load()
     {
         ROS_INFO("Loading %s ",PARAM_TARGET_VEL);
         this->link_target_velocity(param);
-    } 
+    }
 
     if(ros::param::get(PARAM_TARGET_STATE,param))
     {
@@ -161,8 +176,7 @@ void Controller::load()
     if( ros::param::get(PARAM_LYAPUNOV,lyapunov))
     {
         this->set_lyapunov(lyapunov);
-        ROS_INFO("LOADED LYAPUNOV PARAM: %lf %lf %lf %lf %lf", this->kx,this->ky,this->kphi,this->vd,this->omegad);
-
+        ROS_INFO("LOADED %s  PARAM: %lf %lf %lf %lf %lf",PARAM_LYAPUNOV ,this->kx,this->ky,this->kphi,this->vd,this->omegad);
     }   
 
     std::vector<double> ang_dist;
@@ -170,7 +184,7 @@ void Controller::load()
     {
        this->kr=ang_dist[0]; 
        this->kang=ang_dist[1];
-       ROS_INFO("LOADED ANG_DIST PARAM: %lf %lf ", this->kr,this->kang);
+       ROS_INFO("LOADED %s PARAM: %lf %lf ",PARAM_ANG_DIST, this->kr,this->kang);
 
     }   
     
@@ -184,18 +198,6 @@ void Controller::load_parameter()
     return;
 }
 
-void Controller::reset()
-{
-    if(loaded_parameter)
-    {
-        this->load();
-    }
-    else
-    {
-        this->add_map();
-    }
-    
-}
 
  /*Linking topics #################################################################################################################################
 ##################################################################################################################################################*/
@@ -276,7 +278,11 @@ void Controller::target_state_callback(geometry_msgs::PoseStamped msg)
 }
 
 
-
+ bool Controller::srv_reset(std_srvs::EmptyRequest &req, std_srvs::EmptyResponse &res)
+ {
+     this->reset();
+     return true;
+ }
 
 
 
@@ -358,5 +364,5 @@ void Controller::execute()
     this->getTransformation();
     this->scope();
     this->publish();
-    ros::spinOnce();   
+     ros::spinOnce();
 }

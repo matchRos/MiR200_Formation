@@ -8,6 +8,7 @@
 #include <tf/transform_listener.h>
 #include <tf/transform_broadcaster.h>
 #include <tf2_ros/static_transform_broadcaster.h>
+#include <std_srvs/Empty.h>
 
 
 #include <math.h>
@@ -62,6 +63,9 @@ class Controller{
         ///Initialise the coordinate system of the Controller to position
         ///param: vector<double> coord: Position vector    
         void set_reference(std::vector<double> coord,double angle);
+        ///Initialise the coordinate system of the Controller to position defined by reference pose
+        void set_reference();
+
 
          ///Adding a transformation to the map frame, the reference pose is defined in
         void add_map();
@@ -85,10 +89,7 @@ class Controller{
         virtual void load_parameter();
         ///Loading ros parameter and calling load_parameter inside
         void load();
-        ///Reset procedure for the controller
-        void reset();
-        
-
+     
 
         
 
@@ -128,7 +129,7 @@ class Controller{
         void calc_angle_distance(double kr,double kphi);
         ///Controller scope
         void execute();
-
+        //Resets the controller to start configuration
         void reset();     
 
         
@@ -141,7 +142,8 @@ class Controller{
         void current_odom_callback(nav_msgs::Odometry msg);
         /// Callback for input target state message. Is executed everytima a target state input is incoming. Writes data to target_pose state
         virtual void target_state_callback(geometry_msgs::PoseStamped msg);   
-
+        //Callback for the reset server
+        bool srv_reset(std_srvs::EmptyRequest &req, std_srvs::EmptyResponse &res);
 
 
 
@@ -165,6 +167,7 @@ class Controller{
         ros::Subscriber sub_odom_current;                            //Subscriber object for odometry
         ros::Subscriber sub_state_target;                            //Subscriber object for target state of controller
 
+        ros::ServiceServer reset_service;                           //Service for resetting the controller
 
         std::string name;                                           //Name of the node respective Controller
         std::string world_frame;                                    //Name of the world frame
@@ -201,7 +204,5 @@ class Controller{
 
         //Use the 
         bool loaded_parameter;
-
-
         
 };

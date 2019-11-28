@@ -11,7 +11,7 @@ int main (int argc,char** argv)
     ros::Rate rate(100);
     while(ros::ok())
     {       
-        slave.execute();      
+        slave.execute();   
         rate.sleep();
     }
  
