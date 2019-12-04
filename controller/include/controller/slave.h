@@ -23,6 +23,7 @@ class Slave:public Controller{
         ///from the given cartesian velocity state d/dt[x,y,phi] (cart_vel)
         void optimal_control();
         void target_state_callback(geometry_msgs::PoseStamped msg) ; 
+        void target_velocities_callback(geometry_msgs::Twist msg);
         tf::Pose master_pose;
  
 
