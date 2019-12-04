@@ -24,9 +24,10 @@ Planner::Planner(ros::NodeHandle &nh):nh(nh)
 
 void Planner::plan(const ros::TimerEvent& event)
 {
-    ros::Duration local_time=ros::Time::now()-this->start_time-this->paused;
+    
     if(this->is_planning)
     {
+        ros::Duration local_time=ros::Time::now()-this->start_time-this->paused;
         ROS_INFO("%lf",local_time.toSec());
         this->planned_pose=this->get_current_pose(local_time);
         this->planned_pose=this->start_reference*this->planned_pose;

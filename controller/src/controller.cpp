@@ -340,6 +340,7 @@ void Controller::calc_Lyapunov(double kx, double ky, double kphi,double vd,doubl
     
 
     this->lin_vel_out.setX(kx*x+vd*cos(phi));
+    
     this->ang_vel_out.setZ(kphi*sin(phi)+ky*vd*y+omegad); 
 }
 
