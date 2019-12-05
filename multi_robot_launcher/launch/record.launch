@@ -19,7 +19,7 @@
 
   <include file="$(find multi_robot_launcher)/launch/system.launch"></include>
 
-  <node name="planner" pkg="planner" type="circle_node" />
+  <node name="planner" pkg="simulation_env" type="circle_node" args="5.0 0.1"/>
 
   <node name="record_system" pkg="rosbag" type="record" args="record -O $(find multi_robot_launcher)/bag/$(arg filename).bag -a"/>
 

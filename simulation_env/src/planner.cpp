@@ -19,16 +19,20 @@ Planner::Planner(ros::NodeHandle &nh):nh(nh)
     this->planned_pose.setRotation(quat);
     this->start_reference.setIdentity();
     this->is_planning=false;
+    this->iterations=1;
+    this->iterations_counter=0;
 }
 
 
 void Planner::plan(const ros::TimerEvent& event)
 {
-    
+    if(this->iterations_counter==this->iterations)
+    {
+        stop();
+    }
     if(this->is_planning)
     {
-        ros::Duration local_time=ros::Time::now()-this->start_time-this->paused;
-        ROS_INFO("%lf",local_time.toSec());
+        ros::Duration local_time=ros::Time::now()-this->start_time-this->paused;        
         this->planned_pose=this->get_current_pose(local_time);
         this->planned_pose=this->start_reference*this->planned_pose;
     }
@@ -60,6 +64,7 @@ bool Planner::srv_start(std_srvs::SetBool::Request &req, std_srvs::SetBool::Resp
 }
 void Planner::stop()
 {
+    ROS_INFO("Shutting down node: %s",ros::this_node::getName());
     ros::shutdown();
 }
 void Planner::pause()
@@ -110,6 +115,10 @@ tf::Pose CirclePlanner::get_current_pose(ros::Duration time)
 
     pose.setRotation(quat.normalize());
 
+    if(this->plan.omega*t>2*M_PI)
+    {
+        this->iterations_counter++;
+    }
     return pose;    
 }
 
@@ -140,7 +149,11 @@ tf::Pose LissajousPlanner::get_current_pose(ros::Duration time)
 
     pose.setOrigin(r);   
 
-    pose.setRotation(quat);    
+    pose.setRotation(quat); 
+    if(this->plan.omegax*t>2*M_PI)
+    {
+        this->iterations_counter++;
+    }   
 
     return pose;
 

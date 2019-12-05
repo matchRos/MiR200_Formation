@@ -11,6 +11,5 @@ int main(int argc,char **argv)
     tf::Quaternion quat;
     quat.setRPY(0,0,0);
     ref.setRotation(quat);
-    ROS_INFO("NOT IMPLEMENTED!");
     ros::spin(); 
 }

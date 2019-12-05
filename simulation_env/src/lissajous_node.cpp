@@ -15,7 +15,7 @@ int main(int argc,char **argv)
     ref.setRotation(quat);
 
     LissajousPlanner lissa(nh);
-    lissa.set_parameter(atof(argv[1]));
+    lissa.set_parameter(atof(argv[1]),0,2,6.0,6.0);
     lissa.set_start_pose(ref);
     lissa.start();
     ros::spin(); 

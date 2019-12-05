@@ -13,12 +13,12 @@
  
   <!-- Spawn the robot into Gazebo -->
   <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model $(arg controller_name)
-    -x $(arg robot_x) -y $(arg robot_y) -Y $(arg robot_yaw) " />
+    -x $(arg robot_x) -y $(arg robot_y) -Y $(arg robot_yaw) "/>
 
 
 
   <!-- Load ros_control controller configurations -->
-  <rosparam file="$(find mir_description)/config/joint_state_controller.yaml" command="load" />  
+  <rosparam file="$(find mir_description)/config/joint_state_controller.yaml" command="load"/>  
   <rosparam file="$(find mir_description)/config/diffdrive_controller.yaml" command="load" subst_value="true"/>
 
   <!-- Start the controllers -->
@@ -27,12 +27,12 @@
   </node>
  
 
-<!-- Add passive + mimic joints to joint_states topic -->
+<!-- Add passive + mimic joints to joint_states topic  -->
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
-    <rosparam param="source_list">[mir/joint_states]</rosparam>
+    <rosparam param="source_list" subst_value="True">[$(arg controller_name)/joint_states]</rosparam>
     <param name="rate" value="200.0" />
   </node>
- 
+
 <!-- Robot state publisher: This publisher  Calculates the kinematik of the mir platform--> 
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen">  
    <param name="tf_prefix" value="$(arg controller_name)"/>

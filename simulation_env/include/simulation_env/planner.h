@@ -17,6 +17,9 @@ class Planner{
         void pause();
         //Sets the initial pose of the robot from wich the planning starts
         void set_start_pose(tf::Pose pose);
+
+    protected:
+        int iterations_counter;
     private:
         ros::NodeHandle nh;        
         ros::Timer tim_sampling;
@@ -24,6 +27,9 @@ class Planner{
         ros::ServiceServer set_start_service;
         bool is_planning;
         bool is_paused;
+
+        int iterations;
+        
 
         std::string frame_name;
 
