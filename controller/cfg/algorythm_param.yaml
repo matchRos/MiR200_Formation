@@ -1,3 +1,3 @@
 algorithm:
-  lyapunov: [11.0,11.0,7.0,0.3,0.3]               # parameter for lyapunov algorythm: kx,kphi,vd,omegad
+  lyapunov: [5.0,5.0,3.0,0.3,0.3]               # parameter for lyapunov algorythm: kx,kphi,vd,omegad
   angle_distance: [3.0,3.0]

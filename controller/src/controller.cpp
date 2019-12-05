@@ -51,9 +51,7 @@ void Controller::set_name(std::string name)
     this->link_output_velocity("mobile_base_controller/cmd_vel");
     this->link_output_state("state");
     this->link_output_ctrldiff("control_dif");
-    this->link_target_state("state_in");
-
-   
+    this->link_target_state("state_in");   
 }
 
 void Controller::set_reference(double x,double y,double z,double angle)
