@@ -24,6 +24,7 @@ class Slave:public Controller{
         void optimal_control();
         void target_state_callback(geometry_msgs::PoseStamped msg) ; 
         void target_velocities_callback(geometry_msgs::Twist msg);
+        void target_odometry_callback(nav_msgs::Odometry msg);
         tf::Pose master_pose;
  
 

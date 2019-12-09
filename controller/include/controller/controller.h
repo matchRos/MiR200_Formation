@@ -19,6 +19,7 @@
 #define PARAM_TARGET_STATE "topic_target_state"
 #define PARAM_CURRENT_ODOM "topic_input_odometry"
 #define PARAM_CURRENT_STATE "topic_current_state"
+#define PARAM_TARGET_ODOM "topic_target_odometry"
 
 #define PARAM_COORD "coord"
 #define PARAM_WORLD_FRAME "world_frame"
@@ -101,7 +102,8 @@ class Controller{
         void link_target_velocity(std::string topic_name);   
          ///link Controller to it's state topic
         ///'topic_name' Name of the topic the Controller gets its target state from                       
-        void link_target_state(std::string topic_name);      
+        void link_target_state(std::string topic_name);
+        void link_target_odometry(std::string topic_name);
         ///link Controller to it's input topic
         ///'topic_name'Name of the topic the Controller writes its output to                       
         void link_output_velocity(std::string topic_name);      
@@ -139,6 +141,10 @@ class Controller{
         void current_odom_callback(nav_msgs::Odometry msg);
         /// Callback for input target state message. Is executed everytima a target state input is incoming. Writes data to target_pose state
         virtual void target_state_callback(geometry_msgs::PoseStamped msg);   
+        
+        virtual void target_odometry_callback(nav_msgs::Odometry msg);
+        
+        
         //Callback for the reset server
         bool srv_reset(std_srvs::EmptyRequest &req, std_srvs::EmptyResponse &res);
 
@@ -163,6 +169,7 @@ class Controller{
         ros::Subscriber sub_vel_target;                              //Subscirber object for input topic
         ros::Subscriber sub_odom_current;                            //Subscriber object for odometry
         ros::Subscriber sub_state_target;                            //Subscriber object for target state of controller
+        ros::Subscriber sub_target_odometry;                         //Subscriber object for target odometry topic
 
         ros::ServiceServer reset_service;                           //Service for resetting the controller
 

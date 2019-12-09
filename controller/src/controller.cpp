@@ -143,6 +143,12 @@ void Controller::load()
         this->link_current_odom(param);
     }
 
+    if(ros::param::get(PARAM_TARGET_ODOM,param))
+    {
+        ROS_INFO("Loading %s",PARAM_TARGET_ODOM);
+        this->link_target_odometry(param);
+    }
+
     if(ros::param::get(PARAM_TARGET_VEL,param))
     {
         ROS_INFO("Loading %s ",PARAM_TARGET_VEL);
@@ -202,6 +208,13 @@ void Controller::link_current_odom(std::string topic_name)
     this->sub_odom_current=this->nh.subscribe(topic_name,10,&Controller::current_odom_callback,this);
 }
 
+void Controller::link_target_odometry(std::string topic_name)
+{
+    this->sub_target_odometry.shutdown();
+    ROS_INFO("Linking input target odometry of %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
+    this->sub_target_odometry=this->nh.subscribe(topic_name,10,&Controller::target_odometry_callback,this);
+}
+
 void Controller::link_target_state(std::string topic_name)
 {
     this->sub_state_target.shutdown();
@@ -224,7 +237,6 @@ void Controller::link_output_velocity(std::string topic_name)
     ROS_INFO("Linking output velocity %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
     this->pub_vel_out=this->nh.advertise<geometry_msgs::Twist>(topic_name,10);
 }
-
 
 void Controller::link_output_state(std::string topic_name)
 {
@@ -269,6 +281,12 @@ void Controller::target_state_callback(geometry_msgs::PoseStamped msg)
     tf::poseMsgToTF(msg.pose,this->target_pose);
 }
 
+void Controller::target_odometry_callback(nav_msgs::Odometry msg)
+{
+    tf::poseMsgToTF(msg.pose.pose,this->target_pose);
+    tf::vector3MsgToTF(msg.twist.twist.linear,this->lin_vel_in);
+    tf::vector3MsgToTF(msg.twist.twist.angular,this->ang_vel_in);
+}
 
  bool Controller::srv_reset(std_srvs::EmptyRequest &req, std_srvs::EmptyResponse &res)
  {
