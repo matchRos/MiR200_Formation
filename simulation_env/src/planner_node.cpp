@@ -31,6 +31,7 @@ int main(int argc,char**argv)
     }
     planner->load();
     planner->set_start_pose(ref);
+    ros::Duration(2).sleep();
     planner->start();
     ros::spin();
     delete planner;
