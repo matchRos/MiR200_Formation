@@ -1,5 +1,5 @@
-LissajousPlanner:
-    omega: 0.1
+planner:
+    omega: 0.07
     ratio: 2
     phaseshift: 0
     amplifier_x: 5.0
