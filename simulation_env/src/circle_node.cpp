@@ -15,8 +15,15 @@ int main(int argc,char **argv)
     ref.setRotation(quat);
 
     CirclePlanner circle(nh);
-    circle.set_parameter(atof(argv[1]),atof(argv[2]));
+    circle.load();
     circle.set_start_pose(ref);
-    circle.start();
+    
+    if(argc>1)
+    {
+        if(strcmp(argv[1],"start"))
+        {
+            circle.start();
+        }
+    }
     ros::spin(); 
 }

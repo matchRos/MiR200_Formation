@@ -26,6 +26,7 @@ class Planner{
         ros::Timer tim_sampling;
         ros::Publisher pub_current_pose;
         ros::ServiceServer set_start_service;
+        ros::ServiceServer set_stop_service;
         bool is_planning;
         bool is_paused;
 
@@ -44,6 +45,7 @@ class Planner{
         virtual void load()=0;
         virtual tf::Pose get_current_pose(ros::Duration time)=0;
         bool srv_start( std_srvs::SetBool::Request &req,std_srvs::SetBool::Response &res);
+        bool srv_stop( std_srvs::SetBool::Request &req,std_srvs::SetBool::Response &res);
       
         
 };

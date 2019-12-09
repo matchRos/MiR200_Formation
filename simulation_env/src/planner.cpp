@@ -8,7 +8,7 @@ Planner::Planner(ros::NodeHandle &nh):nh(nh)
     this->tim_sampling=this->nh.createTimer(ros::Duration(0.05),&Planner::plan,this);
     this->pub_current_pose=nh.advertise<geometry_msgs::PoseStamped>("/trajectory",10);
     this->set_start_service=nh.advertiseService("start_planner",&Planner::srv_start,this);
-    //this->set_start_service=nh.advertiseService("pause_planner",&Planner::srv_start,this);
+    this->set_stop_service=nh.advertiseService("stop_planner",&Planner::srv_stop,this);
 
     this->paused=ros::Duration(0,0);
     this->frame_name="/map";
@@ -60,8 +60,20 @@ bool Planner::srv_start(std_srvs::SetBool::Request &req, std_srvs::SetBool::Resp
     {
         this->pause();
     }
+    res.success=true;
     return true;
 }
+
+bool Planner::srv_stop(std_srvs::SetBool::Request &req, std_srvs::SetBool::Response &res)
+{
+    if(req.data)
+    {
+        this->stop();
+    }
+    res.success=true;
+    return true;
+}
+
 void Planner::stop()
 {
     ROS_INFO("Shutting down node: %s",ros::this_node::getName().c_str());
@@ -125,6 +137,9 @@ void CirclePlanner::load()
 {
     this->nh.getParam(PARAM_R,this->plan.r);
     this->nh.getParam(PARAM_OMEGA,this->plan.omega);
+    ROS_INFO("Loaded %s : Radius: %f Omega: %f",    ros::this_node::getName().c_str(),
+                                                    this->plan.r,
+                                                    this->plan.omega);
 }
 
 

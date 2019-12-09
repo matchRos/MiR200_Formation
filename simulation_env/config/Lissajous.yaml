@@ -1,4 +1,4 @@
-lissajous:
+LissajousPlanner:
     omega: 0.1
     ratio: 2
     phaseshift: 0
