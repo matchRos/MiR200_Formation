@@ -41,9 +41,9 @@ robot_master:
 
   #topic_target_velocity: "/key_vel"
   
-  topic_target_state: "/trajectory"
+  #topic_target_state: "/trajectory"
 
-  #topic_target_odometry: "/target_odom"
+  topic_target_odometry: "/trajectory_odom"
 
 
   controller_type: 2                        # 1-> pseudo_invers 2->lyapov 3->angl_dist

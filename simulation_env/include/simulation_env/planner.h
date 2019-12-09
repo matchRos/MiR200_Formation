@@ -2,6 +2,7 @@
 #include<tf/tf.h>
 #include<math.h>
 #include<geometry_msgs/PoseStamped.h>
+#include<nav_msgs/Odometry.h>
 #include<std_srvs/SetBool.h>
 
 //Generic path planning class
@@ -28,6 +29,7 @@ class Planner{
              
         ros::Timer tim_sampling;                                //Timer for publishing trajectory
         ros::Publisher pub_current_pose;                        //Publisher for current trajectory pose
+        ros::Publisher pub_current_odometry;
         ros::ServiceServer set_start_service;                   //Service for starting the planner
         ros::ServiceServer set_stop_service;                    //Service for shutting the planner down
         bool is_planning;                                       //Flag if the planner is planning at the moment
@@ -42,6 +44,7 @@ class Planner{
         ros::Time start_time;                                   //Time at wich the planning procedure started
 
         tf::Pose planned_pose;                                  //Calculated current poses
+        tf::Vector3 planned_vel;
         tf::Transform start_reference;                          //Transformation for modifieing offset to initial pose
 
         //Planning Scope as handle for timer event
@@ -50,9 +53,8 @@ class Planner{
         //@param time : time the pose is determined at       
         virtual tf::Pose get_current_pose(ros::Duration time)=0; 
         //Determines the current linear velocity
-        double get_linear_velocity(ros::Duration time);
-        //Determines the current angular velocity
-        double get_angular_velocity(ros::Duration time);
+        virtual tf::Vector3 get_velocity(ros::Duration time)=0;
+
 
         //service procedure for satrting the planner
         //@param req: Reqest the service is getting
@@ -85,8 +87,7 @@ class CirclePlanner:public Planner{
     private:
         //Calclulation of the curren pose dependent on time
         tf::Pose get_current_pose(ros::Duration time);
-        double get_linear_velocity(ros::Duration time);
-        double get_angular_velocity(ros::Duration time);
+        tf::Vector3 get_velocity(ros::Duration time);
         CirclePlan plan;
        
 };
@@ -116,7 +117,6 @@ class LissajousPlanner:public Planner{
         private:
             //Calclulation of the curren pose dependent on time
             tf::Pose get_current_pose(ros::Duration time);
-            double get_linear_velocity(ros::Duration time);
-            double get_angular_velocity(ros::Duration time);
+            tf::Vector3 get_velocity(ros::Duration time);
             LissajousPlan plan;
 };

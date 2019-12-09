@@ -6,6 +6,7 @@ Planner::Planner(ros::NodeHandle &nh):nh(nh)
 {
     this->tim_sampling=this->nh.createTimer(ros::Duration(0.05),&Planner::plan,this);
     this->pub_current_pose=nh.advertise<geometry_msgs::PoseStamped>("/trajectory",10);
+    this->pub_current_odometry=nh.advertise<nav_msgs::Odometry>("/trajectory_odom",10);
     this->set_start_service=nh.advertiseService("start_planner",&Planner::srv_start,this);
     this->set_stop_service=nh.advertiseService("stop_planner",&Planner::srv_stop,this);
 
@@ -33,7 +34,13 @@ void Planner::plan(const ros::TimerEvent& event)
     {
         ros::Duration local_time=ros::Time::now()-this->start_time-this->paused;        
         this->planned_pose=this->get_current_pose(local_time);
+        this->planned_vel=this->get_velocity(local_time);
         this->planned_pose=this->start_reference*this->planned_pose;
+        tf::Transform dir;
+        dir=this->start_reference;
+        dir.setOrigin(tf::Vector3(0,0,0));
+        this->planned_vel=dir*this->planned_vel;
+        
     }
 
     geometry_msgs::PoseStamped msg;
@@ -41,6 +48,14 @@ void Planner::plan(const ros::TimerEvent& event)
     msg.header.stamp=ros::Time::now();
     tf::poseTFToMsg(this->planned_pose,msg.pose);
     this->pub_current_pose.publish(msg);
+
+    nav_msgs::Odometry msg2;
+    msg2.header.frame_id=this->frame_name;
+    msg2.header.stamp=ros::Time::now();
+    tf::poseTFToMsg(this->planned_pose,msg2.pose.pose);
+    tf::vector3TFToMsg(this->planned_vel,msg2.twist.twist.linear);
+    this->pub_current_odometry.publish(msg2);
+
 }
 
 
@@ -141,13 +156,14 @@ tf::Pose CirclePlanner::get_current_pose(ros::Duration time)
     return pose;    
 }
 
-double CirclePlanner::get_linear_velocity(ros::Duration time)
+tf::Vector3 CirclePlanner
+::get_velocity(ros::Duration time)
 {
-    return this->plan.omega*this->plan.r;
-}
-double CirclePlanner::get_angular_velocity(ros::Duration time)
-{
-    return this->plan.omega;
+    double t=time.toSec();
+    tf::Vector3 vel(cos(this->plan.omega*t)*this->plan.r*this->plan.omega,
+                    sin(this->plan.omega*t)*this->plan.r,
+                    0);
+    return vel;
 }
 
 void CirclePlanner::load()
@@ -206,21 +222,17 @@ tf::Pose LissajousPlanner::get_current_pose(ros::Duration time)
 
 }
 
-double LissajousPlanner::get_linear_velocity(ros::Duration time)
+tf::Vector3 LissajousPlanner::get_velocity(ros::Duration time)
 {
     double t=time.toSec();
     double dx=this->plan.Ax*cos(this->plan.omegax*t)*this->plan.omegax;
     double dy=this->plan.Ay*cos(this->plan.omegax*this->plan.ratio*t+this->plan.dphi)*this->plan.omegax*this->plan.ratio;
-    return std::sqrt(dx*dx+dy*dy);
+    tf::Vector3 vel(dx,
+                    dy,
+                    0);
+    return vel;
 }
-double LissajousPlanner::get_angular_velocity(ros::Duration time)
-{
-    double t=time.toSec();
-    double dx=this->plan.Ax*cos(this->plan.omegax*t)*this->plan.omegax;
-    tf::Pose pose=this->get_current_pose(time);
-    double r=std::sqrt(pose.getOrigin().x()*pose.getOrigin().x()+pose.getOrigin().y()*pose.getOrigin().y());
-    return dx/r;
-}
+
 
 
 void LissajousPlanner::set_parameter(float omegax,float dphi,int ratio,float Ax,float Ay)
