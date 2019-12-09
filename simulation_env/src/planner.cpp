@@ -135,11 +135,18 @@ tf::Pose CirclePlanner::get_current_pose(ros::Duration time)
 }
 void CirclePlanner::load()
 {
-    this->nh.getParam(PARAM_R,this->plan.r);
-    this->nh.getParam(PARAM_OMEGA,this->plan.omega);
-    ROS_INFO("Loaded %s : Radius: %f Omega: %f",    ros::this_node::getName().c_str(),
-                                                    this->plan.r,
-                                                    this->plan.omega);
+    try{
+        this->nh.getParam(PARAM_R,this->plan.r);
+        this->nh.getParam(PARAM_OMEGA,this->plan.omega);
+        ROS_INFO("Loaded %s : Radius: %f Omega: %f",    ros::this_node::getName().c_str(),
+                                                        this->plan.r,
+                                                        this->plan.omega);
+    }
+    catch(...)
+    {
+        ROS_INFO("Error due loading paramter of: %s",ros::this_node::getName().c_str());
+    }
+   
 }
 
 
@@ -194,4 +201,11 @@ void LissajousPlanner::load()
     this->nh.getParam(PARAM_RATIO,this->plan.ratio);
     this->nh.getParam(PARAM_PHASE,this->plan.dphi);
     this->nh.getParam(PARAM_OMEGA,this->plan.omegax);
+    ROS_INFO("Loaded %s : AmplifierX %lf AmplifierY %lf Ratio %i PhaseShift %lf Omega: %lf ",   
+                                                    ros::this_node::getName().c_str(),
+                                                    this->plan.Ax,
+                                                    this->plan.Ay,
+                                                    this->plan.ratio,
+                                                    this->plan.dphi,
+                                                    this->plan.omegax);
 }

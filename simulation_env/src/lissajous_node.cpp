@@ -5,7 +5,7 @@
 int main(int argc,char **argv)
 {
     ros::init(argc,argv,"LissajousPlanner");
-    ros::NodeHandle nh;
+    ros::NodeHandle nh("~");
     
     tf::Pose ref;
     ref.setOrigin(tf::Vector3(0,0,0));
@@ -23,8 +23,7 @@ int main(int argc,char **argv)
         {
             lissa.start();
         }
-    }
-   
+    }  
    
     ros::spin(); 
 }

@@ -5,7 +5,7 @@
 int main(int argc,char **argv)
 {
     ros::init(argc,argv,"CirclePlanner");
-    ros::NodeHandle nh;
+    ros::NodeHandle nh("~");
     
     tf::Pose ref;
     ref.setOrigin(tf::Vector3(0,0,0));
