@@ -1,0 +1,6 @@
+lissajous:
+    omega: 0.1
+    ratio: 2
+    phaseshift: 0
+    amplifier_x: 5.0
+    amplifier_y: 5.0

@@ -64,7 +64,7 @@ bool Planner::srv_start(std_srvs::SetBool::Request &req, std_srvs::SetBool::Resp
 }
 void Planner::stop()
 {
-    ROS_INFO("Shutting down node: %s",ros::this_node::getName());
+    ROS_INFO("Shutting down node: %s",ros::this_node::getName().c_str());
     ros::shutdown();
 }
 void Planner::pause()
@@ -121,7 +121,11 @@ tf::Pose CirclePlanner::get_current_pose(ros::Duration time)
     }
     return pose;    
 }
-
+void CirclePlanner::load()
+{
+    this->nh.getParam(PARAM_R,this->plan.r);
+    this->nh.getParam(PARAM_OMEGA,this->plan.omega);
+}
 
 
 //Implementation of a Planner that gives a Euler spiral########################################################################################
@@ -166,4 +170,13 @@ void LissajousPlanner::set_parameter(float omegax,float dphi,int ratio,float Ax,
     this->plan.omegax=omegax;
     this->plan.dphi=dphi;
     this->plan.ratio=ratio;
+}
+
+void LissajousPlanner::load()
+{
+    this->nh.getParam(PARAM_AMP_X,this->plan.Ax);
+    this->nh.getParam(PARAM_AMP_Y,this->plan.Ay);
+    this->nh.getParam(PARAM_RATIO,this->plan.ratio);
+    this->nh.getParam(PARAM_PHASE,this->plan.dphi);
+    this->nh.getParam(PARAM_OMEGA,this->plan.omegax);
 }

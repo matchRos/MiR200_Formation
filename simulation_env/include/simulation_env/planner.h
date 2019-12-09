@@ -20,8 +20,9 @@ class Planner{
 
     protected:
         int iterations_counter;
+        ros::NodeHandle nh;   
     private:
-        ros::NodeHandle nh;        
+             
         ros::Timer tim_sampling;
         ros::Publisher pub_current_pose;
         ros::ServiceServer set_start_service;
@@ -40,12 +41,16 @@ class Planner{
         tf::Transform start_reference;
 
         void plan(const ros::TimerEvent& events);
+        virtual void load()=0;
         virtual tf::Pose get_current_pose(ros::Duration time)=0;
         bool srv_start( std_srvs::SetBool::Request &req,std_srvs::SetBool::Response &res);
       
         
 };
 //Planner Class for generating a circle path in map frame. 
+#define PARAM_R "radius"
+#define PARAM_OMEGA "omega"
+
 class CirclePlanner:public Planner{
     public:
         CirclePlanner(ros::NodeHandle &nh);
@@ -55,6 +60,7 @@ class CirclePlanner:public Planner{
         };
         //Sets the parameter of the planner
         void set_parameter(double r=3.0,double omega=0.5);
+        void load();
     private:
         //Calclulation of the curren pose dependent on time
         tf::Pose get_current_pose(ros::Duration time);
@@ -63,6 +69,11 @@ class CirclePlanner:public Planner{
 };
 
 //Planner Class for generating a lissajous figure path in map frame. 
+#define PARAM_OMEGA "omega"
+#define PARAM_RATIO "ratio"
+#define PARAM_PHASE "phaseshift"
+#define PARAM_AMP_X "amplifier_x"
+#define PARAM_AMP_Y "amplifier_y"
 class LissajousPlanner:public Planner{
     public:
         LissajousPlanner(ros::NodeHandle &nh);
@@ -74,6 +85,7 @@ class LissajousPlanner:public Planner{
             float Ay;            //Magnitude y directions
         };
         void set_parameter(float omegax,float dphi=0.0, int ratio=2,float Ax=3.0,float Ay=3.0);
+        void load();
         private:
             //Calclulation of the curren pose dependent on time
             tf::Pose get_current_pose(ros::Duration time);
