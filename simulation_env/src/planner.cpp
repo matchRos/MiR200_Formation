@@ -1,6 +1,5 @@
 #include <simulation_env/planner.h>
 
-
 //Implementation of a generic planner class########################################################################################
 //#################################################################################################################################
 Planner::Planner(ros::NodeHandle &nh):nh(nh)
@@ -98,6 +97,14 @@ void Planner::set_start_pose(tf::Pose pose)
 }
 
 
+
+
+
+
+
+
+
+
 //Implementation of a Planner that gives a circle########################################################################################
 //#######################################################################################################################################
 CirclePlanner::CirclePlanner(ros::NodeHandle &nh):Planner(nh)
@@ -133,6 +140,16 @@ tf::Pose CirclePlanner::get_current_pose(ros::Duration time)
     }
     return pose;    
 }
+
+double CirclePlanner::get_linear_velocity(ros::Duration time)
+{
+    return this->plan.omega*this->plan.r;
+}
+double CirclePlanner::get_angular_velocity(ros::Duration time)
+{
+    return this->plan.omega;
+}
+
 void CirclePlanner::load()
 {
     try{
@@ -148,6 +165,10 @@ void CirclePlanner::load()
     }
    
 }
+
+
+
+
 
 
 //Implementation of a Planner that gives a Euler spiral########################################################################################
@@ -184,6 +205,23 @@ tf::Pose LissajousPlanner::get_current_pose(ros::Duration time)
     return pose;
 
 }
+
+double LissajousPlanner::get_linear_velocity(ros::Duration time)
+{
+    double t=time.toSec();
+    double dx=this->plan.Ax*cos(this->plan.omegax*t)*this->plan.omegax;
+    double dy=this->plan.Ay*cos(this->plan.omegax*this->plan.ratio*t+this->plan.dphi)*this->plan.omegax*this->plan.ratio;
+    return std::sqrt(dx*dx+dy*dy);
+}
+double LissajousPlanner::get_angular_velocity(ros::Duration time)
+{
+    double t=time.toSec();
+    double dx=this->plan.Ax*cos(this->plan.omegax*t)*this->plan.omegax;
+    tf::Pose pose=this->get_current_pose(time);
+    double r=std::sqrt(pose.getOrigin().x()*pose.getOrigin().x()+pose.getOrigin().y()*pose.getOrigin().y());
+    return dx/r;
+}
+
 
 void LissajousPlanner::set_parameter(float omegax,float dphi,int ratio,float Ax,float Ay)
 {

@@ -49,6 +49,11 @@ class Planner{
         //Determine the current pose
         //@param time : time the pose is determined at       
         virtual tf::Pose get_current_pose(ros::Duration time)=0; 
+        //Determines the current linear velocity
+        double get_linear_velocity(ros::Duration time);
+        //Determines the current angular velocity
+        double get_angular_velocity(ros::Duration time);
+
         //service procedure for satrting the planner
         //@param req: Reqest the service is getting
         //@oparam res Response the service is sending
@@ -80,6 +85,8 @@ class CirclePlanner:public Planner{
     private:
         //Calclulation of the curren pose dependent on time
         tf::Pose get_current_pose(ros::Duration time);
+        double get_linear_velocity(ros::Duration time);
+        double get_angular_velocity(ros::Duration time);
         CirclePlan plan;
        
 };
@@ -109,5 +116,7 @@ class LissajousPlanner:public Planner{
         private:
             //Calclulation of the curren pose dependent on time
             tf::Pose get_current_pose(ros::Duration time);
+            double get_linear_velocity(ros::Duration time);
+            double get_angular_velocity(ros::Duration time);
             LissajousPlan plan;
 };
