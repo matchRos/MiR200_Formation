@@ -3,7 +3,8 @@
 <launch>
   <arg name="filename" default="test"/>
 
-
+  <rosparam file="$(find simulation_env)/config/Circle.yaml" command="load"></rosparam>
+  <rosparam file="$(find simulation_env)/config/Lissajous.yaml" command="load"></rosparam>
 
   <include file="$(find mir_description)/launch/upload_mir_urdf.launch" />
 
@@ -19,7 +20,7 @@
 
   <include file="$(find multi_robot_launcher)/launch/system.launch"></include>
 
-  <node name="planner" pkg="simulation_env" type="circle_node" args="5.0 0.1"/>
+  <node name="planner" pkg="simulation_env" type="circle_node" required="true"/>
 
   <node name="record_system" pkg="rosbag" type="record" args="record -O $(find multi_robot_launcher)/bag/$(arg filename).bag -a"/>
 
