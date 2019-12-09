@@ -30,7 +30,8 @@ void Controller::reset()
 {  
     if(loaded_parameter)
     {
-        this->load();       
+        this->load();  
+        this->set_reference();     
     }
     else
     {
@@ -54,27 +55,6 @@ void Controller::set_name(std::string name)
     this->link_target_state("state_in");   
 }
 
-void Controller::set_reference(double x,double y,double z,double angle)
-{
-    this->reference_pose=tf::Pose();
-    this->reference_pose.setOrigin(tf::Vector3(x,y,z));
-    this->reference_pose.setRotation(tf::Quaternion(angle,0,0));
-
-    this->current_pose=this->reference_pose;
-    this->target_pose=this->current_pose;    
-
-    ROS_INFO("Set coordiantes of: %s to: %lf %lf %lf",this->name.c_str(),   this->reference_pose.getOrigin().x(),
-                                                                            this->reference_pose.getOrigin().y(),
-                                                                            this->reference_pose.getOrigin().z());
-
-    this->add_map();   
-}
-
-void Controller::set_reference(std::vector<double> coord,double angle)
-{
-    this->set_reference(coord[0],coord[1],coord[2],angle);
-}
-
 
 void Controller::set_reference()
 {
@@ -85,6 +65,22 @@ void Controller::set_reference()
                                                                             this->reference_pose.getOrigin().y(),
                                                                             this->reference_pose.getOrigin().z());
     this->add_map();   
+}
+
+
+void Controller::set_reference(double x,double y,double z,double angle)
+{
+    this->reference_pose=tf::Pose();
+    this->reference_pose.setOrigin(tf::Vector3(x,y,z));
+    this->reference_pose.setRotation(tf::Quaternion(angle,0,0));
+
+   this->set_reference();
+
+}
+
+void Controller::set_reference(std::vector<double> coord,double angle)
+{
+    this->set_reference(coord[0],coord[1],coord[2],angle);
 }
 
 
@@ -122,13 +118,11 @@ void Controller::set_lyapunov(Controller::lyapunov param)
     this->lyapunov_parameter.kx=param.kx;
     this->lyapunov_parameter.ky=param.ky;
     this->lyapunov_parameter.ktheta=param.ktheta;
-    this->lyapunov_parameter.v=param.v;
-    this->lyapunov_parameter.omega=param.omega;
-    
+
 }
 void Controller::set_lyapunov(std::vector<float> param)
 {
-    Controller::lyapunov parameter{param[0],param[1],param[2],param[3],param[4]};
+    Controller::lyapunov parameter{param[0],param[1],param[2]};
     this->set_lyapunov(parameter);
 }
 

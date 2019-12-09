@@ -45,8 +45,6 @@ class Controller{
             float kx;
             float ky;
             float ktheta;
-            float omega;
-            float v;
         };
         
         
@@ -67,8 +65,7 @@ class Controller{
         void set_reference();
 
 
-         ///Adding a transformation to the map frame, the reference pose is defined in
-        void add_map();
+       
 
         ///Set the name of the reference/world frame
         ///param: frame : Name of the frame in tf tree
@@ -204,5 +201,9 @@ class Controller{
 
         //Use the 
         bool loaded_parameter;
+
+    private:
+        ///Adding a transformation to the map frame, the reference pose is defined in
+        void add_map();
         
 };
