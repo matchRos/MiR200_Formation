@@ -100,11 +100,14 @@ class Controller{
         ///link Controller to it's input topic
         ///'topic_name': Name of tjhe topic the Controller gets input from
         void link_target_velocity(std::string topic_name);   
-         ///link Controller to it's state topic
+        ///link Controller to it's state topic
         ///'topic_name' Name of the topic the Controller gets its target state from                       
         void link_target_state(std::string topic_name);
+        ///link Controller to it's target odometry topic (combines target state and target velocity)
+        ///'topic_name' Name of the topic the Controller gets its target state from                     
         void link_target_odometry(std::string topic_name);
-        ///link Controller to it's input topic
+        
+        ///link Controller to it's output topic
         ///'topic_name'Name of the topic the Controller writes its output to                       
         void link_output_velocity(std::string topic_name);      
         ///link Controller to it's state topic
