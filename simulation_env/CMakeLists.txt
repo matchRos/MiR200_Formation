@@ -137,6 +137,7 @@ add_library(planner
 add_executable(${PROJECT_NAME}_node src/simulation_env_node.cpp)
 add_executable(circle_node src/circle_node.cpp)
 add_executable(lissajous_node src/lissajous_node.cpp)
+add_executable(planner_node src/planner_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -158,6 +159,10 @@ target_link_libraries(circle_node
   ${catkin_LIBRARIES}
 )
 target_link_libraries(lissajous_node
+  planner
+  ${catkin_LIBRARIES}
+)
+target_link_libraries(planner_node
   planner
   ${catkin_LIBRARIES}
 )
