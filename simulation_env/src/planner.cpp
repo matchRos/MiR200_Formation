@@ -61,6 +61,7 @@ void Planner::plan(const ros::TimerEvent& event)
 
 void Planner::start()
 {
+    ROS_INFO("Started planner: %s",ros::this_node::getName().c_str());
     this->start_time=ros::Time::now();
     this->is_planning=true;
 }
