@@ -4,19 +4,14 @@
 //#################################################################################################################################
 Planner::Planner(ros::NodeHandle &nh):nh(nh)
 {
+    this->frame_name="/map";
+
     this->tim_sampling=this->nh.createTimer(ros::Duration(0.05),&Planner::plan,this);
-    this->pub_current_pose=nh.advertise<geometry_msgs::PoseStamped>("/trajectory",10);
     this->pub_current_odometry=nh.advertise<nav_msgs::Odometry>("/trajectory_odom",10);
     this->set_start_service=nh.advertiseService("start_planner",&Planner::srv_start,this);
     this->set_stop_service=nh.advertiseService("stop_planner",&Planner::srv_stop,this);
 
     this->paused=ros::Duration(0,0);
-    this->frame_name="/map";
-    tf::Quaternion quat;
-    quat.setRPY(0,0,0);
-    tf::Vector3 vec(0,0,0);
-    this->planned_pose.setOrigin(vec);
-    this->planned_pose.setRotation(quat);
     this->start_reference.setIdentity();
     this->is_planning=false;
     this->iterations=1;
@@ -33,39 +28,20 @@ void Planner::plan(const ros::TimerEvent& event)
     if(this->is_planning)
     {
         ros::Duration local_time=ros::Time::now()-this->start_time-this->paused;        
-        this->planned_pose=this->get_current_pose(local_time);
-        this->planned_vel=this->get_velocity(local_time);
-        this->planned_pose=this->start_reference*this->planned_pose;
-        tf::Transform dir;
-        dir=this->start_reference;
-        dir.setOrigin(tf::Vector3(0,0,0));
-        this->planned_vel=dir*this->planned_vel;
-        
-    }
+        this->vel=this->get_velocity(local_time);
+        this->pos=this->get_position(local_time);
+        this->orientation=this->get_orientation(local_time);
+        this->ang_vel=this->get_angular_velocity(local_time);
+        this->transform_values(this->start_reference);
 
-    geometry_msgs::PoseStamped msg;
-    msg.header.frame_id=this->frame_name;
-    msg.header.stamp=ros::Time::now();
-    tf::poseTFToMsg(this->planned_pose,msg.pose);
-    this->pub_current_pose.publish(msg);
-
-    nav_msgs::Odometry msg2;
-    msg2.header.frame_id=this->frame_name;
-    msg2.header.stamp=ros::Time::now();
-    tf::poseTFToMsg(this->planned_pose,msg2.pose.pose);
-    tf::vector3TFToMsg(this->planned_vel,msg2.twist.twist.linear);
-    if(is_planning)
-    {
-        msg2.twist.twist.angular.z=this->ang_vel;
     }
     else
     {
-         msg2.twist.twist.angular.z=0.0;
-    
+        this->vel=tf::Vector3(0,0,0);
+        this->ang_vel=0;
     }
     
-    this->pub_current_odometry.publish(msg2);
-
+    this->publish();
 }
 
 
@@ -76,6 +52,13 @@ void Planner::start()
     this->is_planning=true;
     this->start_reference=this->get_transform(this->start_pose);
 }
+
+void Planner::pause()
+{
+    this->is_planning=false;
+    this->is_paused=true;
+}
+
 bool Planner::srv_start(std_srvs::SetBool::Request &req, std_srvs::SetBool::Response &res)
 {
     if(req.data)
@@ -90,6 +73,11 @@ bool Planner::srv_start(std_srvs::SetBool::Request &req, std_srvs::SetBool::Resp
     return true;
 }
 
+void Planner::stop()
+{
+    ROS_INFO("Shutting down node: %s",ros::this_node::getName().c_str());
+    ros::shutdown();
+}
 bool Planner::srv_stop(std_srvs::SetBool::Request &req, std_srvs::SetBool::Response &res)
 {
     if(req.data)
@@ -100,28 +88,28 @@ bool Planner::srv_stop(std_srvs::SetBool::Request &req, std_srvs::SetBool::Respo
     return true;
 }
 
-void Planner::stop()
+
+
+
+
+void Planner::set_start_pose(tf::Pose pose)
 {
-    ROS_INFO("Shutting down node: %s",ros::this_node::getName().c_str());
-    ros::shutdown();
-}
-void Planner::pause()
-{
-    this->is_planning=false;
-    this->is_paused=true;
+    this->start_pose=pose;
 }
 
 tf::Transform Planner::get_transform(tf::Pose pose)
 {   
-    tf::Pose start_pose_plan;
-    start_pose_plan=this->get_current_pose(ros::Duration(0));
+    tf::Pose planner_start( this->get_orientation(ros::Duration(0)),
+                            this->get_position(ros::Duration(0)));
 
-    ROS_INFO("Start Pose: %lf %lf %lf", start_pose_plan.getOrigin().x(),
-                                        start_pose_plan.getOrigin().y(),
-                                        tf::getYaw(start_pose_plan.getRotation()));
-    tf::Transform trafo(start_pose_plan.inverseTimes(pose));
+    ROS_INFO(   "Planner starts at: x-%lf y-%lf theta-%lf",
+                planner_start.getOrigin().x(),
+                planner_start.getOrigin().y(),
+                tf::getYaw(planner_start.getRotation()));
+    
+    tf::Transform trafo(planner_start.inverseTimes(pose));
 
-    ROS_INFO(   "Trafo: x-%lf y-%lf z-%lf x-%lf y-%lf z-%lf w-%lf theta-%lf ",
+    ROS_INFO(   "Trafo applied on planner values: x-%lf y-%lf z-%lf x-%lf y-%lf z-%lf w-%lf theta-%lf ",
                 this->start_reference.getOrigin().x(),
                 this->start_reference.getOrigin().y(),
                 this->start_reference.getOrigin().z(),
@@ -133,9 +121,24 @@ tf::Transform Planner::get_transform(tf::Pose pose)
     return trafo;
 }
 
-void Planner::set_start_pose(tf::Pose pose)
+void Planner::transform_values(tf::Transform trafo)
 {
-    this->start_pose=pose;
+    tf::Transform rotate(trafo.getRotation());
+    this->vel=rotate*this->vel;
+    this->pos=trafo*this->pos;
+    this->orientation=rotate*this->orientation;
+}
+
+void Planner::publish()
+{    
+    nav_msgs::Odometry msg2;
+    msg2.header.frame_id=this->frame_name;
+    msg2.header.stamp=ros::Time::now();
+    tf::Pose pose(this->orientation,this->pos);
+    tf::poseTFToMsg(pose,msg2.pose.pose);
+    tf::vector3TFToMsg(this->vel,msg2.twist.twist.linear);
+    msg2.twist.twist.angular.z=this->ang_vel;    
+    this->pub_current_odometry.publish(msg2);
 }
 
 
@@ -158,28 +161,20 @@ void CirclePlanner::set_parameter(double r, double omega)
     this->plan.omega=omega;
 }
 
-tf::Pose CirclePlanner::get_current_pose(ros::Duration time)
-{
-    double t=time.toSec();
 
-    tf::Pose pose;
+tf::Vector3 CirclePlanner::get_position(ros::Duration time)
+{
+    double t=time.toSec();    
     tf::Vector3 pos(sin(this->plan.omega*t)*this->plan.r,
                     -cos(this->plan.omega*t)*this->plan.r,
                     0);
+    return pos;
 
+}
 
-    pose.setOrigin(pos);
-
-    tf::Quaternion quat;
-    quat.setRPY(0,0,this->plan.omega*t);
-
-    pose.setRotation(quat.normalize());
-
-    if(this->plan.omega*t>2*M_PI)
-    {
-        this->iterations_counter++;
-    }
-    return pose;    
+tf::Quaternion CirclePlanner::get_orientation(ros::Duration time)
+{
+    return tf::createQuaternionFromYaw(this->plan.omega*time.toSec());
 }
 
 tf::Vector3 CirclePlanner::get_velocity(ros::Duration time)
@@ -188,8 +183,12 @@ tf::Vector3 CirclePlanner::get_velocity(ros::Duration time)
     tf::Vector3 vel(cos(this->plan.omega*t)*this->plan.r*this->plan.omega,
                     sin(this->plan.omega*t)*this->plan.r*this->plan.omega,
                     0);
-    this->ang_vel=this->plan.omega;
     return vel;
+}
+
+double CirclePlanner::get_angular_velocity(ros::Duration time)
+{
+    return this->plan.omega;    
 }
 
 void CirclePlanner::load()
@@ -208,7 +207,13 @@ void CirclePlanner::load()
    
 }
 
-
+void CirclePlanner::check_period(ros::Duration time)
+{
+    if(this->plan.omega*time.toSec()>M_PI)
+    {
+        this->iterations_counter++;
+    }
+}
 
 
 
@@ -217,36 +222,8 @@ void CirclePlanner::load()
 //#############################################################################################################################################
 LissajousPlanner::LissajousPlanner(ros::NodeHandle &nh):Planner(nh)
 {
-
 }
 
-tf::Pose LissajousPlanner::get_current_pose(ros::Duration time)
-{
-    double t=time.toSec();
-    tf::Pose pose;
-    tf::Vector3 r(0,0,0);
-    r.setX(this->plan.Ax*sin(this->plan.omegax*t));
-    r.setY(this->plan.Ay*sin(this->plan.omegax*this->plan.ratio*t+this->plan.dphi));
-
-    tf::Vector3 tangent;
-    tangent.setX(this->plan.Ax*cos(this->plan.omegax*t)*this->plan.omegax);
-    tangent.setY(this->plan.Ay*cos(this->plan.omegax*this->plan.ratio*t+this->plan.dphi)*this->plan.omegax*this->plan.ratio);
-    tf::Quaternion quat;
-    quat.setRPY(    0,
-                    0,
-                    atan2(tangent.y(),tangent.x()));
-
-    pose.setOrigin(r);   
-
-    pose.setRotation(quat); 
-    if(this->plan.omegax*t>2*M_PI)
-    {
-        this->iterations_counter++;
-    }   
-
-    return pose;
-
-}
 
 tf::Vector3 LissajousPlanner::get_velocity(ros::Duration time)
 {
@@ -256,14 +233,35 @@ tf::Vector3 LissajousPlanner::get_velocity(ros::Duration time)
     tf::Vector3 vel(dx,
                     dy,
                     0);
-    tf::Pose pose=this->get_current_pose(time);
-    double x=pose.getOrigin().x();
-    double y=pose.getOrigin().y();
-    double l=x*x+y*y;
-    this->ang_vel=(y*vel.x()-x*vel.y())/l;
     return vel;
 }
+double LissajousPlanner::get_angular_velocity(ros::Duration time)
+{
 
+}
+
+tf::Vector3 LissajousPlanner::get_position(ros::Duration time)
+{
+    double t;
+    t=time.toSec();
+    tf::Vector3 r(0,0,0);
+    double x;
+    x=this->plan.Ax*sin(this->plan.omegax*t);
+    double y;
+    y=this->plan.Ay*sin(this->plan.omegax*this->plan.ratio*t+this->plan.dphi);
+
+    return tf::Vector3(x,y,0);
+}
+
+tf::Quaternion LissajousPlanner::get_orientation(ros::Duration time)
+{
+    double t=time.toSec();
+    tf::Vector3 tangent;
+    tangent.setX(this->plan.Ax*cos(this->plan.omegax*t)*this->plan.omegax);
+    tangent.setY(this->plan.Ay*cos(this->plan.omegax*this->plan.ratio*t+this->plan.dphi)*this->plan.omegax*this->plan.ratio);
+    return tf::createQuaternionFromYaw(atan2(tangent.y(),tangent.x()));
+
+}
 
 
 void LissajousPlanner::set_parameter(float omegax,float dphi,int ratio,float Ax,float Ay)
@@ -289,4 +287,12 @@ void LissajousPlanner::load()
                                                     this->plan.ratio,
                                                     this->plan.dphi,
                                                     this->plan.omegax);
+}
+
+void LissajousPlanner::check_period(ros::Duration time)
+{
+    if(this->plan.omegax*time.toSec()>M_PI)
+    {
+        this->iterations_counter++;
+    }
 }

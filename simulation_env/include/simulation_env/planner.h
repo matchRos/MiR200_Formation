@@ -22,13 +22,11 @@ class Planner{
         virtual void load()=0;
 
     protected:
-        int iterations_counter;
-        ros::NodeHandle nh;   
-        double ang_vel;
+        int iterations_counter;                                 ///Counter for the iterations of periodic planner functions
+        ros::NodeHandle nh;      
     private:
-             
+         
         ros::Timer tim_sampling;                                //Timer for publishing trajectory
-        ros::Publisher pub_current_pose;                        //Publisher for current trajectory pose
         ros::Publisher pub_current_odometry;
 
         ros::ServiceServer set_start_service;                   //Service for starting the planner
@@ -37,39 +35,54 @@ class Planner{
         bool is_planning;                                       //Flag if the planner is planning at the moment
         bool is_paused;                                         //Flag if the planner is paused at the moment
 
-        int iterations;                                         //Number of Iterations
-        
+        int iterations;                                         //Number of Iterations to do
 
         std::string frame_name;                                 //Frame in wich the pose is calculated
 
         ros::Duration paused;                                   //Time the planner paused
         ros::Time start_time;                                   //Time at wich the planning procedure started
 
-        tf::Pose planned_pose;                                  //Calculated current poses
         tf::Pose start_pose;
         tf::Vector3 planned_vel;
+
+        tf::Vector3 vel;
+        tf::Vector3 pos;
+        tf::Quaternion orientation;
+        double ang_vel;
         
         tf::Transform start_reference;                          //Transformation for modifieing offset to initial pose
 
         //Planning Scope as handle for timer event
-        void plan(const ros::TimerEvent& events);      
-        //Determine the current pose
-        //@param time : time the pose is determined at       
-        virtual tf::Pose get_current_pose(ros::Duration time)=0; 
-        //Determines the current linear velocity
-        virtual tf::Vector3 get_velocity(ros::Duration time)=0;
-        //Gets the transformation for modification of planner offset
-        tf::Transform get_transform(tf::Pose pose);
+        void plan(const ros::TimerEvent& events);
+        void publish();
 
-        //service procedure for satrting the planner
-        //@param req: Reqest the service is getting
-        //@oparam res Response the service is sending
+        ///Gets the transformation form the given pose to the pose at timestamp zero
+        ///@param pose : Pose from wich the planner should start
+        tf::Transform get_transform(tf::Pose pose); 
+
+        ///Transforming all values that are not rotation or translation invariant
+        ///@param trafo : The Transformation applied to all values
+        void transform_values(tf::Transform trafo);       
+
+        ///service procedure for satrting the planner
+        ///@param req : Reqest the service is getting
+        ///@param res : Response the service is sending
         bool srv_start( std_srvs::SetBool::Request &req,std_srvs::SetBool::Response &res);
-        //service procedure for stopping the planner
-        //@param req: Reqest the service is getting
-        //@oparam res Response the service is sending
+        ///service procedure for stopping the planner
+        ///@param req : Reqest the service is getting
+        ///@param res : Response the service is sending
         bool srv_stop( std_srvs::SetBool::Request &req,std_srvs::SetBool::Response &res);
-      
+
+        
+
+        //Virtual function to overload by child classes####################################  
+        //Determines the velocity at a specific time
+        //@param time       
+        virtual tf::Vector3 get_position(ros::Duration time)=0;
+        virtual tf::Quaternion get_orientation(ros::Duration time)=0;
+        virtual tf::Vector3 get_velocity(ros::Duration time)=0;
+        virtual double get_angular_velocity(ros::Duration time)=0;
+        virtual void check_period(ros::Duration time)=0;         
         
 };
 
@@ -90,10 +103,15 @@ class CirclePlanner:public Planner{
         void set_parameter(double r=3.0,double omega=0.5);
         void load();
     private:
-        //Calclulation of the curren pose dependent on time
-        tf::Pose get_current_pose(ros::Duration time);
-        tf::Vector3 get_velocity(ros::Duration time);
         CirclePlan plan;
+        //Calclulation of the curren pose dependent on time
+        //Calclulation of the curren pose dependent on time
+        tf::Vector3 get_position(ros::Duration time);
+        tf::Quaternion get_orientation(ros::Duration time);
+        tf::Vector3 get_velocity(ros::Duration time);
+        double get_angular_velocity(ros::Duration time);
+        void check_period(ros::Duration time);            
+        
        
 };
 
@@ -119,9 +137,13 @@ class LissajousPlanner:public Planner{
         };
         void set_parameter(float omegax,float dphi=0.0, int ratio=2,float Ax=3.0,float Ay=3.0);
         void load();
-        private:
-            //Calclulation of the curren pose dependent on time
-            tf::Pose get_current_pose(ros::Duration time);
-            tf::Vector3 get_velocity(ros::Duration time);
-            LissajousPlan plan;
+    
+    private:
+        LissajousPlan plan;
+        //Calclulation of the curren pose dependent on time
+        tf::Vector3 get_position(ros::Duration time);
+        tf::Quaternion get_orientation(ros::Duration time);
+        tf::Vector3 get_velocity(ros::Duration time);
+        double get_angular_velocity(ros::Duration time);
+        void check_period(ros::Duration time);           
 };
