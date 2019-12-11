@@ -16,6 +16,11 @@ Planner::Planner(ros::NodeHandle &nh):nh(nh)
     this->is_planning=false;
     this->iterations=1;
     this->iterations_counter=0;
+
+    this->vel=tf::Vector3(0,0,0);
+    this->pos=tf::Vector3(0,0,0);
+    this->ang_vel=0.0;
+    this->orientation=tf::createQuaternionFromYaw(0);
 }
 
 
@@ -32,15 +37,13 @@ void Planner::plan(const ros::TimerEvent& event)
         this->pos=this->get_position(local_time);
         this->orientation=this->get_orientation(local_time);
         this->ang_vel=this->get_angular_velocity(local_time);
-        this->transform_values(this->start_reference);
-
     }
     else
     {
         this->vel=tf::Vector3(0,0,0);
         this->ang_vel=0;
     }
-    
+    this->transform_values(this->start_reference);
     this->publish();
 }
 
