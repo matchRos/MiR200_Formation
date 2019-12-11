@@ -182,12 +182,11 @@ tf::Pose CirclePlanner::get_current_pose(ros::Duration time)
     return pose;    
 }
 
-tf::Vector3 CirclePlanner
-::get_velocity(ros::Duration time)
+tf::Vector3 CirclePlanner::get_velocity(ros::Duration time)
 {
     double t=time.toSec();
     tf::Vector3 vel(cos(this->plan.omega*t)*this->plan.r*this->plan.omega,
-                    sin(this->plan.omega*t)*this->plan.r,
+                    sin(this->plan.omega*t)*this->plan.r*this->plan.omega,
                     0);
     this->ang_vel=this->plan.omega;
     return vel;
