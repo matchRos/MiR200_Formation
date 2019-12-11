@@ -1,151 +1,151 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <root version="2.3.0">
  <tabbed_widget name="Main Window" parent="main_window">
-  <plotmatrix tab_name="trajectories" columns="1" rows="1">
-   <plot col="0" row="0">
-    <range right="9.418877" left="-9.399350" top="13.192049" bottom="-1.691308"/>
+  <plotmatrix rows="1" columns="1" tab_name="trajectories">
+   <plot row="0" col="0">
+    <range left="-0.126438" top="0.100000" right="0.126438" bottom="-0.100000"/>
     <limitY/>
-    <curve curve_y="/robot1/state/pose/position/y" custom_transform="XYPlot" R="148" name="robot1(slave1)" B="189" curve_x="/robot1/state/pose/position/x" G="103"/>
-    <curve curve_y="/robot2/state/pose/position/y" custom_transform="XYPlot" R="23" name="robot2(slave2)" B="207" curve_x="/robot2/state/pose/position/x" G="190"/>
-    <curve curve_y="/robot_master/state/pose/position/y" custom_transform="XYPlot" R="188" name="robot_master" B="34" curve_x="/robot_master/state/pose/position/x" G="189"/>
-    <curve curve_y="/trajectory/pose/position/y" custom_transform="XYPlot" R="31" name="trajectory" B="180" curve_x="/trajectory/pose/position/x" G="119"/>
+    <curve G="103" curve_x="/robot1/state/pose/position/x" R="148" B="189" custom_transform="XYPlot" name="robot1(slave1)" curve_y="/robot1/state/pose/position/y"/>
+    <curve G="190" curve_x="/robot2/state/pose/position/x" R="23" B="207" custom_transform="XYPlot" name="robot2(slave2)" curve_y="/robot2/state/pose/position/y"/>
+    <curve G="189" curve_x="/robot_master/state/pose/position/x" R="188" B="34" custom_transform="XYPlot" name="robot_master" curve_y="/robot_master/state/pose/position/y"/>
+    <curve G="119" curve_x="/trajectory/pose/position/x" R="31" B="180" custom_transform="XYPlot" name="trajectory" curve_y="/trajectory/pose/position/y"/>
     <transform value="XYPlot"/>
    </plot>
   </plotmatrix>
-  <plotmatrix tab_name="master" columns="2" rows="3">
-   <plot col="0" row="0">
-    <range right="88.800000" left="0.000000" top="0.544797" bottom="0.001551"/>
+  <plotmatrix rows="3" columns="2" tab_name="master">
+   <plot row="0" col="0">
+    <range left="0.000000" top="0.100000" right="0.000000" bottom="-0.100000"/>
     <limitY/>
-    <curve custom_transform="noTransform" R="214" name="/robot_master/control_dif/x" B="40" G="39"/>
+    <curve G="39" R="214" B="40" custom_transform="noTransform" name="/robot_master/control_dif/x"/>
     <transform value="noTransform"/>
    </plot>
-   <plot col="0" row="1">
-    <range right="88.800000" left="0.000000" top="0.023603" bottom="-0.094988"/>
+   <plot row="1" col="0">
+    <range left="0.000000" top="0.100000" right="0.000000" bottom="-0.100000"/>
     <limitY/>
-    <curve custom_transform="noTransform" R="26" name="/robot_master/control_dif/y" B="56" G="201"/>
+    <curve G="201" R="26" B="56" custom_transform="noTransform" name="/robot_master/control_dif/y"/>
     <transform value="noTransform"/>
    </plot>
-   <plot col="0" row="2">
-    <range right="88.800000" left="0.000000" top="0.086854" bottom="-0.077800"/>
+   <plot row="2" col="0">
+    <range left="0.000000" top="0.100000" right="0.000000" bottom="-0.100000"/>
     <limitY/>
-    <curve custom_transform="noTransform" R="255" name="/robot_master/control_dif/theta" B="14" G="127"/>
+    <curve G="127" R="255" B="14" custom_transform="noTransform" name="/robot_master/control_dif/theta"/>
     <transform value="noTransform"/>
    </plot>
-   <plot col="1" row="0">
-    <range right="88.800000" left="0.000000" top="2.923845" bottom="0.207756"/>
+   <plot row="0" col="1">
+    <range left="0.000000" top="0.100000" right="0.000000" bottom="-0.100000"/>
     <limitY/>
-    <curve custom_transform="noTransform" R="148" name="/robot_master/mobile_base_controller/cmd_vel/linear/x" B="189" G="103"/>
+    <curve G="103" R="148" B="189" custom_transform="noTransform" name="/robot_master/mobile_base_controller/cmd_vel/linear/x"/>
     <transform value="noTransform"/>
    </plot>
-   <plot col="1" row="1">
-    <range right="-0.155000" left="-1.155000" top="1.000000" bottom="0.000000"/>
-    <limitY/>
-    <transform value="noTransform"/>
-   </plot>
-   <plot col="1" row="2">
-    <range right="88.800000" left="0.000000" top="1.282653" bottom="-0.867370"/>
-    <limitY/>
-    <curve custom_transform="noTransform" R="241" name="/robot_master/mobile_base_controller/cmd_vel/angular/z" B="193" G="76"/>
-    <transform value="noTransform"/>
-   </plot>
-  </plotmatrix>
-  <plotmatrix tab_name="slave1" columns="2" rows="3">
-   <plot col="0" row="0">
-    <range right="88.810000" left="0.000000" top="0.077332" bottom="-0.268678"/>
-    <limitY/>
-    <curve custom_transform="noTransform" R="31" name="/robot1/control_dif/x" B="180" G="119"/>
-    <transform value="noTransform"/>
-   </plot>
-   <plot col="0" row="1">
-    <range right="88.810000" left="0.000000" top="0.026009" bottom="-1.048180"/>
-    <limitY/>
-    <curve custom_transform="noTransform" R="214" name="/robot1/control_dif/y" B="40" G="39"/>
-    <transform value="noTransform"/>
-   </plot>
-   <plot col="0" row="2">
-    <range right="88.810000" left="0.000000" top="0.495629" bottom="-0.364802"/>
-    <limitY/>
-    <curve custom_transform="noTransform" R="26" name="/robot1/control_dif/theta" B="56" G="201"/>
-    <transform value="noTransform"/>
-   </plot>
-   <plot col="1" row="0">
-    <range right="88.810000" left="0.000000" top="2.309285" bottom="-0.102112"/>
-    <limitY/>
-    <curve custom_transform="noTransform" R="241" name="/robot1/mobile_base_controller/cmd_vel/linear/x" B="193" G="76"/>
-    <transform value="noTransform"/>
-   </plot>
-   <plot col="1" row="1">
-    <range right="-0.155000" left="-1.155000" top="1.000000" bottom="0.000000"/>
+   <plot row="1" col="1">
+    <range left="0.000000" top="1.000000" right="1.000000" bottom="0.000000"/>
     <limitY/>
     <transform value="noTransform"/>
    </plot>
-   <plot col="1" row="2">
-    <range right="88.810000" left="0.000000" top="5.396194" bottom="-6.907698"/>
+   <plot row="2" col="1">
+    <range left="0.000000" top="0.100000" right="0.000000" bottom="-0.100000"/>
     <limitY/>
-    <curve custom_transform="noTransform" R="255" name="/robot1/mobile_base_controller/cmd_vel/angular/z" B="14" G="127"/>
+    <curve G="76" R="241" B="193" custom_transform="noTransform" name="/robot_master/mobile_base_controller/cmd_vel/angular/z"/>
     <transform value="noTransform"/>
    </plot>
   </plotmatrix>
-  <plotmatrix tab_name="slave2" columns="2" rows="3">
-   <plot col="0" row="0">
-    <range right="88.810000" left="0.000000" top="0.250800" bottom="-0.064076"/>
+  <plotmatrix rows="3" columns="2" tab_name="slave1">
+   <plot row="0" col="0">
+    <range left="0.000000" top="0.100000" right="0.000000" bottom="-0.100000"/>
     <limitY/>
-    <curve custom_transform="noTransform" R="148" name="/robot2/control_dif/x" B="189" G="103"/>
+    <curve G="119" R="31" B="180" custom_transform="noTransform" name="/robot1/control_dif/x"/>
     <transform value="noTransform"/>
    </plot>
-   <plot col="0" row="1">
-    <range right="88.810000" left="0.000000" top="0.054952" bottom="-0.450474"/>
+   <plot row="1" col="0">
+    <range left="0.000000" top="0.100000" right="0.000000" bottom="-0.100000"/>
     <limitY/>
-    <curve custom_transform="noTransform" R="23" name="/robot2/control_dif/y" B="207" G="190"/>
+    <curve G="39" R="214" B="40" custom_transform="noTransform" name="/robot1/control_dif/y"/>
     <transform value="noTransform"/>
    </plot>
-   <plot col="0" row="2">
-    <range right="88.810000" left="0.000000" top="0.358577" bottom="-0.295141"/>
+   <plot row="2" col="0">
+    <range left="0.000000" top="0.100000" right="0.000000" bottom="-0.100000"/>
     <limitY/>
-    <curve custom_transform="noTransform" R="188" name="/robot2/control_dif/theta" B="34" G="189"/>
+    <curve G="201" R="26" B="56" custom_transform="noTransform" name="/robot1/control_dif/theta"/>
     <transform value="noTransform"/>
    </plot>
-   <plot col="1" row="0">
-    <range right="88.810000" left="0.000000" top="4.635782" bottom="0.073685"/>
+   <plot row="0" col="1">
+    <range left="0.000000" top="0.100000" right="0.000000" bottom="-0.100000"/>
     <limitY/>
-    <curve custom_transform="noTransform" R="31" name="/robot2/mobile_base_controller/cmd_vel/linear/x" B="180" G="119"/>
+    <curve G="76" R="241" B="193" custom_transform="noTransform" name="/robot1/mobile_base_controller/cmd_vel/linear/x"/>
     <transform value="noTransform"/>
    </plot>
-   <plot col="1" row="1">
-    <range right="-0.155000" left="-1.155000" top="1.000000" bottom="0.000000"/>
+   <plot row="1" col="1">
+    <range left="0.000000" top="1.000000" right="1.000000" bottom="0.000000"/>
     <limitY/>
     <transform value="noTransform"/>
    </plot>
-   <plot col="1" row="2">
-    <range right="88.810000" left="0.000000" top="5.054691" bottom="-3.839999"/>
+   <plot row="2" col="1">
+    <range left="0.000000" top="0.100000" right="0.000000" bottom="-0.100000"/>
     <limitY/>
-    <curve custom_transform="noTransform" R="214" name="/robot2/mobile_base_controller/cmd_vel/angular/z" B="40" G="39"/>
+    <curve G="127" R="255" B="14" custom_transform="noTransform" name="/robot1/mobile_base_controller/cmd_vel/angular/z"/>
     <transform value="noTransform"/>
    </plot>
   </plotmatrix>
-  <plotmatrix tab_name="combined" columns="1" rows="3">
-   <plot col="0" row="0">
-    <range right="88.810000" left="0.000000" top="0.551670" bottom="-0.280247"/>
+  <plotmatrix rows="3" columns="2" tab_name="slave2">
+   <plot row="0" col="0">
+    <range left="0.000000" top="0.100000" right="0.000000" bottom="-0.100000"/>
     <limitY/>
-    <curve custom_transform="noTransform" R="0" name="/robot1/control_dif/x" B="255" G="151"/>
-    <curve custom_transform="noTransform" R="133" name="/robot2/control_dif/x" B="255" G="0"/>
-    <curve custom_transform="noTransform" R="255" name="/robot_master/control_dif/x" B="1" G="0"/>
+    <curve G="103" R="148" B="189" custom_transform="noTransform" name="/robot2/control_dif/x"/>
     <transform value="noTransform"/>
    </plot>
-   <plot col="0" row="1">
-    <range right="88.810000" left="0.000000" top="0.069556" bottom="-1.049242"/>
+   <plot row="1" col="0">
+    <range left="0.000000" top="0.100000" right="0.000000" bottom="-0.100000"/>
     <limitY/>
-    <curve custom_transform="noTransform" R="0" name="/robot1/control_dif/y" B="255" G="4"/>
-    <curve custom_transform="noTransform" R="147" name="/robot2/control_dif/y" B="255" G="0"/>
-    <curve custom_transform="noTransform" R="255" name="/robot_master/control_dif/y" B="0" G="6"/>
+    <curve G="190" R="23" B="207" custom_transform="noTransform" name="/robot2/control_dif/y"/>
     <transform value="noTransform"/>
    </plot>
-   <plot col="0" row="2">
-    <range right="88.810000" left="0.000000" top="0.495629" bottom="-0.364802"/>
+   <plot row="2" col="0">
+    <range left="0.000000" top="0.100000" right="0.000000" bottom="-0.100000"/>
     <limitY/>
-    <curve custom_transform="noTransform" R="0" name="/robot1/control_dif/theta" B="255" G="10"/>
-    <curve custom_transform="noTransform" R="130" name="/robot2/control_dif/theta" B="255" G="0"/>
-    <curve custom_transform="noTransform" R="255" name="/robot_master/control_dif/theta" B="18" G="0"/>
+    <curve G="189" R="188" B="34" custom_transform="noTransform" name="/robot2/control_dif/theta"/>
+    <transform value="noTransform"/>
+   </plot>
+   <plot row="0" col="1">
+    <range left="0.000000" top="0.100000" right="0.000000" bottom="-0.100000"/>
+    <limitY/>
+    <curve G="119" R="31" B="180" custom_transform="noTransform" name="/robot2/mobile_base_controller/cmd_vel/linear/x"/>
+    <transform value="noTransform"/>
+   </plot>
+   <plot row="1" col="1">
+    <range left="0.000000" top="1.000000" right="1.000000" bottom="0.000000"/>
+    <limitY/>
+    <transform value="noTransform"/>
+   </plot>
+   <plot row="2" col="1">
+    <range left="0.000000" top="0.100000" right="0.000000" bottom="-0.100000"/>
+    <limitY/>
+    <curve G="39" R="214" B="40" custom_transform="noTransform" name="/robot2/mobile_base_controller/cmd_vel/angular/z"/>
+    <transform value="noTransform"/>
+   </plot>
+  </plotmatrix>
+  <plotmatrix rows="3" columns="1" tab_name="combined">
+   <plot row="0" col="0">
+    <range left="0.000000" top="0.100000" right="0.000000" bottom="-0.100000"/>
+    <limitY/>
+    <curve G="151" R="0" B="255" custom_transform="noTransform" name="/robot1/control_dif/x"/>
+    <curve G="0" R="133" B="255" custom_transform="noTransform" name="/robot2/control_dif/x"/>
+    <curve G="0" R="255" B="1" custom_transform="noTransform" name="/robot_master/control_dif/x"/>
+    <transform value="noTransform"/>
+   </plot>
+   <plot row="1" col="0">
+    <range left="0.000000" top="0.100000" right="0.000000" bottom="-0.100000"/>
+    <limitY/>
+    <curve G="4" R="0" B="255" custom_transform="noTransform" name="/robot1/control_dif/y"/>
+    <curve G="0" R="147" B="255" custom_transform="noTransform" name="/robot2/control_dif/y"/>
+    <curve G="6" R="255" B="0" custom_transform="noTransform" name="/robot_master/control_dif/y"/>
+    <transform value="noTransform"/>
+   </plot>
+   <plot row="2" col="0">
+    <range left="0.000000" top="0.100000" right="0.000000" bottom="-0.100000"/>
+    <limitY/>
+    <curve G="10" R="0" B="255" custom_transform="noTransform" name="/robot1/control_dif/theta"/>
+    <curve G="0" R="130" B="255" custom_transform="noTransform" name="/robot2/control_dif/theta"/>
+    <curve G="0" R="255" B="18" custom_transform="noTransform" name="/robot_master/control_dif/theta"/>
     <transform value="noTransform"/>
    </plot>
   </plotmatrix>
@@ -175,17 +175,7 @@
   <plugin ID="TopicPublisherROS" status="idle"/>
  </Plugins>
  <!-- - - - - - - - - - - - - - - -->
- <previouslyLoaded_Datafiles>
-  <fileInfo filename="/home/rosmatch/catkin_ws/src/multi_robot_system/multi_robot_launcher/bag/Circle_1_2019-12-09-14-42-24.bag" prefix="">
-   <selected_datasources value="/clock;/robot_master/control_dif;/robot_master/mobile_base_controller/cmd_vel;/robot_master/state;/robot1/control_dif;/robot1/mobile_base_controller/cmd_vel;/robot1/state;/robot2/control_dif;/robot2/mobile_base_controller/cmd_vel;/robot2/state;/trajectory"/>
-   <plugin ID="DataLoad_ROS_bags">
-    <use_header_stamp value="true"/>
-    <use_renaming_rules value="true"/>
-    <discard_large_arrays value="true"/>
-    <max_array_size value="100"/>
-   </plugin>
-  </fileInfo>
- </previouslyLoaded_Datafiles>
+ <previouslyLoaded_Datafiles/>
  <!-- - - - - - - - - - - - - - - -->
  <customMathEquations/>
  <snippets/>
