@@ -38,8 +38,10 @@ void Slave::target_odometry_callback(nav_msgs::Odometry msg)
     
     tf::Transform trafo;  
     tf::poseMsgToTF(msg.pose.pose,trafo);
+    tf::Transform rot;
+    rot.setRotation(trafo.getRotation());
 
-    this->lin_vel_in=trafo*lin+ang.cross(trafo*this->reference_pose.getOrigin());
+    this->lin_vel_in=rot*lin+ang.cross(trafo*this->reference_pose.getOrigin());
     this->ang_vel_in=ang;
     
     this->target_pose=trafo*this->reference_pose;   
