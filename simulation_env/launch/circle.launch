@@ -1,0 +1,5 @@
+<?xml version="1.0" ?>
+<launch>
+<rosparam file="$(find simulation_env)/config/Circle.yaml" command="load"></rosparam>
+<node name="planner" pkg="simulation_env" type="circle_node" output="screen"/> 
+</launch>

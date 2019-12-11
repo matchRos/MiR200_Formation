@@ -17,9 +17,10 @@
 
 #define PARAM_TARGET_VEL "topic_target_velocity"
 #define PARAM_TARGET_STATE "topic_target_state"
-#define PARAM_CURRENT_ODOM "topic_input_odometry"
-#define PARAM_CURRENT_STATE "topic_current_state"
 #define PARAM_TARGET_ODOM "topic_target_odometry"
+#define PARAM_CURRENT_ODOM "topic_current_odometry"
+#define PARAM_CURRENT_STATE "topic_current_state"
+
 
 #define PARAM_COORD "coord"
 #define PARAM_WORLD_FRAME "world_frame"
@@ -138,13 +139,13 @@ class Controller{
 
         /*Callbacks########################################################################################################################################
         ##################################################################################################################################################*/
-        /// Callback for input velocitiy message. Is executed everytime a velocitiy input is incoming. Writes data to input state
-        virtual void target_velocities_callback(geometry_msgs::Twist msg);         
         /// Callback for input odometry message. Is executed everytima a Odometry input is incoming. Writes data to input current_pose
         void current_odom_callback(nav_msgs::Odometry msg);
+        /// Callback for input velocitiy message. Is executed everytime a velocitiy input is incoming. Writes data to input state
+        virtual void target_velocities_callback(geometry_msgs::Twist msg);         
         /// Callback for input target state message. Is executed everytima a target state input is incoming. Writes data to target_pose state
         virtual void target_state_callback(geometry_msgs::PoseStamped msg);   
-        
+          /// Callback for input target odometry message. Is executed everytima a target odometry input is incoming. Writes data to target_pose state and target_vel
         virtual void target_odometry_callback(nav_msgs::Odometry msg);
         
         
@@ -179,8 +180,8 @@ class Controller{
         std::string name;                                           //Name of the node respective Controller
         std::string world_frame;                                    //Name of the world frame
         
-        tf::Vector3 ang_vel_in;                                     //target angular velocity
-        tf::Vector3 lin_vel_in;                                     //target linear velocity
+        tf::Vector3 ang_vel_in;                                 //target linear velocity
+        tf::Vector3 lin_vel_in;                                 //target angular velocity
 
         tf::Vector3 lin_vel_out;                                    //Outgoing linear velocity
         tf::Vector3 ang_vel_out;                                    //Outgoing angular velocity

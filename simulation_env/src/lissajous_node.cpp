@@ -17,13 +17,11 @@ int main(int argc,char **argv)
     LissajousPlanner lissa(nh);
     lissa.load();
     lissa.set_start_pose(ref);
-    if(argc>1)
+     if(argc==1)
     {
-        if(strcmp(argv[1],"start"))
-        {
-            lissa.start();
-        }
-    }  
+        lissa.load();
+        lissa.start();
+    }
    
     ros::spin(); 
 }
