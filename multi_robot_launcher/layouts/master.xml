@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<root version="2.3.0">
+ <tabbed_widget parent="main_window" name="Main Window">
+  <plotmatrix rows="2" columns="1" tab_name="X">
+   <plot col="0" row="0">
+    <range bottom="2.162002" right="35.108000" top="5.089902" left="14.128000"/>
+    <limitY/>
+    <curve custom_transform="noTransform" R="241" G="76" name="/robot_master/base_pose_ground_truth/pose/position/x" B="193"/>
+    <curve custom_transform="noTransform" R="31" G="119" name="/trajectory_odom/pose/position/x" B="180"/>
+    <transform value="noTransform"/>
+   </plot>
+   <plot col="0" row="1">
+    <range bottom="-0.021596" right="35.110000" top="0.028264" left="14.131000"/>
+    <limitY/>
+    <curve custom_transform="noTransform" R="26" G="201" name="/robot_master/control_dif/x" B="56"/>
+    <transform value="noTransform"/>
+   </plot>
+  </plotmatrix>
+  <plotmatrix rows="2" columns="1" tab_name="Y">
+   <plot col="0" row="0">
+    <range bottom="0.581227" right="36.047000" top="9.902660" left="14.128000"/>
+    <limitY/>
+    <curve custom_transform="noTransform" R="148" G="103" name="/robot_master/base_pose_ground_truth/pose/position/y" B="189"/>
+    <curve custom_transform="noTransform" R="214" G="39" name="/trajectory_odom/pose/position/y" B="40"/>
+    <transform value="noTransform"/>
+   </plot>
+   <plot col="0" row="1">
+    <range bottom="0.019901" right="36.030000" top="0.021419" left="14.131000"/>
+    <limitY/>
+    <curve custom_transform="noTransform" R="255" G="127" name="/robot_master/control_dif/y" B="14"/>
+    <transform value="noTransform"/>
+   </plot>
+  </plotmatrix>
+  <plotmatrix rows="1" columns="1" tab_name="X-Y">
+   <plot col="0" row="0">
+    <range bottom="0.573493" right="8.883351" top="10.219745" left="-3.313181"/>
+    <limitY/>
+    <curve custom_transform="XYPlot" curve_x="/robot_master/base_pose_ground_truth/pose/position/x" R="188" G="189" curve_y="/robot_master/base_pose_ground_truth/pose/position/y" name="/robot_master/base_pose_ground_truth/pose/position/[x;y]" B="34"/>
+    <curve custom_transform="XYPlot" curve_x="/trajectory_odom/pose/position/x" R="23" G="190" curve_y="/trajectory_odom/pose/position/y" name="/trajectory_odom/pose/position/[x;y]" B="207"/>
+    <transform value="XYPlot"/>
+   </plot>
+  </plotmatrix>
+  <currentPlotMatrix index="2"/>
+ </tabbed_widget>
+ <use_relative_time_offset enabled="1"/>
+ <!-- - - - - - - - - - - - - - - -->
+ <!-- - - - - - - - - - - - - - - -->
+ <Plugins>
+  <plugin ID="DataLoad_CSV">
+   <default time_axis=""/>
+  </plugin>
+  <plugin ID="DataLoad_ROS_bags">
+   <use_header_stamp value="true"/>
+   <use_renaming_rules value="true"/>
+   <discard_large_arrays value="true"/>
+   <max_array_size value="100"/>
+  </plugin>
+  <plugin ID="DataLoad_ULog"/>
+  <plugin ID="ROS_Topic_Streamer">
+   <use_header_stamp value="false"/>
+   <use_renaming_rules value="true"/>
+   <discard_large_arrays value="true"/>
+   <max_array_size value="100"/>
+  </plugin>
+  <plugin status="idle" ID="RosoutPublisherROS"/>
+  <plugin status="idle" ID="TopicPublisherROS"/>
+ </Plugins>
+ <!-- - - - - - - - - - - - - - - -->
+ <previouslyLoaded_Datafiles/>
+ <previouslyLoaded_Streamer name="ROS_Topic_Streamer"/>
+ <!-- - - - - - - - - - - - - - - -->
+ <customMathEquations/>
+ <snippets/>
+ <!-- - - - - - - - - - - - - - - -->
+</root>
+
