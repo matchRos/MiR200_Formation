@@ -24,14 +24,16 @@ class Planner{
     protected:
         int iterations_counter;
         ros::NodeHandle nh;   
-        
+        double ang_vel;
     private:
              
         ros::Timer tim_sampling;                                //Timer for publishing trajectory
         ros::Publisher pub_current_pose;                        //Publisher for current trajectory pose
         ros::Publisher pub_current_odometry;
+
         ros::ServiceServer set_start_service;                   //Service for starting the planner
         ros::ServiceServer set_stop_service;                    //Service for shutting the planner down
+
         bool is_planning;                                       //Flag if the planner is planning at the moment
         bool is_paused;                                         //Flag if the planner is paused at the moment
 
@@ -44,7 +46,9 @@ class Planner{
         ros::Time start_time;                                   //Time at wich the planning procedure started
 
         tf::Pose planned_pose;                                  //Calculated current poses
+        tf::Pose start_pose;
         tf::Vector3 planned_vel;
+        
         tf::Transform start_reference;                          //Transformation for modifieing offset to initial pose
 
         //Planning Scope as handle for timer event
@@ -54,7 +58,8 @@ class Planner{
         virtual tf::Pose get_current_pose(ros::Duration time)=0; 
         //Determines the current linear velocity
         virtual tf::Vector3 get_velocity(ros::Duration time)=0;
-
+        //Gets the transformation for modification of planner offset
+        tf::Transform get_transform(tf::Pose pose);
 
         //service procedure for satrting the planner
         //@param req: Reqest the service is getting

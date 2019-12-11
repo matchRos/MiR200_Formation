@@ -54,6 +54,16 @@ void Planner::plan(const ros::TimerEvent& event)
     msg2.header.stamp=ros::Time::now();
     tf::poseTFToMsg(this->planned_pose,msg2.pose.pose);
     tf::vector3TFToMsg(this->planned_vel,msg2.twist.twist.linear);
+    if(is_planning)
+    {
+        msg2.twist.twist.angular.z=this->ang_vel;
+    }
+    else
+    {
+         msg2.twist.twist.angular.z=0.0;
+    
+    }
+    
     this->pub_current_odometry.publish(msg2);
 
 }
@@ -64,6 +74,7 @@ void Planner::start()
     ROS_INFO("Started planner: %s",ros::this_node::getName().c_str());
     this->start_time=ros::Time::now();
     this->is_planning=true;
+    this->start_reference=this->get_transform(this->start_pose);
 }
 bool Planner::srv_start(std_srvs::SetBool::Request &req, std_srvs::SetBool::Response &res)
 {
@@ -100,18 +111,32 @@ void Planner::pause()
     this->is_paused=true;
 }
 
-void Planner::set_start_pose(tf::Pose pose)
-{
+tf::Transform Planner::get_transform(tf::Pose pose)
+{   
     tf::Pose start_pose_plan;
-   
     start_pose_plan=this->get_current_pose(ros::Duration(0));
+
     ROS_INFO("Start Pose: %lf %lf %lf", start_pose_plan.getOrigin().x(),
                                         start_pose_plan.getOrigin().y(),
                                         tf::getYaw(start_pose_plan.getRotation()));
-    this->start_reference=tf::Transform (start_pose_plan.inverseTimes(pose));
-    ROS_INFO("Trafo: %lf ",tf::getYaw(start_reference.getRotation()));
+    tf::Transform trafo(start_pose_plan.inverseTimes(pose));
+
+    ROS_INFO(   "Trafo: x-%lf y-%lf z-%lf x-%lf y-%lf z-%lf w-%lf theta-%lf ",
+                this->start_reference.getOrigin().x(),
+                this->start_reference.getOrigin().y(),
+                this->start_reference.getOrigin().z(),
+                this->start_reference.getRotation().x(),
+                this->start_reference.getRotation().y(),
+                this->start_reference.getRotation().z(),
+                this->start_reference.getRotation().w(),
+                tf::getYaw(this->start_reference.getRotation()));
+    return trafo;
 }
 
+void Planner::set_start_pose(tf::Pose pose)
+{
+    this->start_pose=pose;
+}
 
 
 
@@ -164,6 +189,7 @@ tf::Vector3 CirclePlanner
     tf::Vector3 vel(cos(this->plan.omega*t)*this->plan.r*this->plan.omega,
                     sin(this->plan.omega*t)*this->plan.r,
                     0);
+    this->ang_vel=this->plan.omega;
     return vel;
 }
 
@@ -231,6 +257,11 @@ tf::Vector3 LissajousPlanner::get_velocity(ros::Duration time)
     tf::Vector3 vel(dx,
                     dy,
                     0);
+    tf::Pose pose=this->get_current_pose(time);
+    double x=pose.getOrigin().x();
+    double y=pose.getOrigin().y();
+    double l=x*x+y*y;
+    this->ang_vel=(y*vel.x()-x*vel.y())/l;
     return vel;
 }
 

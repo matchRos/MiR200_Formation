@@ -261,13 +261,10 @@ void Controller::link_output_ctrldiff(std::string topic_name)
 void Controller::current_odom_callback(nav_msgs::Odometry msg)
 {
     tf::Pose pose;
-    tf::poseMsgToTF(msg.pose.pose,pose);
-    
+    tf::poseMsgToTF(msg.pose.pose,pose); 
     tf::StampedTransform trafo;
     this->listener->lookupTransform(this->world_frame,msg.header.frame_id,ros::Time(0),trafo);
-
     this->current_pose=trafo*pose;
-   
 }
 
 void Controller::target_velocities_callback(geometry_msgs::Twist msg)

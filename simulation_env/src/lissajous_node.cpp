@@ -15,12 +15,10 @@ int main(int argc,char **argv)
     ref.setRotation(quat);
 
     LissajousPlanner lissa(nh);
-    lissa.load();
     lissa.set_start_pose(ref);
      if(argc==1)
     {
         lissa.load();
-        lissa.start();
     }
    
     ros::spin(); 
