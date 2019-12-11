@@ -36,15 +36,12 @@ void Slave::target_odometry_callback(nav_msgs::Odometry msg)
     tf::Vector3 lin;
     tf::vector3MsgToTF(msg.twist.twist.linear,lin);
     
-    tf::StampedTransform trafo_master;   
-    this->listener->lookupTransform(this->world_frame,"/robot_master/base_footprint",ros::Time(0),trafo_master);
-    trafo_master.setOrigin(tf::Vector3(0,0,0));
-
-    this->lin_vel_in=trafo_master*lin+ang.cross(trafo_master*this->reference_pose.getOrigin());
-    this->ang_vel_in=ang;
-
     tf::Transform trafo;  
     tf::poseMsgToTF(msg.pose.pose,trafo);
+
+    this->lin_vel_in=trafo*lin+ang.cross(trafo*this->reference_pose.getOrigin());
+    this->ang_vel_in=ang;
+    
     this->target_pose=trafo*this->reference_pose;   
 }
 
