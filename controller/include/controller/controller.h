@@ -9,6 +9,7 @@
 #include <tf/transform_broadcaster.h>
 #include <tf2_ros/static_transform_broadcaster.h>
 #include <std_srvs/Empty.h>
+#include <multi_robot_msgs/ControlData.h>
 
 
 #include <math.h>
@@ -116,7 +117,7 @@ class Controller{
         void link_output_state(std::string topic_name);
         ///link Controller to it's control difference topic
         ///'topic_name' Name of the topic the Controller writes its control difference to                       
-        void link_output_ctrldiff(std::string topic_name);
+        void link_output_control_data(std::string topic_name);
         
         
          
@@ -168,7 +169,7 @@ class Controller{
 
         ros::Publisher pub_vel_out;                                  //publisher object for velocity outoput topic
         ros::Publisher pub_state_out;                                //publisher object for state output topic
-        ros::Publisher pub_control_difference;                       //publisher object for control difference topic
+        ros::Publisher pub_control_data;                       //publisher object for control difference topic
         
         ros::Subscriber sub_vel_target;                              //Subscirber object for input topic
         ros::Subscriber sub_odom_current;                            //Subscriber object for odometry

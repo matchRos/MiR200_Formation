@@ -9,7 +9,7 @@ Controller::Controller(ros::NodeHandle &nh):    nh(nh),
 
     this->pub_vel_out=this->nh.advertise<geometry_msgs::Twist>("/out",10);
     this->pub_state_out=this->nh.advertise<geometry_msgs::PoseStamped>("/state_out",10);
-    this->pub_control_difference=this->nh.advertise<geometry_msgs::Pose2D>("/control_difference",10);
+    this->pub_control_data=this->nh.advertise<multi_robot_msgs::ControlData>("/control_data",10);
     
     this->sub_vel_target=this->nh.subscribe("/in",10,&Controller::target_velocities_callback,this);
     this->sub_state_target=this->nh.subscribe("/state_target",10,&Controller::target_state_callback,this);
@@ -51,7 +51,7 @@ void Controller::set_name(std::string name)
 
     this->link_output_velocity("mobile_base_controller/cmd_vel");
     this->link_output_state("state");
-    this->link_output_ctrldiff("control_dif");
+    this->link_output_control_data("control_data");
     this->link_target_state("state_in");   
 }
 
@@ -234,22 +234,22 @@ void Controller::link_target_velocity(std::string topic_name)
 void Controller::link_output_velocity(std::string topic_name)
 {
     this->pub_vel_out.shutdown();
-    ROS_INFO("Linking output velocity %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
+    ROS_INFO("Linking output velocity of %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
     this->pub_vel_out=this->nh.advertise<geometry_msgs::Twist>(topic_name,10);
 }
 
 void Controller::link_output_state(std::string topic_name)
 {
     this->pub_state_out.shutdown();
-    ROS_INFO("Linking output state %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
+    ROS_INFO("Linking output state of %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
     this->pub_state_out=this->nh.advertise<geometry_msgs::PoseStamped>(topic_name,10);
 }
 
-void Controller::link_output_ctrldiff(std::string topic_name)
+void Controller::link_output_control_data(std::string topic_name)
 {
-    this->pub_control_difference.shutdown();
-    ROS_INFO("Linking control difference %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
-    this->pub_control_difference=this->nh.advertise<geometry_msgs::Pose2D>(topic_name,10);
+    this->pub_control_data.shutdown();
+    ROS_INFO("Linking control data of %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
+    this->pub_control_data=this->nh.advertise<multi_robot_msgs::ControlData>(topic_name,10);
 }
 
 
@@ -326,12 +326,18 @@ void Controller::publish()
     tf::poseTFToMsg(this->current_pose,msg_pose.pose);
     this->pub_state_out.publish(msg_pose);   
 
-    //publish control difference
-    geometry_msgs::Pose2D dif;
-    dif.x=this->control_dif.getOrigin().x();
-    dif.y=this->control_dif.getOrigin().y();
-    dif.theta=tf::getYaw(this->control_dif.getRotation());
-    this->pub_control_difference.publish(dif);
+    //publish control data
+    multi_robot_msgs::ControlData msg_data;
+    msg_data.header.stamp=ros::Time::now();
+    msg_data.header.frame_id=this->world_frame;
+    msg_data.angular_velocity_in=this->ang_vel_in.z();
+    msg_data.angular_velocity_out=this->ang_vel_out.z();
+    tf::vector3TFToMsg(this->current_pose.getOrigin()-this->target_pose.getOrigin(),msg_data.control_difference_cart);
+    msg_data.linear_velocity_out=this->lin_vel_out.x();
+    tf::vector3TFToMsg(this->target_pose.getOrigin(),msg_data.position_in);
+    tf::vector3TFToMsg(this->lin_vel_in,msg_data.velocity_in);
+    this->pub_control_data.publish(msg_data);
+
 }
 
 void Controller::calc_Lyapunov(double kx, double ky, double kphi,double vd,double omegad)
