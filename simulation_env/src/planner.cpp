@@ -32,11 +32,13 @@ void Planner::plan(const ros::TimerEvent& event)
     }
     if(this->is_planning)
     {
-        ros::Duration local_time=ros::Time::now()-this->start_time-this->paused;        
+        ros::Duration local_time;
+        local_time=ros::Time::now()-this->start_time-this->paused;        
         this->vel=this->get_velocity(local_time);
         this->pos=this->get_position(local_time);
         this->orientation=this->get_orientation(local_time);
         this->ang_vel=this->get_angular_velocity(local_time);
+        this->check_period(local_time);
     }
     else
     {
@@ -212,7 +214,7 @@ void CirclePlanner::load()
 
 void CirclePlanner::check_period(ros::Duration time)
 {
-    if(this->plan.omega*time.toSec()>M_PI)
+    if(this->plan.omega*time.toSec()>2*M_PI)
     {
         this->iterations_counter++;
     }
@@ -221,27 +223,12 @@ void CirclePlanner::check_period(ros::Duration time)
 
 
 
-//Implementation of a Planner that gives a Euler spiral########################################################################################
+//Implementation of a Planner that gives a Lissajous figures###################################################################################
 //#############################################################################################################################################
 LissajousPlanner::LissajousPlanner(ros::NodeHandle &nh):Planner(nh)
 {
 }
 
-
-tf::Vector3 LissajousPlanner::get_velocity(ros::Duration time)
-{
-    double t=time.toSec();
-    double dx=this->plan.Ax*cos(this->plan.omegax*t)*this->plan.omegax;
-    double dy=this->plan.Ay*cos(this->plan.omegax*this->plan.ratio*t+this->plan.dphi)*this->plan.omegax*this->plan.ratio;
-    tf::Vector3 vel(dx,
-                    dy,
-                    0);
-    return vel;
-}
-double LissajousPlanner::get_angular_velocity(ros::Duration time)
-{
-
-}
 
 tf::Vector3 LissajousPlanner::get_position(ros::Duration time)
 {
@@ -256,6 +243,17 @@ tf::Vector3 LissajousPlanner::get_position(ros::Duration time)
     return tf::Vector3(x,y,0);
 }
 
+tf::Vector3 LissajousPlanner::get_velocity(ros::Duration time)
+{
+    double t=time.toSec();
+    double dx=this->plan.Ax*cos(this->plan.omegax*t)*this->plan.omegax;
+    double dy=this->plan.Ay*cos(this->plan.omegax*this->plan.ratio*t+this->plan.dphi)*this->plan.omegax*this->plan.ratio;
+    tf::Vector3 vel(dx,
+                    dy,
+                    0);
+    return vel;
+}
+
 tf::Quaternion LissajousPlanner::get_orientation(ros::Duration time)
 {
     double t=time.toSec();
@@ -264,6 +262,13 @@ tf::Quaternion LissajousPlanner::get_orientation(ros::Duration time)
     tangent.setY(this->plan.Ay*cos(this->plan.omegax*this->plan.ratio*t+this->plan.dphi)*this->plan.omegax*this->plan.ratio);
     return tf::createQuaternionFromYaw(atan2(tangent.y(),tangent.x()));
 
+}
+
+double LissajousPlanner::get_angular_velocity(ros::Duration time)
+{
+    tf::Vector3 pos=this->get_position(time);
+    tf::Vector3 vel=this->get_velocity(time);
+    return (pos.x()*vel.y()-pos.y()*vel.x())/(pow(pos.x(),2)+pow(pos.y(),2));
 }
 
 
@@ -294,7 +299,7 @@ void LissajousPlanner::load()
 
 void LissajousPlanner::check_period(ros::Duration time)
 {
-    if(this->plan.omegax*time.toSec()>M_PI)
+    if(this->plan.omegax*time.toSec()>2*M_PI)
     {
         this->iterations_counter++;
     }

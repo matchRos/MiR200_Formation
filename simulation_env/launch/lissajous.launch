@@ -1,0 +1,5 @@
+<?xml version="1.0" ?>
+<launch>
+<rosparam file="$(find simulation_env)/config/Lissajous.yaml" command="load"></rosparam>
+<node name="planner" pkg="simulation_env" type="lissajous_node" output="screen"/> 
+</launch>
