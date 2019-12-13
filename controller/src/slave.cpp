@@ -35,9 +35,19 @@ void Slave::target_odometry_callback(nav_msgs::Odometry msg)
     tf::vector3MsgToTF(msg.twist.twist.angular,ang);
     tf::Vector3 lin;
     tf::vector3MsgToTF(msg.twist.twist.linear,lin);
-    
+
+    tf::StampedTransform frame_trafo;
+    try{
+        this->listener->lookupTransform(this->world_frame,msg.header.frame_id,ros::Time(0),frame_trafo);
+    }
+    catch(...)
+    {
+        ROS_WARN("Error due target odom transformation in %s",ros::this_node::getName().c_str());
+    }
+
     tf::Transform trafo;  
     tf::poseMsgToTF(msg.pose.pose,trafo);
+    //trafo=frame_trafo*trafo;
     tf::Transform rot;
     rot.setRotation(trafo.getRotation());
 
@@ -68,7 +78,7 @@ void Slave::scope()
             this->calc_Lyapunov(    this->lyapunov_parameter.kx,
                                     this->lyapunov_parameter.ky,
                                     this->lyapunov_parameter.ktheta,
-                                    sqrt(lin_vel_in.x()*lin_vel_in.x()+lin_vel_in.y()*lin_vel_in.y()),
+                                    0.5*sqrt(lin_vel_in.x()*lin_vel_in.x()+lin_vel_in.y()*lin_vel_in.y()),
                                     this->ang_vel_in.z());
             break;
         case angle_distance: this->calc_angle_distance(this->kr,this->kang);break;
