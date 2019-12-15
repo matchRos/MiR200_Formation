@@ -1,0 +1,70 @@
+\hypertarget{classCirclePlanner}{}\section{Circle\+Planner Class Reference}
+\label{classCirclePlanner}\index{Circle\+Planner@{Circle\+Planner}}
+
+
+Inheritance diagram for Circle\+Planner\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=155pt]{classCirclePlanner__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Circle\+Planner\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=274pt]{classCirclePlanner__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structCirclePlanner_1_1CirclePlan}{Circle\+Plan}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Circle\+Planner} (ros\+::\+Node\+Handle \&\hyperlink{classPlanner_a9714d036f444a07ce90be8d135b9a40c}{nh})\hypertarget{classCirclePlanner_a33a27f97f5a1300d43c80b519fdfb3ef}{}\label{classCirclePlanner_a33a27f97f5a1300d43c80b519fdfb3ef}
+
+\item 
+void {\bfseries set\+\_\+parameter} (double r=3.\+0, double omega=0.\+5)\hypertarget{classCirclePlanner_a21fef783d5f2252fd1b53d93e869fc65}{}\label{classCirclePlanner_a21fef783d5f2252fd1b53d93e869fc65}
+
+\item 
+void {\bfseries load} ()\hypertarget{classCirclePlanner_a1c14f6ed36cbd32d39d60ed312a65de8}{}\label{classCirclePlanner_a1c14f6ed36cbd32d39d60ed312a65de8}
+
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+tf\+::\+Vector3 {\bfseries get\+\_\+position} (ros\+::\+Duration time)\hypertarget{classCirclePlanner_a1d6cdbec03a259af77937f0274dde5d9}{}\label{classCirclePlanner_a1d6cdbec03a259af77937f0274dde5d9}
+
+\item 
+tf\+::\+Quaternion {\bfseries get\+\_\+orientation} (ros\+::\+Duration time)\hypertarget{classCirclePlanner_a4e774b6cbc87a3dfa718df5594a0adbf}{}\label{classCirclePlanner_a4e774b6cbc87a3dfa718df5594a0adbf}
+
+\item 
+tf\+::\+Vector3 {\bfseries get\+\_\+velocity} (ros\+::\+Duration time)\hypertarget{classCirclePlanner_a5184277b2e174515140514fdec37ba29}{}\label{classCirclePlanner_a5184277b2e174515140514fdec37ba29}
+
+\item 
+double {\bfseries get\+\_\+angular\+\_\+velocity} (ros\+::\+Duration time)\hypertarget{classCirclePlanner_afa7c8502da92a63c78711ca92e73fe2b}{}\label{classCirclePlanner_afa7c8502da92a63c78711ca92e73fe2b}
+
+\item 
+void {\bfseries check\+\_\+period} (ros\+::\+Duration time)\hypertarget{classCirclePlanner_ab981788d76132e3f03ebedeb128d703a}{}\label{classCirclePlanner_ab981788d76132e3f03ebedeb128d703a}
+
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structCirclePlanner_1_1CirclePlan}{Circle\+Plan} {\bfseries plan}\hypertarget{classCirclePlanner_a69f9e183351ef2c5325eef292350fb52}{}\label{classCirclePlanner_a69f9e183351ef2c5325eef292350fb52}
+
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+simulation\+\_\+env/include/simulation\+\_\+env/planner.\+h\item 
+simulation\+\_\+env/src/planner.\+cpp\end{DoxyCompactItemize}

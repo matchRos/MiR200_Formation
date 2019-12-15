@@ -1,0 +1,360 @@
+\hypertarget{classController}{}\section{Controller Class Reference}
+\label{classController}\index{Controller@{Controller}}
+
+
+Inheritance diagram for Controller\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=186pt]{classController__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Controller\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=223pt]{classController__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structController_1_1lyapunov}{lyapunov}
+\end{DoxyCompactItemize}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum {\bfseries controller\+Type} \{ {\bfseries pseudo\+\_\+inverse} =1, 
+{\bfseries lypanov} =2, 
+{\bfseries angle\+\_\+distance} =3
+ \}\hypertarget{classController_a86221d052db839985bd6e4d73013cd06}{}\label{classController_a86221d052db839985bd6e4d73013cd06}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classController_a7341f9092e1977cdd2a1492c4422c019}{Controller} (ros\+::\+Node\+Handle \&nh)
+\begin{DoxyCompactList}\small\item\em Construct a new \hyperlink{classController}{Controller} object. \end{DoxyCompactList}\item 
+void \hyperlink{classController_ad2629427a3a56571a1807f1e03c72b5f}{set\+\_\+name} (std\+::string)\hypertarget{classController_ad2629427a3a56571a1807f1e03c72b5f}{}\label{classController_ad2629427a3a56571a1807f1e03c72b5f}
+
+\begin{DoxyCompactList}\small\item\em setting the name of the \hyperlink{classController}{Controller} and its node \end{DoxyCompactList}\item 
+void \hyperlink{classController_ade57ae23226a7565521694c87ec79c90}{set\+\_\+reference} (double x, double y, double z, double angle)
+\item 
+void \hyperlink{classController_aefad16ae5d5df8baac0ed044018eb6c6}{set\+\_\+reference} (std\+::vector$<$ double $>$ coord, double angle)
+\item 
+void \hyperlink{classController_a3a417d33a8ecc6e83f3c43e3a4da74cd}{set\+\_\+reference} ()\hypertarget{classController_a3a417d33a8ecc6e83f3c43e3a4da74cd}{}\label{classController_a3a417d33a8ecc6e83f3c43e3a4da74cd}
+
+\begin{DoxyCompactList}\small\item\em Initialise the coordinate system of the \hyperlink{classController}{Controller} to position defined by reference pose. \end{DoxyCompactList}\item 
+void \hyperlink{classController_aeeb360dd2e4afb5c654f5bca4c0f00ca}{set\+\_\+world\+\_\+frame} (std\+::string frame)
+\item 
+void \hyperlink{classController_a7134d173f5f91755d8a3c7e07ca04da9}{set\+\_\+type} (Controller\+::controller\+Type type)
+\item 
+void \hyperlink{classController_a2ebb5b813be3525b44af61eb6f165964}{set\+\_\+lyapunov} (\hyperlink{structController_1_1lyapunov}{Controller\+::lyapunov} param)
+\item 
+void \hyperlink{classController_afb2d5fec93db7b68a16767823f4c1675}{set\+\_\+lyapunov} (std\+::vector$<$ float $>$ param)
+\item 
+virtual void \hyperlink{classController_a0758387181bc5902176813cc686cb088}{load\+\_\+parameter} ()\hypertarget{classController_a0758387181bc5902176813cc686cb088}{}\label{classController_a0758387181bc5902176813cc686cb088}
+
+\begin{DoxyCompactList}\small\item\em Loading parameter for a specified \hyperlink{classController}{Controller}. Empty for \hyperlink{classController}{Controller} base class and implemented in inheriting classes. \end{DoxyCompactList}\item 
+void \hyperlink{classController_a55c77d2e41634c9b21543647f74eec4c}{load} ()\hypertarget{classController_a55c77d2e41634c9b21543647f74eec4c}{}\label{classController_a55c77d2e41634c9b21543647f74eec4c}
+
+\begin{DoxyCompactList}\small\item\em Loading ros parameter and calling load\+\_\+parameter inside. \end{DoxyCompactList}\item 
+void \hyperlink{classController_add4a8227097c30e5f165977cfa0ce22c}{link\+\_\+current\+\_\+odom} (std\+::string topic\+\_\+name)
+\item 
+void \hyperlink{classController_a82a7c805f6e4e0689c675134903e9e58}{link\+\_\+target\+\_\+velocity} (std\+::string topic\+\_\+name)
+\item 
+void \hyperlink{classController_a5f5318b08e7b99d2e5f09c59a6eb61aa}{link\+\_\+target\+\_\+state} (std\+::string topic\+\_\+name)
+\item 
+void \hyperlink{classController_a7bf32883aed714275c99d6d182993b73}{link\+\_\+target\+\_\+odometry} (std\+::string topic\+\_\+name)
+\item 
+void \hyperlink{classController_afdf03808aee4a1cfcf65a7198ab1a9aa}{link\+\_\+output\+\_\+velocity} (std\+::string topic\+\_\+name)
+\begin{DoxyCompactList}\small\item\em O\+U\+T\+P\+U\+TS. \end{DoxyCompactList}\item 
+void \hyperlink{classController_a9b8949013d52e365754e170a9cad158c}{link\+\_\+output\+\_\+state} (std\+::string topic\+\_\+name)
+\item 
+void \hyperlink{classController_abc1909639580e5359228c87fbd3a622b}{link\+\_\+output\+\_\+control\+\_\+data} (std\+::string topic\+\_\+name)
+\item 
+void \hyperlink{classController_a56568ee07bb72983576e9d7c10eb3e83}{calc\+\_\+\+Lyapunov} (double kx, double ky, double kphi, double vd, double omegad)
+\item 
+void {\bfseries calc\+\_\+angle\+\_\+distance} (double kr, double kphi)\hypertarget{classController_a63249412728814430174c740d358a5c0}{}\label{classController_a63249412728814430174c740d358a5c0}
+
+\item 
+void \hyperlink{classController_a6661eb7307219216a7cb0a90e2a07e4d}{execute} ()\hypertarget{classController_a6661eb7307219216a7cb0a90e2a07e4d}{}\label{classController_a6661eb7307219216a7cb0a90e2a07e4d}
+
+\begin{DoxyCompactList}\small\item\em \hyperlink{classController}{Controller} scope. \end{DoxyCompactList}\item 
+void {\bfseries reset} ()\hypertarget{classController_ab5515748f1b0c82f015e039c817ee5f7}{}\label{classController_ab5515748f1b0c82f015e039c817ee5f7}
+
+\item 
+void \hyperlink{classController_a35b38608f67e7c1c34f6b7186db32ad7}{current\+\_\+odom\+\_\+callback} (nav\+\_\+msgs\+::\+Odometry msg)\hypertarget{classController_a35b38608f67e7c1c34f6b7186db32ad7}{}\label{classController_a35b38608f67e7c1c34f6b7186db32ad7}
+
+\begin{DoxyCompactList}\small\item\em Callback for input odometry message. Is executed everytima a Odometry input is incoming. Writes data to input current\+\_\+pose. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classController_afa31080c1ed1e652410c5e97472b3ea5}{target\+\_\+velocities\+\_\+callback} (geometry\+\_\+msgs\+::\+Twist msg)\hypertarget{classController_afa31080c1ed1e652410c5e97472b3ea5}{}\label{classController_afa31080c1ed1e652410c5e97472b3ea5}
+
+\begin{DoxyCompactList}\small\item\em Callback for input velocitiy message. Is executed everytime a velocitiy input is incoming. Writes data to input state. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classController_a60f59dd761ce2d41dc9254f87164ded1}{target\+\_\+state\+\_\+callback} (geometry\+\_\+msgs\+::\+Pose\+Stamped msg)\hypertarget{classController_a60f59dd761ce2d41dc9254f87164ded1}{}\label{classController_a60f59dd761ce2d41dc9254f87164ded1}
+
+\begin{DoxyCompactList}\small\item\em Callback for input target state message. Is executed everytima a target state input is incoming. Writes data to target\+\_\+pose state. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classController_ad9ccaff0c6f9989bd6c33a3d2179124d}{target\+\_\+odometry\+\_\+callback} (nav\+\_\+msgs\+::\+Odometry msg)\hypertarget{classController_ad9ccaff0c6f9989bd6c33a3d2179124d}{}\label{classController_ad9ccaff0c6f9989bd6c33a3d2179124d}
+
+\begin{DoxyCompactList}\small\item\em Callback for input target odometry message. Is executed everytima a target odometry input is incoming. Writes data to target\+\_\+pose state and target\+\_\+vel. \end{DoxyCompactList}\item 
+bool {\bfseries srv\+\_\+reset} (std\+\_\+srvs\+::\+Empty\+Request \&req, std\+\_\+srvs\+::\+Empty\+Response \&res)\hypertarget{classController_ae24861b9ecd088dc3a58db860fc417b1}{}\label{classController_ae24861b9ecd088dc3a58db860fc417b1}
+
+\item 
+virtual void \hyperlink{classController_af89e3d7ed87318418f0168727bd98f0f}{scope} ()=0\hypertarget{classController_af89e3d7ed87318418f0168727bd98f0f}{}\label{classController_af89e3d7ed87318418f0168727bd98f0f}
+
+\begin{DoxyCompactList}\small\item\em A Scope within the execute function. Repeating calculation in inheriting classes are implemented here. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void {\bfseries get\+Transformation} ()\hypertarget{classController_a5f86e07f526598b251e345a908923950}{}\label{classController_a5f86e07f526598b251e345a908923950}
+
+\item 
+void {\bfseries publish} ()\hypertarget{classController_ae6859e3a43be2fa31cb82ace3954e746}{}\label{classController_ae6859e3a43be2fa31cb82ace3954e746}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+ros\+::\+Node\+Handle {\bfseries nh}\hypertarget{classController_a24e3d3c2536f6ed29018bad1fd53dae2}{}\label{classController_a24e3d3c2536f6ed29018bad1fd53dae2}
+
+\item 
+tf\+::\+Transform\+Listener $\ast$ {\bfseries listener}\hypertarget{classController_afea373f808d583e4ad613f119439a8f5}{}\label{classController_afea373f808d583e4ad613f119439a8f5}
+
+\item 
+controller\+Type {\bfseries type}\hypertarget{classController_af2488a28d3390288db92fa1d92aaed52}{}\label{classController_af2488a28d3390288db92fa1d92aaed52}
+
+\item 
+ros\+::\+Publisher {\bfseries pub\+\_\+vel\+\_\+out}\hypertarget{classController_a8428549596cff57f48390ac25706545a}{}\label{classController_a8428549596cff57f48390ac25706545a}
+
+\item 
+ros\+::\+Publisher {\bfseries pub\+\_\+state\+\_\+out}\hypertarget{classController_a6abeaf23d1c17d6af6eecf7d1479fe31}{}\label{classController_a6abeaf23d1c17d6af6eecf7d1479fe31}
+
+\item 
+ros\+::\+Publisher {\bfseries pub\+\_\+control\+\_\+data}\hypertarget{classController_afde3eefcf7ac040b2a38a8d1e95a6077}{}\label{classController_afde3eefcf7ac040b2a38a8d1e95a6077}
+
+\item 
+ros\+::\+Subscriber {\bfseries sub\+\_\+vel\+\_\+target}\hypertarget{classController_a1ecc749bf5bd484c978940c5a6afe03f}{}\label{classController_a1ecc749bf5bd484c978940c5a6afe03f}
+
+\item 
+ros\+::\+Subscriber {\bfseries sub\+\_\+odom\+\_\+current}\hypertarget{classController_a855093341ac8afa84efd841654fedaf5}{}\label{classController_a855093341ac8afa84efd841654fedaf5}
+
+\item 
+ros\+::\+Subscriber {\bfseries sub\+\_\+state\+\_\+target}\hypertarget{classController_adabc3d493b55a60400c74bd4264dbc6e}{}\label{classController_adabc3d493b55a60400c74bd4264dbc6e}
+
+\item 
+ros\+::\+Subscriber {\bfseries sub\+\_\+target\+\_\+odometry}\hypertarget{classController_a7f8a52684719804ecb90c57145513366}{}\label{classController_a7f8a52684719804ecb90c57145513366}
+
+\item 
+ros\+::\+Service\+Server {\bfseries reset\+\_\+service}\hypertarget{classController_ae981013bac649b6310e924b6a126bc40}{}\label{classController_ae981013bac649b6310e924b6a126bc40}
+
+\item 
+std\+::string {\bfseries name}\hypertarget{classController_af81f22d8b64d915769acfb8e8d89e0c8}{}\label{classController_af81f22d8b64d915769acfb8e8d89e0c8}
+
+\item 
+std\+::string {\bfseries world\+\_\+frame}\hypertarget{classController_ae01171e69d9b735e44964662275fc77c}{}\label{classController_ae01171e69d9b735e44964662275fc77c}
+
+\item 
+tf\+::\+Vector3 {\bfseries ang\+\_\+vel\+\_\+in}\hypertarget{classController_a538a49aa6e62ee89de241874b7f26625}{}\label{classController_a538a49aa6e62ee89de241874b7f26625}
+
+\item 
+tf\+::\+Vector3 {\bfseries lin\+\_\+vel\+\_\+in}\hypertarget{classController_ab94918bba11d4526cd5dc20e64655845}{}\label{classController_ab94918bba11d4526cd5dc20e64655845}
+
+\item 
+tf\+::\+Vector3 {\bfseries lin\+\_\+vel\+\_\+out}\hypertarget{classController_ac7b5300b4fc0b2436d4a17d4bb60b078}{}\label{classController_ac7b5300b4fc0b2436d4a17d4bb60b078}
+
+\item 
+tf\+::\+Vector3 {\bfseries ang\+\_\+vel\+\_\+out}\hypertarget{classController_a8c96a76667a4298cd15f6b49a9e23ceb}{}\label{classController_a8c96a76667a4298cd15f6b49a9e23ceb}
+
+\item 
+tf\+::\+Stamped\+Transform {\bfseries world2robot}\hypertarget{classController_aaad279e91ae825ab17121759ec46f539}{}\label{classController_aaad279e91ae825ab17121759ec46f539}
+
+\item 
+tf\+::\+Stamped\+Transform {\bfseries world2odom}\hypertarget{classController_a0fbeee8dd4ee75f98ca860f1878ba4dd}{}\label{classController_a0fbeee8dd4ee75f98ca860f1878ba4dd}
+
+\item 
+tf\+::\+Transform {\bfseries control\+\_\+dif}\hypertarget{classController_a171362bdb7fa9335627a5c16e3716525}{}\label{classController_a171362bdb7fa9335627a5c16e3716525}
+
+\item 
+tf\+::\+Pose {\bfseries reference\+\_\+pose}\hypertarget{classController_a804862aff250a2857c2e145615ae0fdb}{}\label{classController_a804862aff250a2857c2e145615ae0fdb}
+
+\item 
+tf\+::\+Pose {\bfseries current\+\_\+pose}\hypertarget{classController_a9575ed78c8b37c15f425deb48a3fe413}{}\label{classController_a9575ed78c8b37c15f425deb48a3fe413}
+
+\item 
+tf\+::\+Pose {\bfseries target\+\_\+pose}\hypertarget{classController_aa27e5e790f798a9dd55078b24a326dd6}{}\label{classController_aa27e5e790f798a9dd55078b24a326dd6}
+
+\item 
+\hyperlink{structController_1_1lyapunov}{lyapunov} {\bfseries lyapunov\+\_\+parameter}\hypertarget{classController_a3b52649fc2e291a276a1ad62e8440a6f}{}\label{classController_a3b52649fc2e291a276a1ad62e8440a6f}
+
+\item 
+double {\bfseries kx}\hypertarget{classController_a18cb9e47664e29810d99a17a3997fd79}{}\label{classController_a18cb9e47664e29810d99a17a3997fd79}
+
+\item 
+double {\bfseries ky}\hypertarget{classController_a75a14de3b905db8fc247c2264e55f90b}{}\label{classController_a75a14de3b905db8fc247c2264e55f90b}
+
+\item 
+double {\bfseries kphi}\hypertarget{classController_acf8a5d288ffb3537a7aa00745bd5a7b3}{}\label{classController_acf8a5d288ffb3537a7aa00745bd5a7b3}
+
+\item 
+double {\bfseries omegad}\hypertarget{classController_af75dc7cabc84c25933aec4e42bd9533a}{}\label{classController_af75dc7cabc84c25933aec4e42bd9533a}
+
+\item 
+double {\bfseries vd}\hypertarget{classController_ad67f667a4fcbcfc6cd74e9dec88b6f98}{}\label{classController_ad67f667a4fcbcfc6cd74e9dec88b6f98}
+
+\item 
+double {\bfseries kr}\hypertarget{classController_ab107c130b9466fd6d7116306218b4a95}{}\label{classController_ab107c130b9466fd6d7116306218b4a95}
+
+\item 
+double {\bfseries kang}\hypertarget{classController_a9b8aa757ac74e51a1bb6fc959ffc5a14}{}\label{classController_a9b8aa757ac74e51a1bb6fc959ffc5a14}
+
+\item 
+bool {\bfseries loaded\+\_\+parameter}\hypertarget{classController_a4e0e569456498e5670a48244c22cafc9}{}\label{classController_a4e0e569456498e5670a48244c22cafc9}
+
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classController_ac3c2cc7b8afdf05ade60e03eaca88b91}{add\+\_\+map} ()\hypertarget{classController_ac3c2cc7b8afdf05ade60e03eaca88b91}{}\label{classController_ac3c2cc7b8afdf05ade60e03eaca88b91}
+
+\begin{DoxyCompactList}\small\item\em Adding a transformation to the map frame, the reference pose is defined in. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Controller@{Controller}!Controller@{Controller}}
+\index{Controller@{Controller}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{Controller(ros\+::\+Node\+Handle \&nh)}{Controller(ros::NodeHandle &nh)}}]{\setlength{\rightskip}{0pt plus 5cm}Controller\+::\+Controller (
+\begin{DoxyParamCaption}
+\item[{ros\+::\+Node\+Handle \&}]{nh}
+\end{DoxyParamCaption}
+)}\hypertarget{classController_a7341f9092e1977cdd2a1492c4422c019}{}\label{classController_a7341f9092e1977cdd2a1492c4422c019}
+
+
+Construct a new \hyperlink{classController}{Controller} object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em nh} & Ros nodehandle for managing namespaces and ros functionality within the controller object \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\index{Controller@{Controller}!calc\+\_\+\+Lyapunov@{calc\+\_\+\+Lyapunov}}
+\index{calc\+\_\+\+Lyapunov@{calc\+\_\+\+Lyapunov}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{calc\+\_\+\+Lyapunov(double kx, double ky, double kphi, double vd, double omegad)}{calc_Lyapunov(double kx, double ky, double kphi, double vd, double omegad)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::calc\+\_\+\+Lyapunov (
+\begin{DoxyParamCaption}
+\item[{double}]{kx, }
+\item[{double}]{ky, }
+\item[{double}]{kphi, }
+\item[{double}]{vd, }
+\item[{double}]{omegad}
+\end{DoxyParamCaption}
+)}\hypertarget{classController_a56568ee07bb72983576e9d7c10eb3e83}{}\label{classController_a56568ee07bb72983576e9d7c10eb3e83}
+Calculate the control vector with the Lyapunov method param\+: kx\+: gain in x direction param kphi\+: gain in angular direction param vd\+: tangential velocity param omegad \+: rotational velocity \index{Controller@{Controller}!link\+\_\+current\+\_\+odom@{link\+\_\+current\+\_\+odom}}
+\index{link\+\_\+current\+\_\+odom@{link\+\_\+current\+\_\+odom}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{link\+\_\+current\+\_\+odom(std\+::string topic\+\_\+name)}{link_current_odom(std::string topic_name)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::link\+\_\+current\+\_\+odom (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{topic\+\_\+name}
+\end{DoxyParamCaption}
+)}\hypertarget{classController_add4a8227097c30e5f165977cfa0ce22c}{}\label{classController_add4a8227097c30e5f165977cfa0ce22c}
+link \hyperlink{classController}{Controller} to it\textquotesingle{}s odom input topic \textquotesingle{}topic\+\_\+name\textquotesingle{}Name of the topic the \hyperlink{classController}{Controller} reads its oddom from \index{Controller@{Controller}!link\+\_\+output\+\_\+control\+\_\+data@{link\+\_\+output\+\_\+control\+\_\+data}}
+\index{link\+\_\+output\+\_\+control\+\_\+data@{link\+\_\+output\+\_\+control\+\_\+data}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{link\+\_\+output\+\_\+control\+\_\+data(std\+::string topic\+\_\+name)}{link_output_control_data(std::string topic_name)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::link\+\_\+output\+\_\+control\+\_\+data (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{topic\+\_\+name}
+\end{DoxyParamCaption}
+)}\hypertarget{classController_abc1909639580e5359228c87fbd3a622b}{}\label{classController_abc1909639580e5359228c87fbd3a622b}
+link \hyperlink{classController}{Controller} to it\textquotesingle{}s control difference topic \textquotesingle{}topic\+\_\+name\textquotesingle{} Name of the topic the \hyperlink{classController}{Controller} writes its control difference to \index{Controller@{Controller}!link\+\_\+output\+\_\+state@{link\+\_\+output\+\_\+state}}
+\index{link\+\_\+output\+\_\+state@{link\+\_\+output\+\_\+state}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{link\+\_\+output\+\_\+state(std\+::string topic\+\_\+name)}{link_output_state(std::string topic_name)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::link\+\_\+output\+\_\+state (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{topic\+\_\+name}
+\end{DoxyParamCaption}
+)}\hypertarget{classController_a9b8949013d52e365754e170a9cad158c}{}\label{classController_a9b8949013d52e365754e170a9cad158c}
+link \hyperlink{classController}{Controller} to it\textquotesingle{}s state topic \textquotesingle{}topic\+\_\+name\textquotesingle{} Name of the topic the \hyperlink{classController}{Controller} writes its state to \index{Controller@{Controller}!link\+\_\+output\+\_\+velocity@{link\+\_\+output\+\_\+velocity}}
+\index{link\+\_\+output\+\_\+velocity@{link\+\_\+output\+\_\+velocity}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{link\+\_\+output\+\_\+velocity(std\+::string topic\+\_\+name)}{link_output_velocity(std::string topic_name)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::link\+\_\+output\+\_\+velocity (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{topic\+\_\+name}
+\end{DoxyParamCaption}
+)}\hypertarget{classController_afdf03808aee4a1cfcf65a7198ab1a9aa}{}\label{classController_afdf03808aee4a1cfcf65a7198ab1a9aa}
+
+
+O\+U\+T\+P\+U\+TS. 
+
+link \hyperlink{classController}{Controller} to it\textquotesingle{}s output topic \textquotesingle{}topic\+\_\+name\textquotesingle{}Name of the topic the \hyperlink{classController}{Controller} writes its output to \index{Controller@{Controller}!link\+\_\+target\+\_\+odometry@{link\+\_\+target\+\_\+odometry}}
+\index{link\+\_\+target\+\_\+odometry@{link\+\_\+target\+\_\+odometry}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{link\+\_\+target\+\_\+odometry(std\+::string topic\+\_\+name)}{link_target_odometry(std::string topic_name)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::link\+\_\+target\+\_\+odometry (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{topic\+\_\+name}
+\end{DoxyParamCaption}
+)}\hypertarget{classController_a7bf32883aed714275c99d6d182993b73}{}\label{classController_a7bf32883aed714275c99d6d182993b73}
+link \hyperlink{classController}{Controller} to it\textquotesingle{}s target odometry topic (combines target state and target velocity) \textquotesingle{}topic\+\_\+name\textquotesingle{} Name of the topic the \hyperlink{classController}{Controller} gets its target state from \index{Controller@{Controller}!link\+\_\+target\+\_\+state@{link\+\_\+target\+\_\+state}}
+\index{link\+\_\+target\+\_\+state@{link\+\_\+target\+\_\+state}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{link\+\_\+target\+\_\+state(std\+::string topic\+\_\+name)}{link_target_state(std::string topic_name)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::link\+\_\+target\+\_\+state (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{topic\+\_\+name}
+\end{DoxyParamCaption}
+)}\hypertarget{classController_a5f5318b08e7b99d2e5f09c59a6eb61aa}{}\label{classController_a5f5318b08e7b99d2e5f09c59a6eb61aa}
+link \hyperlink{classController}{Controller} to it\textquotesingle{}s state topic \textquotesingle{}topic\+\_\+name\textquotesingle{} Name of the topic the \hyperlink{classController}{Controller} gets its target state from \index{Controller@{Controller}!link\+\_\+target\+\_\+velocity@{link\+\_\+target\+\_\+velocity}}
+\index{link\+\_\+target\+\_\+velocity@{link\+\_\+target\+\_\+velocity}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{link\+\_\+target\+\_\+velocity(std\+::string topic\+\_\+name)}{link_target_velocity(std::string topic_name)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::link\+\_\+target\+\_\+velocity (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{topic\+\_\+name}
+\end{DoxyParamCaption}
+)}\hypertarget{classController_a82a7c805f6e4e0689c675134903e9e58}{}\label{classController_a82a7c805f6e4e0689c675134903e9e58}
+link \hyperlink{classController}{Controller} to it\textquotesingle{}s input topic \textquotesingle{}topic\+\_\+name\textquotesingle{}\+: Name of tjhe topic the \hyperlink{classController}{Controller} gets input from \index{Controller@{Controller}!set\+\_\+lyapunov@{set\+\_\+lyapunov}}
+\index{set\+\_\+lyapunov@{set\+\_\+lyapunov}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{set\+\_\+lyapunov(\+Controller\+::lyapunov param)}{set_lyapunov(Controller::lyapunov param)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::set\+\_\+lyapunov (
+\begin{DoxyParamCaption}
+\item[{{\bf Controller\+::lyapunov}}]{param}
+\end{DoxyParamCaption}
+)}\hypertarget{classController_a2ebb5b813be3525b44af61eb6f165964}{}\label{classController_a2ebb5b813be3525b44af61eb6f165964}
+Setting parameters for the lyapunov control law param param\+: struct that hold the parameters for the law\+: kx,ky,ktheta,omega,v in that order \index{Controller@{Controller}!set\+\_\+lyapunov@{set\+\_\+lyapunov}}
+\index{set\+\_\+lyapunov@{set\+\_\+lyapunov}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{set\+\_\+lyapunov(std\+::vector$<$ float $>$ param)}{set_lyapunov(std::vector< float > param)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::set\+\_\+lyapunov (
+\begin{DoxyParamCaption}
+\item[{std\+::vector$<$ float $>$}]{param}
+\end{DoxyParamCaption}
+)}\hypertarget{classController_afb2d5fec93db7b68a16767823f4c1675}{}\label{classController_afb2d5fec93db7b68a16767823f4c1675}
+Setting parameters for the lyapunov control law param param\+: std\+::vector that hold the parameters for the law\+: kx,ky,ktheta,omega,v in that order \index{Controller@{Controller}!set\+\_\+reference@{set\+\_\+reference}}
+\index{set\+\_\+reference@{set\+\_\+reference}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{set\+\_\+reference(double x, double y, double z, double angle)}{set_reference(double x, double y, double z, double angle)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::set\+\_\+reference (
+\begin{DoxyParamCaption}
+\item[{double}]{x, }
+\item[{double}]{y, }
+\item[{double}]{z, }
+\item[{double}]{angle}
+\end{DoxyParamCaption}
+)}\hypertarget{classController_ade57ae23226a7565521694c87ec79c90}{}\label{classController_ade57ae23226a7565521694c87ec79c90}
+Initialise the coordinate system of the \hyperlink{classController}{Controller} to position param\+: double x\+: x Position param\+: double y\+: y Position param\+: double z\+: z Position \index{Controller@{Controller}!set\+\_\+reference@{set\+\_\+reference}}
+\index{set\+\_\+reference@{set\+\_\+reference}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{set\+\_\+reference(std\+::vector$<$ double $>$ coord, double angle)}{set_reference(std::vector< double > coord, double angle)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::set\+\_\+reference (
+\begin{DoxyParamCaption}
+\item[{std\+::vector$<$ double $>$}]{coord, }
+\item[{double}]{angle}
+\end{DoxyParamCaption}
+)}\hypertarget{classController_aefad16ae5d5df8baac0ed044018eb6c6}{}\label{classController_aefad16ae5d5df8baac0ed044018eb6c6}
+Initialise the coordinate system of the \hyperlink{classController}{Controller} to position param\+: vector$<$double$>$ coord\+: Position vector \index{Controller@{Controller}!set\+\_\+type@{set\+\_\+type}}
+\index{set\+\_\+type@{set\+\_\+type}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{set\+\_\+type(\+Controller\+::controller\+Type type)}{set_type(Controller::controllerType type)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::set\+\_\+type (
+\begin{DoxyParamCaption}
+\item[{Controller\+::controller\+Type}]{type}
+\end{DoxyParamCaption}
+)}\hypertarget{classController_a7134d173f5f91755d8a3c7e07ca04da9}{}\label{classController_a7134d173f5f91755d8a3c7e07ca04da9}
+Set the type of the controllaw param\+: type\+: Controllaw type (see Controller\+::controller\+Type) \index{Controller@{Controller}!set\+\_\+world\+\_\+frame@{set\+\_\+world\+\_\+frame}}
+\index{set\+\_\+world\+\_\+frame@{set\+\_\+world\+\_\+frame}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{set\+\_\+world\+\_\+frame(std\+::string frame)}{set_world_frame(std::string frame)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::set\+\_\+world\+\_\+frame (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{frame}
+\end{DoxyParamCaption}
+)}\hypertarget{classController_aeeb360dd2e4afb5c654f5bca4c0f00ca}{}\label{classController_aeeb360dd2e4afb5c654f5bca4c0f00ca}
+Set the name of the reference/world frame param\+: frame \+: Name of the frame in tf tree 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+controller/include/controller/controller.\+h\item 
+controller/src/controller.\+cpp\end{DoxyCompactItemize}
