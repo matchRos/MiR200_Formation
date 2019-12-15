@@ -33,6 +33,11 @@
 
 class Controller{
     public:
+        /**
+         * @brief Construct a new Controller object
+         * 
+         * @param nh Ros nodehandle for managing namespaces and ros functionality within the controller object
+         */
         Controller(ros::NodeHandle &nh);
         ~Controller();
         //Control law identifier
