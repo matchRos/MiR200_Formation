@@ -40,32 +40,46 @@ class Controller{
          */
         Controller(ros::NodeHandle &nh);
         ~Controller();
-        //Control law identifier
+        /**
+         * @brief Specifies the different implemented control laws
+         * 
+         */
         enum controllerType{
-            pseudo_inverse=1,
-            lypanov=2,
-            angle_distance=3
+            pseudo_inverse=1,   //*< Control law is based on pseudo inveres the input for generate a output (least squares optimisation) */
+            lypanov=2,          //*< Control law is based on the lyapunov approache. Output is determined from a lyapunov stable function */
+            angle_distance=3    //*< Control law based on linear approach in angle and distance respectively */
         };
         
-        //Control algorithm parameter
+        /**
+         * @brief Specifies the parameters needed for the lyapunov base control law
+         * 
+         */
         struct lyapunov
         {
-            float kx;
-            float ky;
-            float ktheta;
+            float kx;   //*< Control gain in x-direction */
+            float ky;   //*< Control gain in y-direction */ 
+            float ktheta;   //*< Control gain in theta-direction */
         };
         
         
         /*Setter and parameter methods ###################################################################################################################
         ##################################################################################################################################################*/
-        ///setting the name of the Controller and its node
-        void set_name(std::string);       
+        /**
+         * @brief Set the name of object
+         * 
+         * @param name Name to be set
+         */
+        void set_name(std::string name);       
 
-        ///Initialise the coordinate system of the Controller to position
-        ///param: double x: x Position
-        ///param: double y: y Position
-        ///param: double z: z Position
-        void set_reference(double x,double y,double z,double angle); 
+        /**
+         * @brief Set the reference of the mobile robot to be controlled from a global frame
+         * 
+         * @param x X-position of robot
+         * @param y Y-position of robot
+         * @param z Z-position of robot
+         * @param angle Angular-position of robot 
+         */
+        void set_reference(double x,double y,double z,double angle);         
         ///Initialise the coordinate system of the Controller to position
         ///param: vector<double> coord: Position vector    
         void set_reference(std::vector<double> coord,double angle);

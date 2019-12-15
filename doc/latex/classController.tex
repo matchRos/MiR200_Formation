@@ -2,8 +2,7 @@
 \label{classController}\index{Controller@{Controller}}
 
 
-Inheritance diagram for Controller\+:
-\nopagebreak
+Inheritance diagram for Controller\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -24,26 +23,25 @@ Collaboration diagram for Controller\+:
 \begin{DoxyCompactItemize}
 \item 
 struct \hyperlink{structController_1_1lyapunov}{lyapunov}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Specifies the parameters needed for the lyapunov base control law. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Public Types}
 \begin{DoxyCompactItemize}
 \item 
-enum {\bfseries controller\+Type} \{ {\bfseries pseudo\+\_\+inverse} =1, 
+enum \hyperlink{classController_a86221d052db839985bd6e4d73013cd06}{controller\+Type} \{ {\bfseries pseudo\+\_\+inverse} =1, 
 {\bfseries lypanov} =2, 
 {\bfseries angle\+\_\+distance} =3
  \}\hypertarget{classController_a86221d052db839985bd6e4d73013cd06}{}\label{classController_a86221d052db839985bd6e4d73013cd06}
-
+\begin{DoxyCompactList}\small\item\em Specifies the different implemented control laws. \end{DoxyCompactList}
 \end{DoxyCompactItemize}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \hyperlink{classController_a7341f9092e1977cdd2a1492c4422c019}{Controller} (ros\+::\+Node\+Handle \&nh)
 \begin{DoxyCompactList}\small\item\em Construct a new \hyperlink{classController}{Controller} object. \end{DoxyCompactList}\item 
-void \hyperlink{classController_ad2629427a3a56571a1807f1e03c72b5f}{set\+\_\+name} (std\+::string)\hypertarget{classController_ad2629427a3a56571a1807f1e03c72b5f}{}\label{classController_ad2629427a3a56571a1807f1e03c72b5f}
-
-\begin{DoxyCompactList}\small\item\em setting the name of the \hyperlink{classController}{Controller} and its node \end{DoxyCompactList}\item 
+void \hyperlink{classController_a88f2d54fedd04bd767e4d6e36e6dc2b3}{set\+\_\+name} (std\+::string name)
+\begin{DoxyCompactList}\small\item\em Set the name of object. \end{DoxyCompactList}\item 
 void \hyperlink{classController_ade57ae23226a7565521694c87ec79c90}{set\+\_\+reference} (double x, double y, double z, double angle)
-\item 
+\begin{DoxyCompactList}\small\item\em Set the reference of the mobile robot to be controlled from a global frame. \end{DoxyCompactList}\item 
 void \hyperlink{classController_aefad16ae5d5df8baac0ed044018eb6c6}{set\+\_\+reference} (std\+::vector$<$ double $>$ coord, double angle)
 \item 
 void \hyperlink{classController_a3a417d33a8ecc6e83f3c43e3a4da74cd}{set\+\_\+reference} ()\hypertarget{classController_a3a417d33a8ecc6e83f3c43e3a4da74cd}{}\label{classController_a3a417d33a8ecc6e83f3c43e3a4da74cd}
@@ -51,7 +49,7 @@ void \hyperlink{classController_a3a417d33a8ecc6e83f3c43e3a4da74cd}{set\+\_\+refe
 \begin{DoxyCompactList}\small\item\em Initialise the coordinate system of the \hyperlink{classController}{Controller} to position defined by reference pose. \end{DoxyCompactList}\item 
 void \hyperlink{classController_aeeb360dd2e4afb5c654f5bca4c0f00ca}{set\+\_\+world\+\_\+frame} (std\+::string frame)
 \item 
-void \hyperlink{classController_a7134d173f5f91755d8a3c7e07ca04da9}{set\+\_\+type} (Controller\+::controller\+Type type)
+void \hyperlink{classController_a7134d173f5f91755d8a3c7e07ca04da9}{set\+\_\+type} (\hyperlink{classController_a86221d052db839985bd6e4d73013cd06}{Controller\+::controller\+Type} type)
 \item 
 void \hyperlink{classController_a2ebb5b813be3525b44af61eb6f165964}{set\+\_\+lyapunov} (\hyperlink{structController_1_1lyapunov}{Controller\+::lyapunov} param)
 \item 
@@ -124,7 +122,7 @@ ros\+::\+Node\+Handle {\bfseries nh}\hypertarget{classController_a24e3d3c2536f6e
 tf\+::\+Transform\+Listener $\ast$ {\bfseries listener}\hypertarget{classController_afea373f808d583e4ad613f119439a8f5}{}\label{classController_afea373f808d583e4ad613f119439a8f5}
 
 \item 
-controller\+Type {\bfseries type}\hypertarget{classController_af2488a28d3390288db92fa1d92aaed52}{}\label{classController_af2488a28d3390288db92fa1d92aaed52}
+\hyperlink{classController_a86221d052db839985bd6e4d73013cd06}{controller\+Type} {\bfseries type}\hypertarget{classController_af2488a28d3390288db92fa1d92aaed52}{}\label{classController_af2488a28d3390288db92fa1d92aaed52}
 
 \item 
 ros\+::\+Publisher {\bfseries pub\+\_\+vel\+\_\+out}\hypertarget{classController_a8428549596cff57f48390ac25706545a}{}\label{classController_a8428549596cff57f48390ac25706545a}
@@ -320,7 +318,23 @@ Setting parameters for the lyapunov control law param param\+: struct that hold 
 \item[{std\+::vector$<$ float $>$}]{param}
 \end{DoxyParamCaption}
 )}\hypertarget{classController_afb2d5fec93db7b68a16767823f4c1675}{}\label{classController_afb2d5fec93db7b68a16767823f4c1675}
-Setting parameters for the lyapunov control law param param\+: std\+::vector that hold the parameters for the law\+: kx,ky,ktheta,omega,v in that order \index{Controller@{Controller}!set\+\_\+reference@{set\+\_\+reference}}
+Setting parameters for the lyapunov control law param param\+: std\+::vector that hold the parameters for the law\+: kx,ky,ktheta,omega,v in that order \index{Controller@{Controller}!set\+\_\+name@{set\+\_\+name}}
+\index{set\+\_\+name@{set\+\_\+name}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{set\+\_\+name(std\+::string name)}{set_name(std::string name)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::set\+\_\+name (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{name}
+\end{DoxyParamCaption}
+)}\hypertarget{classController_a88f2d54fedd04bd767e4d6e36e6dc2b3}{}\label{classController_a88f2d54fedd04bd767e4d6e36e6dc2b3}
+
+
+Set the name of object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & Name to be set \\
+\hline
+\end{DoxyParams}
+\index{Controller@{Controller}!set\+\_\+reference@{set\+\_\+reference}}
 \index{set\+\_\+reference@{set\+\_\+reference}!Controller@{Controller}}
 \subsubsection[{\texorpdfstring{set\+\_\+reference(double x, double y, double z, double angle)}{set_reference(double x, double y, double z, double angle)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::set\+\_\+reference (
 \begin{DoxyParamCaption}
@@ -330,7 +344,22 @@ Setting parameters for the lyapunov control law param param\+: std\+::vector tha
 \item[{double}]{angle}
 \end{DoxyParamCaption}
 )}\hypertarget{classController_ade57ae23226a7565521694c87ec79c90}{}\label{classController_ade57ae23226a7565521694c87ec79c90}
-Initialise the coordinate system of the \hyperlink{classController}{Controller} to position param\+: double x\+: x Position param\+: double y\+: y Position param\+: double z\+: z Position \index{Controller@{Controller}!set\+\_\+reference@{set\+\_\+reference}}
+
+
+Set the reference of the mobile robot to be controlled from a global frame. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & X-\/position of robot \\
+\hline
+{\em y} & Y-\/position of robot \\
+\hline
+{\em z} & Z-\/position of robot \\
+\hline
+{\em angle} & Angular-\/position of robot \\
+\hline
+\end{DoxyParams}
+\index{Controller@{Controller}!set\+\_\+reference@{set\+\_\+reference}}
 \index{set\+\_\+reference@{set\+\_\+reference}!Controller@{Controller}}
 \subsubsection[{\texorpdfstring{set\+\_\+reference(std\+::vector$<$ double $>$ coord, double angle)}{set_reference(std::vector< double > coord, double angle)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::set\+\_\+reference (
 \begin{DoxyParamCaption}
@@ -342,10 +371,10 @@ Initialise the coordinate system of the \hyperlink{classController}{Controller} 
 \index{set\+\_\+type@{set\+\_\+type}!Controller@{Controller}}
 \subsubsection[{\texorpdfstring{set\+\_\+type(\+Controller\+::controller\+Type type)}{set_type(Controller::controllerType type)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::set\+\_\+type (
 \begin{DoxyParamCaption}
-\item[{Controller\+::controller\+Type}]{type}
+\item[{{\bf Controller\+::controller\+Type}}]{type}
 \end{DoxyParamCaption}
 )}\hypertarget{classController_a7134d173f5f91755d8a3c7e07ca04da9}{}\label{classController_a7134d173f5f91755d8a3c7e07ca04da9}
-Set the type of the controllaw param\+: type\+: Controllaw type (see Controller\+::controller\+Type) \index{Controller@{Controller}!set\+\_\+world\+\_\+frame@{set\+\_\+world\+\_\+frame}}
+Set the type of the controllaw param\+: type\+: Controllaw type (see \hyperlink{classController_a86221d052db839985bd6e4d73013cd06}{Controller\+::controller\+Type}) \index{Controller@{Controller}!set\+\_\+world\+\_\+frame@{set\+\_\+world\+\_\+frame}}
 \index{set\+\_\+world\+\_\+frame@{set\+\_\+world\+\_\+frame}!Controller@{Controller}}
 \subsubsection[{\texorpdfstring{set\+\_\+world\+\_\+frame(std\+::string frame)}{set_world_frame(std::string frame)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::set\+\_\+world\+\_\+frame (
 \begin{DoxyParamCaption}
