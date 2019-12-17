@@ -122,10 +122,10 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a86221d052db839985bd6e4d73013cd06"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a86221d052db839985bd6e4d73013cd06"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a86221d052db839985bd6e4d73013cd06">controllerType</a> { <b>pseudo_inverse</b> =1, 
-<b>lypanov</b> =2, 
-<b>angle_distance</b> =3
- }<tr class="memdesc:a86221d052db839985bd6e4d73013cd06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies the different implemented control laws. <br /></td></tr>
+<tr class="memitem:a86221d052db839985bd6e4d73013cd06"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a86221d052db839985bd6e4d73013cd06">controllerType</a> { <a class="el" href="classController.html#a86221d052db839985bd6e4d73013cd06ad2e9073ef821965020410686a3c89483">pseudo_inverse</a> =1, 
+<a class="el" href="classController.html#a86221d052db839985bd6e4d73013cd06aed0e850e561d54619d85f32c37f5bfab">lypanov</a> =2, 
+<a class="el" href="classController.html#a86221d052db839985bd6e4d73013cd06a7ab0ee34114a951d4491d6eb73500cdc">angle_distance</a> =3
+ }<tr class="memdesc:a86221d052db839985bd6e4d73013cd06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies the different implemented control laws.  <a href="classController.html#a86221d052db839985bd6e4d73013cd06">More...</a><br /></td></tr>
 </td></tr>
 <tr class="separator:a86221d052db839985bd6e4d73013cd06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -167,19 +167,25 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:a55c77d2e41634c9b21543647f74eec4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loading of ROS parameterset for this controller. <br /></td></tr>
 <tr class="separator:a55c77d2e41634c9b21543647f74eec4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add4a8227097c30e5f165977cfa0ce22c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#add4a8227097c30e5f165977cfa0ce22c">link_current_odom</a> (std::string topic_name)</td></tr>
+<tr class="memdesc:add4a8227097c30e5f165977cfa0ce22c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Links the current odometry topic to the controller. At this topic the current odomotry of the robot must be published.  <a href="#add4a8227097c30e5f165977cfa0ce22c">More...</a><br /></td></tr>
 <tr class="separator:add4a8227097c30e5f165977cfa0ce22c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82a7c805f6e4e0689c675134903e9e58"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a82a7c805f6e4e0689c675134903e9e58">link_target_velocity</a> (std::string topic_name)</td></tr>
+<tr class="memdesc:a82a7c805f6e4e0689c675134903e9e58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Links the target/desired velocity topic to the controller. At this topic the current desired velocity is published.  <a href="#a82a7c805f6e4e0689c675134903e9e58">More...</a><br /></td></tr>
 <tr class="separator:a82a7c805f6e4e0689c675134903e9e58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f5318b08e7b99d2e5f09c59a6eb61aa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a5f5318b08e7b99d2e5f09c59a6eb61aa">link_target_state</a> (std::string topic_name)</td></tr>
+<tr class="memdesc:a5f5318b08e7b99d2e5f09c59a6eb61aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Links the target/desired velocity topic to the controller. At this topic the desired velocity is published.  <a href="#a5f5318b08e7b99d2e5f09c59a6eb61aa">More...</a><br /></td></tr>
 <tr class="separator:a5f5318b08e7b99d2e5f09c59a6eb61aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7bf32883aed714275c99d6d182993b73"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a7bf32883aed714275c99d6d182993b73">link_target_odometry</a> (std::string topic_name)</td></tr>
+<tr class="memdesc:a7bf32883aed714275c99d6d182993b73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Links the target/desired odometry topic to the controller. At this topic the desired odometry is published.  <a href="#a7bf32883aed714275c99d6d182993b73">More...</a><br /></td></tr>
 <tr class="separator:a7bf32883aed714275c99d6d182993b73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afdf03808aee4a1cfcf65a7198ab1a9aa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#afdf03808aee4a1cfcf65a7198ab1a9aa">link_output_velocity</a> (std::string topic_name)</td></tr>
-<tr class="memdesc:afdf03808aee4a1cfcf65a7198ab1a9aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">OUTPUTS.  <a href="#afdf03808aee4a1cfcf65a7198ab1a9aa">More...</a><br /></td></tr>
+<tr class="memdesc:afdf03808aee4a1cfcf65a7198ab1a9aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Links the output velocity of the controller to a given topic.  <a href="#afdf03808aee4a1cfcf65a7198ab1a9aa">More...</a><br /></td></tr>
 <tr class="separator:afdf03808aee4a1cfcf65a7198ab1a9aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b8949013d52e365754e170a9cad158c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a9b8949013d52e365754e170a9cad158c">link_output_state</a> (std::string topic_name)</td></tr>
+<tr class="memdesc:a9b8949013d52e365754e170a9cad158c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Links the output ste of the controller to a given topic.  <a href="#a9b8949013d52e365754e170a9cad158c">More...</a><br /></td></tr>
 <tr class="separator:a9b8949013d52e365754e170a9cad158c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc1909639580e5359228c87fbd3a622b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#abc1909639580e5359228c87fbd3a622b">link_output_control_data</a> (std::string topic_name)</td></tr>
+<tr class="memdesc:abc1909639580e5359228c87fbd3a622b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Links the meta data of the controller to a given topic.  <a href="#abc1909639580e5359228c87fbd3a622b">More...</a><br /></td></tr>
 <tr class="separator:abc1909639580e5359228c87fbd3a622b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56568ee07bb72983576e9d7c10eb3e83"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a56568ee07bb72983576e9d7c10eb3e83">calc_Lyapunov</a> (double kx, double ky, double kphi, double vd, double omegad)</td></tr>
 <tr class="separator:a56568ee07bb72983576e9d7c10eb3e83"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -332,6 +338,32 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:ac3c2cc7b8afdf05ade60e03eaca88b91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adding a transformation to the map frame, the reference pose is defined in. <br /></td></tr>
 <tr class="separator:ac3c2cc7b8afdf05ade60e03eaca88b91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Enumeration Documentation</h2>
+<a class="anchor" id="a86221d052db839985bd6e4d73013cd06"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classController.html#a86221d052db839985bd6e4d73013cd06">Controller::controllerType</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Specifies the different implemented control laws. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="a86221d052db839985bd6e4d73013cd06ad2e9073ef821965020410686a3c89483"></a>pseudo_inverse&#160;</td><td class="fielddoc">
+<p>Control law is based on pseudo inveres the input for generate a output (least squares optimisation) </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a86221d052db839985bd6e4d73013cd06aed0e850e561d54619d85f32c37f5bfab"></a>lypanov&#160;</td><td class="fielddoc">
+<p>Control law is based on the lyapunov approache. Output is determined from a lyapunov stable function </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a86221d052db839985bd6e4d73013cd06a7ab0ee34114a951d4491d6eb73500cdc"></a>angle_distance&#160;</td><td class="fielddoc">
+<p>Control law based on linear approach in angle and distance respectively </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a7341f9092e1977cdd2a1492c4422c019"></a>
 <div class="memitem">
@@ -416,7 +448,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         </tr>
       </table>
 </div><div class="memdoc">
-<p>link <a class="el" href="classController.html">Controller</a> to it's odom input topic 'topic_name'Name of the topic the <a class="el" href="classController.html">Controller</a> reads its oddom from </p>
+
+<p>Links the current odometry topic to the controller. At this topic the current odomotry of the robot must be published. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">topic_name</td><td>Name of the topic </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -433,7 +472,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         </tr>
       </table>
 </div><div class="memdoc">
-<p>link <a class="el" href="classController.html">Controller</a> to it's control difference topic 'topic_name' Name of the topic the <a class="el" href="classController.html">Controller</a> writes its control difference to </p>
+
+<p>Links the meta data of the controller to a given topic. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">topic_name</td><td>Name of the topic </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -450,7 +496,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         </tr>
       </table>
 </div><div class="memdoc">
-<p>link <a class="el" href="classController.html">Controller</a> to it's state topic 'topic_name' Name of the topic the <a class="el" href="classController.html">Controller</a> writes its state to </p>
+
+<p>Links the output ste of the controller to a given topic. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">topic_name</td><td>Name of the topic </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -468,8 +521,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
       </table>
 </div><div class="memdoc">
 
-<p>OUTPUTS. </p>
-<p>link <a class="el" href="classController.html">Controller</a> to it's output topic 'topic_name'Name of the topic the <a class="el" href="classController.html">Controller</a> writes its output to </p>
+<p>Links the output velocity of the controller to a given topic. </p>
+<p>OUTPUTS.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">topic_name</td><td>Name of the topic </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -486,7 +545,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         </tr>
       </table>
 </div><div class="memdoc">
-<p>link <a class="el" href="classController.html">Controller</a> to it's target odometry topic (combines target state and target velocity) 'topic_name' Name of the topic the <a class="el" href="classController.html">Controller</a> gets its target state from </p>
+
+<p>Links the target/desired odometry topic to the controller. At this topic the desired odometry is published. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">topic_name</td><td>Name of the topic </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -503,7 +569,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         </tr>
       </table>
 </div><div class="memdoc">
-<p>link <a class="el" href="classController.html">Controller</a> to it's state topic 'topic_name' Name of the topic the <a class="el" href="classController.html">Controller</a> gets its target state from </p>
+
+<p>Links the target/desired velocity topic to the controller. At this topic the desired velocity is published. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">topic_name</td><td>Name of the topic Links the target/desired state topic to the controller. At this topic the current state of the robot is published.</td></tr>
+    <tr><td class="paramname">topic_name</td><td>Name of the topic </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -520,7 +594,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         </tr>
       </table>
 </div><div class="memdoc">
-<p>link <a class="el" href="classController.html">Controller</a> to it's input topic 'topic_name': Name of tjhe topic the <a class="el" href="classController.html">Controller</a> gets input from </p>
+
+<p>Links the target/desired velocity topic to the controller. At this topic the current desired velocity is published. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">topic_name</td><td>Name of the topic </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

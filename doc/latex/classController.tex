@@ -26,11 +26,10 @@ struct \hyperlink{structController_1_1lyapunov}{lyapunov}
 \subsection*{Public Types}
 \begin{DoxyCompactItemize}
 \item 
-enum \hyperlink{classController_a86221d052db839985bd6e4d73013cd06}{controller\+Type} \{ {\bfseries pseudo\+\_\+inverse} =1, 
-{\bfseries lypanov} =2, 
-{\bfseries angle\+\_\+distance} =3
- \}\hypertarget{classController_a86221d052db839985bd6e4d73013cd06}{}\label{classController_a86221d052db839985bd6e4d73013cd06}
-\begin{DoxyCompactList}\small\item\em Specifies the different implemented control laws. \end{DoxyCompactList}
+enum \hyperlink{classController_a86221d052db839985bd6e4d73013cd06}{controller\+Type} \{ \hyperlink{classController_a86221d052db839985bd6e4d73013cd06ad2e9073ef821965020410686a3c89483}{pseudo\+\_\+inverse} =1, 
+\hyperlink{classController_a86221d052db839985bd6e4d73013cd06aed0e850e561d54619d85f32c37f5bfab}{lypanov} =2, 
+\hyperlink{classController_a86221d052db839985bd6e4d73013cd06a7ab0ee34114a951d4491d6eb73500cdc}{angle\+\_\+distance} =3
+ \}\begin{DoxyCompactList}\small\item\em Specifies the different implemented control laws. \end{DoxyCompactList}
 \end{DoxyCompactItemize}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
@@ -61,19 +60,19 @@ void \hyperlink{classController_a55c77d2e41634c9b21543647f74eec4c}{load} ()\hype
 
 \begin{DoxyCompactList}\small\item\em Loading of R\+OS parameterset for this controller. \end{DoxyCompactList}\item 
 void \hyperlink{classController_add4a8227097c30e5f165977cfa0ce22c}{link\+\_\+current\+\_\+odom} (std\+::string topic\+\_\+name)
-\item 
+\begin{DoxyCompactList}\small\item\em Links the current odometry topic to the controller. At this topic the current odomotry of the robot must be published. \end{DoxyCompactList}\item 
 void \hyperlink{classController_a82a7c805f6e4e0689c675134903e9e58}{link\+\_\+target\+\_\+velocity} (std\+::string topic\+\_\+name)
-\item 
+\begin{DoxyCompactList}\small\item\em Links the target/desired velocity topic to the controller. At this topic the current desired velocity is published. \end{DoxyCompactList}\item 
 void \hyperlink{classController_a5f5318b08e7b99d2e5f09c59a6eb61aa}{link\+\_\+target\+\_\+state} (std\+::string topic\+\_\+name)
-\item 
+\begin{DoxyCompactList}\small\item\em Links the target/desired velocity topic to the controller. At this topic the desired velocity is published. \end{DoxyCompactList}\item 
 void \hyperlink{classController_a7bf32883aed714275c99d6d182993b73}{link\+\_\+target\+\_\+odometry} (std\+::string topic\+\_\+name)
-\item 
+\begin{DoxyCompactList}\small\item\em Links the target/desired odometry topic to the controller. At this topic the desired odometry is published. \end{DoxyCompactList}\item 
 void \hyperlink{classController_afdf03808aee4a1cfcf65a7198ab1a9aa}{link\+\_\+output\+\_\+velocity} (std\+::string topic\+\_\+name)
-\begin{DoxyCompactList}\small\item\em O\+U\+T\+P\+U\+TS. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Links the output velocity of the controller to a given topic. \end{DoxyCompactList}\item 
 void \hyperlink{classController_a9b8949013d52e365754e170a9cad158c}{link\+\_\+output\+\_\+state} (std\+::string topic\+\_\+name)
-\item 
+\begin{DoxyCompactList}\small\item\em Links the output ste of the controller to a given topic. \end{DoxyCompactList}\item 
 void \hyperlink{classController_abc1909639580e5359228c87fbd3a622b}{link\+\_\+output\+\_\+control\+\_\+data} (std\+::string topic\+\_\+name)
-\item 
+\begin{DoxyCompactList}\small\item\em Links the meta data of the controller to a given topic. \end{DoxyCompactList}\item 
 void \hyperlink{classController_a56568ee07bb72983576e9d7c10eb3e83}{calc\+\_\+\+Lyapunov} (double kx, double ky, double kphi, double vd, double omegad)
 \item 
 void {\bfseries calc\+\_\+angle\+\_\+distance} (double kr, double kphi)\hypertarget{classController_a63249412728814430174c740d358a5c0}{}\label{classController_a63249412728814430174c740d358a5c0}
@@ -219,6 +218,27 @@ void \hyperlink{classController_ac3c2cc7b8afdf05ade60e03eaca88b91}{add\+\_\+map}
 \begin{DoxyCompactList}\small\item\em Adding a transformation to the map frame, the reference pose is defined in. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
+\subsection{Member Enumeration Documentation}
+\index{Controller@{Controller}!controller\+Type@{controller\+Type}}
+\index{controller\+Type@{controller\+Type}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{controller\+Type}{controllerType}}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf Controller\+::controller\+Type}}\hypertarget{classController_a86221d052db839985bd6e4d73013cd06}{}\label{classController_a86221d052db839985bd6e4d73013cd06}
+
+
+Specifies the different implemented control laws. 
+
+\begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{pseudo\+\_\+inverse@{pseudo\+\_\+inverse}!Controller@{Controller}}\index{Controller@{Controller}!pseudo\+\_\+inverse@{pseudo\+\_\+inverse}}\item[{\em 
+pseudo\+\_\+inverse\hypertarget{classController_a86221d052db839985bd6e4d73013cd06ad2e9073ef821965020410686a3c89483}{}\label{classController_a86221d052db839985bd6e4d73013cd06ad2e9073ef821965020410686a3c89483}
+}]Control law is based on pseudo inveres the input for generate a output (least squares optimisation) \index{lypanov@{lypanov}!Controller@{Controller}}\index{Controller@{Controller}!lypanov@{lypanov}}\item[{\em 
+lypanov\hypertarget{classController_a86221d052db839985bd6e4d73013cd06aed0e850e561d54619d85f32c37f5bfab}{}\label{classController_a86221d052db839985bd6e4d73013cd06aed0e850e561d54619d85f32c37f5bfab}
+}]Control law is based on the lyapunov approache. Output is determined from a lyapunov stable function \index{angle\+\_\+distance@{angle\+\_\+distance}!Controller@{Controller}}\index{Controller@{Controller}!angle\+\_\+distance@{angle\+\_\+distance}}\item[{\em 
+angle\+\_\+distance\hypertarget{classController_a86221d052db839985bd6e4d73013cd06a7ab0ee34114a951d4491d6eb73500cdc}{}\label{classController_a86221d052db839985bd6e4d73013cd06a7ab0ee34114a951d4491d6eb73500cdc}
+}]Control law based on linear approach in angle and distance respectively \end{description}
+\end{Desc}
+
+
 \subsection{Constructor \& Destructor Documentation}
 \index{Controller@{Controller}!Controller@{Controller}}
 \index{Controller@{Controller}!Controller@{Controller}}
@@ -257,21 +277,48 @@ Calculate the control vector with the Lyapunov method param\+: kx\+: gain in x d
 \item[{std\+::string}]{topic\+\_\+name}
 \end{DoxyParamCaption}
 )}\hypertarget{classController_add4a8227097c30e5f165977cfa0ce22c}{}\label{classController_add4a8227097c30e5f165977cfa0ce22c}
-link \hyperlink{classController}{Controller} to it\textquotesingle{}s odom input topic \textquotesingle{}topic\+\_\+name\textquotesingle{}Name of the topic the \hyperlink{classController}{Controller} reads its oddom from \index{Controller@{Controller}!link\+\_\+output\+\_\+control\+\_\+data@{link\+\_\+output\+\_\+control\+\_\+data}}
+
+
+Links the current odometry topic to the controller. At this topic the current odomotry of the robot must be published. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em topic\+\_\+name} & Name of the topic \\
+\hline
+\end{DoxyParams}
+\index{Controller@{Controller}!link\+\_\+output\+\_\+control\+\_\+data@{link\+\_\+output\+\_\+control\+\_\+data}}
 \index{link\+\_\+output\+\_\+control\+\_\+data@{link\+\_\+output\+\_\+control\+\_\+data}!Controller@{Controller}}
 \subsubsection[{\texorpdfstring{link\+\_\+output\+\_\+control\+\_\+data(std\+::string topic\+\_\+name)}{link_output_control_data(std::string topic_name)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::link\+\_\+output\+\_\+control\+\_\+data (
 \begin{DoxyParamCaption}
 \item[{std\+::string}]{topic\+\_\+name}
 \end{DoxyParamCaption}
 )}\hypertarget{classController_abc1909639580e5359228c87fbd3a622b}{}\label{classController_abc1909639580e5359228c87fbd3a622b}
-link \hyperlink{classController}{Controller} to it\textquotesingle{}s control difference topic \textquotesingle{}topic\+\_\+name\textquotesingle{} Name of the topic the \hyperlink{classController}{Controller} writes its control difference to \index{Controller@{Controller}!link\+\_\+output\+\_\+state@{link\+\_\+output\+\_\+state}}
+
+
+Links the meta data of the controller to a given topic. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em topic\+\_\+name} & Name of the topic \\
+\hline
+\end{DoxyParams}
+\index{Controller@{Controller}!link\+\_\+output\+\_\+state@{link\+\_\+output\+\_\+state}}
 \index{link\+\_\+output\+\_\+state@{link\+\_\+output\+\_\+state}!Controller@{Controller}}
 \subsubsection[{\texorpdfstring{link\+\_\+output\+\_\+state(std\+::string topic\+\_\+name)}{link_output_state(std::string topic_name)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::link\+\_\+output\+\_\+state (
 \begin{DoxyParamCaption}
 \item[{std\+::string}]{topic\+\_\+name}
 \end{DoxyParamCaption}
 )}\hypertarget{classController_a9b8949013d52e365754e170a9cad158c}{}\label{classController_a9b8949013d52e365754e170a9cad158c}
-link \hyperlink{classController}{Controller} to it\textquotesingle{}s state topic \textquotesingle{}topic\+\_\+name\textquotesingle{} Name of the topic the \hyperlink{classController}{Controller} writes its state to \index{Controller@{Controller}!link\+\_\+output\+\_\+velocity@{link\+\_\+output\+\_\+velocity}}
+
+
+Links the output ste of the controller to a given topic. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em topic\+\_\+name} & Name of the topic \\
+\hline
+\end{DoxyParams}
+\index{Controller@{Controller}!link\+\_\+output\+\_\+velocity@{link\+\_\+output\+\_\+velocity}}
 \index{link\+\_\+output\+\_\+velocity@{link\+\_\+output\+\_\+velocity}!Controller@{Controller}}
 \subsubsection[{\texorpdfstring{link\+\_\+output\+\_\+velocity(std\+::string topic\+\_\+name)}{link_output_velocity(std::string topic_name)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::link\+\_\+output\+\_\+velocity (
 \begin{DoxyParamCaption}
@@ -280,30 +327,66 @@ link \hyperlink{classController}{Controller} to it\textquotesingle{}s state topi
 )}\hypertarget{classController_afdf03808aee4a1cfcf65a7198ab1a9aa}{}\label{classController_afdf03808aee4a1cfcf65a7198ab1a9aa}
 
 
-O\+U\+T\+P\+U\+TS. 
+Links the output velocity of the controller to a given topic. 
 
-link \hyperlink{classController}{Controller} to it\textquotesingle{}s output topic \textquotesingle{}topic\+\_\+name\textquotesingle{}Name of the topic the \hyperlink{classController}{Controller} writes its output to \index{Controller@{Controller}!link\+\_\+target\+\_\+odometry@{link\+\_\+target\+\_\+odometry}}
+O\+U\+T\+P\+U\+TS.
+
+
+\begin{DoxyParams}{Parameters}
+{\em topic\+\_\+name} & Name of the topic \\
+\hline
+\end{DoxyParams}
+\index{Controller@{Controller}!link\+\_\+target\+\_\+odometry@{link\+\_\+target\+\_\+odometry}}
 \index{link\+\_\+target\+\_\+odometry@{link\+\_\+target\+\_\+odometry}!Controller@{Controller}}
 \subsubsection[{\texorpdfstring{link\+\_\+target\+\_\+odometry(std\+::string topic\+\_\+name)}{link_target_odometry(std::string topic_name)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::link\+\_\+target\+\_\+odometry (
 \begin{DoxyParamCaption}
 \item[{std\+::string}]{topic\+\_\+name}
 \end{DoxyParamCaption}
 )}\hypertarget{classController_a7bf32883aed714275c99d6d182993b73}{}\label{classController_a7bf32883aed714275c99d6d182993b73}
-link \hyperlink{classController}{Controller} to it\textquotesingle{}s target odometry topic (combines target state and target velocity) \textquotesingle{}topic\+\_\+name\textquotesingle{} Name of the topic the \hyperlink{classController}{Controller} gets its target state from \index{Controller@{Controller}!link\+\_\+target\+\_\+state@{link\+\_\+target\+\_\+state}}
+
+
+Links the target/desired odometry topic to the controller. At this topic the desired odometry is published. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em topic\+\_\+name} & Name of the topic \\
+\hline
+\end{DoxyParams}
+\index{Controller@{Controller}!link\+\_\+target\+\_\+state@{link\+\_\+target\+\_\+state}}
 \index{link\+\_\+target\+\_\+state@{link\+\_\+target\+\_\+state}!Controller@{Controller}}
 \subsubsection[{\texorpdfstring{link\+\_\+target\+\_\+state(std\+::string topic\+\_\+name)}{link_target_state(std::string topic_name)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::link\+\_\+target\+\_\+state (
 \begin{DoxyParamCaption}
 \item[{std\+::string}]{topic\+\_\+name}
 \end{DoxyParamCaption}
 )}\hypertarget{classController_a5f5318b08e7b99d2e5f09c59a6eb61aa}{}\label{classController_a5f5318b08e7b99d2e5f09c59a6eb61aa}
-link \hyperlink{classController}{Controller} to it\textquotesingle{}s state topic \textquotesingle{}topic\+\_\+name\textquotesingle{} Name of the topic the \hyperlink{classController}{Controller} gets its target state from \index{Controller@{Controller}!link\+\_\+target\+\_\+velocity@{link\+\_\+target\+\_\+velocity}}
+
+
+Links the target/desired velocity topic to the controller. At this topic the desired velocity is published. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em topic\+\_\+name} & Name of the topic Links the target/desired state topic to the controller. At this topic the current state of the robot is published.\\
+\hline
+{\em topic\+\_\+name} & Name of the topic \\
+\hline
+\end{DoxyParams}
+\index{Controller@{Controller}!link\+\_\+target\+\_\+velocity@{link\+\_\+target\+\_\+velocity}}
 \index{link\+\_\+target\+\_\+velocity@{link\+\_\+target\+\_\+velocity}!Controller@{Controller}}
 \subsubsection[{\texorpdfstring{link\+\_\+target\+\_\+velocity(std\+::string topic\+\_\+name)}{link_target_velocity(std::string topic_name)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::link\+\_\+target\+\_\+velocity (
 \begin{DoxyParamCaption}
 \item[{std\+::string}]{topic\+\_\+name}
 \end{DoxyParamCaption}
 )}\hypertarget{classController_a82a7c805f6e4e0689c675134903e9e58}{}\label{classController_a82a7c805f6e4e0689c675134903e9e58}
-link \hyperlink{classController}{Controller} to it\textquotesingle{}s input topic \textquotesingle{}topic\+\_\+name\textquotesingle{}\+: Name of tjhe topic the \hyperlink{classController}{Controller} gets input from \index{Controller@{Controller}!set\+\_\+lyapunov@{set\+\_\+lyapunov}}
+
+
+Links the target/desired velocity topic to the controller. At this topic the current desired velocity is published. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em topic\+\_\+name} & Name of the topic \\
+\hline
+\end{DoxyParams}
+\index{Controller@{Controller}!set\+\_\+lyapunov@{set\+\_\+lyapunov}}
 \index{set\+\_\+lyapunov@{set\+\_\+lyapunov}!Controller@{Controller}}
 \subsubsection[{\texorpdfstring{set\+\_\+lyapunov(\+Controller\+::lyapunov param)}{set_lyapunov(Controller::lyapunov param)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::set\+\_\+lyapunov (
 \begin{DoxyParamCaption}
