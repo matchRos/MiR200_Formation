@@ -197,17 +197,34 @@ class Controller{
          
         /*Calculations and executions ####################################################################################################################
         ##################################################################################################################################################*/
-        ///Calculate the control vector with the Lyapunov method
-        ///param: kx: gain in x direction
-        ///param kphi: gain in angular direction
-        ///param vd: tangential velocity
-        ///param omegad : rotational velocity
+       /**
+        * @brief Calculates the lyapunov base control output from a given input
+        * 
+        * @param kx Control gain in x-direction
+        * @param ky Control gain in y-direction
+        * @param kphi Control gain in z-direction
+        * @param vd  Desired linear velocity
+        * @param omegad Desired angular velocity
+        */
         void calc_Lyapunov(double kx, double ky, double kphi,double vd,double omegad);
 
+        /**
+         * @brief Calculate control output just by angle difference and eklidian difference from target
+         * 
+         * @param kr Control gain in linear direction
+         * @param kphi Control gain in angular direction
+         */
         void calc_angle_distance(double kr,double kphi);
-        ///Controller scope
+        
+        /**
+         * @brief Scope of the controller that is called in control frequence 
+         * 
+         */
         void execute();
-        //Resets the controller to start configuration
+        /**
+         * @brief Resetting controller to initial state
+         * 
+         */
         void reset();     
 
         

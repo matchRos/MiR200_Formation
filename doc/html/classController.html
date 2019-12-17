@@ -193,16 +193,18 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:abc1909639580e5359228c87fbd3a622b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Links the meta data of the controller to a given topic.  <a href="#abc1909639580e5359228c87fbd3a622b">More...</a><br /></td></tr>
 <tr class="separator:abc1909639580e5359228c87fbd3a622b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56568ee07bb72983576e9d7c10eb3e83"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a56568ee07bb72983576e9d7c10eb3e83">calc_Lyapunov</a> (double kx, double ky, double kphi, double vd, double omegad)</td></tr>
+<tr class="memdesc:a56568ee07bb72983576e9d7c10eb3e83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the lyapunov base control output from a given input.  <a href="#a56568ee07bb72983576e9d7c10eb3e83">More...</a><br /></td></tr>
 <tr class="separator:a56568ee07bb72983576e9d7c10eb3e83"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a63249412728814430174c740d358a5c0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a63249412728814430174c740d358a5c0"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>calc_angle_distance</b> (double kr, double kphi)</td></tr>
+<tr class="memitem:a63249412728814430174c740d358a5c0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a63249412728814430174c740d358a5c0">calc_angle_distance</a> (double kr, double kphi)</td></tr>
+<tr class="memdesc:a63249412728814430174c740d358a5c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate control output just by angle difference and eklidian difference from target.  <a href="#a63249412728814430174c740d358a5c0">More...</a><br /></td></tr>
 <tr class="separator:a63249412728814430174c740d358a5c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6661eb7307219216a7cb0a90e2a07e4d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6661eb7307219216a7cb0a90e2a07e4d"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a6661eb7307219216a7cb0a90e2a07e4d">execute</a> ()</td></tr>
-<tr class="memdesc:a6661eb7307219216a7cb0a90e2a07e4d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classController.html" title="Provides a easy to use implementation of a generic mobile robot controller. ">Controller</a> scope. <br /></td></tr>
+<tr class="memdesc:a6661eb7307219216a7cb0a90e2a07e4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scope of the controller that is called in control frequence. <br /></td></tr>
 <tr class="separator:a6661eb7307219216a7cb0a90e2a07e4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5515748f1b0c82f015e039c817ee5f7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab5515748f1b0c82f015e039c817ee5f7"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>reset</b> ()</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#ab5515748f1b0c82f015e039c817ee5f7">reset</a> ()</td></tr>
+<tr class="memdesc:ab5515748f1b0c82f015e039c817ee5f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resetting controller to initial state. <br /></td></tr>
 <tr class="separator:ab5515748f1b0c82f015e039c817ee5f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35b38608f67e7c1c34f6b7186db32ad7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a35b38608f67e7c1c34f6b7186db32ad7"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a35b38608f67e7c1c34f6b7186db32ad7">current_odom_callback</a> (nav_msgs::Odometry msg)</td></tr>
@@ -419,6 +421,41 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a63249412728814430174c740d358a5c0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Controller::calc_angle_distance </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>kr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>kphi</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calculate control output just by angle difference and eklidian difference from target. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">kr</td><td>Control gain in linear direction </td></tr>
+    <tr><td class="paramname">kphi</td><td>Control gain in angular direction </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="a56568ee07bb72983576e9d7c10eb3e83"></a>
 <div class="memitem">
 <div class="memproto">
@@ -460,7 +497,18 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Calculate the control vector with the Lyapunov method param: kx: gain in x direction param kphi: gain in angular direction param vd: tangential velocity param omegad : rotational velocity </p>
+
+<p>Calculates the lyapunov base control output from a given input. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">kx</td><td>Control gain in x-direction </td></tr>
+    <tr><td class="paramname">ky</td><td>Control gain in y-direction </td></tr>
+    <tr><td class="paramname">kphi</td><td>Control gain in z-direction </td></tr>
+    <tr><td class="paramname">vd</td><td>Desired linear velocity </td></tr>
+    <tr><td class="paramname">omegad</td><td>Desired angular velocity </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

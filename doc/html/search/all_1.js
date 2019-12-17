@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['calc_5fangle_5fdistance',['calc_angle_distance',['../classController.html#a63249412728814430174c740d358a5c0',1,'Controller']]],
   ['calc_5flyapunov',['calc_Lyapunov',['../classController.html#a56568ee07bb72983576e9d7c10eb3e83',1,'Controller']]],
   ['circleplan',['CirclePlan',['../structCirclePlanner_1_1CirclePlan.html',1,'CirclePlanner']]],
   ['circleplanner',['CirclePlanner',['../classCirclePlanner.html',1,'']]],

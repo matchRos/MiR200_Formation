@@ -83,16 +83,15 @@ void \hyperlink{classController_a9b8949013d52e365754e170a9cad158c}{link\+\_\+out
 void \hyperlink{classController_abc1909639580e5359228c87fbd3a622b}{link\+\_\+output\+\_\+control\+\_\+data} (std\+::string topic\+\_\+name)
 \begin{DoxyCompactList}\small\item\em Links the meta data of the controller to a given topic. \end{DoxyCompactList}\item 
 void \hyperlink{classController_a56568ee07bb72983576e9d7c10eb3e83}{calc\+\_\+\+Lyapunov} (double kx, double ky, double kphi, double vd, double omegad)
-\item 
-void {\bfseries calc\+\_\+angle\+\_\+distance} (double kr, double kphi)\hypertarget{classController_a63249412728814430174c740d358a5c0}{}\label{classController_a63249412728814430174c740d358a5c0}
-
-\item 
+\begin{DoxyCompactList}\small\item\em Calculates the lyapunov base control output from a given input. \end{DoxyCompactList}\item 
+void \hyperlink{classController_a63249412728814430174c740d358a5c0}{calc\+\_\+angle\+\_\+distance} (double kr, double kphi)
+\begin{DoxyCompactList}\small\item\em Calculate control output just by angle difference and eklidian difference from target. \end{DoxyCompactList}\item 
 void \hyperlink{classController_a6661eb7307219216a7cb0a90e2a07e4d}{execute} ()\hypertarget{classController_a6661eb7307219216a7cb0a90e2a07e4d}{}\label{classController_a6661eb7307219216a7cb0a90e2a07e4d}
 
-\begin{DoxyCompactList}\small\item\em \hyperlink{classController}{Controller} scope. \end{DoxyCompactList}\item 
-void {\bfseries reset} ()\hypertarget{classController_ab5515748f1b0c82f015e039c817ee5f7}{}\label{classController_ab5515748f1b0c82f015e039c817ee5f7}
+\begin{DoxyCompactList}\small\item\em Scope of the controller that is called in control frequence. \end{DoxyCompactList}\item 
+void \hyperlink{classController_ab5515748f1b0c82f015e039c817ee5f7}{reset} ()\hypertarget{classController_ab5515748f1b0c82f015e039c817ee5f7}{}\label{classController_ab5515748f1b0c82f015e039c817ee5f7}
 
-\item 
+\begin{DoxyCompactList}\small\item\em Resetting controller to initial state. \end{DoxyCompactList}\item 
 void \hyperlink{classController_a35b38608f67e7c1c34f6b7186db32ad7}{current\+\_\+odom\+\_\+callback} (nav\+\_\+msgs\+::\+Odometry msg)\hypertarget{classController_a35b38608f67e7c1c34f6b7186db32ad7}{}\label{classController_a35b38608f67e7c1c34f6b7186db32ad7}
 
 \begin{DoxyCompactList}\small\item\em Callback for input odometry message. Is executed everytima a Odometry input is incoming. Writes data to input current\+\_\+pose. \end{DoxyCompactList}\item 
@@ -271,6 +270,25 @@ Construct a new \hyperlink{classController}{Controller} object.
 
 
 \subsection{Member Function Documentation}
+\index{Controller@{Controller}!calc\+\_\+angle\+\_\+distance@{calc\+\_\+angle\+\_\+distance}}
+\index{calc\+\_\+angle\+\_\+distance@{calc\+\_\+angle\+\_\+distance}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{calc\+\_\+angle\+\_\+distance(double kr, double kphi)}{calc_angle_distance(double kr, double kphi)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::calc\+\_\+angle\+\_\+distance (
+\begin{DoxyParamCaption}
+\item[{double}]{kr, }
+\item[{double}]{kphi}
+\end{DoxyParamCaption}
+)}\hypertarget{classController_a63249412728814430174c740d358a5c0}{}\label{classController_a63249412728814430174c740d358a5c0}
+
+
+Calculate control output just by angle difference and eklidian difference from target. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em kr} & Control gain in linear direction \\
+\hline
+{\em kphi} & Control gain in angular direction \\
+\hline
+\end{DoxyParams}
 \index{Controller@{Controller}!calc\+\_\+\+Lyapunov@{calc\+\_\+\+Lyapunov}}
 \index{calc\+\_\+\+Lyapunov@{calc\+\_\+\+Lyapunov}!Controller@{Controller}}
 \subsubsection[{\texorpdfstring{calc\+\_\+\+Lyapunov(double kx, double ky, double kphi, double vd, double omegad)}{calc_Lyapunov(double kx, double ky, double kphi, double vd, double omegad)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::calc\+\_\+\+Lyapunov (
@@ -282,7 +300,24 @@ Construct a new \hyperlink{classController}{Controller} object.
 \item[{double}]{omegad}
 \end{DoxyParamCaption}
 )}\hypertarget{classController_a56568ee07bb72983576e9d7c10eb3e83}{}\label{classController_a56568ee07bb72983576e9d7c10eb3e83}
-Calculate the control vector with the Lyapunov method param\+: kx\+: gain in x direction param kphi\+: gain in angular direction param vd\+: tangential velocity param omegad \+: rotational velocity \index{Controller@{Controller}!link\+\_\+current\+\_\+odom@{link\+\_\+current\+\_\+odom}}
+
+
+Calculates the lyapunov base control output from a given input. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em kx} & Control gain in x-\/direction \\
+\hline
+{\em ky} & Control gain in y-\/direction \\
+\hline
+{\em kphi} & Control gain in z-\/direction \\
+\hline
+{\em vd} & Desired linear velocity \\
+\hline
+{\em omegad} & Desired angular velocity \\
+\hline
+\end{DoxyParams}
+\index{Controller@{Controller}!link\+\_\+current\+\_\+odom@{link\+\_\+current\+\_\+odom}}
 \index{link\+\_\+current\+\_\+odom@{link\+\_\+current\+\_\+odom}!Controller@{Controller}}
 \subsubsection[{\texorpdfstring{link\+\_\+current\+\_\+odom(std\+::string topic\+\_\+name)}{link_current_odom(std::string topic_name)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::link\+\_\+current\+\_\+odom (
 \begin{DoxyParamCaption}
