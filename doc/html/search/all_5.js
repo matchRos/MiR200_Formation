@@ -1,5 +1,7 @@
 var searchData=
 [
+  ['lin_5fvel_5fin',['lin_vel_in',['../classController.html#ab94918bba11d4526cd5dc20e64655845',1,'Controller']]],
+  ['lin_5fvel_5fout',['lin_vel_out',['../classController.html#ac7b5300b4fc0b2436d4a17d4bb60b078',1,'Controller']]],
   ['link_5fcurrent_5fodom',['link_current_odom',['../classController.html#add4a8227097c30e5f165977cfa0ce22c',1,'Controller']]],
   ['link_5foutput_5fcontrol_5fdata',['link_output_control_data',['../classController.html#abc1909639580e5359228c87fbd3a622b',1,'Controller']]],
   ['link_5foutput_5fstate',['link_output_state',['../classController.html#a9b8949013d52e365754e170a9cad158c',1,'Controller']]],

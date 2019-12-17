@@ -30,7 +30,9 @@
 #define PARAM_LYAPUNOV "/algorithm/lyapunov"
 #define PARAM_ANG_DIST "/algorithm/angle_distance"
 
-
+/**
+ * @brief Provides a easy to use implementation of a generic mobile robot controller.
+ */
 class Controller{
     public:
         /**
@@ -234,42 +236,42 @@ class Controller{
 
         
     protected:
-        ros::NodeHandle nh;                                          //Node Handle
+        ros::NodeHandle nh;                                          ///<Node Handle
         tf::TransformListener* listener;
-        controllerType type;                                         //Type of control algorythm that is used
+        controllerType type;                                         ///<Type of control algorythm that is used
 
 
-        ros::Publisher pub_vel_out;                                  //publisher object for velocity outoput topic
-        ros::Publisher pub_state_out;                                //publisher object for state output topic
-        ros::Publisher pub_control_data;                       //publisher object for control difference topic
+        ros::Publisher pub_vel_out;                                  ///<publisher object for velocity outoput topic
+        ros::Publisher pub_state_out;                                ///<publisher object for state output topic
+        ros::Publisher pub_control_data;                       ///<publisher object for control difference topic
         
-        ros::Subscriber sub_vel_target;                              //Subscirber object for input topic
-        ros::Subscriber sub_odom_current;                            //Subscriber object for odometry
-        ros::Subscriber sub_state_target;                            //Subscriber object for target state of controller
-        ros::Subscriber sub_target_odometry;                         //Subscriber object for target odometry topic
+        ros::Subscriber sub_vel_target;                              ///<Subscirber object for input topic
+        ros::Subscriber sub_odom_current;                            ///<Subscriber object for odometry
+        ros::Subscriber sub_state_target;                            ///<Subscriber object for target state of controller
+        ros::Subscriber sub_target_odometry;                         ///<Subscriber object for target odometry topic
 
-        ros::ServiceServer reset_service;                           //Service for resetting the controller
+        ros::ServiceServer reset_service;                           ///<Service for resetting the controller
 
-        std::string name;                                           //Name of the node respective Controller
-        std::string world_frame;                                    //Name of the world frame
+        std::string name;                                           ///<Name of the node respective Controller
+        std::string world_frame;                                    ///<Name of the world frame
         
-        tf::Vector3 ang_vel_in;                                 //target linear velocity
-        tf::Vector3 lin_vel_in;                                 //target angular velocity
+        tf::Vector3 ang_vel_in;                                 ///<target linear velocity
+        tf::Vector3 lin_vel_in;                                 ///<target angular velocity
 
-        tf::Vector3 lin_vel_out;                                    //Outgoing linear velocity
-        tf::Vector3 ang_vel_out;                                    //Outgoing angular velocity
+        tf::Vector3 lin_vel_out;                                    ///<Outgoing linear velocity
+        tf::Vector3 ang_vel_out;                                    ///<Outgoing angular velocity
         
         tf::StampedTransform world2robot;                   
         tf::StampedTransform world2odom;
 
-        tf::Transform control_dif;                                  //Transformation from current to target
+        tf::Transform control_dif;                                  ///<Transformation from current to target
 
-        tf::Pose reference_pose;                                    //Reference pose to a global system
-        tf::Pose current_pose;                                      //Pose of Controller at the moment in world
-        tf::Pose target_pose;                                       //The Target for the Controller poses
+        tf::Pose reference_pose;                                    ///<Reference pose to a global system
+        tf::Pose current_pose;                                      ///<Pose of Controller at the moment in world
+        tf::Pose target_pose;                                       ///<The Target for the Controller poses
         
-        void getTransformation();                                   //Listen to all neccesary trasnformations
-        void publish();                                             //Publish all outgoing data
+        void getTransformation();                                   ///<Listen to all neccesary trasnformations
+        void publish();                                             ///<Publish all outgoing data
         lyapunov lyapunov_parameter;
        
 
