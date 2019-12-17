@@ -45,9 +45,9 @@ class Controller{
          * 
          */
         enum controllerType{
-            pseudo_inverse=1,   //*< Control law is based on pseudo inveres the input for generate a output (least squares optimisation) */
-            lypanov=2,          //*< Control law is based on the lyapunov approache. Output is determined from a lyapunov stable function */
-            angle_distance=3    //*< Control law based on linear approach in angle and distance respectively */
+            pseudo_inverse=1,   /**< Control law is based on pseudo inveres the input for generate a output (least squares optimisation) */
+            lypanov=2,          /**< Control law is based on the lyapunov approache. Output is determined from a lyapunov stable function */
+            angle_distance=3    /**< Control law based on linear approach in angle and distance respectively */
         };
         
         /**
@@ -56,9 +56,9 @@ class Controller{
          */
         struct lyapunov
         {
-            float kx;   //*< Control gain in x-direction */
-            float ky;   //*< Control gain in y-direction */ 
-            float ktheta;   //*< Control gain in theta-direction */
+            float kx;           /**< Control gain in x-direction */
+            float ky;           /**< Control gain in y-direction */ 
+            float ktheta;       /**< Control gain in theta-direction */
         };
         
         
@@ -79,34 +79,56 @@ class Controller{
          * @param z Z-position of robot
          * @param angle Angular-position of robot 
          */
-        void set_reference(double x,double y,double z,double angle);         
-        ///Initialise the coordinate system of the Controller to position
-        ///param: vector<double> coord: Position vector    
+        void set_reference(double x,double y,double z,double angle);
+        /**
+         * @brief Set the reference of the mobile robot to be controlled from a global frame
+         * 
+         * @param coord vector of the robot position [x,y,z]
+         * @param angle angel of the robot
+         */
         void set_reference(std::vector<double> coord,double angle);
-        ///Initialise the coordinate system of the Controller to position defined by reference pose
+        
+        
+        //Obsolete
         void set_reference();
 
 
        
-
-        ///Set the name of the reference/world frame
-        ///param: frame : Name of the frame in tf tree
+        /**
+         * @brief Set the world frame name all references are given in
+         * 
+         * @param frame Name of the world frame
+         */
         void set_world_frame(std::string frame);
 
-        ///Set the type of the controllaw 
-        ///param: type: Controllaw type (see Controller::controllerType)
+        /**
+         * @brief Sets the type of the used control law
+         * 
+         * @param type Type of the controller as defined in controllerType
+         */
         void set_type(Controller::controllerType type);
 
-        ///Setting parameters for the lyapunov control law
-        ///param param: struct that hold the parameters for the law: kx,ky,ktheta,omega,v in that order        
+        /**
+         * @brief Sets the parameter of the lyapunov control law
+         * 
+         * @param param Parameterset as defined in lyapunov struct
+         */
         void set_lyapunov(Controller::lyapunov param);
-        ///Setting parameters for the lyapunov control law
-        ///param param: std::vector that hold the parameters for the law: kx,ky,ktheta,omega,v in that order        
+
+        /**
+         * @brief  Sets the parameter of the lyapunov control law
+         * 
+         * @param param vector of given parameters [kx,ky,ktheta,vd,omega]
+         */
         void set_lyapunov(std::vector<float> param);
 
         ///Loading parameter for a specified Controller. Empty for Controller base class and implemented in inheriting classes.
         virtual void load_parameter();
-        ///Loading ros parameter and calling load_parameter inside
+       
+        /**
+         * @brief Loading of ROS parameterset for this controller
+         * 
+         */
         void load();
      
 
@@ -115,27 +137,58 @@ class Controller{
         
         /*Linking topics #################################################################################################################################
         ##################################################################################################################################################*/
-        ///link Controller to it's odom input topic
-        ///'topic_name'Name of the topic the Controller reads its oddom from                       
+        /**
+         * @brief Links the current odometry topic to the controller. At this topic the current odomotry of the robot must be published
+         * 
+         * @param topic_name Name of the topic
+         */
         void link_current_odom(std::string topic_name);       
-        ///link Controller to it's input topic
-        ///'topic_name': Name of tjhe topic the Controller gets input from
-        void link_target_velocity(std::string topic_name);   
-        ///link Controller to it's state topic
-        ///'topic_name' Name of the topic the Controller gets its target state from                       
-        void link_target_state(std::string topic_name);
-        ///link Controller to it's target odometry topic (combines target state and target velocity)
-        ///'topic_name' Name of the topic the Controller gets its target state from                     
-        void link_target_odometry(std::string topic_name);
+       
+       /**
+        * @brief Links the target/desired velocity topic to the controller. At this topic the current desired velocity is published.
+        * 
+        * @param topic_name Name of the topic
+        */
+        void link_target_velocity(std::string topic_name); 
+        /**
+         * @brief Links the target/desired velocity topic to the controller. At this topic the desired velocity is published.
+         * 
+         * @param topic_name Name of the topic
+         */
         
-        ///link Controller to it's output topic
-        ///'topic_name'Name of the topic the Controller writes its output to                       
+        /**
+         * @brief Links the target/desired state topic to the controller. At this topic the current state of the robot is published.
+         * 
+         * @param topic_name Name of the topic
+         */       
+        void link_target_state(std::string topic_name);
+
+         /**
+         * @brief Links the target/desired odometry topic to the controller. At this topic the desired odometry is published.
+         * 
+         * @param topic_name Name of the topic
+         */                           
+        void link_target_odometry(std::string topic_name);
+
+        /**
+         * @brief Links the output velocity of the controller to a given topic
+         * 
+         * @param topic_name Name of the topic
+         */
         void link_output_velocity(std::string topic_name);      
-        ///link Controller to it's state topic
-        ///'topic_name' Name of the topic the Controller writes its state to                       
-        void link_output_state(std::string topic_name);
-        ///link Controller to it's control difference topic
-        ///'topic_name' Name of the topic the Controller writes its control difference to                       
+        
+        /**
+         * @brief Links the output ste of the controller to a given topic
+         * 
+         * @param topic_name Name of the topic
+         */                   
+        void link_output_state(std::string topic_name);        
+        
+        /**
+         * @brief Links the meta data of the controller to a given topic
+         * 
+         * @param topic_name Name of the topic
+         */
         void link_output_control_data(std::string topic_name);
         
         
