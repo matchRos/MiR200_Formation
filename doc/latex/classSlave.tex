@@ -1,0 +1,69 @@
+\hypertarget{classSlave}{}\section{Slave Class Reference}
+\label{classSlave}\index{Slave@{Slave}}
+
+
+Inheritance diagram for Slave\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=139pt]{classSlave__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Slave\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=223pt]{classSlave__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Slave} (ros\+::\+Node\+Handle \&\hyperlink{classController_a24e3d3c2536f6ed29018bad1fd53dae2}{nh})\hypertarget{classSlave_a855a824b462dd05eddaa8d53b27faea4}{}\label{classSlave_a855a824b462dd05eddaa8d53b27faea4}
+
+\item 
+void \hyperlink{classSlave_a9b5d1d499c7bd05d5260fbe5b8afbbb5}{scope} ()\hypertarget{classSlave_a9b5d1d499c7bd05d5260fbe5b8afbbb5}{}\label{classSlave_a9b5d1d499c7bd05d5260fbe5b8afbbb5}
+
+\begin{DoxyCompactList}\small\item\em A Scope within the execute function. Repeating calculation in inheriting classes are implemented here. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classSlave_a2a38a730d6ac93fcced035a7d764612d}{optimal\+\_\+control} ()
+\item 
+void \hyperlink{classSlave_a09394d0f823a06e04f6259ee490bc867}{target\+\_\+state\+\_\+callback} (geometry\+\_\+msgs\+::\+Pose\+Stamped msg)\hypertarget{classSlave_a09394d0f823a06e04f6259ee490bc867}{}\label{classSlave_a09394d0f823a06e04f6259ee490bc867}
+
+\begin{DoxyCompactList}\small\item\em Callback for input target state message. Is executed everytima a target state input is incoming. Writes data to target\+\_\+pose state. \end{DoxyCompactList}\item 
+void \hyperlink{classSlave_a2227f30ab058b623de7f6a940d079c90}{target\+\_\+velocities\+\_\+callback} (geometry\+\_\+msgs\+::\+Twist msg)\hypertarget{classSlave_a2227f30ab058b623de7f6a940d079c90}{}\label{classSlave_a2227f30ab058b623de7f6a940d079c90}
+
+\begin{DoxyCompactList}\small\item\em Callback for input velocitiy message. Is executed everytime a velocitiy input is incoming. Writes data to input state. \end{DoxyCompactList}\item 
+void \hyperlink{classSlave_a0d732637d1c0d06c214112a381ead6be}{target\+\_\+odometry\+\_\+callback} (nav\+\_\+msgs\+::\+Odometry msg)\hypertarget{classSlave_a0d732637d1c0d06c214112a381ead6be}{}\label{classSlave_a0d732637d1c0d06c214112a381ead6be}
+
+\begin{DoxyCompactList}\small\item\em Callback for input target odometry message. Is executed everytima a target odometry input is incoming. Writes data to target\+\_\+pose state and target\+\_\+vel. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+ros\+::\+Subscriber {\bfseries master\+\_\+odom}\hypertarget{classSlave_ae16b74032864ebb31211f992d37a73ab}{}\label{classSlave_ae16b74032864ebb31211f992d37a73ab}
+
+\item 
+tf\+::\+Pose {\bfseries master\+\_\+pose}\hypertarget{classSlave_ab6effa214fce2263784c296ecba8d3e0}{}\label{classSlave_ab6effa214fce2263784c296ecba8d3e0}
+
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Member Function Documentation}
+\index{Slave@{Slave}!optimal\+\_\+control@{optimal\+\_\+control}}
+\index{optimal\+\_\+control@{optimal\+\_\+control}!Slave@{Slave}}
+\subsubsection[{\texorpdfstring{optimal\+\_\+control()}{optimal_control()}}]{\setlength{\rightskip}{0pt plus 5cm}void Slave\+::optimal\+\_\+control (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classSlave_a2a38a730d6ac93fcced035a7d764612d}{}\label{classSlave_a2a38a730d6ac93fcced035a7d764612d}
+This implements a least sqaures determination of control vector \mbox{[}v,omega\mbox{]} \mbox{[}control.\+v control.\+omega\mbox{]} from the given cartesian velocity state d/dt\mbox{[}x,y,phi\mbox{]} (cart\+\_\+vel) 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+controller/include/controller/slave.\+h\item 
+controller/src/slave.\+cpp\end{DoxyCompactItemize}

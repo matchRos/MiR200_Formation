@@ -3,6 +3,7 @@ Header header
 #Inputs:
 #Position that is used for controller calculations
 geometry_msgs/Vector3 position_in
+#Angle that is used for controller calculations misisng
 #Velocity that is used for controller calculations
 geometry_msgs/Vector3 velocity_in
 #Angular velocity that is used for the controller calculations

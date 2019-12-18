@@ -1,0 +1,68 @@
+\hypertarget{classLissajousPlanner}{}\section{Lissajous\+Planner Class Reference}
+\label{classLissajousPlanner}\index{Lissajous\+Planner@{Lissajous\+Planner}}
+
+
+Inheritance diagram for Lissajous\+Planner\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=171pt]{classLissajousPlanner__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Lissajous\+Planner\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=306pt]{classLissajousPlanner__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structLissajousPlanner_1_1LissajousPlan}{Lissajous\+Plan}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Lissajous\+Planner} (ros\+::\+Node\+Handle \&\hyperlink{classPlanner_a9714d036f444a07ce90be8d135b9a40c}{nh})\hypertarget{classLissajousPlanner_a82095ebb2cd29944a201321377fc78fe}{}\label{classLissajousPlanner_a82095ebb2cd29944a201321377fc78fe}
+
+\item 
+void {\bfseries set\+\_\+parameter} (float omegax, float dphi=0.\+0, int ratio=2, float Ax=3.\+0, float Ay=3.\+0)\hypertarget{classLissajousPlanner_aa6e4d941a535dca182aaf8b73b5a0dcd}{}\label{classLissajousPlanner_aa6e4d941a535dca182aaf8b73b5a0dcd}
+
+\item 
+void {\bfseries load} ()\hypertarget{classLissajousPlanner_ae7ecff9989a37d29e591bac082b781ac}{}\label{classLissajousPlanner_ae7ecff9989a37d29e591bac082b781ac}
+
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+tf\+::\+Vector3 {\bfseries get\+\_\+position} (ros\+::\+Duration time)\hypertarget{classLissajousPlanner_aeb9a2e0f3cb8e651518bcd0dcd80bf2f}{}\label{classLissajousPlanner_aeb9a2e0f3cb8e651518bcd0dcd80bf2f}
+
+\item 
+tf\+::\+Quaternion {\bfseries get\+\_\+orientation} (ros\+::\+Duration time)\hypertarget{classLissajousPlanner_a07eb5dc306609dd6ae1f91e2738aee95}{}\label{classLissajousPlanner_a07eb5dc306609dd6ae1f91e2738aee95}
+
+\item 
+tf\+::\+Vector3 {\bfseries get\+\_\+velocity} (ros\+::\+Duration time)\hypertarget{classLissajousPlanner_a17a85db0fe0f380164297b8365232ab2}{}\label{classLissajousPlanner_a17a85db0fe0f380164297b8365232ab2}
+
+\item 
+double {\bfseries get\+\_\+angular\+\_\+velocity} (ros\+::\+Duration time)\hypertarget{classLissajousPlanner_ab7ef88484995f3fd223c8dcbd6f86a8e}{}\label{classLissajousPlanner_ab7ef88484995f3fd223c8dcbd6f86a8e}
+
+\item 
+void {\bfseries check\+\_\+period} (ros\+::\+Duration time)\hypertarget{classLissajousPlanner_a9001fcfa7f1d25e4ae7826499b0b2ebc}{}\label{classLissajousPlanner_a9001fcfa7f1d25e4ae7826499b0b2ebc}
+
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structLissajousPlanner_1_1LissajousPlan}{Lissajous\+Plan} {\bfseries plan}\hypertarget{classLissajousPlanner_ac3365f9d9d84307b680a94cff01edd9b}{}\label{classLissajousPlanner_ac3365f9d9d84307b680a94cff01edd9b}
+
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+simulation\+\_\+env/include/simulation\+\_\+env/planner.\+h\item 
+simulation\+\_\+env/src/planner.\+cpp\end{DoxyCompactItemize}

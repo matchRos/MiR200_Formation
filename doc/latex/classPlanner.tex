@@ -1,0 +1,190 @@
+\hypertarget{classPlanner}{}\section{Planner Class Reference}
+\label{classPlanner}\index{Planner@{Planner}}
+
+
+Inheritance diagram for Planner\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=264pt]{classPlanner__inherit__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Planner} (ros\+::\+Node\+Handle \&\hyperlink{classPlanner_a9714d036f444a07ce90be8d135b9a40c}{nh})\hypertarget{classPlanner_a32475baddd401921adb1aab3ab842210}{}\label{classPlanner_a32475baddd401921adb1aab3ab842210}
+
+\item 
+void {\bfseries start} ()\hypertarget{classPlanner_a6c1c8d67d0cac41f738b413d1833c007}{}\label{classPlanner_a6c1c8d67d0cac41f738b413d1833c007}
+
+\item 
+void {\bfseries stop} ()\hypertarget{classPlanner_a3d0a3d404d39f59bfc21f275b0da408a}{}\label{classPlanner_a3d0a3d404d39f59bfc21f275b0da408a}
+
+\item 
+void {\bfseries pause} ()\hypertarget{classPlanner_a400f2aefad591e55a62e0fb13cb02521}{}\label{classPlanner_a400f2aefad591e55a62e0fb13cb02521}
+
+\item 
+void {\bfseries set\+\_\+start\+\_\+pose} (tf\+::\+Pose pose)\hypertarget{classPlanner_acaf55e0e250d6f3ba14bfcf3c4f06ffb}{}\label{classPlanner_acaf55e0e250d6f3ba14bfcf3c4f06ffb}
+
+\item 
+virtual void {\bfseries load} ()=0\hypertarget{classPlanner_af10d045ffe58c7d2149156567dc8b10a}{}\label{classPlanner_af10d045ffe58c7d2149156567dc8b10a}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int {\bfseries iterations\+\_\+counter}\hypertarget{classPlanner_a99b577203757a2466e8a3424c28d3449}{}\label{classPlanner_a99b577203757a2466e8a3424c28d3449}
+
+\item 
+ros\+::\+Node\+Handle \hyperlink{classPlanner_a9714d036f444a07ce90be8d135b9a40c}{nh}\hypertarget{classPlanner_a9714d036f444a07ce90be8d135b9a40c}{}\label{classPlanner_a9714d036f444a07ce90be8d135b9a40c}
+
+\begin{DoxyCompactList}\small\item\em Counter for the iterations of periodic planner functions. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void {\bfseries plan} (const ros\+::\+Timer\+Event \&events)\hypertarget{classPlanner_a6ccd3cb4a24886ddeff615e665f2fbbd}{}\label{classPlanner_a6ccd3cb4a24886ddeff615e665f2fbbd}
+
+\item 
+void {\bfseries publish} ()\hypertarget{classPlanner_aa8937e0a808cebc224393438941515e4}{}\label{classPlanner_aa8937e0a808cebc224393438941515e4}
+
+\item 
+tf\+::\+Transform \hyperlink{classPlanner_a311803ff0901b953c4ff9db7a3f5bb01}{get\+\_\+transform} (tf\+::\+Pose pose)
+\item 
+void \hyperlink{classPlanner_a0ce8028259452e2e17ed07bbb0c8463a}{transform\+\_\+values} (tf\+::\+Transform trafo)
+\item 
+bool \hyperlink{classPlanner_aef1abb6588a8fb7953183bc5f3479857}{srv\+\_\+start} (std\+\_\+srvs\+::\+Set\+Bool\+::\+Request \&req, std\+\_\+srvs\+::\+Set\+Bool\+::\+Response \&res)
+\item 
+bool \hyperlink{classPlanner_ac98453a1cd02d1d77055900f4fc4741f}{srv\+\_\+stop} (std\+\_\+srvs\+::\+Set\+Bool\+::\+Request \&req, std\+\_\+srvs\+::\+Set\+Bool\+::\+Response \&res)
+\item 
+virtual tf\+::\+Vector3 {\bfseries get\+\_\+position} (ros\+::\+Duration time)=0\hypertarget{classPlanner_ab388545a3fd2f37f70403d8484473a12}{}\label{classPlanner_ab388545a3fd2f37f70403d8484473a12}
+
+\item 
+virtual tf\+::\+Quaternion {\bfseries get\+\_\+orientation} (ros\+::\+Duration time)=0\hypertarget{classPlanner_a161fc00d031fd65914dae8f4b2edeffb}{}\label{classPlanner_a161fc00d031fd65914dae8f4b2edeffb}
+
+\item 
+virtual tf\+::\+Vector3 {\bfseries get\+\_\+velocity} (ros\+::\+Duration time)=0\hypertarget{classPlanner_a02af8b9ab29a19bd82c1cc35afcf2cc5}{}\label{classPlanner_a02af8b9ab29a19bd82c1cc35afcf2cc5}
+
+\item 
+virtual double {\bfseries get\+\_\+angular\+\_\+velocity} (ros\+::\+Duration time)=0\hypertarget{classPlanner_ab5c6ec661acf83b1f095ba404dc4c958}{}\label{classPlanner_ab5c6ec661acf83b1f095ba404dc4c958}
+
+\item 
+virtual void {\bfseries check\+\_\+period} (ros\+::\+Duration time)=0\hypertarget{classPlanner_a1bc7f9ca05b5de8aa4c9ccda126c2be2}{}\label{classPlanner_a1bc7f9ca05b5de8aa4c9ccda126c2be2}
+
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+ros\+::\+Timer {\bfseries tim\+\_\+sampling}\hypertarget{classPlanner_a8dd2352bf15aef91d49337d95dfe6b04}{}\label{classPlanner_a8dd2352bf15aef91d49337d95dfe6b04}
+
+\item 
+ros\+::\+Publisher {\bfseries pub\+\_\+current\+\_\+odometry}\hypertarget{classPlanner_a1eea64fbf5b532bedd2f5a20eaedb4d8}{}\label{classPlanner_a1eea64fbf5b532bedd2f5a20eaedb4d8}
+
+\item 
+ros\+::\+Service\+Server {\bfseries set\+\_\+start\+\_\+service}\hypertarget{classPlanner_ad3cb4222b988ec69a5b89e1c67b119cd}{}\label{classPlanner_ad3cb4222b988ec69a5b89e1c67b119cd}
+
+\item 
+ros\+::\+Service\+Server {\bfseries set\+\_\+stop\+\_\+service}\hypertarget{classPlanner_a9211a5e71956ef94e1306adcabb2e51d}{}\label{classPlanner_a9211a5e71956ef94e1306adcabb2e51d}
+
+\item 
+bool {\bfseries is\+\_\+planning}\hypertarget{classPlanner_afcb5f703c4d2a54bb8c8f8360864b763}{}\label{classPlanner_afcb5f703c4d2a54bb8c8f8360864b763}
+
+\item 
+bool {\bfseries is\+\_\+paused}\hypertarget{classPlanner_a247ba912994c9035473b9ee037aac307}{}\label{classPlanner_a247ba912994c9035473b9ee037aac307}
+
+\item 
+int {\bfseries iterations}\hypertarget{classPlanner_a19220ea8cd70f4f3bfa3e35e1250ed00}{}\label{classPlanner_a19220ea8cd70f4f3bfa3e35e1250ed00}
+
+\item 
+std\+::string {\bfseries frame\+\_\+name}\hypertarget{classPlanner_a1578a9b87a63d6a806ab46a863ec55cb}{}\label{classPlanner_a1578a9b87a63d6a806ab46a863ec55cb}
+
+\item 
+ros\+::\+Duration {\bfseries paused}\hypertarget{classPlanner_a0e99faac21bce026cb9b0b576b734c71}{}\label{classPlanner_a0e99faac21bce026cb9b0b576b734c71}
+
+\item 
+ros\+::\+Time {\bfseries start\+\_\+time}\hypertarget{classPlanner_ade39963b5d3f74b75feed62ab669979e}{}\label{classPlanner_ade39963b5d3f74b75feed62ab669979e}
+
+\item 
+tf\+::\+Pose {\bfseries start\+\_\+pose}\hypertarget{classPlanner_af8043c3dfe8d863cec156f6b5abddd76}{}\label{classPlanner_af8043c3dfe8d863cec156f6b5abddd76}
+
+\item 
+tf\+::\+Vector3 {\bfseries planned\+\_\+vel}\hypertarget{classPlanner_a3d271654bd61b688e1db4f942722dd53}{}\label{classPlanner_a3d271654bd61b688e1db4f942722dd53}
+
+\item 
+tf\+::\+Vector3 {\bfseries vel}\hypertarget{classPlanner_aae4477f491ca6ba2e7f9ec2f0ca297c6}{}\label{classPlanner_aae4477f491ca6ba2e7f9ec2f0ca297c6}
+
+\item 
+tf\+::\+Vector3 {\bfseries pos}\hypertarget{classPlanner_a0f68f1ba4044c5a451e9352aed57ab9f}{}\label{classPlanner_a0f68f1ba4044c5a451e9352aed57ab9f}
+
+\item 
+tf\+::\+Quaternion {\bfseries orientation}\hypertarget{classPlanner_a3ce130c29c044931c6e8e7eeffd24c25}{}\label{classPlanner_a3ce130c29c044931c6e8e7eeffd24c25}
+
+\item 
+double {\bfseries ang\+\_\+vel}\hypertarget{classPlanner_a026af8deca2879d9f16b9eeddd003d88}{}\label{classPlanner_a026af8deca2879d9f16b9eeddd003d88}
+
+\item 
+tf\+::\+Transform {\bfseries start\+\_\+reference}\hypertarget{classPlanner_aae0304ebd1813766f1437b80d5195e90}{}\label{classPlanner_aae0304ebd1813766f1437b80d5195e90}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\index{Planner@{Planner}!get\+\_\+transform@{get\+\_\+transform}}
+\index{get\+\_\+transform@{get\+\_\+transform}!Planner@{Planner}}
+\subsubsection[{\texorpdfstring{get\+\_\+transform(tf\+::\+Pose pose)}{get_transform(tf::Pose pose)}}]{\setlength{\rightskip}{0pt plus 5cm}tf\+::\+Transform Planner\+::get\+\_\+transform (
+\begin{DoxyParamCaption}
+\item[{tf\+::\+Pose}]{pose}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classPlanner_a311803ff0901b953c4ff9db7a3f5bb01}{}\label{classPlanner_a311803ff0901b953c4ff9db7a3f5bb01}
+Gets the transformation form the given pose to the pose at timestamp zero 
+\begin{DoxyParams}{Parameters}
+{\em pose} & \+: Pose from wich the planner should start \\
+\hline
+\end{DoxyParams}
+\index{Planner@{Planner}!srv\+\_\+start@{srv\+\_\+start}}
+\index{srv\+\_\+start@{srv\+\_\+start}!Planner@{Planner}}
+\subsubsection[{\texorpdfstring{srv\+\_\+start(std\+\_\+srvs\+::\+Set\+Bool\+::\+Request \&req, std\+\_\+srvs\+::\+Set\+Bool\+::\+Response \&res)}{srv_start(std_srvs::SetBool::Request &req, std_srvs::SetBool::Response &res)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Planner\+::srv\+\_\+start (
+\begin{DoxyParamCaption}
+\item[{std\+\_\+srvs\+::\+Set\+Bool\+::\+Request \&}]{req, }
+\item[{std\+\_\+srvs\+::\+Set\+Bool\+::\+Response \&}]{res}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classPlanner_aef1abb6588a8fb7953183bc5f3479857}{}\label{classPlanner_aef1abb6588a8fb7953183bc5f3479857}
+service procedure for satrting the planner 
+\begin{DoxyParams}{Parameters}
+{\em req} & \+: Reqest the service is getting \\
+\hline
+{\em res} & \+: Response the service is sending \\
+\hline
+\end{DoxyParams}
+\index{Planner@{Planner}!srv\+\_\+stop@{srv\+\_\+stop}}
+\index{srv\+\_\+stop@{srv\+\_\+stop}!Planner@{Planner}}
+\subsubsection[{\texorpdfstring{srv\+\_\+stop(std\+\_\+srvs\+::\+Set\+Bool\+::\+Request \&req, std\+\_\+srvs\+::\+Set\+Bool\+::\+Response \&res)}{srv_stop(std_srvs::SetBool::Request &req, std_srvs::SetBool::Response &res)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Planner\+::srv\+\_\+stop (
+\begin{DoxyParamCaption}
+\item[{std\+\_\+srvs\+::\+Set\+Bool\+::\+Request \&}]{req, }
+\item[{std\+\_\+srvs\+::\+Set\+Bool\+::\+Response \&}]{res}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classPlanner_ac98453a1cd02d1d77055900f4fc4741f}{}\label{classPlanner_ac98453a1cd02d1d77055900f4fc4741f}
+service procedure for stopping the planner 
+\begin{DoxyParams}{Parameters}
+{\em req} & \+: Reqest the service is getting \\
+\hline
+{\em res} & \+: Response the service is sending \\
+\hline
+\end{DoxyParams}
+\index{Planner@{Planner}!transform\+\_\+values@{transform\+\_\+values}}
+\index{transform\+\_\+values@{transform\+\_\+values}!Planner@{Planner}}
+\subsubsection[{\texorpdfstring{transform\+\_\+values(tf\+::\+Transform trafo)}{transform_values(tf::Transform trafo)}}]{\setlength{\rightskip}{0pt plus 5cm}void Planner\+::transform\+\_\+values (
+\begin{DoxyParamCaption}
+\item[{tf\+::\+Transform}]{trafo}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classPlanner_a0ce8028259452e2e17ed07bbb0c8463a}{}\label{classPlanner_a0ce8028259452e2e17ed07bbb0c8463a}
+Transforming all values that are not rotation or translation invariant 
+\begin{DoxyParams}{Parameters}
+{\em trafo} & \+: The Transformation applied to all values \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+simulation\+\_\+env/include/simulation\+\_\+env/planner.\+h\item 
+simulation\+\_\+env/src/planner.\+cpp\end{DoxyCompactItemize}

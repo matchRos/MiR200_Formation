@@ -1,0 +1,4 @@
+<map id="Controller" name="Controller">
+<area shape="rect" id="node2" href="$classMaster.html" title="Master" alt="" coords="5,80,68,107"/>
+<area shape="rect" id="node3" href="$classSlave.html" title="Slave" alt="" coords="92,80,147,107"/>
+</map>
