@@ -130,17 +130,24 @@ void Controller::load()
 {
     std::string param;
 
-    if(ros::param::get(PARAM_WORLD_FRAME,param));
+    if(ros::param::get(PARAM_WORLD_FRAME,param))
     {
         ROS_INFO("Loading %s",PARAM_WORLD_FRAME);
         this->set_world_frame(param);     
     }
-
+    else
+    {
+        ROS_INFO("Could not load %s for %s",PARAM_WORLD_FRAME,this->name.c_str());
+    }
    
     if(ros::param::get(PARAM_CURRENT_ODOM,param))
     {
         ROS_INFO("Loading %s",PARAM_CURRENT_ODOM);
         this->link_current_odom(param);
+    }
+    else
+    {
+        ROS_INFO("Could not load %s for %s",PARAM_CURRENT_ODOM,this->name.c_str());
     }
 
     if(ros::param::get(PARAM_TARGET_ODOM,param))
@@ -148,19 +155,28 @@ void Controller::load()
         ROS_INFO("Loading %s",PARAM_TARGET_ODOM);
         this->link_target_odometry(param);
     }
-
+    else
+    {
+        ROS_INFO("Could not load %s for %s",PARAM_TARGET_ODOM,this->name.c_str());
+    }
     if(ros::param::get(PARAM_TARGET_VEL,param))
     {
         ROS_INFO("Loading %s ",PARAM_TARGET_VEL);
         this->link_target_velocity(param);
     }
-
+    else
+    {
+        ROS_INFO("Could not load %s for %s",PARAM_TARGET_VEL,this->name.c_str());
+    }
     if(ros::param::get(PARAM_TARGET_STATE,param))
     {
         ROS_INFO("Loading %s ",PARAM_TARGET_STATE);
         this->link_target_state(param);
     }
-
+    else
+    {
+        ROS_INFO("Could not load %s for %s",PARAM_TARGET_STATE,this->name.c_str());
+    }
 
     int i;
     if(ros::param::get(PARAM_TYPE,i))
