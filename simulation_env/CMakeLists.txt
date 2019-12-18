@@ -10,7 +10,9 @@ project(simulation_env)
 find_package(catkin REQUIRED COMPONENTS
   controller
   nav_msgs
+  geometry_msgs
   roscpp
+  tf
 )
 
 ## System dependencies are found with CMake's conventions
@@ -138,6 +140,7 @@ add_executable(${PROJECT_NAME}_node src/simulation_env_node.cpp)
 add_executable(circle_node src/circle_node.cpp)
 add_executable(lissajous_node src/lissajous_node.cpp)
 add_executable(planner_node src/planner_node.cpp)
+add_executable(ground_truth_broadcaster_node src/ground_truth_broadcaster_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -166,7 +169,9 @@ target_link_libraries(planner_node
   planner
   ${catkin_LIBRARIES}
 )
-
+target_link_libraries(ground_truth_broadcaster_node
+  ${catkin_LIBRARIES}
+)
 #############
 ## Install ##
 #############
