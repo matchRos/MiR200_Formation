@@ -42,9 +42,10 @@ void Slave::target_odometry_callback(nav_msgs::Odometry msg)
     rot.setRotation(trafo.getRotation());
 
     this->lin_vel_in=rot*lin+ang.cross(trafo*this->reference_pose.getOrigin());
-    this->ang_vel_in=ang;
-    
-    this->target_pose=trafo*this->reference_pose;   
+    this->target_pose=trafo*this->reference_pose;
+    //double phi=atan2(lin.y(),lin.x())+tf::getYaw(-this->reference_pose.getRotation());
+ 
+    //this->target_pose.setRotation(tf::createQuaternionFromYaw(phi));
 }
 
 
