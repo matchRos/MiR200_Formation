@@ -8,7 +8,7 @@ Controller::Controller(ros::NodeHandle &nh):    nh(nh),
     this->name=nh.getNamespace();
 
     this->pub_vel_out=this->nh.advertise<geometry_msgs::Twist>("/out",10);
-    this->pub_state_out=this->nh.advertise<geometry_msgs::PoseStamped>("/state_out",10);
+    this->pub_state_out=this->nh.advertise<multi_robot_msgs::State>("/state_out",10);
     this->pub_control_data=this->nh.advertise<multi_robot_msgs::ControlData>("/control_data",10);
     
     this->sub_vel_target=this->nh.subscribe("/in",10,&Controller::target_velocities_callback,this);
@@ -30,12 +30,11 @@ void Controller::reset()
 {  
     if(loaded_parameter)
     {
-        this->load();  
-        this->set_reference();     
+        this->load();    
     }
     else
     {
-        this->set_reference();
+        this->add_map();
     }
     
 }
@@ -56,26 +55,17 @@ void Controller::set_name(std::string name)
 }
 
 
-void Controller::set_reference()
-{
-    this->current_pose=this->reference_pose;
-    this->target_pose=this->current_pose;    
 
+void Controller::set_reference(double x,double y,double z,double angle)
+{
+    
+    this->reference_pose=tf::Pose(tf::createQuaternionFromYaw(angle),tf::Vector3(x,y,z));
+    this->current_pose=this->reference_pose;
+    this->target_pose=this->current_pose;
     ROS_INFO("Set coordiantes of: %s to: %lf %lf %lf",this->name.c_str(),   this->reference_pose.getOrigin().x(),
                                                                             this->reference_pose.getOrigin().y(),
                                                                             this->reference_pose.getOrigin().z());
     this->add_map();   
-}
-
-
-void Controller::set_reference(double x,double y,double z,double angle)
-{
-    this->reference_pose=tf::Pose();
-    this->reference_pose.setOrigin(tf::Vector3(x,y,z));
-    this->reference_pose.setRotation(tf::Quaternion(angle,0,0));
-
-   this->set_reference();
-
 }
 
 void Controller::set_reference(std::vector<double> coord,double angle)
@@ -258,7 +248,7 @@ void Controller::link_output_state(std::string topic_name)
 {
     this->pub_state_out.shutdown();
     ROS_INFO("Linking output state of %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
-    this->pub_state_out=this->nh.advertise<geometry_msgs::PoseStamped>(topic_name,10);
+    this->pub_state_out=this->nh.advertise<multi_robot_msgs::State>(topic_name,10);
 }
 
 void Controller::link_output_control_data(std::string topic_name)
@@ -336,22 +326,30 @@ void Controller::publish()
     this->pub_vel_out.publish(msg_vel);
 
     //publish output pose state
-    geometry_msgs::PoseStamped msg_pose;    
-    msg_pose.header.frame_id=this->world_frame;
-    msg_pose.header.stamp=ros::Time::now();    
-    tf::poseTFToMsg(this->current_pose,msg_pose.pose);
-    this->pub_state_out.publish(msg_pose);   
+    multi_robot_msgs::State msg_state;    
+    msg_state.pose.x=this->current_pose.getOrigin().x();
+    msg_state.pose.y=this->current_pose.getOrigin().y();
+    msg_state.pose.theta=tf::getYaw(this->current_pose.getRotation());
+    this->pub_state_out.publish(msg_state);   
 
     //publish control data
     multi_robot_msgs::ControlData msg_data;
     msg_data.header.stamp=ros::Time::now();
     msg_data.header.frame_id=this->world_frame;
-    msg_data.angular_velocity_in=this->ang_vel_in.z();
-    msg_data.angular_velocity_out=this->ang_vel_out.z();
-    tf::vector3TFToMsg(this->current_pose.getOrigin()-this->target_pose.getOrigin(),msg_data.control_difference_cart);
-    msg_data.linear_velocity_out=this->lin_vel_out.x();
+
+    //INPUTS    
     tf::vector3TFToMsg(this->target_pose.getOrigin(),msg_data.position_in);
-    tf::vector3TFToMsg(this->lin_vel_in,msg_data.velocity_in);
+    msg_data.angular_velocity_in=this->ang_vel_in.z();
+    tf::vector3TFToMsg(this->lin_vel_in,msg_data.velocity_in); 
+    msg_data.angle_in=tf::getYaw(this->target_pose.getRotation());
+    
+
+    msg_data.linear_velocity_out=this->lin_vel_out.x();
+    msg_data.angular_velocity_out=this->ang_vel_out.z();
+
+    tf::vector3TFToMsg(this->current_pose.getOrigin()-this->target_pose.getOrigin(),msg_data.control_difference_cart);
+    msg_data.control_difference_angular=tf::getYaw(this->control_dif.getRotation());
+
     this->pub_control_data.publish(msg_data);
 
 }

@@ -91,10 +91,7 @@ class Controller{
          * @param angle angel of the robot
          */
         void set_reference(std::vector<double> coord,double angle);
-        
-        
-        //Obsolete
-        void set_reference();
+  
 
 
        
