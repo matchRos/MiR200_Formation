@@ -2,181 +2,238 @@
 <root version="2.3.0">
  <tabbed_widget parent="main_window" name="Main Window">
   <plotmatrix rows="1" columns="1" tab_name="TRAJECTORY">
-   <plot col="0" row="0">
-    <range right="1.569172" left="-2.718855" top="1.991490" bottom="-1.333018"/>
+   <plot row="0" col="0">
+    <range top="1.575000" bottom="-1.575000" left="-2.741399" right="1.241399"/>
     <limitY/>
-    <curve R="148" curve_y="/robot1/control_data/position_in/y" B="189" G="103" name="/robot1/control_data/position_in/[x;y]" custom_transform="XYPlot" curve_x="/robot1/control_data/position_in/x"/>
-    <curve R="241" curve_y="/robot1/state/pose/position/y" B="193" G="76" name="/robot1/state/pose/position/[x;y]" custom_transform="XYPlot" curve_x="/robot1/state/pose/position/x"/>
-    <curve R="23" curve_y="/robot2/control_data/position_in/y" B="207" G="190" name="/robot2/control_data/position_in/[x;y]" custom_transform="XYPlot" curve_x="/robot2/control_data/position_in/x"/>
-    <curve R="26" curve_y="/robot2/state/pose/position/y" B="56" G="201" name="/robot2/state/pose/position/[x;y]" custom_transform="XYPlot" curve_x="/robot2/state/pose/position/x"/>
-    <curve R="188" curve_y="/robot_master/control_data/position_in/y" B="34" G="189" name="/robot_master/control_data/position_in/[x;y]" custom_transform="XYPlot" curve_x="/robot_master/control_data/position_in/x"/>
-    <curve R="255" curve_y="/robot_master/state/pose/position/y" B="14" G="127" name="/robot_master/state/pose/position/[x;y]" custom_transform="XYPlot" curve_x="/robot_master/state/pose/position/x"/>
+    <curve name="/robot1/control_data/position_in/[x;y]" curve_y="/robot1/control_data/position_in/y" custom_transform="XYPlot" R="148" G="103" curve_x="/robot1/control_data/position_in/x" B="189"/>
+    <curve name="/robot1/state/pose/position/[x;y]" curve_y="/robot1/state/pose/position/y" custom_transform="XYPlot" R="241" G="76" curve_x="/robot1/state/pose/position/x" B="193"/>
+    <curve name="/robot2/control_data/position_in/[x;y]" curve_y="/robot2/control_data/position_in/y" custom_transform="XYPlot" R="23" G="190" curve_x="/robot2/control_data/position_in/x" B="207"/>
+    <curve name="/robot2/state/pose/position/[x;y]" curve_y="/robot2/state/pose/position/y" custom_transform="XYPlot" R="26" G="201" curve_x="/robot2/state/pose/position/x" B="56"/>
+    <curve name="/robot_master/control_data/position_in/[x;y]" curve_y="/robot_master/control_data/position_in/y" custom_transform="XYPlot" R="188" G="189" curve_x="/robot_master/control_data/position_in/x" B="34"/>
+    <curve name="/robot_master/state/pose/position/[x;y]" curve_y="/robot_master/state/pose/position/y" custom_transform="XYPlot" R="255" G="127" curve_x="/robot_master/state/pose/position/x" B="14"/>
     <transform value="XYPlot"/>
    </plot>
   </plotmatrix>
-  <plotmatrix rows="2" columns="2" tab_name="MASTER">
-   <plot col="0" row="0">
-    <range right="0.000000" left="0.000000" top="0.100000" bottom="-0.100000"/>
+  <plotmatrix rows="3" columns="2" tab_name="MASTER">
+   <plot row="0" col="0">
+    <range top="0.000042" bottom="-0.000014" left="3.592000" right="63.591000"/>
     <limitY/>
-    <curve R="255" B="14" G="127" name="/robot_master/control_data/position_in/x" custom_transform="noTransform"/>
-    <curve R="255" B="14" G="127" name="/robot_master/state/pose/position/x" custom_transform="noTransform"/>
+    <curve name="/robot_master/control_data/position_in/x" custom_transform="noTransform" R="255" G="127" B="14"/>
+    <curve name="/robot_master/state/pose/x" custom_transform="noTransform" R="23" G="190" B="207"/>
     <transform value="noTransform"/>
    </plot>
-   <plot col="0" row="1">
-    <range right="0.000000" left="0.000000" top="0.100000" bottom="-0.100000"/>
+   <plot row="1" col="0">
+    <range top="0.000165" bottom="-0.006756" left="3.592000" right="63.591000"/>
     <limitY/>
-    <curve R="241" B="193" G="76" name="/robot_master/control_data/position_in/y" custom_transform="noTransform"/>
-    <curve R="241" B="193" G="76" name="/robot_master/state/pose/position/y" custom_transform="noTransform"/>
+    <curve name="/robot_master/control_data/position_in/y" custom_transform="noTransform" R="241" G="76" B="193"/>
+    <curve name="/robot_master/state/pose/y" custom_transform="noTransform" R="241" G="76" B="193"/>
     <transform value="noTransform"/>
    </plot>
-   <plot col="1" row="0">
-    <range right="0.000000" left="0.000000" top="0.100000" bottom="-0.100000"/>
+   <plot row="2" col="0">
+    <range top="0.000006" bottom="-0.000226" left="3.592000" right="63.591000"/>
     <limitY/>
-    <curve R="214" B="40" G="39" name="/robot_master/control_data/control_difference_cart/x" custom_transform="noTransform"/>
+    <curve name="/robot_master/control_data/angle_in" custom_transform="noTransform" R="31" G="119" B="180"/>
+    <curve name="/robot_master/state/pose/theta" custom_transform="noTransform" R="148" G="103" B="189"/>
     <transform value="noTransform"/>
    </plot>
-   <plot col="1" row="1">
-    <range right="0.000000" left="0.000000" top="0.100000" bottom="-0.100000"/>
+   <plot row="0" col="1">
+    <range top="0.000042" bottom="-0.000014" left="3.592000" right="63.591000"/>
     <limitY/>
-    <curve R="26" B="56" G="201" name="/robot_master/control_data/control_difference_cart/y" custom_transform="noTransform"/>
+    <curve name="/robot_master/control_data/control_difference_cart/x" custom_transform="noTransform" R="214" G="39" B="40"/>
     <transform value="noTransform"/>
    </plot>
-  </plotmatrix>
-  <plotmatrix rows="4" columns="1" tab_name="MASTER CONTROLLER">
-   <plot col="0" row="0">
-    <range right="59.998832" left="0.017277" top="0.073059" bottom="0.072961"/>
+   <plot row="1" col="1">
+    <range top="-0.003990" bottom="-0.006655" left="3.592000" right="63.591000"/>
     <limitY/>
-    <curve R="214" B="40" G="39" name="/robot_master/control_data/control_difference_cart/x" custom_transform="noTransform"/>
+    <curve name="/robot_master/control_data/control_difference_cart/y" custom_transform="noTransform" R="26" G="201" B="56"/>
     <transform value="noTransform"/>
    </plot>
-   <plot col="0" row="1">
-    <range right="59.998832" left="0.017277" top="-0.051811" bottom="-0.053483"/>
+   <plot row="2" col="1">
+    <range top="0.000226" bottom="0.000005" left="3.592000" right="63.591000"/>
     <limitY/>
-    <curve R="26" B="56" G="201" name="/robot_master/control_data/control_difference_cart/y" custom_transform="noTransform"/>
-    <transform value="noTransform"/>
-   </plot>
-   <plot col="0" row="2">
-    <range right="59.998832" left="0.017277" top="0.000125" bottom="-0.000444"/>
-    <limitY/>
-    <curve R="23" B="207" G="190" name="/robot_master/control_data/linear_velocity_out" custom_transform="noTransform"/>
-    <transform value="noTransform"/>
-   </plot>
-   <plot col="0" row="3">
-    <range right="59.998832" left="0.017277" top="0.001042" bottom="-0.000439"/>
-    <limitY/>
-    <curve R="148" B="189" G="103" name="/robot_master/control_data/angular_velocity_out" custom_transform="noTransform"/>
+    <curve name="/robot_master/control_data/control_difference_angular" custom_transform="noTransform" R="214" G="39" B="40"/>
     <transform value="noTransform"/>
    </plot>
   </plotmatrix>
-  <plotmatrix rows="2" columns="2" tab_name="SLAVE 1">
-   <plot col="0" row="0">
-    <range right="60.197223" left="0.202199" top="-1.070326" bottom="-1.242411"/>
+  <plotmatrix rows="5" columns="1" tab_name="MASTER CONTROLLER">
+   <plot row="0" col="0">
+    <range top="0.000042" bottom="-0.000014" left="4.440000" right="64.417000"/>
     <limitY/>
-    <curve R="148" B="189" G="103" name="/robot1/control_data/position_in/x" custom_transform="noTransform"/>
-    <curve R="214" B="40" G="39" name="/robot1/state/pose/position/x" custom_transform="noTransform"/>
+    <curve name="/robot_master/control_data/control_difference_cart/x" custom_transform="noTransform" R="214" G="39" B="40"/>
     <transform value="noTransform"/>
    </plot>
-   <plot col="0" row="1">
-    <range right="60.197223" left="0.202199" top="1.928990" bottom="1.229469"/>
+   <plot row="1" col="0">
+    <range top="-0.004019" bottom="-0.006682" left="4.440000" right="64.417000"/>
     <limitY/>
-    <curve R="23" B="207" G="190" name="/robot1/control_data/position_in/y" custom_transform="noTransform"/>
-    <curve R="26" B="56" G="201" name="/robot1/state/pose/position/y" custom_transform="noTransform"/>
+    <curve name="/robot_master/control_data/control_difference_cart/y" custom_transform="noTransform" R="26" G="201" B="56"/>
     <transform value="noTransform"/>
    </plot>
-   <plot col="1" row="0">
-    <range right="60.197223" left="0.202251" top="0.163902" bottom="0.163419"/>
+   <plot row="2" col="0">
+    <range top="0.000226" bottom="0.000005" left="4.440000" right="64.417000"/>
     <limitY/>
-    <curve R="188" B="34" G="189" name="/robot1/control_data/control_difference_cart/x" custom_transform="noTransform"/>
+    <curve name="/robot_master/control_data/control_difference_angular" custom_transform="noTransform" R="214" G="39" B="40"/>
     <transform value="noTransform"/>
    </plot>
-   <plot col="1" row="1">
-    <range right="60.197223" left="0.202251" top="0.666243" bottom="0.664853"/>
+   <plot row="3" col="0">
+    <range top="0.000097" bottom="-0.000299" left="4.440000" right="64.417000"/>
     <limitY/>
-    <curve R="31" B="180" G="119" name="/robot1/control_data/control_difference_cart/y" custom_transform="noTransform"/>
+    <curve name="/robot_master/control_data/linear_velocity_out" custom_transform="noTransform" R="23" G="190" B="207"/>
     <transform value="noTransform"/>
    </plot>
-  </plotmatrix>
-  <plotmatrix rows="4" columns="1" tab_name="SLAVE CONTROLLER">
-   <plot col="0" row="0">
-    <range right="60.197223" left="0.202251" top="0.163902" bottom="0.163419"/>
+   <plot row="4" col="0">
+    <range top="0.002034" bottom="0.000043" left="4.440000" right="64.417000"/>
     <limitY/>
-    <curve R="188" B="34" G="189" name="/robot1/control_data/control_difference_cart/x" custom_transform="noTransform"/>
-    <transform value="noTransform"/>
-   </plot>
-   <plot col="0" row="1">
-    <range right="60.197223" left="0.202251" top="0.666243" bottom="0.664853"/>
-    <limitY/>
-    <curve R="31" B="180" G="119" name="/robot1/control_data/control_difference_cart/y" custom_transform="noTransform"/>
-    <transform value="noTransform"/>
-   </plot>
-   <plot col="0" row="2">
-    <range right="60.197223" left="0.202251" top="0.000096" bottom="-0.000231"/>
-    <limitY/>
-    <curve R="214" B="40" G="39" name="/robot1/control_data/linear_velocity_out" custom_transform="noTransform"/>
-    <transform value="noTransform"/>
-   </plot>
-   <plot col="0" row="3">
-    <range right="60.197223" left="0.202251" top="0.000555" bottom="-0.000523"/>
-    <limitY/>
-    <curve R="31" B="180" G="119" name="/robot1/control_data/angular_velocity_out" custom_transform="noTransform"/>
+    <curve name="/robot_master/control_data/angular_velocity_out" custom_transform="noTransform" R="148" G="103" B="189"/>
     <transform value="noTransform"/>
    </plot>
   </plotmatrix>
-  <plotmatrix rows="2" columns="2" tab_name="SLAVE2">
-   <plot col="0" row="0">
-    <range right="59.997761" left="0.000000" top="-1.092791" bottom="-1.233886"/>
+  <plotmatrix rows="3" columns="2" tab_name="SLAVE 1">
+   <plot row="0" col="0">
+    <range top="-1.499969" bottom="-1.500014" left="5.082000" right="65.082000"/>
     <limitY/>
-    <curve R="26" B="56" G="201" name="/robot2/control_data/position_in/x" custom_transform="noTransform"/>
-    <curve R="31" B="180" G="119" name="/robot2/state/pose/position/x" custom_transform="noTransform"/>
+    <curve name="/robot1/control_data/position_in/x" custom_transform="noTransform" R="31" G="119" B="180"/>
+    <curve name="/robot1/state/pose/x" custom_transform="noTransform" R="188" G="189" B="34"/>
     <transform value="noTransform"/>
    </plot>
-   <plot col="0" row="1">
-    <range right="59.997761" left="0.000000" top="-0.911681" bottom="-1.262209"/>
+   <plot row="1" col="0">
+    <range top="1.500147" bottom="1.493958" left="5.082000" right="65.082000"/>
     <limitY/>
-    <curve R="255" B="14" G="127" name="/robot2/control_data/position_in/y" custom_transform="noTransform"/>
-    <curve R="214" B="40" G="39" name="/robot2/state/pose/position/y" custom_transform="noTransform"/>
+    <curve name="/robot1/control_data/position_in/y" custom_transform="noTransform" R="23" G="190" B="207"/>
+    <curve name="/robot1/state/pose/y" custom_transform="noTransform" R="31" G="119" B="180"/>
     <transform value="noTransform"/>
    </plot>
-   <plot col="1" row="0">
-    <range right="59.997761" left="0.000032" top="0.134386" bottom="0.134008"/>
+   <plot row="2" col="0">
+    <range top="0.000035" bottom="-0.000139" left="5.082000" right="65.082000"/>
     <limitY/>
-    <curve R="241" B="193" G="76" name="/robot2/control_data/control_difference_cart/x" custom_transform="noTransform"/>
+    <curve name="/robot1/control_data/angle_in" custom_transform="noTransform" R="23" G="190" B="207"/>
+    <curve name="/robot1/state/pose/theta" custom_transform="noTransform" R="241" G="76" B="193"/>
     <transform value="noTransform"/>
    </plot>
-   <plot col="1" row="1">
-    <range right="59.997761" left="0.000032" top="0.333867" bottom="0.332583"/>
+   <plot row="0" col="1">
+    <range top="0.000031" bottom="-0.000014" left="5.082000" right="65.082000"/>
     <limitY/>
-    <curve R="148" B="189" G="103" name="/robot2/control_data/control_difference_cart/y" custom_transform="noTransform"/>
+    <curve name="/robot1/control_data/control_difference_cart/x" custom_transform="noTransform" R="188" G="189" B="34"/>
     <transform value="noTransform"/>
    </plot>
-  </plotmatrix>
-  <plotmatrix rows="4" columns="1" tab_name="SLAVE2 CONTROLLER">
-   <plot col="0" row="0">
-    <range right="59.997761" left="0.000032" top="0.134386" bottom="0.134008"/>
+   <plot row="1" col="1">
+    <range top="-0.003531" bottom="-0.005952" left="5.082000" right="65.082000"/>
     <limitY/>
-    <curve R="241" B="193" G="76" name="/robot2/control_data/control_difference_cart/x" custom_transform="noTransform"/>
+    <curve name="/robot1/control_data/control_difference_cart/y" custom_transform="noTransform" R="31" G="119" B="180"/>
     <transform value="noTransform"/>
    </plot>
-   <plot col="0" row="1">
-    <range right="59.997761" left="0.000032" top="0.333867" bottom="0.332583"/>
+   <plot row="2" col="1">
+    <range top="0.000166" bottom="-0.000020" left="5.082000" right="65.082000"/>
     <limitY/>
-    <curve R="148" B="189" G="103" name="/robot2/control_data/control_difference_cart/y" custom_transform="noTransform"/>
-    <transform value="noTransform"/>
-   </plot>
-   <plot col="0" row="2">
-    <range right="59.997761" left="0.000032" top="0.000065" bottom="-0.000173"/>
-    <limitY/>
-    <curve R="23" B="207" G="190" name="/robot2/control_data/linear_velocity_out" custom_transform="noTransform"/>
-    <transform value="noTransform"/>
-   </plot>
-   <plot col="0" row="3">
-    <range right="59.997761" left="0.000032" top="0.000687" bottom="-0.000504"/>
-    <limitY/>
-    <curve R="188" B="34" G="189" name="/robot2/control_data/angular_velocity_out" custom_transform="noTransform"/>
+    <curve name="/robot1/control_data/control_difference_angular" custom_transform="noTransform" R="188" G="189" B="34"/>
     <transform value="noTransform"/>
    </plot>
   </plotmatrix>
-  <currentPlotMatrix index="1"/>
+  <plotmatrix rows="5" columns="1" tab_name="SLAVE CONTROLLER">
+   <plot row="0" col="0">
+    <range top="0.000031" bottom="-0.000014" left="5.522000" right="65.522000"/>
+    <limitY/>
+    <curve name="/robot1/control_data/control_difference_cart/x" custom_transform="noTransform" R="188" G="189" B="34"/>
+    <transform value="noTransform"/>
+   </plot>
+   <plot row="1" col="0">
+    <range top="-0.003546" bottom="-0.005969" left="5.522000" right="65.522000"/>
+    <limitY/>
+    <curve name="/robot1/control_data/control_difference_cart/y" custom_transform="noTransform" R="31" G="119" B="180"/>
+    <transform value="noTransform"/>
+   </plot>
+   <plot row="2" col="0">
+    <range top="0.000166" bottom="-0.000020" left="5.522000" right="65.522000"/>
+    <limitY/>
+    <curve name="/robot1/control_data/control_difference_angular" custom_transform="noTransform" R="188" G="189" B="34"/>
+    <transform value="noTransform"/>
+   </plot>
+   <plot row="3" col="0">
+    <range top="0.000102" bottom="-0.000224" left="5.522000" right="65.522000"/>
+    <limitY/>
+    <curve name="/robot1/control_data/linear_velocity_out" custom_transform="noTransform" R="214" G="39" B="40"/>
+    <transform value="noTransform"/>
+   </plot>
+   <plot row="4" col="0">
+    <range top="0.001498" bottom="-0.000183" left="5.522000" right="65.522000"/>
+    <limitY/>
+    <curve name="/robot1/control_data/angular_velocity_out" custom_transform="noTransform" R="31" G="119" B="180"/>
+    <transform value="noTransform"/>
+   </plot>
+  </plotmatrix>
+  <plotmatrix rows="3" columns="2" tab_name="SLAVE2">
+   <plot row="0" col="0">
+    <range top="-1.499957" bottom="-1.500008" left="5.922000" right="65.922000"/>
+    <limitY/>
+    <curve name="/robot2/control_data/position_in/x" custom_transform="noTransform" R="26" G="201" B="56"/>
+    <curve name="/robot2/state/pose/x" custom_transform="noTransform" R="214" G="39" B="40"/>
+    <transform value="noTransform"/>
+   </plot>
+   <plot row="1" col="0">
+    <range top="-1.499776" bottom="-1.509183" left="5.922000" right="65.922000"/>
+    <limitY/>
+    <curve name="/robot2/control_data/position_in/y" custom_transform="noTransform" R="255" G="127" B="14"/>
+    <curve name="/robot2/state/pose/y" custom_transform="noTransform" R="26" G="201" B="56"/>
+    <transform value="noTransform"/>
+   </plot>
+   <plot row="2" col="0">
+    <range top="0.000127" bottom="-0.000267" left="5.922000" right="65.922000"/>
+    <limitY/>
+    <curve name="/robot2/control_data/angle_in" custom_transform="noTransform" R="26" G="201" B="56"/>
+    <curve name="/robot2/state/pose/theta" custom_transform="noTransform" R="255" G="127" B="14"/>
+    <transform value="noTransform"/>
+   </plot>
+   <plot row="0" col="1">
+    <range top="0.000043" bottom="-0.000008" left="5.922000" right="65.922000"/>
+    <limitY/>
+    <curve name="/robot2/control_data/control_difference_cart/x" custom_transform="noTransform" R="241" G="76" B="193"/>
+    <transform value="noTransform"/>
+   </plot>
+   <plot row="1" col="1">
+    <range top="-0.006264" bottom="-0.009025" left="5.922000" right="65.922000"/>
+    <limitY/>
+    <curve name="/robot2/control_data/control_difference_cart/y" custom_transform="noTransform" R="148" G="103" B="189"/>
+    <transform value="noTransform"/>
+   </plot>
+   <plot row="2" col="1">
+    <range top="0.000287" bottom="-0.000139" left="5.922000" right="65.922000"/>
+    <limitY/>
+    <curve name="/robot2/control_data/control_difference_angular" custom_transform="noTransform" R="255" G="127" B="14"/>
+    <transform value="noTransform"/>
+   </plot>
+  </plotmatrix>
+  <plotmatrix rows="5" columns="1" tab_name="SLAVE2 CONTROLLER">
+   <plot row="0" col="0">
+    <range top="0.000043" bottom="-0.000008" left="7.732000" right="67.732000"/>
+    <limitY/>
+    <curve name="/robot2/control_data/control_difference_cart/x" custom_transform="noTransform" R="241" G="76" B="193"/>
+    <transform value="noTransform"/>
+   </plot>
+   <plot row="1" col="0">
+    <range top="-0.006382" bottom="-0.009083" left="7.732000" right="67.732000"/>
+    <limitY/>
+    <curve name="/robot2/control_data/control_difference_cart/y" custom_transform="noTransform" R="148" G="103" B="189"/>
+    <transform value="noTransform"/>
+   </plot>
+   <plot row="2" col="0">
+    <range top="0.000287" bottom="-0.000139" left="7.732000" right="67.732000"/>
+    <limitY/>
+    <curve name="/robot2/control_data/control_difference_angular" custom_transform="noTransform" R="255" G="127" B="14"/>
+    <transform value="noTransform"/>
+   </plot>
+   <plot row="3" col="0">
+    <range top="0.000055" bottom="-0.000299" left="7.732000" right="67.732000"/>
+    <limitY/>
+    <curve name="/robot2/control_data/linear_velocity_out" custom_transform="noTransform" R="23" G="190" B="207"/>
+    <transform value="noTransform"/>
+   </plot>
+   <plot row="4" col="0">
+    <range top="0.002581" bottom="-0.001255" left="7.732000" right="67.732000"/>
+    <limitY/>
+    <curve name="/robot2/control_data/angular_velocity_out" custom_transform="noTransform" R="188" G="189" B="34"/>
+    <transform value="noTransform"/>
+   </plot>
+  </plotmatrix>
+  <currentPlotMatrix index="6"/>
  </tabbed_widget>
  <use_relative_time_offset enabled="1"/>
  <!-- - - - - - - - - - - - - - - -->
@@ -198,8 +255,8 @@
    <discard_large_arrays value="true"/>
    <max_array_size value="100"/>
   </plugin>
-  <plugin ID="RosoutPublisherROS" status="idle"/>
-  <plugin ID="TopicPublisherROS" status="idle"/>
+  <plugin status="idle" ID="RosoutPublisherROS"/>
+  <plugin status="idle" ID="TopicPublisherROS"/>
  </Plugins>
  <!-- - - - - - - - - - - - - - - -->
  <previouslyLoaded_Datafiles/>
