@@ -10,6 +10,8 @@
 #include <tf2_ros/static_transform_broadcaster.h>
 #include <std_srvs/Empty.h>
 #include <multi_robot_msgs/ControlData.h>
+#include <multi_robot_msgs/State.h>
+#include <multi_robot_msgs/Velocity.h>
 
 
 #include <math.h>
