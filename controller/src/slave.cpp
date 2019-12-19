@@ -45,20 +45,20 @@ void Slave::target_odometry_callback(nav_msgs::Odometry msg)
 
     
     //Calculate linear velocities
-    this->lin_vel_in=rot*lin+ang.cross(trafo*this->reference_pose.getOrigin());
-    
+    tf::Vector3 rotational;
+    rotational=ang.cross(rot*this->reference_pose.getOrigin());
+    this->lin_vel_in=lin+rotational;
+    this->ang_vel_in.setZ(msg.twist.twist.angular.z);
+   
+   
     //Calculate position 
     this->target_pose=trafo*this->reference_pose;
-    // tf::Vector3 rel;
-    // rel=rot*this->reference_pose.getOrigin();
-
-    // //Calculate orientation from velocity constrain
-    //this->target_pose.setRotation(tf::createQuaternionFromYaw(atan2(lin_vel_in.y(),lin_vel_in.x())));
-
-    // //Calculate angular velocity
-    tf::Vector3 pos;
-    pos=this->target_pose.getOrigin();
-    this->ang_vel_in.setZ((pos.x()*lin_vel_in.y()-pos.y()*lin_vel_in.x())/(pow(pos.x(),2)+pow(pos.y(),2)));
+    
+    
+        // //Calculate orientation from velocity constrain
+    double phi;
+    phi=atan2(lin_vel_in.y(),lin_vel_in.x());
+    this->target_pose.setRotation(tf::createQuaternionFromYaw(phi));
 }
 
 
