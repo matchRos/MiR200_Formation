@@ -91,7 +91,7 @@ void Controller::add_map()
 }
 
 
-void Controller::set_type(Controller::controllerType type)
+void Controller::set_type(Controller::ControllerType type)
 {
     ROS_INFO("Setting controller type of %s to: %i",this->name.c_str(),this->type);
     this->type=type;
@@ -103,7 +103,7 @@ void Controller::set_world_frame(std::string frame)
     ROS_INFO("Setting world frame of %s to: %s",this->name.c_str(),this->world_frame.c_str());
 }
 
-void Controller::set_lyapunov(Controller::lyapunov param)
+void Controller::set_lyapunov(Controller::LyapunovParameter param)
 {
     this->lyapunov_parameter.kx=param.kx;
     this->lyapunov_parameter.ky=param.ky;
@@ -112,7 +112,7 @@ void Controller::set_lyapunov(Controller::lyapunov param)
 }
 void Controller::set_lyapunov(std::vector<float> param)
 {
-    Controller::lyapunov parameter{param[0],param[1],param[2]};
+    Controller::LyapunovParameter parameter{param[0],param[1],param[2]};
     this->set_lyapunov(parameter);
 }
 
@@ -172,7 +172,7 @@ void Controller::load()
     if(ros::param::get(PARAM_TYPE,i))
     {
         ROS_INFO("Loading %s ",PARAM_TYPE);
-        this->set_type(static_cast<Controller::controllerType>(i));
+        this->set_type(static_cast<Controller::ControllerType>(i));
     }
 
    

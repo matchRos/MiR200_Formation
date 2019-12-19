@@ -48,7 +48,7 @@ class Controller{
          * @brief Specifies the different implemented control laws
          * 
          */
-        enum controllerType{
+        enum ControllerType{
             pseudo_inverse=1,   /**< Control law is based on pseudo inveres the input for generate a output (least squares optimisation) */
             lypanov=2,          /**< Control law is based on the lyapunov approache. Output is determined from a lyapunov stable function */
             angle_distance=3    /**< Control law based on linear approach in angle and distance respectively */
@@ -58,7 +58,7 @@ class Controller{
          * @brief Specifies the parameters needed for the lyapunov base control law
          * 
          */
-        struct lyapunov
+        struct LyapunovParameter
         {
             float kx;           /**< Control gain in x-direction */
             float ky;           /**< Control gain in y-direction */ 
@@ -107,14 +107,14 @@ class Controller{
          * 
          * @param type Type of the controller as defined in controllerType
          */
-        void set_type(Controller::controllerType type);
+        void set_type(Controller::ControllerType type);
 
         /**
          * @brief Sets the parameter of the lyapunov control law
          * 
          * @param param Parameterset as defined in lyapunov struct
          */
-        void set_lyapunov(Controller::lyapunov param);
+        void set_lyapunov(Controller::LyapunovParameter param);
 
         /**
          * @brief  Sets the parameter of the lyapunov control law
@@ -254,12 +254,12 @@ class Controller{
     protected:
         ros::NodeHandle nh;                                          ///<Node Handle
         tf::TransformListener* listener;
-        controllerType type;                                         ///<Type of control algorythm that is used
+        ControllerType type;                                         ///<Type of control algorythm that is used
 
 
         ros::Publisher pub_vel_out;                                  ///<publisher object for velocity outoput topic
         ros::Publisher pub_state_out;                                ///<publisher object for state output topic
-        ros::Publisher pub_control_data;                       ///<publisher object for control difference topic
+        ros::Publisher pub_control_data;                             ///<publisher object for control difference topic
         
         ros::Subscriber sub_vel_target;                              ///<Subscirber object for input topic
         ros::Subscriber sub_odom_current;                            ///<Subscriber object for odometry
@@ -271,8 +271,8 @@ class Controller{
         std::string name;                                           ///<Name of the node respective Controller
         std::string world_frame;                                    ///<Name of the world frame
         
-        tf::Vector3 ang_vel_in;                                 ///<target linear velocity
-        tf::Vector3 lin_vel_in;                                 ///<target angular velocity
+        tf::Vector3 ang_vel_in;                                     ///<target linear velocity
+        tf::Vector3 lin_vel_in;                                     ///<target angular velocity
 
         tf::Vector3 lin_vel_out;                                    ///<Outgoing linear velocity
         tf::Vector3 ang_vel_out;                                    ///<Outgoing angular velocity
@@ -288,7 +288,7 @@ class Controller{
         
         void getTransformation();                                   ///<Listen to all neccesary trasnformations
         void publish();                                             ///<Publish all outgoing data
-        lyapunov lyapunov_parameter;
+        LyapunovParameter lyapunov_parameter;
        
 
         double kx;
