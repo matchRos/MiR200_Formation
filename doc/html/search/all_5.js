@@ -13,6 +13,7 @@ var searchData=
   ['lissajousplanner',['LissajousPlanner',['../classLissajousPlanner.html',1,'']]],
   ['load',['load',['../classController.html#a55c77d2e41634c9b21543647f74eec4c',1,'Controller']]],
   ['load_5fparameter',['load_parameter',['../classController.html#a0758387181bc5902176813cc686cb088',1,'Controller']]],
-  ['lyapunov',['lyapunov',['../structController_1_1lyapunov.html',1,'Controller']]],
-  ['lypanov',['lypanov',['../classController.html#a86221d052db839985bd6e4d73013cd06aed0e850e561d54619d85f32c37f5bfab',1,'Controller']]]
+  ['lyapunov_5fparameter',['lyapunov_parameter',['../classController.html#a8069db2319ff64d65607b1aa897d3069',1,'Controller']]],
+  ['lyapunovparameter',['LyapunovParameter',['../structController_1_1LyapunovParameter.html',1,'Controller']]],
+  ['lypanov',['lypanov',['../classController.html#aa6d956c4c220461a4152415ffa78690aaed0e850e561d54619d85f32c37f5bfab',1,'Controller']]]
 ];

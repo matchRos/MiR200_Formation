@@ -11,11 +11,12 @@ Inheritance diagram for Slave\+:\nopagebreak
 \end{figure}
 
 
-Collaboration diagram for Slave\+:\nopagebreak
+Collaboration diagram for Slave\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=223pt]{classSlave__coll__graph}
+\includegraphics[width=247pt]{classSlave__coll__graph}
 \end{center}
 \end{figure}
 \subsection*{Public Member Functions}
@@ -26,21 +27,18 @@ Collaboration diagram for Slave\+:\nopagebreak
 \item 
 void \hyperlink{classSlave_a9b5d1d499c7bd05d5260fbe5b8afbbb5}{scope} ()\hypertarget{classSlave_a9b5d1d499c7bd05d5260fbe5b8afbbb5}{}\label{classSlave_a9b5d1d499c7bd05d5260fbe5b8afbbb5}
 
-\begin{DoxyCompactList}\small\item\em A Scope within the execute function. Repeating calculation in inheriting classes are implemented here. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Execution scope of this controller. Within this scope every periodical procedure is called. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Private Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 void \hyperlink{classSlave_a2a38a730d6ac93fcced035a7d764612d}{optimal\+\_\+control} ()
 \item 
-void \hyperlink{classSlave_a09394d0f823a06e04f6259ee490bc867}{target\+\_\+state\+\_\+callback} (geometry\+\_\+msgs\+::\+Pose\+Stamped msg)\hypertarget{classSlave_a09394d0f823a06e04f6259ee490bc867}{}\label{classSlave_a09394d0f823a06e04f6259ee490bc867}
-
-\begin{DoxyCompactList}\small\item\em Callback for input target state message. Is executed everytima a target state input is incoming. Writes data to target\+\_\+pose state. \end{DoxyCompactList}\item 
-void \hyperlink{classSlave_a2227f30ab058b623de7f6a940d079c90}{target\+\_\+velocities\+\_\+callback} (geometry\+\_\+msgs\+::\+Twist msg)\hypertarget{classSlave_a2227f30ab058b623de7f6a940d079c90}{}\label{classSlave_a2227f30ab058b623de7f6a940d079c90}
-
-\begin{DoxyCompactList}\small\item\em Callback for input velocitiy message. Is executed everytime a velocitiy input is incoming. Writes data to input state. \end{DoxyCompactList}\item 
-void \hyperlink{classSlave_a0d732637d1c0d06c214112a381ead6be}{target\+\_\+odometry\+\_\+callback} (nav\+\_\+msgs\+::\+Odometry msg)\hypertarget{classSlave_a0d732637d1c0d06c214112a381ead6be}{}\label{classSlave_a0d732637d1c0d06c214112a381ead6be}
-
-\begin{DoxyCompactList}\small\item\em Callback for input target odometry message. Is executed everytima a target odometry input is incoming. Writes data to target\+\_\+pose state and target\+\_\+vel. \end{DoxyCompactList}\end{DoxyCompactItemize}
+void \hyperlink{classSlave_a09394d0f823a06e04f6259ee490bc867}{target\+\_\+state\+\_\+callback} (geometry\+\_\+msgs\+::\+Pose\+Stamped msg)
+\begin{DoxyCompactList}\small\item\em Callback for incoming state data for the target state of the robot. This is overloaded by child classes. \end{DoxyCompactList}\item 
+void \hyperlink{classSlave_a2227f30ab058b623de7f6a940d079c90}{target\+\_\+velocities\+\_\+callback} (geometry\+\_\+msgs\+::\+Twist msg)
+\begin{DoxyCompactList}\small\item\em Callback for incoming velocity data for the target velocity of the robot. This is overloaded by child classes. \end{DoxyCompactList}\item 
+void \hyperlink{classSlave_a0d732637d1c0d06c214112a381ead6be}{target\+\_\+odometry\+\_\+callback} (nav\+\_\+msgs\+::\+Odometry msg)
+\begin{DoxyCompactList}\small\item\em Callback for incoming state data for the target odometry of the robot. This is overloaded by child classes. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Private Attributes}
 \begin{DoxyCompactItemize}
 \item 
@@ -61,7 +59,67 @@ tf\+::\+Pose {\bfseries master\+\_\+pose}\hypertarget{classSlave_ab6effa214fce22
 {}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classSlave_a2a38a730d6ac93fcced035a7d764612d}{}\label{classSlave_a2a38a730d6ac93fcced035a7d764612d}
-This implements a least sqaures determination of control vector \mbox{[}v,omega\mbox{]} \mbox{[}control.\+v control.\+omega\mbox{]} from the given cartesian velocity state d/dt\mbox{[}x,y,phi\mbox{]} (cart\+\_\+vel) 
+This implements a least sqaures determination of control vector \mbox{[}v,omega\mbox{]} \mbox{[}control.\+v control.\+omega\mbox{]} from the given cartesian velocity state d/dt\mbox{[}x,y,phi\mbox{]} (cart\+\_\+vel) \index{Slave@{Slave}!target\+\_\+odometry\+\_\+callback@{target\+\_\+odometry\+\_\+callback}}
+\index{target\+\_\+odometry\+\_\+callback@{target\+\_\+odometry\+\_\+callback}!Slave@{Slave}}
+\subsubsection[{\texorpdfstring{target\+\_\+odometry\+\_\+callback(nav\+\_\+msgs\+::\+Odometry msg)}{target_odometry_callback(nav_msgs::Odometry msg)}}]{\setlength{\rightskip}{0pt plus 5cm}void Slave\+::target\+\_\+odometry\+\_\+callback (
+\begin{DoxyParamCaption}
+\item[{nav\+\_\+msgs\+::\+Odometry}]{msg}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [virtual]}}\hypertarget{classSlave_a0d732637d1c0d06c214112a381ead6be}{}\label{classSlave_a0d732637d1c0d06c214112a381ead6be}
+
+
+Callback for incoming state data for the target odometry of the robot. This is overloaded by child classes. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & Incoming message \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{classController_ad9ccaff0c6f9989bd6c33a3d2179124d}{Controller}.
+
+\index{Slave@{Slave}!target\+\_\+state\+\_\+callback@{target\+\_\+state\+\_\+callback}}
+\index{target\+\_\+state\+\_\+callback@{target\+\_\+state\+\_\+callback}!Slave@{Slave}}
+\subsubsection[{\texorpdfstring{target\+\_\+state\+\_\+callback(geometry\+\_\+msgs\+::\+Pose\+Stamped msg)}{target_state_callback(geometry_msgs::PoseStamped msg)}}]{\setlength{\rightskip}{0pt plus 5cm}void Slave\+::target\+\_\+state\+\_\+callback (
+\begin{DoxyParamCaption}
+\item[{geometry\+\_\+msgs\+::\+Pose\+Stamped}]{msg}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [virtual]}}\hypertarget{classSlave_a09394d0f823a06e04f6259ee490bc867}{}\label{classSlave_a09394d0f823a06e04f6259ee490bc867}
+
+
+Callback for incoming state data for the target state of the robot. This is overloaded by child classes. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & Incoming message \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{classController_a60f59dd761ce2d41dc9254f87164ded1}{Controller}.
+
+\index{Slave@{Slave}!target\+\_\+velocities\+\_\+callback@{target\+\_\+velocities\+\_\+callback}}
+\index{target\+\_\+velocities\+\_\+callback@{target\+\_\+velocities\+\_\+callback}!Slave@{Slave}}
+\subsubsection[{\texorpdfstring{target\+\_\+velocities\+\_\+callback(geometry\+\_\+msgs\+::\+Twist msg)}{target_velocities_callback(geometry_msgs::Twist msg)}}]{\setlength{\rightskip}{0pt plus 5cm}void Slave\+::target\+\_\+velocities\+\_\+callback (
+\begin{DoxyParamCaption}
+\item[{geometry\+\_\+msgs\+::\+Twist}]{msg}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [virtual]}}\hypertarget{classSlave_a2227f30ab058b623de7f6a940d079c90}{}\label{classSlave_a2227f30ab058b623de7f6a940d079c90}
+
+
+Callback for incoming velocity data for the target velocity of the robot. This is overloaded by child classes. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & Incoming message \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{classController_afa31080c1ed1e652410c5e97472b3ea5}{Controller}.
+
+
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 

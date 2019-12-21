@@ -236,24 +236,41 @@ class Controller{
          * @param msg Incoming message
          */
         void current_odom_callback(nav_msgs::Odometry msg);
+       
         /**
-         * @brief Callback for incoming velocity data for the current velocity of the robot
+         * @brief Callback for incoming velocity data for the target velocity of the robot. This is overloaded by child classes.
          * 
          * @param msg Incoming message
          */
-        virtual void target_velocities_callback(geometry_msgs::Twist msg);         
-        /// Callback for input target state message. Is executed everytima a target state input is incoming. Writes data to target_pose state
+        virtual void target_velocities_callback(geometry_msgs::Twist msg);   
+        
+        /**
+         * @brief Callback for incoming state data for the target state of the robot. This is overloaded by child classes.
+         * 
+         * @param msg Incoming message
+         */        
         virtual void target_state_callback(geometry_msgs::PoseStamped msg);   
-          /// Callback for input target odometry message. Is executed everytima a target odometry input is incoming. Writes data to target_pose state and target_vel
+         /**
+         * @brief Callback for incoming state data for the target odometry of the robot. This is overloaded by child classes.
+         * 
+         * @param msg Incoming message
+         */                
         virtual void target_odometry_callback(nav_msgs::Odometry msg);
         
-        
-        //Callback for the reset server
+        /**
+         * @brief Service procedure for resetting the Controller
+         * 
+         * @param req Reqest for the service
+         * @param res Responce of the service
+         * @return true succeeded
+         * @return false not succeeded
+         */
         bool srv_reset(std_srvs::EmptyRequest &req, std_srvs::EmptyResponse &res);
 
-
-
-        /// A Scope within the execute function. Repeating calculation in inheriting classes are implemented here
+        /**
+         * @brief Execution scope of this controller. Within this scope every periodical procedure is called.
+         * 
+         */
         virtual void scope()=0;       
        
                 
@@ -285,18 +302,18 @@ class Controller{
         tf::Vector3 lin_vel_out;                                    ///<Outgoing linear velocity
         tf::Vector3 ang_vel_out;                                    ///<Outgoing angular velocity
         
-        tf::StampedTransform world2robot;                   
-        tf::StampedTransform world2odom;
+        tf::StampedTransform world2robot;                           ///<Transformation from world frame to the robot frame
+        tf::StampedTransform world2odom;                            ///<Transformation from the world frame to the odometry reference frame
 
-        tf::Transform control_dif;                                  ///<Transformation from current to target
+        tf::Transform control_dif;                                  ///<Transformation from current configuration to target configuration
 
-        tf::Pose reference_pose;                                    ///<Reference pose to a global system
-        tf::Pose current_pose;                                      ///<Pose of Controller at the moment in world
+        tf::Pose reference_pose;                                    ///<Reference or initial pose to a global system
+        tf::Pose current_pose;                                      ///<Pose of Controller at the moment expressed in world coordinates
         tf::Pose target_pose;                                       ///<The Target for the Controller poses
         
         void getTransformation();                                   ///<Listen to all neccesary trasnformations
         void publish();                                             ///<Publish all outgoing data
-        LyapunovParameter lyapunov_parameter;
+        LyapunovParameter lyapunov_parameter;                       ///<Parameter set for lyapunov determinations
        
 
         double kx;
@@ -313,7 +330,10 @@ class Controller{
         bool loaded_parameter;
 
     private:
-        ///Adding a transformation to the map frame, the reference pose is defined in
+        /**
+         * @brief Adding the world frame. Broadcastes a world frame respectiveliy the robot reference frame expressed in world coordinates.
+         * 
+         */
         void add_map();
         
 };
