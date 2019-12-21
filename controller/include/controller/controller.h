@@ -32,6 +32,7 @@
 #define PARAM_LYAPUNOV "/algorithm/lyapunov"
 #define PARAM_ANG_DIST "/algorithm/angle_distance"
 
+
 /**
  * @brief Provides a easy to use implementation of a generic mobile robot controller.
  */
@@ -68,6 +69,7 @@ class Controller{
         
         /*Setter and parameter methods ###################################################################################################################
         ##################################################################################################################################################*/
+        
         /**
          * @brief Set the name of object
          * 
@@ -278,7 +280,7 @@ class Controller{
         
     protected:
         ros::NodeHandle nh;                                          ///<Node Handle
-        tf::TransformListener* listener;
+        tf::TransformListener* listener;                             ///<Listener for any transformation
         ControllerType type;                                         ///<Type of control algorythm that is used
 
 
@@ -302,16 +304,12 @@ class Controller{
         tf::Vector3 lin_vel_out;                                    ///<Outgoing linear velocity
         tf::Vector3 ang_vel_out;                                    ///<Outgoing angular velocity
         
-        tf::StampedTransform world2robot;                           ///<Transformation from world frame to the robot frame
-        tf::StampedTransform world2odom;                            ///<Transformation from the world frame to the odometry reference frame
-
         tf::Transform control_dif;                                  ///<Transformation from current configuration to target configuration
 
         tf::Pose reference_pose;                                    ///<Reference or initial pose to a global system
         tf::Pose current_pose;                                      ///<Pose of Controller at the moment expressed in world coordinates
         tf::Pose target_pose;                                       ///<The Target for the Controller poses
         
-        void getTransformation();                                   ///<Listen to all neccesary trasnformations
         void publish();                                             ///<Publish all outgoing data
         LyapunovParameter lyapunov_parameter;                       ///<Parameter set for lyapunov determinations
        

@@ -302,21 +302,6 @@ void Controller::target_odometry_callback(nav_msgs::Odometry msg)
 
 /*Calculations and executions ####################################################################################################################
 ##################################################################################################################################################*/
-void Controller::getTransformation()
-{
-    try
-    {
-        this->listener->lookupTransform(this->world_frame,this->name+"/base_footprint",ros::Time(0),this->world2robot);
-
-        this->listener->lookupTransform(this->world_frame,this->name+"/odom_comb",ros::Time(0),this->world2odom);
-    }
-    catch (tf::TransformException ex)
-    {
-            ROS_ERROR("%s",ex.what());
-            ros::Duration(1.0).sleep();
-    }
-}
-
 void Controller::publish()
 {
     //publish output velocities 
@@ -389,7 +374,6 @@ void Controller::calc_angle_distance(double kr,double kphi)
 
 void Controller::execute()
 {
-    this->getTransformation();
     this->scope();
     this->publish();
      ros::spinOnce();
