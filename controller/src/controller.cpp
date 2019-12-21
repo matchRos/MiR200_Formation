@@ -8,7 +8,7 @@ Controller::Controller(ros::NodeHandle &nh):    nh(nh),
     this->name=nh.getNamespace();
 
     this->pub_vel_out=this->nh.advertise<geometry_msgs::Twist>("/out",10);
-    this->pub_state_out=this->nh.advertise<geometry_msgs::PoseStamped>("/state_out",10);
+    this->pub_state_out=this->nh.advertise<multi_robot_msgs::State>("/state_out",10);
     this->pub_control_data=this->nh.advertise<multi_robot_msgs::ControlData>("/control_data",10);
     
     this->sub_vel_target=this->nh.subscribe("/in",10,&Controller::target_velocities_callback,this);
@@ -30,12 +30,11 @@ void Controller::reset()
 {  
     if(loaded_parameter)
     {
-        this->load();  
-        this->set_reference();     
+        this->load();    
     }
     else
     {
-        this->set_reference();
+        this->add_map();
     }
     
 }
@@ -56,26 +55,17 @@ void Controller::set_name(std::string name)
 }
 
 
-void Controller::set_reference()
-{
-    this->current_pose=this->reference_pose;
-    this->target_pose=this->current_pose;    
 
+void Controller::set_reference(double x,double y,double z,double angle)
+{
+    
+    this->reference_pose=tf::Pose(tf::createQuaternionFromYaw(angle),tf::Vector3(x,y,z));
+    this->current_pose=this->reference_pose;
+    this->target_pose=this->current_pose;
     ROS_INFO("Set coordiantes of: %s to: %lf %lf %lf",this->name.c_str(),   this->reference_pose.getOrigin().x(),
                                                                             this->reference_pose.getOrigin().y(),
                                                                             this->reference_pose.getOrigin().z());
     this->add_map();   
-}
-
-
-void Controller::set_reference(double x,double y,double z,double angle)
-{
-    this->reference_pose=tf::Pose();
-    this->reference_pose.setOrigin(tf::Vector3(x,y,z));
-    this->reference_pose.setRotation(tf::Quaternion(angle,0,0));
-
-   this->set_reference();
-
 }
 
 void Controller::set_reference(std::vector<double> coord,double angle)
@@ -101,7 +91,7 @@ void Controller::add_map()
 }
 
 
-void Controller::set_type(Controller::controllerType type)
+void Controller::set_type(Controller::ControllerType type)
 {
     ROS_INFO("Setting controller type of %s to: %i",this->name.c_str(),this->type);
     this->type=type;
@@ -113,7 +103,7 @@ void Controller::set_world_frame(std::string frame)
     ROS_INFO("Setting world frame of %s to: %s",this->name.c_str(),this->world_frame.c_str());
 }
 
-void Controller::set_lyapunov(Controller::lyapunov param)
+void Controller::set_lyapunov(Controller::LyapunovParameter param)
 {
     this->lyapunov_parameter.kx=param.kx;
     this->lyapunov_parameter.ky=param.ky;
@@ -122,7 +112,7 @@ void Controller::set_lyapunov(Controller::lyapunov param)
 }
 void Controller::set_lyapunov(std::vector<float> param)
 {
-    Controller::lyapunov parameter{param[0],param[1],param[2]};
+    Controller::LyapunovParameter parameter{param[0],param[1],param[2]};
     this->set_lyapunov(parameter);
 }
 
@@ -130,17 +120,24 @@ void Controller::load()
 {
     std::string param;
 
-    if(ros::param::get(PARAM_WORLD_FRAME,param));
+    if(ros::param::get(PARAM_WORLD_FRAME,param))
     {
         ROS_INFO("Loading %s",PARAM_WORLD_FRAME);
         this->set_world_frame(param);     
     }
-
+    else
+    {
+        ROS_INFO("Could not load %s for %s",PARAM_WORLD_FRAME,this->name.c_str());
+    }
    
     if(ros::param::get(PARAM_CURRENT_ODOM,param))
     {
         ROS_INFO("Loading %s",PARAM_CURRENT_ODOM);
         this->link_current_odom(param);
+    }
+    else
+    {
+        ROS_INFO("Could not load %s for %s",PARAM_CURRENT_ODOM,this->name.c_str());
     }
 
     if(ros::param::get(PARAM_TARGET_ODOM,param))
@@ -148,25 +145,34 @@ void Controller::load()
         ROS_INFO("Loading %s",PARAM_TARGET_ODOM);
         this->link_target_odometry(param);
     }
-
+    else
+    {
+        ROS_INFO("Could not load %s for %s",PARAM_TARGET_ODOM,this->name.c_str());
+    }
     if(ros::param::get(PARAM_TARGET_VEL,param))
     {
         ROS_INFO("Loading %s ",PARAM_TARGET_VEL);
         this->link_target_velocity(param);
     }
-
+    else
+    {
+        ROS_INFO("Could not load %s for %s",PARAM_TARGET_VEL,this->name.c_str());
+    }
     if(ros::param::get(PARAM_TARGET_STATE,param))
     {
         ROS_INFO("Loading %s ",PARAM_TARGET_STATE);
         this->link_target_state(param);
     }
-
+    else
+    {
+        ROS_INFO("Could not load %s for %s",PARAM_TARGET_STATE,this->name.c_str());
+    }
 
     int i;
     if(ros::param::get(PARAM_TYPE,i))
     {
         ROS_INFO("Loading %s ",PARAM_TYPE);
-        this->set_type(static_cast<Controller::controllerType>(i));
+        this->set_type(static_cast<Controller::ControllerType>(i));
     }
 
    
@@ -242,7 +248,7 @@ void Controller::link_output_state(std::string topic_name)
 {
     this->pub_state_out.shutdown();
     ROS_INFO("Linking output state of %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
-    this->pub_state_out=this->nh.advertise<geometry_msgs::PoseStamped>(topic_name,10);
+    this->pub_state_out=this->nh.advertise<multi_robot_msgs::State>(topic_name,10);
 }
 
 void Controller::link_output_control_data(std::string topic_name)
@@ -320,22 +326,30 @@ void Controller::publish()
     this->pub_vel_out.publish(msg_vel);
 
     //publish output pose state
-    geometry_msgs::PoseStamped msg_pose;    
-    msg_pose.header.frame_id=this->world_frame;
-    msg_pose.header.stamp=ros::Time::now();    
-    tf::poseTFToMsg(this->current_pose,msg_pose.pose);
-    this->pub_state_out.publish(msg_pose);   
+    multi_robot_msgs::State msg_state;    
+    msg_state.pose.x=this->current_pose.getOrigin().x();
+    msg_state.pose.y=this->current_pose.getOrigin().y();
+    msg_state.pose.theta=tf::getYaw(this->current_pose.getRotation());
+    this->pub_state_out.publish(msg_state);   
 
     //publish control data
     multi_robot_msgs::ControlData msg_data;
     msg_data.header.stamp=ros::Time::now();
     msg_data.header.frame_id=this->world_frame;
-    msg_data.angular_velocity_in=this->ang_vel_in.z();
-    msg_data.angular_velocity_out=this->ang_vel_out.z();
-    tf::vector3TFToMsg(this->current_pose.getOrigin()-this->target_pose.getOrigin(),msg_data.control_difference_cart);
-    msg_data.linear_velocity_out=this->lin_vel_out.x();
+
+    //INPUTS    
     tf::vector3TFToMsg(this->target_pose.getOrigin(),msg_data.position_in);
-    tf::vector3TFToMsg(this->lin_vel_in,msg_data.velocity_in);
+    msg_data.angular_velocity_in=this->ang_vel_in.z();
+    tf::vector3TFToMsg(this->lin_vel_in,msg_data.velocity_in); 
+    msg_data.angle_in=tf::getYaw(this->target_pose.getRotation());
+    
+
+    msg_data.linear_velocity_out=this->lin_vel_out.x();
+    msg_data.angular_velocity_out=this->ang_vel_out.z();
+
+    tf::vector3TFToMsg(this->current_pose.getOrigin()-this->target_pose.getOrigin(),msg_data.control_difference_cart);
+    msg_data.control_difference_angular=tf::getYaw(this->control_dif.getRotation());
+
     this->pub_control_data.publish(msg_data);
 
 }

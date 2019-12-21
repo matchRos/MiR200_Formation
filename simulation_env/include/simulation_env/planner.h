@@ -6,6 +6,7 @@
 #include<std_srvs/SetBool.h>
 
 //Generic path planning class
+#define PARAM_ITERATION "iterations"
 class Planner{
    
     public:
@@ -23,7 +24,8 @@ class Planner{
 
     protected:
         int iterations_counter;                                 ///Counter for the iterations of periodic planner functions
-        ros::NodeHandle nh;      
+        ros::NodeHandle nh;
+        int iterations;        
     private:
          
         ros::Timer tim_sampling;                                //Timer for publishing trajectory
@@ -35,7 +37,7 @@ class Planner{
         bool is_planning;                                       //Flag if the planner is planning at the moment
         bool is_paused;                                         //Flag if the planner is paused at the moment
 
-        int iterations;                                         //Number of Iterations to do
+                                              //Number of Iterations to do
 
         std::string frame_name;                                 //Frame in wich the pose is calculated
 

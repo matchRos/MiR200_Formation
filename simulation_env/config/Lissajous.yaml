@@ -1,4 +1,5 @@
 planner:
+    iterations: 10
     omega: 0.05
     ratio: 2
     phaseshift: 0

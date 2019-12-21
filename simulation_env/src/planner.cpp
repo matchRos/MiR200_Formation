@@ -199,6 +199,7 @@ double CirclePlanner::get_angular_velocity(ros::Duration time)
 void CirclePlanner::load()
 {
     try{
+        this->nh.getParam(PARAM_ITERATION,this->iterations);
         this->nh.getParam(PARAM_R,this->plan.r);
         this->nh.getParam(PARAM_OMEGA,this->plan.omega);
         ROS_INFO("Loaded %s : Radius: %f Omega: %f",    ros::this_node::getName().c_str(),
@@ -283,6 +284,7 @@ void LissajousPlanner::set_parameter(float omegax,float dphi,int ratio,float Ax,
 
 void LissajousPlanner::load()
 {
+    this->nh.getParam(PARAM_ITERATION,this->iterations);
     this->nh.getParam(PARAM_AMP_X,this->plan.Ax);
     this->nh.getParam(PARAM_AMP_Y,this->plan.Ay);
     this->nh.getParam(PARAM_RATIO,this->plan.ratio);

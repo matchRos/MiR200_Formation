@@ -1,3 +1,4 @@
 planner:
+  iterations: 10
   radius: 5.0
-  omega : 0.1
+  omega : 0.05

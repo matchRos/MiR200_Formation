@@ -31,20 +31,34 @@ void Slave::target_velocities_callback(geometry_msgs::Twist msg)
 
 void Slave::target_odometry_callback(nav_msgs::Odometry msg)
 {
+    //Transform msg to tf
     tf::Vector3 ang;
     tf::vector3MsgToTF(msg.twist.twist.angular,ang);
     tf::Vector3 lin;
     tf::vector3MsgToTF(msg.twist.twist.linear,lin);
     
+    //Get necessary transformations
     tf::Transform trafo;  
     tf::poseMsgToTF(msg.pose.pose,trafo);
     tf::Transform rot;
     rot.setRotation(trafo.getRotation());
 
-    this->lin_vel_in=rot*lin+ang.cross(trafo*this->reference_pose.getOrigin());
-    this->ang_vel_in=ang;
     
-    this->target_pose=trafo*this->reference_pose;   
+    //Calculate linear velocities
+    tf::Vector3 rotational;
+    rotational=ang.cross(rot*this->reference_pose.getOrigin());
+    this->lin_vel_in=lin+rotational;
+    this->ang_vel_in.setZ(msg.twist.twist.angular.z);
+   
+   
+    //Calculate position 
+    this->target_pose=trafo*this->reference_pose;
+    
+    
+        // //Calculate orientation from velocity constrain
+    double phi;
+    phi=atan2(lin_vel_in.y(),lin_vel_in.x());
+    this->target_pose.setRotation(tf::createQuaternionFromYaw(phi));
 }
 
 
