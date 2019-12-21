@@ -231,9 +231,17 @@ class Controller{
 
         /*Callbacks########################################################################################################################################
         ##################################################################################################################################################*/
-        /// Callback for input odometry message. Is executed everytima a Odometry input is incoming. Writes data to input current_pose
+        /**
+         * @brief Callback for incoming odometry data for the current robot odometry.
+         * 
+         * @param msg Incoming message
+         */
         void current_odom_callback(nav_msgs::Odometry msg);
-        /// Callback for input velocitiy message. Is executed everytime a velocitiy input is incoming. Writes data to input state
+        /**
+         * @brief Callback for incoming velocity data for the current velocity of the robot
+         * 
+         * @param msg Incoming message
+         */
         virtual void target_velocities_callback(geometry_msgs::Twist msg);         
         /// Callback for input target state message. Is executed everytima a target state input is incoming. Writes data to target_pose state
         virtual void target_state_callback(geometry_msgs::PoseStamped msg);   
