@@ -1,4 +1,6 @@
 <map id="Slave" name="Slave">
-<area shape="rect" id="node2" href="$classController.html" title="Provides a easy to use implementation of a generic mobile robot controller. " alt="" coords="67,95,146,121"/>
-<area shape="rect" id="node3" href="$structController_1_1LyapunovParameter.html" title="Specifies the parameters needed for the lyapunov base control law. " alt="" coords="5,5,208,32"/>
+<area shape="rect" id="node2" href="$classController.html" title="Provides a easy to use implementation of a generic mobile robot controller. " alt="" coords="232,109,311,136"/>
+<area shape="rect" id="node3" href="$structController_1_1ControlState.html" title="Holds the System state combined by the pose of the system, the cartesian velocity and the angular vel..." alt="" coords="5,5,164,32"/>
+<area shape="rect" id="node4" href="$structController_1_1ControlVector.html" title="A struct that holds linear and angular velocity of the Robot since this are the control variable for ..." alt="" coords="188,5,355,32"/>
+<area shape="rect" id="node5" href="$structController_1_1LyapunovParameter.html" title="Specifies the parameters needed for the lyapunov based control law. " alt="" coords="379,5,582,32"/>
 </map>

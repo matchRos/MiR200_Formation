@@ -1,7 +1,7 @@
 #include <controller/controller.h>
 
 Controller::Controller(ros::NodeHandle &nh):    nh(nh),
-                                                control_dif(tf::createIdentityQuaternion(),
+                                                control_dif_(tf::createIdentityQuaternion(),
                                                             tf::Vector3(0,0,0))
 {
                                            
@@ -9,12 +9,12 @@ Controller::Controller(ros::NodeHandle &nh):    nh(nh),
     this->name=nh.getNamespace();
 
     //Publishers
-    this->pub_vel_out=this->nh.advertise<geometry_msgs::Twist>("/out",10);
+    this->pub_cmd_vel=this->nh.advertise<geometry_msgs::Twist>("/out",10);
     this->pub_control_data=this->nh.advertise<multi_robot_msgs::ControlData>("/control_data",10);
     
     //Subscribers
     this->sub_odom_current=this->nh.subscribe("/odom_current",10,&Controller::currentOdomCallback,this);   
-    this->sub_target_odometry=this->nh.subscribe("/odom_target",10,&Controller::targetOdomCallback,this);
+    this->sub_odom_target=this->nh.subscribe("/odom_target",10,&Controller::targetOdomCallback,this);
     
     //Services
     this->reset_service=nh.advertiseService("reset",&Controller::srvReset,this);
@@ -188,16 +188,6 @@ void Controller::load()
     if( ros::param::get(PARAM_LYAPUNOV,lyapunov))
     {
         this->setLyapunov(lyapunov);
-        ROS_INFO("LOADED %s  PARAM: %lf %lf %lf %lf %lf",PARAM_LYAPUNOV ,this->kx,this->ky,this->kphi,this->vd,this->omegad);
-    }   
-
-    std::vector<double> ang_dist;
-    if( ros::param::get(PARAM_ANG_DIST,ang_dist))
-    {
-       this->kr=ang_dist[0]; 
-       this->kang=ang_dist[1];
-       ROS_INFO("LOADED %s PARAM: %lf %lf ",PARAM_ANG_DIST, this->kr,this->kang);
-
     }   
     
     loadParameter();
@@ -224,17 +214,17 @@ void Controller::linkCurrentOdom(std::string topic_name)
 
 void Controller::linkTargetOdom(std::string topic_name)
 {
-    this->sub_target_odometry.shutdown();
+    this->sub_odom_target.shutdown();
     ROS_INFO("Linking input target odometry of %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
-    this->sub_target_odometry=this->nh.subscribe(topic_name,10,&Controller::targetOdomCallback,this);
+    this->sub_odom_target=this->nh.subscribe(topic_name,10,&Controller::targetOdomCallback,this);
 }
 
 ///OUTPUTS
 void Controller::linkOutputVelocity(std::string topic_name)
 {
-    this->pub_vel_out.shutdown();
+    this->pub_cmd_vel.shutdown();
     ROS_INFO("Linking output velocity of %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
-    this->pub_vel_out=this->nh.advertise<geometry_msgs::Twist>(topic_name,10);
+    this->pub_cmd_vel=this->nh.advertise<geometry_msgs::Twist>(topic_name,10);
 }
 
 void Controller::linkOutputControlData(std::string topic_name)
@@ -338,14 +328,14 @@ void Controller::publish()
     geometry_msgs::Twist msg_vel;
     msg_vel.linear.x=this->control_.v;
     msg_vel.angular.z=this->control_.omega;
-    this->pub_vel_out.publish(msg_vel);
+    this->pub_cmd_vel.publish(msg_vel);
 
 
     //Publish Controller metadata
     multi_robot_msgs::ControlData msg;
     msg.header.frame_id=this->world_frame;
     msg.header.stamp=ros::Time::now();
-    controlDifference2controlDifferenceMsg(this->control_dif,msg.difference);
+    controlDifference2controlDifferenceMsg(this->control_dif_,msg.difference);
     controlState2controlStateMsg(this->current_state_,msg.current);
     controlState2controlStateMsg(this->target_state_,msg.target);
     controlVector2controlVectorMsg(this->control_,msg.control);
@@ -371,7 +361,7 @@ struct Controller::ControlVector Controller::calcLyapunov(LyapunovParameter para
 void Controller::execute(const ros::TimerEvent &ev)
 {
     VelocityEulerian desired;
-    this->control_dif=this->current_state_.pose.inverseTimes(this->target_state_.pose);    
+    this->control_dif_=this->current_state_.pose.inverseTimes(this->target_state_.pose);    
         
     switch(this->type)
     {
@@ -383,7 +373,7 @@ void Controller::execute(const ros::TimerEvent &ev)
         case lypanov:
             desired.omega=this->target_state_.angular_velocity;
             desired.v=sqrt(pow(this->target_state_.velocity.getX(),2)+pow(this->target_state_.velocity.getY(),2));           
-            this->control_=calcLyapunov(this->lyapunov_parameter,desired,control_dif);
+            this->control_=calcLyapunov(this->lyapunov_parameter,desired,control_dif_);
             break;
         default: 
             break;

@@ -73,22 +73,24 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions.html"><span>All</span></a></li>
       <li class="current"><a href="functions_func.html"><span>Functions</span></a></li>
       <li><a href="functions_vars.html"><span>Variables</span></a></li>
+      <li><a href="functions_type.html"><span>Typedefs</span></a></li>
       <li><a href="functions_enum.html"><span>Enumerations</span></a></li>
       <li><a href="functions_eval.html"><span>Enumerator</span></a></li>
     </ul>
   </div>
   <div id="navrow4" class="tabs3">
     <ul class="tablist">
-      <li><a href="#index_a"><span>a</span></a></li>
       <li><a href="#index_c"><span>c</span></a></li>
       <li><a href="#index_e"><span>e</span></a></li>
       <li><a href="#index_g"><span>g</span></a></li>
       <li><a href="#index_l"><span>l</span></a></li>
+      <li><a href="#index_m"><span>m</span></a></li>
       <li><a href="#index_o"><span>o</span></a></li>
       <li><a href="#index_p"><span>p</span></a></li>
       <li><a href="#index_r"><span>r</span></a></li>
       <li><a href="#index_s"><span>s</span></a></li>
-      <li class="current"><a href="#index_t"><span>t</span></a></li>
+      <li><a href="#index_t"><span>t</span></a></li>
+      <li class="current"><a href="#index_0x7e"><span>~</span></a></li>
     </ul>
   </div>
 </div><!-- top -->
@@ -109,32 +111,31 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="contents">
 &#160;
 
-<h3><a class="anchor" id="index_a"></a>- a -</h3><ul>
-<li>add_map()
-: <a class="el" href="classController.html#ac3c2cc7b8afdf05ade60e03eaca88b91">Controller</a>
-</li>
-</ul>
-
-
 <h3><a class="anchor" id="index_c"></a>- c -</h3><ul>
-<li>calc_angle_distance()
-: <a class="el" href="classController.html#a63249412728814430174c740d358a5c0">Controller</a>
+<li>calcLyapunov()
+: <a class="el" href="classController.html#a5342dd66c1228e651e569d9b1c31d82e">Controller</a>
 </li>
-<li>calc_Lyapunov()
-: <a class="el" href="classController.html#a56568ee07bb72983576e9d7c10eb3e83">Controller</a>
+<li>controlDifference2controlDifferenceMsg()
+: <a class="el" href="classController.html#a866cee7328e1318e118c884a850a0e34">Controller</a>
 </li>
 <li>Controller()
 : <a class="el" href="classController.html#a7341f9092e1977cdd2a1492c4422c019">Controller</a>
 </li>
-<li>current_odom_callback()
-: <a class="el" href="classController.html#a35b38608f67e7c1c34f6b7186db32ad7">Controller</a>
+<li>controlState2controlStateMsg()
+: <a class="el" href="classController.html#a753fe3680abc7c9ba3040f6fcb638ac2">Controller</a>
+</li>
+<li>controlVector2controlVectorMsg()
+: <a class="el" href="classController.html#a06c1aab700c5918b76e33c35f3da8ea8">Controller</a>
+</li>
+<li>currentOdomCallback()
+: <a class="el" href="classController.html#a9bf99e0d40660b832c2e70691e9f0a1c">Controller</a>
 </li>
 </ul>
 
 
 <h3><a class="anchor" id="index_e"></a>- e -</h3><ul>
 <li>execute()
-: <a class="el" href="classController.html#a6661eb7307219216a7cb0a90e2a07e4d">Controller</a>
+: <a class="el" href="classController.html#abe0a6e0155a0b159efe425e635d3ae76">Controller</a>
 </li>
 </ul>
 
@@ -143,53 +144,57 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>get_transform()
 : <a class="el" href="classPlanner.html#a311803ff0901b953c4ff9db7a3f5bb01">Planner</a>
 </li>
-<li>getTransformation()
-: <a class="el" href="classController.html#a5f86e07f526598b251e345a908923950">Controller</a>
-</li>
 </ul>
 
 
 <h3><a class="anchor" id="index_l"></a>- l -</h3><ul>
-<li>link_current_odom()
-: <a class="el" href="classController.html#add4a8227097c30e5f165977cfa0ce22c">Controller</a>
+<li>linkCurrentOdom()
+: <a class="el" href="classController.html#aa0ea10adc7a81124663fb01693acef17">Controller</a>
 </li>
-<li>link_output_control_data()
-: <a class="el" href="classController.html#abc1909639580e5359228c87fbd3a622b">Controller</a>
+<li>linkOutputControlData()
+: <a class="el" href="classController.html#a6412541600d7444f00f8e48cea0ed024">Controller</a>
 </li>
-<li>link_output_state()
-: <a class="el" href="classController.html#a9b8949013d52e365754e170a9cad158c">Controller</a>
+<li>linkOutputVelocity()
+: <a class="el" href="classController.html#a7bde6b39b2b2cccb1dd866841f672f99">Controller</a>
 </li>
-<li>link_output_velocity()
-: <a class="el" href="classController.html#afdf03808aee4a1cfcf65a7198ab1a9aa">Controller</a>
-</li>
-<li>link_target_odometry()
-: <a class="el" href="classController.html#a7bf32883aed714275c99d6d182993b73">Controller</a>
-</li>
-<li>link_target_state()
-: <a class="el" href="classController.html#a5f5318b08e7b99d2e5f09c59a6eb61aa">Controller</a>
-</li>
-<li>link_target_velocity()
-: <a class="el" href="classController.html#a82a7c805f6e4e0689c675134903e9e58">Controller</a>
+<li>linkTargetOdom()
+: <a class="el" href="classController.html#a633d84f97952551654ee70acc31810c6">Controller</a>
 </li>
 <li>load()
 : <a class="el" href="classController.html#a55c77d2e41634c9b21543647f74eec4c">Controller</a>
 </li>
-<li>load_parameter()
-: <a class="el" href="classController.html#a0758387181bc5902176813cc686cb088">Controller</a>
+<li>loadParameter()
+: <a class="el" href="classController.html#a59e60885d5307979faf477435507069a">Controller</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_m"></a>- m -</h3><ul>
+<li>Master()
+: <a class="el" href="classMaster.html#ab52840de45f9ce7022c9cf58cfb49398">Master</a>
 </li>
 </ul>
 
 
 <h3><a class="anchor" id="index_o"></a>- o -</h3><ul>
 <li>optimal_control()
-: <a class="el" href="classSlave.html#a2a38a730d6ac93fcced035a7d764612d">Slave</a>
+: <a class="el" href="classSlave.html#a663a689ac0141f7ab00e58944a405a6f">Slave</a>
 </li>
 </ul>
 
 
 <h3><a class="anchor" id="index_p"></a>- p -</h3><ul>
+<li>pause()
+: <a class="el" href="classPlanner.html#a400f2aefad591e55a62e0fb13cb02521">Planner</a>
+</li>
+<li>Planner()
+: <a class="el" href="classPlanner.html#a32475baddd401921adb1aab3ab842210">Planner</a>
+</li>
 <li>publish()
 : <a class="el" href="classController.html#ae6859e3a43be2fa31cb82ace3954e746">Controller</a>
+</li>
+<li>publish_refrence()
+: <a class="el" href="classController.html#a8509c67c73d26e981ef0972f44dc73ca">Controller</a>
 </li>
 </ul>
 
@@ -202,28 +207,23 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 
 <h3><a class="anchor" id="index_s"></a>- s -</h3><ul>
-<li>scope()
-: <a class="el" href="classController.html#af89e3d7ed87318418f0168727bd98f0f">Controller</a>
-, <a class="el" href="classMaster.html#a159c65ac1a0c005bbcd1868b972935ce">Master</a>
-, <a class="el" href="classSlave.html#a9b5d1d499c7bd05d5260fbe5b8afbbb5">Slave</a>
+<li>setLyapunov()
+: <a class="el" href="classController.html#abda96416fab439c188ef494a2b2a0c8e">Controller</a>
 </li>
-<li>set_lyapunov()
-: <a class="el" href="classController.html#ae38ab0dc31dde6fcc5c7df1ed1776cb0">Controller</a>
+<li>setName()
+: <a class="el" href="classController.html#a177d0d6cd7cdb7784ae9c506debfa2c6">Controller</a>
 </li>
-<li>set_name()
-: <a class="el" href="classController.html#a88f2d54fedd04bd767e4d6e36e6dc2b3">Controller</a>
+<li>setReference()
+: <a class="el" href="classController.html#a156a66bd7cd6340106accbb982b6238b">Controller</a>
 </li>
-<li>set_reference()
-: <a class="el" href="classController.html#ade57ae23226a7565521694c87ec79c90">Controller</a>
+<li>setType()
+: <a class="el" href="classController.html#a25202c469ad65696761242dce4e28d76">Controller</a>
 </li>
-<li>set_type()
-: <a class="el" href="classController.html#a4ce725cf5efb9938d559740e447308f5">Controller</a>
+<li>setWorldFrame()
+: <a class="el" href="classController.html#adf25339eadd9b31bc1d6b3e47395942e">Controller</a>
 </li>
-<li>set_world_frame()
-: <a class="el" href="classController.html#aeeb360dd2e4afb5c654f5bca4c0f00ca">Controller</a>
-</li>
-<li>srv_reset()
-: <a class="el" href="classController.html#ae24861b9ecd088dc3a58db860fc417b1">Controller</a>
+<li>Slave()
+: <a class="el" href="classSlave.html#a855a824b462dd05eddaa8d53b27faea4">Slave</a>
 </li>
 <li>srv_start()
 : <a class="el" href="classPlanner.html#aef1abb6588a8fb7953183bc5f3479857">Planner</a>
@@ -231,24 +231,32 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>srv_stop()
 : <a class="el" href="classPlanner.html#ac98453a1cd02d1d77055900f4fc4741f">Planner</a>
 </li>
+<li>srvReset()
+: <a class="el" href="classController.html#a140aa1ee895337d776f88682640c0746">Controller</a>
+</li>
+<li>start()
+: <a class="el" href="classPlanner.html#a6c1c8d67d0cac41f738b413d1833c007">Planner</a>
+</li>
+<li>stop()
+: <a class="el" href="classPlanner.html#a3d0a3d404d39f59bfc21f275b0da408a">Planner</a>
+</li>
 </ul>
 
 
 <h3><a class="anchor" id="index_t"></a>- t -</h3><ul>
-<li>target_odometry_callback()
-: <a class="el" href="classController.html#ad9ccaff0c6f9989bd6c33a3d2179124d">Controller</a>
-, <a class="el" href="classSlave.html#a0d732637d1c0d06c214112a381ead6be">Slave</a>
-</li>
-<li>target_state_callback()
-: <a class="el" href="classController.html#a60f59dd761ce2d41dc9254f87164ded1">Controller</a>
-, <a class="el" href="classSlave.html#a09394d0f823a06e04f6259ee490bc867">Slave</a>
-</li>
-<li>target_velocities_callback()
-: <a class="el" href="classController.html#afa31080c1ed1e652410c5e97472b3ea5">Controller</a>
-, <a class="el" href="classSlave.html#a2227f30ab058b623de7f6a940d079c90">Slave</a>
+<li>targetOdomCallback()
+: <a class="el" href="classController.html#a77f138b6a3699c21cf904041e7e19820">Controller</a>
+, <a class="el" href="classSlave.html#a2f80eae9dc8e4e20037c1a371f9b8189">Slave</a>
 </li>
 <li>transform_values()
 : <a class="el" href="classPlanner.html#a0ce8028259452e2e17ed07bbb0c8463a">Planner</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_0x7e"></a>- ~ -</h3><ul>
+<li>~Controller()
+: <a class="el" href="classController.html#a0ab87934c4f7a266cfdb86e0f36bc1b5">Controller</a>
 </li>
 </ul>
 </div><!-- contents -->

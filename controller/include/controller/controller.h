@@ -39,9 +39,9 @@
  */
 class Controller{
     public:
-        typedef tf::Vector3 VelocityCartesian;
-        typedef tf::Vector3 PositionCartesian;
-        typedef tf::Transform ControlDifference;
+        typedef tf::Vector3 VelocityCartesian;                      ///<Defines VelocityCartesian wich is used to stores cartesian defined velocities
+        typedef tf::Vector3 PositionCartesian;                      ///<Defines PositionCartesian wich is used to store a cartesian defined position
+        typedef tf::Transform ControlDifference;                    ///<Defines ControlDifference wich is a transformation from the current state in the target state
 
         /**
          * @brief Specifies the different implemented control laws
@@ -72,8 +72,12 @@ class Controller{
             double v;                   ///<Linear velocity
             double omega;               ///<Angular velocity
         };
-        typedef ControlVector VelocityEulerian;
+        typedef ControlVector VelocityEulerian;                     ///<Defines VelocityEulerian wich is used to store Velocities wich are defined locally in the moved base system
 
+        /**
+         * @brief Holds the System state combined by the pose of the system, the cartesian velocity and the angular velocity
+         * 
+         */
         struct ControlState{
             tf::Pose pose;                  ///<Complete pose of the robot in 3 dimensional space
             VelocityCartesian velocity;     ///<Velocity in cartesian space
@@ -91,6 +95,10 @@ class Controller{
          * @param nh Ros nodehandle for managing namespaces and ros functionality within the controller object
          */
         Controller(ros::NodeHandle &nh);
+        /**
+         * @brief Destroy the Controller object
+         * 
+         */
         ~Controller();
 
 
@@ -175,9 +183,7 @@ class Controller{
          * 
          * @param topic_name Name of the topic
          */
-        void linkCurrentOdom(std::string topic_name);   
-
-
+        void linkCurrentOdom(std::string topic_name);  
        
          /**
          * @brief Links the target/desired odometry topic to the controller. At this topic the desired odometry is published.
@@ -257,65 +263,68 @@ class Controller{
          */
         bool srvReset(std_srvs::EmptyRequest &req, std_srvs::EmptyResponse &res);
 
+        /**
+         * @brief Converts ControlState struct to a COntrol state message
+         * 
+         * @param state Control state to be converted
+         * @param msg Referenze to the msg the conversion is stored in
+         */
         void controlState2controlStateMsg(ControlState &state,multi_robot_msgs::ControlState &msg); 
 
+
+        /**
+         * @brief Converts ControlDifference struct to a COntrol state message
+         * 
+         * @param difference ControlDifference to be converted
+         * @param msg Referenze to the msg the conversion is stored in
+         */
         void controlDifference2controlDifferenceMsg(ControlDifference &difference,multi_robot_msgs::ControlDifference &msg);  
         
+
+        /**
+         * @brief Converts ControlVector struct to a COntrol state message
+         * 
+         * @param control ControlVector to be converted
+         * @param msg Referenze to the msg the conversion is stored in
+         */
         void controlVector2controlVectorMsg(ControlVector &control,multi_robot_msgs::ControlVector &msg);         
 
         
     protected:
-        ros::NodeHandle nh;                                          ///<Node Handle
-        tf::TransformListener* listener;                             ///<Listener for any transformation
-        ControllerType type;                                         ///<Type of control algorythm that is used
+        ros::NodeHandle nh;                                         ///<Node Handle
+        tf::TransformListener* listener;                            ///<Listener for any transformation
+        
+        std::string world_frame;                                    ///<Name of the world frame
+        
+        ControlState current_state_;                                ///<The current state of the robot
+        ControlState target_state_;                                 ///<The target state of the robot
+        ControlDifference control_dif_;                             ///<Transformation from current configuration to target configuration
+        ControlVector control_;                                     ///<The calculated control vector
 
+        tf::Transform world2reference_;                             ///<Transformation from a world to the controllers refrence frame
 
-        ros::Publisher pub_vel_out;                                  ///<publisher object for velocity outoput topic
+    private:
+        ros::Publisher pub_cmd_vel;                                  ///<publisher object for velocity outoput topic
         ros::Publisher pub_state_out;                                ///<publisher object for state output topic
         ros::Publisher pub_control_data;                             ///<publisher object for control difference topic
      
         ros::Subscriber sub_odom_current;                            ///<Subscriber object for odometry
-        ros::Subscriber sub_target_odometry;                         ///<Subscriber object for target odometry topic
+        ros::Subscriber sub_odom_target;                             ///<Subscriber object for target odometry topic
 
-        ros::Timer time_scope_;
+        ros::Timer time_scope_;                                      ///<Timer for control scope
 
-        ros::ServiceServer reset_service;                           ///<Service for resetting the controller
+        ros::ServiceServer reset_service;                            ///<Service for resetting the controller
 
-        std::string name;                                           ///<Name of the node respective Controller
-        std::string world_frame;                                    ///<Name of the world frame
+        std::string name;                                            ///<Name of the node respective Controller
         
-        ControlState current_state_;
-        ControlState target_state_;
-
-        ControlDifference control_dif;                              ///<Transformation from current configuration to target configuration
-        ControlVector control_;  
-
-        tf::Pose reference_pose;                                    ///<Reference or initial pose to a global system
-        tf::Pose current_pose;                                      ///<Pose of Controller at the moment expressed in world coordinates
-        tf::Pose target_pose;                                       ///<The Target for the Controller poses
-        
-        tf::Transform world2reference_;                             ///<Transformation from a world to the controllers refrence frame
-
-        LyapunovParameter lyapunov_parameter;                       ///<Parameter set for lyapunov determinations
+        LyapunovParameter lyapunov_parameter;                        ///<Parameter set for lyapunov determinations
        
+        ControllerType type;                                         ///<Type of control algorythm that is used
 
-        double kx;
-        double ky;
-        double kphi;
-        double omegad;
-        double vd;
+        bool loaded_parameter;                                       ///<Flag if parameter were loaded from the parameter server
 
-        double kr;
-        double kang;
+        void publish();                                              ///<Publish all outgoing data
 
-
-        //Use the 
-        bool loaded_parameter;
-
-        void publish();                                             ///<Publish all outgoing data
-      
-
-    private:
         /**
          * @brief Adding the world frame. Broadcastes a world frame respectiveliy the robot reference frame expressed in world coordinates.
          * 

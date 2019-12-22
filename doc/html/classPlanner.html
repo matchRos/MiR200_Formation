@@ -94,6 +94,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">Planner Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>A generic planner class that provides general interface functions and architecture.  
+ <a href="classPlanner.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="planner_8h_source.html">planner.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for Planner:</div>
 <div class="dyncontent">
@@ -106,17 +111,20 @@ Inheritance diagram for Planner:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a32475baddd401921adb1aab3ab842210"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a32475baddd401921adb1aab3ab842210"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Planner</b> (ros::NodeHandle &amp;<a class="el" href="classPlanner.html#a9714d036f444a07ce90be8d135b9a40c">nh</a>)</td></tr>
+<tr class="memitem:a32475baddd401921adb1aab3ab842210"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlanner.html#a32475baddd401921adb1aab3ab842210">Planner</a> (ros::NodeHandle &amp;<a class="el" href="classPlanner.html#a9714d036f444a07ce90be8d135b9a40c">nh</a>)</td></tr>
+<tr class="memdesc:a32475baddd401921adb1aab3ab842210"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new <a class="el" href="classPlanner.html" title="A generic planner class that provides general interface functions and architecture. ">Planner</a> object.  <a href="#a32475baddd401921adb1aab3ab842210">More...</a><br /></td></tr>
 <tr class="separator:a32475baddd401921adb1aab3ab842210"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c1c8d67d0cac41f738b413d1833c007"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6c1c8d67d0cac41f738b413d1833c007"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>start</b> ()</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlanner.html#a6c1c8d67d0cac41f738b413d1833c007">start</a> ()</td></tr>
+<tr class="memdesc:a6c1c8d67d0cac41f738b413d1833c007"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts the planner. <br /></td></tr>
 <tr class="separator:a6c1c8d67d0cac41f738b413d1833c007"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d0a3d404d39f59bfc21f275b0da408a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3d0a3d404d39f59bfc21f275b0da408a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>stop</b> ()</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlanner.html#a3d0a3d404d39f59bfc21f275b0da408a">stop</a> ()</td></tr>
+<tr class="memdesc:a3d0a3d404d39f59bfc21f275b0da408a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops the planner. <br /></td></tr>
 <tr class="separator:a3d0a3d404d39f59bfc21f275b0da408a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a400f2aefad591e55a62e0fb13cb02521"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a400f2aefad591e55a62e0fb13cb02521"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>pause</b> ()</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlanner.html#a400f2aefad591e55a62e0fb13cb02521">pause</a> ()</td></tr>
+<tr class="memdesc:a400f2aefad591e55a62e0fb13cb02521"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pauses the planner. <br /></td></tr>
 <tr class="separator:a400f2aefad591e55a62e0fb13cb02521"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acaf55e0e250d6f3ba14bfcf3c4f06ffb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acaf55e0e250d6f3ba14bfcf3c4f06ffb"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>set_start_pose</b> (tf::Pose pose)</td></tr>
@@ -221,6 +229,33 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>ang_vel</b></td></t
 tf::Transform&#160;</td><td class="memItemRight" valign="bottom"><b>start_reference</b></td></tr>
 <tr class="separator:aae0304ebd1813766f1437b80d5195e90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>A generic planner class that provides general interface functions and architecture. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a32475baddd401921adb1aab3ab842210"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Planner::Planner </td>
+          <td>(</td>
+          <td class="paramtype">ros::NodeHandle &amp;&#160;</td>
+          <td class="paramname"><em>nh</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Construct a new <a class="el" href="classPlanner.html" title="A generic planner class that provides general interface functions and architecture. ">Planner</a> object. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">nh</td><td>Ros Nodehandle </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a311803ff0901b953c4ff9db7a3f5bb01"></a>
 <div class="memitem">
