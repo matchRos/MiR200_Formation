@@ -107,13 +107,14 @@ void Controller::setReference(std::vector<double> coord,double angle)
 
 void Controller::publish_refrence()
 {
-    tf::TransformBroadcaster broadcaster;
     geometry_msgs::TransformStamped msg;
     msg.header.stamp = ros::Time::now();
     msg.header.frame_id =this->world_frame ;
-    msg.child_frame_id = this->name+"/reference";
+    msg.child_frame_id=this->nh.resolveName("reference");
     tf::transformTFToMsg(this->world2reference_,msg.transform);
+    static tf2_ros::TransformBroadcaster broadcaster;
     broadcaster.sendTransform(msg);
+    ROS_INFO("Sending static refrence troansformation from %s to %s", msg.header.frame_id.c_str(),msg.child_frame_id.c_str());
 }
 
 
@@ -340,6 +341,20 @@ void Controller::publish()
     controlState2controlStateMsg(this->target_state_,msg.target);
     controlVector2controlVectorMsg(this->control_,msg.control);
     this->pub_control_data.publish(msg);
+
+    //Publish base_link
+    tf::StampedTransform base_link( this->world2reference_.inverseTimes(this->current_state_.pose),
+                                    ros::Time::now(),
+                                    nh.resolveName("reference"),
+                                    nh.resolveName("base_footprint"));
+    this->broadcaster_.sendTransform(base_link);
+
+    geometry_msgs::TransformStamped msg2;
+    msg2.header.stamp = ros::Time::now();
+    msg2.header.frame_id =this->world_frame ;
+    msg2.child_frame_id=this->nh.resolveName("reference");
+    tf::transformTFToMsg(this->world2reference_,msg2.transform);
+    this->broadcaster_.sendTransform(msg2);
     
 }
 

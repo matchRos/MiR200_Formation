@@ -293,7 +293,7 @@ class Controller{
     protected:
         ros::NodeHandle nh;                                         ///<Node Handle
         tf::TransformListener* listener;                            ///<Listener for any transformation
-        
+        tf::TransformBroadcaster broadcaster_;                      ///<Broadcaster for broadcasting transformations
         std::string world_frame;                                    ///<Name of the world frame
         
         ControlState current_state_;                                ///<The current state of the robot
