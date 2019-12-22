@@ -1,24 +1,39 @@
 #include <controller/controller.h>
 
 Controller::Controller(ros::NodeHandle &nh):    nh(nh),
-                                                lin_vel_in{0,0,0},
-                                                ang_vel_in{0,0,0}
+                                                control_dif(tf::createIdentityQuaternion(),
+                                                            tf::Vector3(0,0,0))
 {
+                                           
     this->listener=new tf::TransformListener(nh);
     this->name=nh.getNamespace();
 
+    //Publishers
     this->pub_vel_out=this->nh.advertise<geometry_msgs::Twist>("/out",10);
-    this->pub_state_out=this->nh.advertise<multi_robot_msgs::State>("/state_out",10);
     this->pub_control_data=this->nh.advertise<multi_robot_msgs::ControlData>("/control_data",10);
     
-    this->sub_vel_target=this->nh.subscribe("/in",10,&Controller::target_velocities_callback,this);
-    this->sub_state_target=this->nh.subscribe("/state_target",10,&Controller::target_state_callback,this);
-    this->sub_odom_current=this->nh.subscribe("/odom_current",10,&Controller::current_odom_callback,this);   
-
-    this->reset_service=nh.advertiseService("reset",&Controller::srv_reset,this);
-
+    //Subscribers
+    this->sub_odom_current=this->nh.subscribe("/odom_current",10,&Controller::currentOdomCallback,this);   
+    this->sub_target_odometry=this->nh.subscribe("/odom_target",10,&Controller::targetOdomCallback,this);
     
+    //Services
+    this->reset_service=nh.advertiseService("reset",&Controller::srvReset,this);
+
+    //Timers
+    this->time_scope_ = nh.createTimer(ros::Duration(0.01),&Controller::execute,this);
+
+    //Flags
     this->loaded_parameter=false;
+
+    this->target_state_.pose=tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(0,0,0));
+    this->target_state_.angular_velocity=0;
+    this->target_state_.velocity=VelocityCartesian(0,0,0);
+
+
+    this->current_state_.pose=tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(0,0,0));
+    this->current_state_.angular_velocity=0;
+    this->current_state_.velocity=VelocityCartesian(0,0,0);
+
 } 
 
 Controller::~Controller()
@@ -34,86 +49,97 @@ void Controller::reset()
     }
     else
     {
-        this->add_map();
+        this->publish_refrence();
     }
     
 }
 
 
+void Controller::controlState2controlStateMsg(Controller::ControlState &state,multi_robot_msgs::ControlState &msg)
+{
+    tf::poseTFToMsg(state.pose,msg.pose);
+    msg.angle=tf::getYaw(state.pose.getRotation());
+    msg.angular_velocity=state.angular_velocity;
+    tf::vector3TFToMsg(state.velocity,msg.velocity);
+}
+void Controller::controlDifference2controlDifferenceMsg(ControlDifference &difference,multi_robot_msgs::ControlDifference &msg)
+{
+    msg.angle=tf::getYaw(difference.getRotation());
+    tf::vector3TFToMsg(difference.getOrigin(),msg.translation);
+}     
+void Controller::controlVector2controlVectorMsg(ControlVector &control,multi_robot_msgs::ControlVector &msg)         
+{
+    msg.angular=control.omega;
+    msg.linear=control.v;
+}
+
 
 //################################################################################################
 //Setters
-void Controller::set_name(std::string name)
+void Controller::setName(std::string name)
 {
     this->name=name;
     this->nh.resolveName(name);
 
-    this->link_output_velocity("mobile_base_controller/cmd_vel");
-    this->link_output_state("state");
-    this->link_output_control_data("control_data");
-    this->link_target_state("state_in");   
+    this->linkOutputVelocity("mobile_base_controller/cmd_vel");
+    this->linkOutputControlData("control_data");   
 }
 
 
 
-void Controller::set_reference(double x,double y,double z,double angle)
+void Controller::setReference(double x,double y,double z,double angle)
 {
     
-    this->reference_pose=tf::Pose(tf::createQuaternionFromYaw(angle),tf::Vector3(x,y,z));
-    this->current_pose=this->reference_pose;
-    this->target_pose=this->current_pose;
-    ROS_INFO("Set coordiantes of: %s to: %lf %lf %lf",this->name.c_str(),   this->reference_pose.getOrigin().x(),
-                                                                            this->reference_pose.getOrigin().y(),
-                                                                            this->reference_pose.getOrigin().z());
-    this->add_map();   
+    this->world2reference_=tf::Pose(tf::createQuaternionFromYaw(angle),tf::Vector3(x,y,z));
+    this->current_state_.pose=this->world2reference_;
+    this->target_state_.pose=this->world2reference_;
+    ROS_INFO("Set coordiantes of: %s to: %lf %lf %lf",this->name.c_str(),   this->world2reference_.getOrigin().x(),
+                                                                            this->world2reference_.getOrigin().y(),
+                                                                            this->world2reference_.getOrigin().z());
+    this->publish_refrence();   
 }
 
-void Controller::set_reference(std::vector<double> coord,double angle)
+void Controller::setReference(std::vector<double> coord,double angle)
 {
-    this->set_reference(coord[0],coord[1],coord[2],angle);
+    this->setReference(coord[0],coord[1],coord[2],angle);
 }
 
 
-void Controller::add_map()
+void Controller::publish_refrence()
 {
-    //Publish the trasnformation of a single controller instance to its refernece coordinate system
-    static tf2_ros::StaticTransformBroadcaster static_broadcaster;
-    geometry_msgs::TransformStamped static_transformStamped;
-
-    
-    tf::Transform trafo(this->reference_pose);
-
-    static_transformStamped.header.stamp = ros::Time::now();
-    static_transformStamped.header.frame_id =this->world_frame ;
-    static_transformStamped.child_frame_id = this->name+"/odom_comb";
-    tf::transformTFToMsg(trafo,static_transformStamped.transform);
-    static_broadcaster.sendTransform(static_transformStamped);
+    tf::TransformBroadcaster broadcaster;
+    geometry_msgs::TransformStamped msg;
+    msg.header.stamp = ros::Time::now();
+    msg.header.frame_id =this->world_frame ;
+    msg.child_frame_id = this->name+"/reference";
+    tf::transformTFToMsg(this->world2reference_,msg.transform);
+    broadcaster.sendTransform(msg);
 }
 
 
-void Controller::set_type(Controller::ControllerType type)
+void Controller::setType(Controller::ControllerType type)
 {
     ROS_INFO("Setting controller type of %s to: %i",this->name.c_str(),this->type);
     this->type=type;
 }
 
-void Controller::set_world_frame(std::string frame)
+void Controller::setWorldFrame(std::string frame)
 {
     this->world_frame=frame;
     ROS_INFO("Setting world frame of %s to: %s",this->name.c_str(),this->world_frame.c_str());
 }
 
-void Controller::set_lyapunov(Controller::LyapunovParameter param)
+void Controller::setLyapunov(Controller::LyapunovParameter param)
 {
-    this->lyapunov_parameter.kx=param.kx;
-    this->lyapunov_parameter.ky=param.ky;
-    this->lyapunov_parameter.ktheta=param.ktheta;
-
+    this->lyapunov_parameter=param;
 }
-void Controller::set_lyapunov(std::vector<float> param)
+void Controller::setLyapunov(std::vector<float> param)
 {
-    Controller::LyapunovParameter parameter{param[0],param[1],param[2]};
-    this->set_lyapunov(parameter);
+    Controller::LyapunovParameter parameter;
+    parameter.kx=param[0];
+    parameter.ky=param[1];
+    parameter.kphi=param[2];
+    this->setLyapunov(parameter);
 }
 
 void Controller::load()
@@ -123,7 +149,7 @@ void Controller::load()
     if(ros::param::get(PARAM_WORLD_FRAME,param))
     {
         ROS_INFO("Loading %s",PARAM_WORLD_FRAME);
-        this->set_world_frame(param);     
+        this->setWorldFrame(param);     
     }
     else
     {
@@ -133,7 +159,7 @@ void Controller::load()
     if(ros::param::get(PARAM_CURRENT_ODOM,param))
     {
         ROS_INFO("Loading %s",PARAM_CURRENT_ODOM);
-        this->link_current_odom(param);
+        this->linkCurrentOdom(param);
     }
     else
     {
@@ -143,43 +169,25 @@ void Controller::load()
     if(ros::param::get(PARAM_TARGET_ODOM,param))
     {
         ROS_INFO("Loading %s",PARAM_TARGET_ODOM);
-        this->link_target_odometry(param);
+        this->linkTargetOdom(param);
     }
     else
     {
         ROS_INFO("Could not load %s for %s",PARAM_TARGET_ODOM,this->name.c_str());
     }
-    if(ros::param::get(PARAM_TARGET_VEL,param))
-    {
-        ROS_INFO("Loading %s ",PARAM_TARGET_VEL);
-        this->link_target_velocity(param);
-    }
-    else
-    {
-        ROS_INFO("Could not load %s for %s",PARAM_TARGET_VEL,this->name.c_str());
-    }
-    if(ros::param::get(PARAM_TARGET_STATE,param))
-    {
-        ROS_INFO("Loading %s ",PARAM_TARGET_STATE);
-        this->link_target_state(param);
-    }
-    else
-    {
-        ROS_INFO("Could not load %s for %s",PARAM_TARGET_STATE,this->name.c_str());
-    }
-
+    
     int i;
     if(ros::param::get(PARAM_TYPE,i))
     {
         ROS_INFO("Loading %s ",PARAM_TYPE);
-        this->set_type(static_cast<Controller::ControllerType>(i));
+        this->setType(static_cast<Controller::ControllerType>(i));
     }
 
    
     std::vector<float> lyapunov;
     if( ros::param::get(PARAM_LYAPUNOV,lyapunov))
     {
-        this->set_lyapunov(lyapunov);
+        this->setLyapunov(lyapunov);
         ROS_INFO("LOADED %s  PARAM: %lf %lf %lf %lf %lf",PARAM_LYAPUNOV ,this->kx,this->ky,this->kphi,this->vd,this->omegad);
     }   
 
@@ -192,12 +200,12 @@ void Controller::load()
 
     }   
     
-    load_parameter();
+    loadParameter();
     this->loaded_parameter=true;
 
 }
 
-void Controller::load_parameter()
+void Controller::loadParameter()
 {
     return;
 }
@@ -207,51 +215,29 @@ void Controller::load_parameter()
 ##################################################################################################################################################*/
         
 //INPUTS
-void Controller::link_current_odom(std::string topic_name)
+void Controller::linkCurrentOdom(std::string topic_name)
 {
     this->sub_odom_current.shutdown();
     ROS_INFO("Linking input currnet odometry of %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
-    this->sub_odom_current=this->nh.subscribe(topic_name,10,&Controller::current_odom_callback,this);
+    this->sub_odom_current=this->nh.subscribe(topic_name,10,&Controller::currentOdomCallback,this);
 }
 
-void Controller::link_target_odometry(std::string topic_name)
+void Controller::linkTargetOdom(std::string topic_name)
 {
     this->sub_target_odometry.shutdown();
     ROS_INFO("Linking input target odometry of %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
-    this->sub_target_odometry=this->nh.subscribe(topic_name,10,&Controller::target_odometry_callback,this);
+    this->sub_target_odometry=this->nh.subscribe(topic_name,10,&Controller::targetOdomCallback,this);
 }
-
-void Controller::link_target_state(std::string topic_name)
-{
-    this->sub_state_target.shutdown();
-    ROS_INFO("Linking target state %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
-    this->sub_state_target=this->nh.subscribe(topic_name,10,&Controller::target_state_callback,this);
-}
-
-void Controller::link_target_velocity(std::string topic_name)
-{
-    this->sub_vel_target.shutdown();
-    ROS_INFO("Linking input velocity %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
-    this->sub_vel_target=this->nh.subscribe(topic_name,10,&Controller::target_velocities_callback,this);
-}
-
 
 ///OUTPUTS
-void Controller::link_output_velocity(std::string topic_name)
+void Controller::linkOutputVelocity(std::string topic_name)
 {
     this->pub_vel_out.shutdown();
     ROS_INFO("Linking output velocity of %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
     this->pub_vel_out=this->nh.advertise<geometry_msgs::Twist>(topic_name,10);
 }
 
-void Controller::link_output_state(std::string topic_name)
-{
-    this->pub_state_out.shutdown();
-    ROS_INFO("Linking output state of %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
-    this->pub_state_out=this->nh.advertise<multi_robot_msgs::State>(topic_name,10);
-}
-
-void Controller::link_output_control_data(std::string topic_name)
+void Controller::linkOutputControlData(std::string topic_name)
 {
     this->pub_control_data.shutdown();
     ROS_INFO("Linking control data of %s to topic: %s \n",this->name.c_str(),topic_name.c_str());
@@ -264,34 +250,78 @@ void Controller::link_output_control_data(std::string topic_name)
 
  /*Callbacks########################################################################################################################################
 ##################################################################################################################################################*/
-void Controller::current_odom_callback(nav_msgs::Odometry msg)
+void Controller::currentOdomCallback(nav_msgs::Odometry msg)
 {
+    //Get the current pose
     tf::Pose pose;
-    tf::poseMsgToTF(msg.pose.pose,pose); 
+    tf::poseMsgToTF(msg.pose.pose,pose);
+    
+    //Get the current cartesian velocity
+    VelocityCartesian vel;
+    tf::vector3MsgToTF(msg.twist.twist.linear,vel);
+
+    //Get the transformation for frames 
     tf::StampedTransform trafo;
-    this->listener->lookupTransform(this->world_frame,msg.header.frame_id,ros::Time(0),trafo);
-    this->current_pose=trafo*pose;
+    try{
+        this->listener->lookupTransform(this->world_frame,msg.header.frame_id,ros::Time(0),trafo);
+    }
+    catch(ros::Exception &ex)
+    {
+        ROS_WARN("%s",ex.what());
+    }
+    //Get the rotation part
+    tf::Transform rot;
+    rot.setRotation(trafo.getRotation());
+
+    //Transfor pose and velicity
+    pose=trafo*pose;
+    vel=rot*vel;
+
+    //Write to member
+    this->current_state_.pose=pose;
+    this->current_state_.velocity=vel;
+    this->current_state_.angular_velocity=msg.twist.twist.angular.z;
 }
 
-void Controller::target_velocities_callback(geometry_msgs::Twist msg)
+void Controller::targetOdomCallback(nav_msgs::Odometry msg)
 {
-    tf::vector3MsgToTF(msg.linear,this->lin_vel_in);
-    tf::vector3MsgToTF(msg.angular,this->ang_vel_in);
+   //Get the current pose
+    tf::Pose pose;
+    tf::poseMsgToTF(msg.pose.pose,pose);
+    
+    //Get the current cartesian velocity
+    VelocityCartesian vel;
+    tf::vector3MsgToTF(msg.twist.twist.linear,vel);
+
+    //Get the transformation for frames 
+    tf::StampedTransform trafo;
+    try{
+        this->listener->lookupTransform(this->world_frame,msg.header.frame_id,ros::Time(0),trafo);
+    }
+    catch(ros::Exception &ex)
+    {
+        ROS_WARN("%s",ex.what());
+    }
+
+    //Get the rotation part
+    tf::Transform rot(trafo.getRotation(),tf::Vector3(0,0,0));
+    
+    //Transform pose and velocity
+    pose=trafo*pose;
+    vel=rot*vel;
+
+    //Write to member
+    this->target_state_.pose=pose;
+    this->target_state_.velocity=vel;
+    this->target_state_.angular_velocity=msg.twist.twist.angular.z;
 }
 
-void Controller::target_state_callback(geometry_msgs::PoseStamped msg)
-{
-    tf::poseMsgToTF(msg.pose,this->target_pose);
-}
 
-void Controller::target_odometry_callback(nav_msgs::Odometry msg)
-{
-    tf::poseMsgToTF(msg.pose.pose,this->target_pose);
-    tf::vector3MsgToTF(msg.twist.twist.linear,this->lin_vel_in);
-    tf::vector3MsgToTF(msg.twist.twist.angular,this->ang_vel_in);
-}
+/*Service routines ####################################################################################################################
+##################################################################################################################################################*/
+       
 
- bool Controller::srv_reset(std_srvs::EmptyRequest &req, std_srvs::EmptyResponse &res)
+ bool Controller::srvReset(std_srvs::EmptyRequest &req, std_srvs::EmptyResponse &res)
  {
      this->reset();
      return true;
@@ -306,75 +336,57 @@ void Controller::publish()
 {
     //publish output velocities 
     geometry_msgs::Twist msg_vel;
-    tf::vector3TFToMsg(this->lin_vel_out,msg_vel.linear);
-    tf::vector3TFToMsg(this->ang_vel_out,msg_vel.angular);
+    msg_vel.linear.x=this->control_.v;
+    msg_vel.angular.z=this->control_.omega;
     this->pub_vel_out.publish(msg_vel);
 
-    //publish output pose state
-    multi_robot_msgs::State msg_state;    
-    msg_state.pose.x=this->current_pose.getOrigin().x();
-    msg_state.pose.y=this->current_pose.getOrigin().y();
-    msg_state.pose.theta=tf::getYaw(this->current_pose.getRotation());
-    this->pub_state_out.publish(msg_state);   
 
-    //publish control data
-    multi_robot_msgs::ControlData msg_data;
-    msg_data.header.stamp=ros::Time::now();
-    msg_data.header.frame_id=this->world_frame;
-
-    //INPUTS    
-    tf::vector3TFToMsg(this->target_pose.getOrigin(),msg_data.position_in);
-    msg_data.angular_velocity_in=this->ang_vel_in.z();
-    tf::vector3TFToMsg(this->lin_vel_in,msg_data.velocity_in); 
-    msg_data.angle_in=tf::getYaw(this->target_pose.getRotation());
+    //Publish Controller metadata
+    multi_robot_msgs::ControlData msg;
+    msg.header.frame_id=this->world_frame;
+    msg.header.stamp=ros::Time::now();
+    controlDifference2controlDifferenceMsg(this->control_dif,msg.difference);
+    controlState2controlStateMsg(this->current_state_,msg.current);
+    controlState2controlStateMsg(this->target_state_,msg.target);
+    controlVector2controlVectorMsg(this->control_,msg.control);
+    this->pub_control_data.publish(msg);
     
-
-    msg_data.linear_velocity_out=this->lin_vel_out.x();
-    msg_data.angular_velocity_out=this->ang_vel_out.z();
-
-    tf::vector3TFToMsg(this->current_pose.getOrigin()-this->target_pose.getOrigin(),msg_data.control_difference_cart);
-    msg_data.control_difference_angular=tf::getYaw(this->control_dif.getRotation());
-
-    this->pub_control_data.publish(msg_data);
-
 }
 
-void Controller::calc_Lyapunov(double kx, double ky, double kphi,double vd,double omegad)
+struct Controller::ControlVector Controller::calcLyapunov(LyapunovParameter parameter,VelocityEulerian desired,tf::Transform relative)
 {
-    tf::Pose relative;
-    relative=this->current_pose.inverseTimes(this->target_pose);
-    this->control_dif=relative;
-
     double x=relative.getOrigin().getX();
     double y=relative.getOrigin().getY();
     double phi=tf::getYaw(relative.getRotation());
 
-    
+    ControlVector output;
+    output.v=parameter.kx*x+desired.v*cos(phi);
+    output.omega=parameter.kphi*sin(phi)+parameter.ky*desired.v*y+desired.omega;
 
-    this->lin_vel_out.setX(kx*x+vd*cos(phi));
-    
-    this->ang_vel_out.setZ(kphi*sin(phi)+ky*vd*y+omegad); 
+    return output;
 }
 
-void Controller::calc_angle_distance(double kr,double kphi)
-{
-    tf::Pose relative;
-    relative=this->current_pose.inverseTimes(this->target_pose);
-    this->control_dif=relative;
 
-    if(abs(atan2(relative.getOrigin().y(),relative.getOrigin().x()))>M_PI/2)
+
+void Controller::execute(const ros::TimerEvent &ev)
+{
+    VelocityEulerian desired;
+    this->control_dif=this->current_state_.pose.inverseTimes(this->target_state_.pose);    
+        
+    switch(this->type)
     {
-        kr*=-1;
+            
+        case pseudo_inverse: 
+            this->control_.v=this->current_state_.velocity.length();
+            this->control_.omega=this->current_state_.angular_velocity;
+            break;
+        case lypanov:
+            desired.omega=this->target_state_.angular_velocity;
+            desired.v=sqrt(pow(this->target_state_.velocity.getX(),2)+pow(this->target_state_.velocity.getY(),2));           
+            this->control_=calcLyapunov(this->lyapunov_parameter,desired,control_dif);
+            break;
+        default: 
+            break;
     }
-    this->lin_vel_out.setX(kr*relative.getOrigin().length());
-    this->ang_vel_out.setZ(kphi*tf::getYaw(relative.getRotation())); 
-      
-    
-}
-
-void Controller::execute()
-{
-    this->scope();
     this->publish();
-     ros::spinOnce();
 }

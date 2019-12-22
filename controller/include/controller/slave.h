@@ -14,18 +14,12 @@
 class Slave:public Controller{
     public:
         Slave(ros::NodeHandle &nh);        
-        void scope();  
-
+        
     private:
-        ros::Subscriber master_odom;
-
         ///This implements a least sqaures determination of control vector [v,omega] [control.v control.omega] 
         ///from the given cartesian velocity state d/dt[x,y,phi] (cart_vel)
-        void optimal_control();
-        void target_state_callback(geometry_msgs::PoseStamped msg) ; 
-        void target_velocities_callback(geometry_msgs::Twist msg);
-        void target_odometry_callback(nav_msgs::Odometry msg);
-        tf::Pose master_pose;
- 
+        ControlVector optimal_control();
+        void targetOdomCallback(nav_msgs::Odometry msg);
+        
 
 };
