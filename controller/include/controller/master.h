@@ -6,7 +6,6 @@
 
 class Master:public Controller{
     public:
-        Master(ros::NodeHandle &nh);        
-        void scope();
+        Master(ros::NodeHandle &nh);
     private:
 };
