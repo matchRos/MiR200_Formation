@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['control_5fdif',['control_dif',['../classController.html#a171362bdb7fa9335627a5c16e3716525',1,'Controller']]],
-  ['current_5fpose',['current_pose',['../classController.html#a9575ed78c8b37c15f425deb48a3fe413',1,'Controller']]]
+  ['control_5f',['control_',['../classController.html#aaafcd892e9e6080e839a1348a7ef40db',1,'Controller']]],
+  ['control_5fdif_5f',['control_dif_',['../classController.html#afe3b54c59a80046661f0030a573539d7',1,'Controller']]],
+  ['current_5fstate_5f',['current_state_',['../classController.html#aaca736f25e7da33272ded507e0c8057f',1,'Controller']]]
 ];

@@ -2,6 +2,15 @@
 \label{classSlave}\index{Slave@{Slave}}
 
 
+Class that implements a slave robot for multi robot formation control.  
+
+
+
+
+{\ttfamily \#include $<$slave.\+h$>$}
+
+
+
 Inheritance diagram for Slave\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
@@ -15,53 +24,82 @@ Collaboration diagram for Slave\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=223pt]{classSlave__coll__graph}
+\includegraphics[width=350pt]{classSlave__coll__graph}
 \end{center}
 \end{figure}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-{\bfseries Slave} (ros\+::\+Node\+Handle \&\hyperlink{classController_a24e3d3c2536f6ed29018bad1fd53dae2}{nh})\hypertarget{classSlave_a855a824b462dd05eddaa8d53b27faea4}{}\label{classSlave_a855a824b462dd05eddaa8d53b27faea4}
-
-\item 
-void \hyperlink{classSlave_a9b5d1d499c7bd05d5260fbe5b8afbbb5}{scope} ()\hypertarget{classSlave_a9b5d1d499c7bd05d5260fbe5b8afbbb5}{}\label{classSlave_a9b5d1d499c7bd05d5260fbe5b8afbbb5}
-
-\begin{DoxyCompactList}\small\item\em A Scope within the execute function. Repeating calculation in inheriting classes are implemented here. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\hyperlink{classSlave_a855a824b462dd05eddaa8d53b27faea4}{Slave} (ros\+::\+Node\+Handle \&\hyperlink{classController_a24e3d3c2536f6ed29018bad1fd53dae2}{nh})
+\begin{DoxyCompactList}\small\item\em Construct a new \hyperlink{classSlave}{Slave} object. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Private Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \hyperlink{classSlave_a2a38a730d6ac93fcced035a7d764612d}{optimal\+\_\+control} ()
-\item 
-void \hyperlink{classSlave_a09394d0f823a06e04f6259ee490bc867}{target\+\_\+state\+\_\+callback} (geometry\+\_\+msgs\+::\+Pose\+Stamped msg)\hypertarget{classSlave_a09394d0f823a06e04f6259ee490bc867}{}\label{classSlave_a09394d0f823a06e04f6259ee490bc867}
-
-\begin{DoxyCompactList}\small\item\em Callback for input target state message. Is executed everytima a target state input is incoming. Writes data to target\+\_\+pose state. \end{DoxyCompactList}\item 
-void \hyperlink{classSlave_a2227f30ab058b623de7f6a940d079c90}{target\+\_\+velocities\+\_\+callback} (geometry\+\_\+msgs\+::\+Twist msg)\hypertarget{classSlave_a2227f30ab058b623de7f6a940d079c90}{}\label{classSlave_a2227f30ab058b623de7f6a940d079c90}
-
-\begin{DoxyCompactList}\small\item\em Callback for input velocitiy message. Is executed everytime a velocitiy input is incoming. Writes data to input state. \end{DoxyCompactList}\item 
-void \hyperlink{classSlave_a0d732637d1c0d06c214112a381ead6be}{target\+\_\+odometry\+\_\+callback} (nav\+\_\+msgs\+::\+Odometry msg)\hypertarget{classSlave_a0d732637d1c0d06c214112a381ead6be}{}\label{classSlave_a0d732637d1c0d06c214112a381ead6be}
-
-\begin{DoxyCompactList}\small\item\em Callback for input target odometry message. Is executed everytima a target odometry input is incoming. Writes data to target\+\_\+pose state and target\+\_\+vel. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\subsection*{Private Attributes}
-\begin{DoxyCompactItemize}
-\item 
-ros\+::\+Subscriber {\bfseries master\+\_\+odom}\hypertarget{classSlave_ae16b74032864ebb31211f992d37a73ab}{}\label{classSlave_ae16b74032864ebb31211f992d37a73ab}
-
-\item 
-tf\+::\+Pose {\bfseries master\+\_\+pose}\hypertarget{classSlave_ab6effa214fce2263784c296ecba8d3e0}{}\label{classSlave_ab6effa214fce2263784c296ecba8d3e0}
-
-\end{DoxyCompactItemize}
+\hyperlink{structController_1_1ControlVector}{Control\+Vector} \hyperlink{classSlave_a663a689ac0141f7ab00e58944a405a6f}{optimal\+\_\+control} ()
+\begin{DoxyCompactList}\small\item\em Calculates a Control vector by pseudo inverting the Jacobian of the Robot. \end{DoxyCompactList}\item 
+void \hyperlink{classSlave_a2f80eae9dc8e4e20037c1a371f9b8189}{target\+Odom\+Callback} (nav\+\_\+msgs\+::\+Odometry msg)
+\begin{DoxyCompactList}\small\item\em Overloads the target odometry callback and expands it with transformation needed for slave robots. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Class that implements a slave robot for multi robot formation control. 
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Slave@{Slave}!Slave@{Slave}}
+\index{Slave@{Slave}!Slave@{Slave}}
+\subsubsection[{\texorpdfstring{Slave(ros\+::\+Node\+Handle \&nh)}{Slave(ros::NodeHandle &nh)}}]{\setlength{\rightskip}{0pt plus 5cm}Slave\+::\+Slave (
+\begin{DoxyParamCaption}
+\item[{ros\+::\+Node\+Handle \&}]{nh}
+\end{DoxyParamCaption}
+)}\hypertarget{classSlave_a855a824b462dd05eddaa8d53b27faea4}{}\label{classSlave_a855a824b462dd05eddaa8d53b27faea4}
+
+
+Construct a new \hyperlink{classSlave}{Slave} object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em nh} & Node\+Handle \\
+\hline
+\end{DoxyParams}
 
 
 \subsection{Member Function Documentation}
 \index{Slave@{Slave}!optimal\+\_\+control@{optimal\+\_\+control}}
 \index{optimal\+\_\+control@{optimal\+\_\+control}!Slave@{Slave}}
-\subsubsection[{\texorpdfstring{optimal\+\_\+control()}{optimal_control()}}]{\setlength{\rightskip}{0pt plus 5cm}void Slave\+::optimal\+\_\+control (
+\subsubsection[{\texorpdfstring{optimal\+\_\+control()}{optimal_control()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Controller\+::\+Control\+Vector} Slave\+::optimal\+\_\+control (
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classSlave_a2a38a730d6ac93fcced035a7d764612d}{}\label{classSlave_a2a38a730d6ac93fcced035a7d764612d}
-This implements a least sqaures determination of control vector \mbox{[}v,omega\mbox{]} \mbox{[}control.\+v control.\+omega\mbox{]} from the given cartesian velocity state d/dt\mbox{[}x,y,phi\mbox{]} (cart\+\_\+vel) 
+)\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classSlave_a663a689ac0141f7ab00e58944a405a6f}{}\label{classSlave_a663a689ac0141f7ab00e58944a405a6f}
+
+
+Calculates a Control vector by pseudo inverting the Jacobian of the Robot. 
+
+\begin{DoxyReturn}{Returns}
+Control\+Vector Calculated Control Vector 
+\end{DoxyReturn}
+\index{Slave@{Slave}!target\+Odom\+Callback@{target\+Odom\+Callback}}
+\index{target\+Odom\+Callback@{target\+Odom\+Callback}!Slave@{Slave}}
+\subsubsection[{\texorpdfstring{target\+Odom\+Callback(nav\+\_\+msgs\+::\+Odometry msg)}{targetOdomCallback(nav_msgs::Odometry msg)}}]{\setlength{\rightskip}{0pt plus 5cm}void Slave\+::target\+Odom\+Callback (
+\begin{DoxyParamCaption}
+\item[{nav\+\_\+msgs\+::\+Odometry}]{msg}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [virtual]}}\hypertarget{classSlave_a2f80eae9dc8e4e20037c1a371f9b8189}{}\label{classSlave_a2f80eae9dc8e4e20037c1a371f9b8189}
+
+
+Overloads the target odometry callback and expands it with transformation needed for slave robots. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & Incoming message at the target odometry topic \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{classController_a77f138b6a3699c21cf904041e7e19820}{Controller}.
+
+
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 

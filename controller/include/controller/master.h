@@ -3,10 +3,17 @@
 #include <controller/controller.h>
 
 
-
+/**
+ * @brief Class that implements a master robot for multi robot formation control
+ * 
+ */
 class Master:public Controller{
     public:
-        Master(ros::NodeHandle &nh);        
-        void scope();
+        /**
+         * @brief Construct a new Master object
+         * 
+         * @param nh Nodehandle
+         */
+        Master(ros::NodeHandle &nh);
     private:
 };

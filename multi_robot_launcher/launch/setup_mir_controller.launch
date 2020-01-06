@@ -19,7 +19,7 @@
 
   <!-- Load ros_control controller configurations -->
   <rosparam file="$(find mir_description)/config/joint_state_controller.yaml" command="load"/>  
-  <rosparam file="$(find mir_description)/config/diffdrive_controller.yaml" command="load" subst_value="true"/>
+  <rosparam file="$(find multi_robot_launcher)/config/diffdrive_controller.yaml" command="load" subst_value="true"/>
 
   <!-- Start the controllers -->
   <node name="controller_spawner" pkg="controller_manager" type="spawner" output="screen"

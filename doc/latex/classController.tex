@@ -11,7 +11,8 @@ Provides a easy to use implementation of a generic mobile robot controller.
 
 
 
-Inheritance diagram for Controller\+:\nopagebreak
+Inheritance diagram for Controller\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -24,114 +25,134 @@ Collaboration diagram for Controller\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=223pt]{classController__coll__graph}
+\includegraphics[width=350pt]{classController__coll__graph}
 \end{center}
 \end{figure}
 \subsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-struct \hyperlink{structController_1_1lyapunov}{lyapunov}
-\begin{DoxyCompactList}\small\item\em Specifies the parameters needed for the lyapunov base control law. \end{DoxyCompactList}\end{DoxyCompactItemize}
+struct \hyperlink{structController_1_1ControlState}{Control\+State}
+\begin{DoxyCompactList}\small\item\em Holds the System state combined by the pose of the system, the cartesian velocity and the angular velocity. \end{DoxyCompactList}\item 
+struct \hyperlink{structController_1_1ControlVector}{Control\+Vector}
+\begin{DoxyCompactList}\small\item\em A struct that holds linear and angular velocity of the Robot since this are the control variable for kinematic tracking control. \end{DoxyCompactList}\item 
+struct \hyperlink{structController_1_1LyapunovParameter}{Lyapunov\+Parameter}
+\begin{DoxyCompactList}\small\item\em Specifies the parameters needed for the lyapunov based control law. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Public Types}
 \begin{DoxyCompactItemize}
 \item 
-enum \hyperlink{classController_a86221d052db839985bd6e4d73013cd06}{controller\+Type} \{ \hyperlink{classController_a86221d052db839985bd6e4d73013cd06ad2e9073ef821965020410686a3c89483}{pseudo\+\_\+inverse} =1, 
-\hyperlink{classController_a86221d052db839985bd6e4d73013cd06aed0e850e561d54619d85f32c37f5bfab}{lypanov} =2, 
-\hyperlink{classController_a86221d052db839985bd6e4d73013cd06a7ab0ee34114a951d4491d6eb73500cdc}{angle\+\_\+distance} =3
+enum \hyperlink{classController_aa6d956c4c220461a4152415ffa78690a}{Controller\+Type} \{ \hyperlink{classController_aa6d956c4c220461a4152415ffa78690aad2e9073ef821965020410686a3c89483}{pseudo\+\_\+inverse} =1, 
+\hyperlink{classController_aa6d956c4c220461a4152415ffa78690aaed0e850e561d54619d85f32c37f5bfab}{lypanov} =2, 
+\hyperlink{classController_aa6d956c4c220461a4152415ffa78690aa7ab0ee34114a951d4491d6eb73500cdc}{angle\+\_\+distance} =3
  \}\begin{DoxyCompactList}\small\item\em Specifies the different implemented control laws. \end{DoxyCompactList}
-\end{DoxyCompactItemize}
+\item 
+typedef tf\+::\+Vector3 \hyperlink{classController_a7ab3d947ee649f6bac652de6a00e8148}{Velocity\+Cartesian}\hypertarget{classController_a7ab3d947ee649f6bac652de6a00e8148}{}\label{classController_a7ab3d947ee649f6bac652de6a00e8148}
+
+\begin{DoxyCompactList}\small\item\em Defines Velocity\+Cartesian wich is used to stores cartesian defined velocities. \end{DoxyCompactList}\item 
+typedef tf\+::\+Vector3 \hyperlink{classController_a1b8b4035525237f0112b81d44a23da2c}{Position\+Cartesian}\hypertarget{classController_a1b8b4035525237f0112b81d44a23da2c}{}\label{classController_a1b8b4035525237f0112b81d44a23da2c}
+
+\begin{DoxyCompactList}\small\item\em Defines Position\+Cartesian wich is used to store a cartesian defined position. \end{DoxyCompactList}\item 
+typedef tf\+::\+Transform \hyperlink{classController_a75a1e2f93842f65d1263f7d3c2fd8898}{Control\+Difference}\hypertarget{classController_a75a1e2f93842f65d1263f7d3c2fd8898}{}\label{classController_a75a1e2f93842f65d1263f7d3c2fd8898}
+
+\begin{DoxyCompactList}\small\item\em Defines Control\+Difference wich is a transformation from the current state in the target state. \end{DoxyCompactList}\item 
+typedef \hyperlink{structController_1_1ControlVector}{Control\+Vector} \hyperlink{classController_a6849bee332c04d67ac6f3052cccd2669}{Velocity\+Eulerian}\hypertarget{classController_a6849bee332c04d67ac6f3052cccd2669}{}\label{classController_a6849bee332c04d67ac6f3052cccd2669}
+
+\begin{DoxyCompactList}\small\item\em Defines Velocity\+Eulerian wich is used to store Velocities wich are defined locally in the moved base system. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \hyperlink{classController_a7341f9092e1977cdd2a1492c4422c019}{Controller} (ros\+::\+Node\+Handle \&\hyperlink{classController_a24e3d3c2536f6ed29018bad1fd53dae2}{nh})
 \begin{DoxyCompactList}\small\item\em Construct a new \hyperlink{classController}{Controller} object. \end{DoxyCompactList}\item 
-void \hyperlink{classController_a88f2d54fedd04bd767e4d6e36e6dc2b3}{set\+\_\+name} (std\+::string \hyperlink{classController_af81f22d8b64d915769acfb8e8d89e0c8}{name})
-\begin{DoxyCompactList}\small\item\em Set the name of object. \end{DoxyCompactList}\item 
-void \hyperlink{classController_ade57ae23226a7565521694c87ec79c90}{set\+\_\+reference} (double x, double y, double z, double angle)
-\begin{DoxyCompactList}\small\item\em Set the reference of the mobile robot to be controlled from a global frame. \end{DoxyCompactList}\item 
-void \hyperlink{classController_aefad16ae5d5df8baac0ed044018eb6c6}{set\+\_\+reference} (std\+::vector$<$ double $>$ coord, double angle)
-\begin{DoxyCompactList}\small\item\em Set the reference of the mobile robot to be controlled from a global frame. \end{DoxyCompactList}\item 
-void {\bfseries set\+\_\+reference} ()\hypertarget{classController_a3a417d33a8ecc6e83f3c43e3a4da74cd}{}\label{classController_a3a417d33a8ecc6e83f3c43e3a4da74cd}
+\hyperlink{classController_a0ab87934c4f7a266cfdb86e0f36bc1b5}{$\sim$\+Controller} ()\hypertarget{classController_a0ab87934c4f7a266cfdb86e0f36bc1b5}{}\label{classController_a0ab87934c4f7a266cfdb86e0f36bc1b5}
 
-\item 
-void \hyperlink{classController_aeeb360dd2e4afb5c654f5bca4c0f00ca}{set\+\_\+world\+\_\+frame} (std\+::string frame)
+\begin{DoxyCompactList}\small\item\em Destroy the \hyperlink{classController}{Controller} object. \end{DoxyCompactList}\item 
+void \hyperlink{classController_a177d0d6cd7cdb7784ae9c506debfa2c6}{set\+Name} (std\+::string \hyperlink{classController_af81f22d8b64d915769acfb8e8d89e0c8}{name})
+\begin{DoxyCompactList}\small\item\em Set the name of object. \end{DoxyCompactList}\item 
+void \hyperlink{classController_a156a66bd7cd6340106accbb982b6238b}{set\+Reference} (double x, double y, double z, double angle)
+\begin{DoxyCompactList}\small\item\em Set the reference of the mobile robot to be controlled from a global frame. \end{DoxyCompactList}\item 
+void \hyperlink{classController_ae86ed49c452a9e94568312ef743aa082}{set\+Reference} (std\+::vector$<$ double $>$ coord, double angle)
+\begin{DoxyCompactList}\small\item\em Set the reference of the mobile robot to be controlled from a global frame. \end{DoxyCompactList}\item 
+void \hyperlink{classController_adf25339eadd9b31bc1d6b3e47395942e}{set\+World\+Frame} (std\+::string frame)
 \begin{DoxyCompactList}\small\item\em Set the world frame name all references are given in. \end{DoxyCompactList}\item 
-void \hyperlink{classController_a7134d173f5f91755d8a3c7e07ca04da9}{set\+\_\+type} (\hyperlink{classController_a86221d052db839985bd6e4d73013cd06}{Controller\+::controller\+Type} \hyperlink{classController_af2488a28d3390288db92fa1d92aaed52}{type})
+void \hyperlink{classController_a25202c469ad65696761242dce4e28d76}{set\+Type} (\hyperlink{classController_aa6d956c4c220461a4152415ffa78690a}{Controller\+::\+Controller\+Type} \hyperlink{classController_a17792cff397dc69baca568c7d03f2fc8}{type})
 \begin{DoxyCompactList}\small\item\em Sets the type of the used control law. \end{DoxyCompactList}\item 
-void \hyperlink{classController_a2ebb5b813be3525b44af61eb6f165964}{set\+\_\+lyapunov} (\hyperlink{structController_1_1lyapunov}{Controller\+::lyapunov} param)
+void \hyperlink{classController_abda96416fab439c188ef494a2b2a0c8e}{set\+Lyapunov} (\hyperlink{structController_1_1LyapunovParameter}{Controller\+::\+Lyapunov\+Parameter} param)
 \begin{DoxyCompactList}\small\item\em Sets the parameter of the lyapunov control law. \end{DoxyCompactList}\item 
-void \hyperlink{classController_afb2d5fec93db7b68a16767823f4c1675}{set\+\_\+lyapunov} (std\+::vector$<$ float $>$ param)
+void \hyperlink{classController_a1f77caed7a7951ca2f4cf7928f88669d}{set\+Lyapunov} (std\+::vector$<$ float $>$ param)
 \begin{DoxyCompactList}\small\item\em Sets the parameter of the lyapunov control law. \end{DoxyCompactList}\item 
-virtual void \hyperlink{classController_a0758387181bc5902176813cc686cb088}{load\+\_\+parameter} ()\hypertarget{classController_a0758387181bc5902176813cc686cb088}{}\label{classController_a0758387181bc5902176813cc686cb088}
+virtual void \hyperlink{classController_a59e60885d5307979faf477435507069a}{load\+Parameter} ()\hypertarget{classController_a59e60885d5307979faf477435507069a}{}\label{classController_a59e60885d5307979faf477435507069a}
 
 \begin{DoxyCompactList}\small\item\em Loading parameter for a specified \hyperlink{classController}{Controller}. Empty for \hyperlink{classController}{Controller} base class and implemented in inheriting classes. \end{DoxyCompactList}\item 
 void \hyperlink{classController_a55c77d2e41634c9b21543647f74eec4c}{load} ()\hypertarget{classController_a55c77d2e41634c9b21543647f74eec4c}{}\label{classController_a55c77d2e41634c9b21543647f74eec4c}
 
 \begin{DoxyCompactList}\small\item\em Loading of R\+OS parameterset for this controller. \end{DoxyCompactList}\item 
-void \hyperlink{classController_add4a8227097c30e5f165977cfa0ce22c}{link\+\_\+current\+\_\+odom} (std\+::string topic\+\_\+name)
+void \hyperlink{classController_aa0ea10adc7a81124663fb01693acef17}{link\+Current\+Odom} (std\+::string topic\+\_\+name)
 \begin{DoxyCompactList}\small\item\em Links the current odometry topic to the controller. At this topic the current odomotry of the robot must be published. \end{DoxyCompactList}\item 
-void \hyperlink{classController_a82a7c805f6e4e0689c675134903e9e58}{link\+\_\+target\+\_\+velocity} (std\+::string topic\+\_\+name)
-\begin{DoxyCompactList}\small\item\em Links the target/desired velocity topic to the controller. At this topic the current desired velocity is published. \end{DoxyCompactList}\item 
-void \hyperlink{classController_a5f5318b08e7b99d2e5f09c59a6eb61aa}{link\+\_\+target\+\_\+state} (std\+::string topic\+\_\+name)
-\begin{DoxyCompactList}\small\item\em Links the target/desired velocity topic to the controller. At this topic the desired velocity is published. \end{DoxyCompactList}\item 
-void \hyperlink{classController_a7bf32883aed714275c99d6d182993b73}{link\+\_\+target\+\_\+odometry} (std\+::string topic\+\_\+name)
+void \hyperlink{classController_a633d84f97952551654ee70acc31810c6}{link\+Target\+Odom} (std\+::string topic\+\_\+name)
 \begin{DoxyCompactList}\small\item\em Links the target/desired odometry topic to the controller. At this topic the desired odometry is published. \end{DoxyCompactList}\item 
-void \hyperlink{classController_afdf03808aee4a1cfcf65a7198ab1a9aa}{link\+\_\+output\+\_\+velocity} (std\+::string topic\+\_\+name)
+void \hyperlink{classController_a7bde6b39b2b2cccb1dd866841f672f99}{link\+Output\+Velocity} (std\+::string topic\+\_\+name)
 \begin{DoxyCompactList}\small\item\em Links the output velocity of the controller to a given topic. \end{DoxyCompactList}\item 
-void \hyperlink{classController_a9b8949013d52e365754e170a9cad158c}{link\+\_\+output\+\_\+state} (std\+::string topic\+\_\+name)
-\begin{DoxyCompactList}\small\item\em Links the output ste of the controller to a given topic. \end{DoxyCompactList}\item 
-void \hyperlink{classController_abc1909639580e5359228c87fbd3a622b}{link\+\_\+output\+\_\+control\+\_\+data} (std\+::string topic\+\_\+name)
+void \hyperlink{classController_a6412541600d7444f00f8e48cea0ed024}{link\+Output\+Control\+Data} (std\+::string topic\+\_\+name)
 \begin{DoxyCompactList}\small\item\em Links the meta data of the controller to a given topic. \end{DoxyCompactList}\item 
-void \hyperlink{classController_a56568ee07bb72983576e9d7c10eb3e83}{calc\+\_\+\+Lyapunov} (double kx, double ky, double kphi, double vd, double omegad)
-\begin{DoxyCompactList}\small\item\em Calculates the lyapunov base control output from a given input. \end{DoxyCompactList}\item 
-void \hyperlink{classController_a63249412728814430174c740d358a5c0}{calc\+\_\+angle\+\_\+distance} (double kr, double kphi)
-\begin{DoxyCompactList}\small\item\em Calculate control output just by angle difference and eklidian difference from target. \end{DoxyCompactList}\item 
-void \hyperlink{classController_a6661eb7307219216a7cb0a90e2a07e4d}{execute} ()\hypertarget{classController_a6661eb7307219216a7cb0a90e2a07e4d}{}\label{classController_a6661eb7307219216a7cb0a90e2a07e4d}
+virtual void \hyperlink{classController_a9bf99e0d40660b832c2e70691e9f0a1c}{current\+Odom\+Callback} (nav\+\_\+msgs\+::\+Odometry msg)
+\begin{DoxyCompactList}\small\item\em Callback for incoming odometry data for the current robot odometry. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classController_a77f138b6a3699c21cf904041e7e19820}{target\+Odom\+Callback} (nav\+\_\+msgs\+::\+Odometry msg)
+\begin{DoxyCompactList}\small\item\em Callback for incoming state data for the target odometry of the robot. This is overloaded by child classes. \end{DoxyCompactList}\item 
+struct \hyperlink{structController_1_1ControlVector}{Control\+Vector} \hyperlink{classController_a5342dd66c1228e651e569d9b1c31d82e}{calc\+Lyapunov} (\hyperlink{structController_1_1LyapunovParameter}{Lyapunov\+Parameter} parameter, \hyperlink{classController_a6849bee332c04d67ac6f3052cccd2669}{Velocity\+Eulerian} desired, tf\+::\+Transform relative)
+\item 
+void \hyperlink{classController_abe0a6e0155a0b159efe425e635d3ae76}{execute} (const ros\+::\+Timer\+Event \&ev)\hypertarget{classController_abe0a6e0155a0b159efe425e635d3ae76}{}\label{classController_abe0a6e0155a0b159efe425e635d3ae76}
 
 \begin{DoxyCompactList}\small\item\em Scope of the controller that is called in control frequence. \end{DoxyCompactList}\item 
 void \hyperlink{classController_ab5515748f1b0c82f015e039c817ee5f7}{reset} ()\hypertarget{classController_ab5515748f1b0c82f015e039c817ee5f7}{}\label{classController_ab5515748f1b0c82f015e039c817ee5f7}
 
 \begin{DoxyCompactList}\small\item\em Resetting controller to initial state. \end{DoxyCompactList}\item 
-void \hyperlink{classController_a35b38608f67e7c1c34f6b7186db32ad7}{current\+\_\+odom\+\_\+callback} (nav\+\_\+msgs\+::\+Odometry msg)\hypertarget{classController_a35b38608f67e7c1c34f6b7186db32ad7}{}\label{classController_a35b38608f67e7c1c34f6b7186db32ad7}
-
-\begin{DoxyCompactList}\small\item\em Callback for input odometry message. Is executed everytima a Odometry input is incoming. Writes data to input current\+\_\+pose. \end{DoxyCompactList}\item 
-virtual void \hyperlink{classController_afa31080c1ed1e652410c5e97472b3ea5}{target\+\_\+velocities\+\_\+callback} (geometry\+\_\+msgs\+::\+Twist msg)\hypertarget{classController_afa31080c1ed1e652410c5e97472b3ea5}{}\label{classController_afa31080c1ed1e652410c5e97472b3ea5}
-
-\begin{DoxyCompactList}\small\item\em Callback for input velocitiy message. Is executed everytime a velocitiy input is incoming. Writes data to input state. \end{DoxyCompactList}\item 
-virtual void \hyperlink{classController_a60f59dd761ce2d41dc9254f87164ded1}{target\+\_\+state\+\_\+callback} (geometry\+\_\+msgs\+::\+Pose\+Stamped msg)\hypertarget{classController_a60f59dd761ce2d41dc9254f87164ded1}{}\label{classController_a60f59dd761ce2d41dc9254f87164ded1}
-
-\begin{DoxyCompactList}\small\item\em Callback for input target state message. Is executed everytima a target state input is incoming. Writes data to target\+\_\+pose state. \end{DoxyCompactList}\item 
-virtual void \hyperlink{classController_ad9ccaff0c6f9989bd6c33a3d2179124d}{target\+\_\+odometry\+\_\+callback} (nav\+\_\+msgs\+::\+Odometry msg)\hypertarget{classController_ad9ccaff0c6f9989bd6c33a3d2179124d}{}\label{classController_ad9ccaff0c6f9989bd6c33a3d2179124d}
-
-\begin{DoxyCompactList}\small\item\em Callback for input target odometry message. Is executed everytima a target odometry input is incoming. Writes data to target\+\_\+pose state and target\+\_\+vel. \end{DoxyCompactList}\item 
-bool {\bfseries srv\+\_\+reset} (std\+\_\+srvs\+::\+Empty\+Request \&req, std\+\_\+srvs\+::\+Empty\+Response \&res)\hypertarget{classController_ae24861b9ecd088dc3a58db860fc417b1}{}\label{classController_ae24861b9ecd088dc3a58db860fc417b1}
-
-\item 
-virtual void \hyperlink{classController_af89e3d7ed87318418f0168727bd98f0f}{scope} ()=0\hypertarget{classController_af89e3d7ed87318418f0168727bd98f0f}{}\label{classController_af89e3d7ed87318418f0168727bd98f0f}
-
-\begin{DoxyCompactList}\small\item\em A Scope within the execute function. Repeating calculation in inheriting classes are implemented here. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\subsection*{Protected Member Functions}
-\begin{DoxyCompactItemize}
-\item 
-void \hyperlink{classController_a5f86e07f526598b251e345a908923950}{get\+Transformation} ()\hypertarget{classController_a5f86e07f526598b251e345a908923950}{}\label{classController_a5f86e07f526598b251e345a908923950}
-
-\begin{DoxyCompactList}\small\item\em Listen to all neccesary trasnformations. \end{DoxyCompactList}\item 
-void \hyperlink{classController_ae6859e3a43be2fa31cb82ace3954e746}{publish} ()\hypertarget{classController_ae6859e3a43be2fa31cb82ace3954e746}{}\label{classController_ae6859e3a43be2fa31cb82ace3954e746}
-
-\begin{DoxyCompactList}\small\item\em Publish all outgoing data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+bool \hyperlink{classController_a140aa1ee895337d776f88682640c0746}{srv\+Reset} (std\+\_\+srvs\+::\+Empty\+Request \&req, std\+\_\+srvs\+::\+Empty\+Response \&res)
+\begin{DoxyCompactList}\small\item\em Service procedure for resetting the \hyperlink{classController}{Controller}. \end{DoxyCompactList}\item 
+void \hyperlink{classController_a753fe3680abc7c9ba3040f6fcb638ac2}{control\+State2control\+State\+Msg} (\hyperlink{structController_1_1ControlState}{Control\+State} \&state, multi\+\_\+robot\+\_\+msgs\+::\+Control\+State \&msg)
+\begin{DoxyCompactList}\small\item\em Converts \hyperlink{structController_1_1ControlState}{Control\+State} struct to a C\+Ontrol state message. \end{DoxyCompactList}\item 
+void \hyperlink{classController_a866cee7328e1318e118c884a850a0e34}{control\+Difference2control\+Difference\+Msg} (\hyperlink{classController_a75a1e2f93842f65d1263f7d3c2fd8898}{Control\+Difference} \&difference, multi\+\_\+robot\+\_\+msgs\+::\+Control\+Difference \&msg)
+\begin{DoxyCompactList}\small\item\em Converts Control\+Difference struct to a C\+Ontrol state message. \end{DoxyCompactList}\item 
+void \hyperlink{classController_a06c1aab700c5918b76e33c35f3da8ea8}{control\+Vector2control\+Vector\+Msg} (\hyperlink{structController_1_1ControlVector}{Control\+Vector} \&control, multi\+\_\+robot\+\_\+msgs\+::\+Control\+Vector \&msg)
+\begin{DoxyCompactList}\small\item\em Converts \hyperlink{structController_1_1ControlVector}{Control\+Vector} struct to a C\+Ontrol state message. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Protected Attributes}
 \begin{DoxyCompactItemize}
 \item 
 ros\+::\+Node\+Handle \hyperlink{classController_a24e3d3c2536f6ed29018bad1fd53dae2}{nh}\hypertarget{classController_a24e3d3c2536f6ed29018bad1fd53dae2}{}\label{classController_a24e3d3c2536f6ed29018bad1fd53dae2}
 
 \begin{DoxyCompactList}\small\item\em Node Handle. \end{DoxyCompactList}\item 
-tf\+::\+Transform\+Listener $\ast$ {\bfseries listener}\hypertarget{classController_afea373f808d583e4ad613f119439a8f5}{}\label{classController_afea373f808d583e4ad613f119439a8f5}
+tf\+::\+Transform\+Listener $\ast$ \hyperlink{classController_afea373f808d583e4ad613f119439a8f5}{listener}\hypertarget{classController_afea373f808d583e4ad613f119439a8f5}{}\label{classController_afea373f808d583e4ad613f119439a8f5}
 
+\begin{DoxyCompactList}\small\item\em Listener for any transformation. \end{DoxyCompactList}\item 
+std\+::string \hyperlink{classController_ae01171e69d9b735e44964662275fc77c}{world\+\_\+frame}\hypertarget{classController_ae01171e69d9b735e44964662275fc77c}{}\label{classController_ae01171e69d9b735e44964662275fc77c}
+
+\begin{DoxyCompactList}\small\item\em Name of the world frame. \end{DoxyCompactList}\item 
+\hyperlink{structController_1_1ControlState}{Control\+State} \hyperlink{classController_aaca736f25e7da33272ded507e0c8057f}{current\+\_\+state\+\_\+}\hypertarget{classController_aaca736f25e7da33272ded507e0c8057f}{}\label{classController_aaca736f25e7da33272ded507e0c8057f}
+
+\begin{DoxyCompactList}\small\item\em The current state of the robot. \end{DoxyCompactList}\item 
+\hyperlink{structController_1_1ControlState}{Control\+State} \hyperlink{classController_a8412c8448970cf820f932cff02d69d33}{target\+\_\+state\+\_\+}\hypertarget{classController_a8412c8448970cf820f932cff02d69d33}{}\label{classController_a8412c8448970cf820f932cff02d69d33}
+
+\begin{DoxyCompactList}\small\item\em The target state of the robot. \end{DoxyCompactList}\item 
+\hyperlink{classController_a75a1e2f93842f65d1263f7d3c2fd8898}{Control\+Difference} \hyperlink{classController_afe3b54c59a80046661f0030a573539d7}{control\+\_\+dif\+\_\+}\hypertarget{classController_afe3b54c59a80046661f0030a573539d7}{}\label{classController_afe3b54c59a80046661f0030a573539d7}
+
+\begin{DoxyCompactList}\small\item\em Transformation from current configuration to target configuration. \end{DoxyCompactList}\item 
+\hyperlink{structController_1_1ControlVector}{Control\+Vector} \hyperlink{classController_aaafcd892e9e6080e839a1348a7ef40db}{control\+\_\+}\hypertarget{classController_aaafcd892e9e6080e839a1348a7ef40db}{}\label{classController_aaafcd892e9e6080e839a1348a7ef40db}
+
+\begin{DoxyCompactList}\small\item\em The calculated control vector. \end{DoxyCompactList}\item 
+tf\+::\+Transform \hyperlink{classController_aa713beca2ef8152d273bbc6fc38f7fc8}{world2reference\+\_\+}\hypertarget{classController_aa713beca2ef8152d273bbc6fc38f7fc8}{}\label{classController_aa713beca2ef8152d273bbc6fc38f7fc8}
+
+\begin{DoxyCompactList}\small\item\em Transformation from a world to the controllers refrence frame. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
 \item 
-\hyperlink{classController_a86221d052db839985bd6e4d73013cd06}{controller\+Type} \hyperlink{classController_af2488a28d3390288db92fa1d92aaed52}{type}\hypertarget{classController_af2488a28d3390288db92fa1d92aaed52}{}\label{classController_af2488a28d3390288db92fa1d92aaed52}
+void \hyperlink{classController_ae6859e3a43be2fa31cb82ace3954e746}{publish} ()\hypertarget{classController_ae6859e3a43be2fa31cb82ace3954e746}{}\label{classController_ae6859e3a43be2fa31cb82ace3954e746}
 
-\begin{DoxyCompactList}\small\item\em Type of control algorythm that is used. \end{DoxyCompactList}\item 
-ros\+::\+Publisher \hyperlink{classController_a8428549596cff57f48390ac25706545a}{pub\+\_\+vel\+\_\+out}\hypertarget{classController_a8428549596cff57f48390ac25706545a}{}\label{classController_a8428549596cff57f48390ac25706545a}
+\begin{DoxyCompactList}\small\item\em Publish all outgoing data. \end{DoxyCompactList}\item 
+void \hyperlink{classController_a8509c67c73d26e981ef0972f44dc73ca}{publish\+\_\+refrence} ()\hypertarget{classController_a8509c67c73d26e981ef0972f44dc73ca}{}\label{classController_a8509c67c73d26e981ef0972f44dc73ca}
+
+\begin{DoxyCompactList}\small\item\em Adding the world frame. Broadcastes a world frame respectiveliy the robot reference frame expressed in world coordinates. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+ros\+::\+Publisher \hyperlink{classController_a2ff92c110ca7f28bdd702229a1295505}{pub\+\_\+cmd\+\_\+vel}\hypertarget{classController_a2ff92c110ca7f28bdd702229a1295505}{}\label{classController_a2ff92c110ca7f28bdd702229a1295505}
 
 \begin{DoxyCompactList}\small\item\em publisher object for velocity outoput topic \end{DoxyCompactList}\item 
 ros\+::\+Publisher \hyperlink{classController_a6abeaf23d1c17d6af6eecf7d1479fe31}{pub\+\_\+state\+\_\+out}\hypertarget{classController_a6abeaf23d1c17d6af6eecf7d1479fe31}{}\label{classController_a6abeaf23d1c17d6af6eecf7d1479fe31}
@@ -140,99 +161,39 @@ ros\+::\+Publisher \hyperlink{classController_a6abeaf23d1c17d6af6eecf7d1479fe31}
 ros\+::\+Publisher \hyperlink{classController_afde3eefcf7ac040b2a38a8d1e95a6077}{pub\+\_\+control\+\_\+data}\hypertarget{classController_afde3eefcf7ac040b2a38a8d1e95a6077}{}\label{classController_afde3eefcf7ac040b2a38a8d1e95a6077}
 
 \begin{DoxyCompactList}\small\item\em publisher object for control difference topic \end{DoxyCompactList}\item 
-ros\+::\+Subscriber \hyperlink{classController_a1ecc749bf5bd484c978940c5a6afe03f}{sub\+\_\+vel\+\_\+target}\hypertarget{classController_a1ecc749bf5bd484c978940c5a6afe03f}{}\label{classController_a1ecc749bf5bd484c978940c5a6afe03f}
-
-\begin{DoxyCompactList}\small\item\em Subscirber object for input topic. \end{DoxyCompactList}\item 
 ros\+::\+Subscriber \hyperlink{classController_a855093341ac8afa84efd841654fedaf5}{sub\+\_\+odom\+\_\+current}\hypertarget{classController_a855093341ac8afa84efd841654fedaf5}{}\label{classController_a855093341ac8afa84efd841654fedaf5}
 
 \begin{DoxyCompactList}\small\item\em Subscriber object for odometry. \end{DoxyCompactList}\item 
-ros\+::\+Subscriber \hyperlink{classController_adabc3d493b55a60400c74bd4264dbc6e}{sub\+\_\+state\+\_\+target}\hypertarget{classController_adabc3d493b55a60400c74bd4264dbc6e}{}\label{classController_adabc3d493b55a60400c74bd4264dbc6e}
-
-\begin{DoxyCompactList}\small\item\em Subscriber object for target state of controller. \end{DoxyCompactList}\item 
-ros\+::\+Subscriber \hyperlink{classController_a7f8a52684719804ecb90c57145513366}{sub\+\_\+target\+\_\+odometry}\hypertarget{classController_a7f8a52684719804ecb90c57145513366}{}\label{classController_a7f8a52684719804ecb90c57145513366}
+ros\+::\+Subscriber \hyperlink{classController_a7c21cd887b80a3ebceae1e5e320c6ad8}{sub\+\_\+odom\+\_\+target}\hypertarget{classController_a7c21cd887b80a3ebceae1e5e320c6ad8}{}\label{classController_a7c21cd887b80a3ebceae1e5e320c6ad8}
 
 \begin{DoxyCompactList}\small\item\em Subscriber object for target odometry topic. \end{DoxyCompactList}\item 
+ros\+::\+Timer \hyperlink{classController_a96e34ca6ebe5b7c8035982ff98270f4b}{time\+\_\+scope\+\_\+}\hypertarget{classController_a96e34ca6ebe5b7c8035982ff98270f4b}{}\label{classController_a96e34ca6ebe5b7c8035982ff98270f4b}
+
+\begin{DoxyCompactList}\small\item\em Timer for control scope. \end{DoxyCompactList}\item 
 ros\+::\+Service\+Server \hyperlink{classController_ae981013bac649b6310e924b6a126bc40}{reset\+\_\+service}\hypertarget{classController_ae981013bac649b6310e924b6a126bc40}{}\label{classController_ae981013bac649b6310e924b6a126bc40}
 
 \begin{DoxyCompactList}\small\item\em Service for resetting the controller. \end{DoxyCompactList}\item 
 std\+::string \hyperlink{classController_af81f22d8b64d915769acfb8e8d89e0c8}{name}\hypertarget{classController_af81f22d8b64d915769acfb8e8d89e0c8}{}\label{classController_af81f22d8b64d915769acfb8e8d89e0c8}
 
 \begin{DoxyCompactList}\small\item\em Name of the node respective \hyperlink{classController}{Controller}. \end{DoxyCompactList}\item 
-std\+::string \hyperlink{classController_ae01171e69d9b735e44964662275fc77c}{world\+\_\+frame}\hypertarget{classController_ae01171e69d9b735e44964662275fc77c}{}\label{classController_ae01171e69d9b735e44964662275fc77c}
+\hyperlink{structController_1_1LyapunovParameter}{Lyapunov\+Parameter} \hyperlink{classController_a8069db2319ff64d65607b1aa897d3069}{lyapunov\+\_\+parameter}\hypertarget{classController_a8069db2319ff64d65607b1aa897d3069}{}\label{classController_a8069db2319ff64d65607b1aa897d3069}
 
-\begin{DoxyCompactList}\small\item\em Name of the world frame. \end{DoxyCompactList}\item 
-tf\+::\+Vector3 \hyperlink{classController_a538a49aa6e62ee89de241874b7f26625}{ang\+\_\+vel\+\_\+in}\hypertarget{classController_a538a49aa6e62ee89de241874b7f26625}{}\label{classController_a538a49aa6e62ee89de241874b7f26625}
+\begin{DoxyCompactList}\small\item\em Parameter set for lyapunov determinations. \end{DoxyCompactList}\item 
+\hyperlink{classController_aa6d956c4c220461a4152415ffa78690a}{Controller\+Type} \hyperlink{classController_a17792cff397dc69baca568c7d03f2fc8}{type}\hypertarget{classController_a17792cff397dc69baca568c7d03f2fc8}{}\label{classController_a17792cff397dc69baca568c7d03f2fc8}
 
-\begin{DoxyCompactList}\small\item\em target linear velocity \end{DoxyCompactList}\item 
-tf\+::\+Vector3 \hyperlink{classController_ab94918bba11d4526cd5dc20e64655845}{lin\+\_\+vel\+\_\+in}\hypertarget{classController_ab94918bba11d4526cd5dc20e64655845}{}\label{classController_ab94918bba11d4526cd5dc20e64655845}
+\begin{DoxyCompactList}\small\item\em Type of control algorythm that is used. \end{DoxyCompactList}\item 
+bool \hyperlink{classController_a4e0e569456498e5670a48244c22cafc9}{loaded\+\_\+parameter}\hypertarget{classController_a4e0e569456498e5670a48244c22cafc9}{}\label{classController_a4e0e569456498e5670a48244c22cafc9}
 
-\begin{DoxyCompactList}\small\item\em target angular velocity \end{DoxyCompactList}\item 
-tf\+::\+Vector3 \hyperlink{classController_ac7b5300b4fc0b2436d4a17d4bb60b078}{lin\+\_\+vel\+\_\+out}\hypertarget{classController_ac7b5300b4fc0b2436d4a17d4bb60b078}{}\label{classController_ac7b5300b4fc0b2436d4a17d4bb60b078}
-
-\begin{DoxyCompactList}\small\item\em Outgoing linear velocity. \end{DoxyCompactList}\item 
-tf\+::\+Vector3 \hyperlink{classController_a8c96a76667a4298cd15f6b49a9e23ceb}{ang\+\_\+vel\+\_\+out}\hypertarget{classController_a8c96a76667a4298cd15f6b49a9e23ceb}{}\label{classController_a8c96a76667a4298cd15f6b49a9e23ceb}
-
-\begin{DoxyCompactList}\small\item\em Outgoing angular velocity. \end{DoxyCompactList}\item 
-tf\+::\+Stamped\+Transform {\bfseries world2robot}\hypertarget{classController_aaad279e91ae825ab17121759ec46f539}{}\label{classController_aaad279e91ae825ab17121759ec46f539}
-
-\item 
-tf\+::\+Stamped\+Transform {\bfseries world2odom}\hypertarget{classController_a0fbeee8dd4ee75f98ca860f1878ba4dd}{}\label{classController_a0fbeee8dd4ee75f98ca860f1878ba4dd}
-
-\item 
-tf\+::\+Transform \hyperlink{classController_a171362bdb7fa9335627a5c16e3716525}{control\+\_\+dif}\hypertarget{classController_a171362bdb7fa9335627a5c16e3716525}{}\label{classController_a171362bdb7fa9335627a5c16e3716525}
-
-\begin{DoxyCompactList}\small\item\em Transformation from current to target. \end{DoxyCompactList}\item 
-tf\+::\+Pose \hyperlink{classController_a804862aff250a2857c2e145615ae0fdb}{reference\+\_\+pose}\hypertarget{classController_a804862aff250a2857c2e145615ae0fdb}{}\label{classController_a804862aff250a2857c2e145615ae0fdb}
-
-\begin{DoxyCompactList}\small\item\em Reference pose to a global system. \end{DoxyCompactList}\item 
-tf\+::\+Pose \hyperlink{classController_a9575ed78c8b37c15f425deb48a3fe413}{current\+\_\+pose}\hypertarget{classController_a9575ed78c8b37c15f425deb48a3fe413}{}\label{classController_a9575ed78c8b37c15f425deb48a3fe413}
-
-\begin{DoxyCompactList}\small\item\em Pose of \hyperlink{classController}{Controller} at the moment in world. \end{DoxyCompactList}\item 
-tf\+::\+Pose \hyperlink{classController_aa27e5e790f798a9dd55078b24a326dd6}{target\+\_\+pose}\hypertarget{classController_aa27e5e790f798a9dd55078b24a326dd6}{}\label{classController_aa27e5e790f798a9dd55078b24a326dd6}
-
-\begin{DoxyCompactList}\small\item\em The Target for the \hyperlink{classController}{Controller} poses. \end{DoxyCompactList}\item 
-\hyperlink{structController_1_1lyapunov}{lyapunov} {\bfseries lyapunov\+\_\+parameter}\hypertarget{classController_a3b52649fc2e291a276a1ad62e8440a6f}{}\label{classController_a3b52649fc2e291a276a1ad62e8440a6f}
-
-\item 
-double {\bfseries kx}\hypertarget{classController_a18cb9e47664e29810d99a17a3997fd79}{}\label{classController_a18cb9e47664e29810d99a17a3997fd79}
-
-\item 
-double {\bfseries ky}\hypertarget{classController_a75a14de3b905db8fc247c2264e55f90b}{}\label{classController_a75a14de3b905db8fc247c2264e55f90b}
-
-\item 
-double {\bfseries kphi}\hypertarget{classController_acf8a5d288ffb3537a7aa00745bd5a7b3}{}\label{classController_acf8a5d288ffb3537a7aa00745bd5a7b3}
-
-\item 
-double {\bfseries omegad}\hypertarget{classController_af75dc7cabc84c25933aec4e42bd9533a}{}\label{classController_af75dc7cabc84c25933aec4e42bd9533a}
-
-\item 
-double {\bfseries vd}\hypertarget{classController_ad67f667a4fcbcfc6cd74e9dec88b6f98}{}\label{classController_ad67f667a4fcbcfc6cd74e9dec88b6f98}
-
-\item 
-double {\bfseries kr}\hypertarget{classController_ab107c130b9466fd6d7116306218b4a95}{}\label{classController_ab107c130b9466fd6d7116306218b4a95}
-
-\item 
-double {\bfseries kang}\hypertarget{classController_a9b8aa757ac74e51a1bb6fc959ffc5a14}{}\label{classController_a9b8aa757ac74e51a1bb6fc959ffc5a14}
-
-\item 
-bool {\bfseries loaded\+\_\+parameter}\hypertarget{classController_a4e0e569456498e5670a48244c22cafc9}{}\label{classController_a4e0e569456498e5670a48244c22cafc9}
-
-\end{DoxyCompactItemize}
-\subsection*{Private Member Functions}
-\begin{DoxyCompactItemize}
-\item 
-void \hyperlink{classController_ac3c2cc7b8afdf05ade60e03eaca88b91}{add\+\_\+map} ()\hypertarget{classController_ac3c2cc7b8afdf05ade60e03eaca88b91}{}\label{classController_ac3c2cc7b8afdf05ade60e03eaca88b91}
-
-\begin{DoxyCompactList}\small\item\em Adding a transformation to the map frame, the reference pose is defined in. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Flag if parameter were loaded from the parameter server. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
 Provides a easy to use implementation of a generic mobile robot controller. 
 
 \subsection{Member Enumeration Documentation}
-\index{Controller@{Controller}!controller\+Type@{controller\+Type}}
-\index{controller\+Type@{controller\+Type}!Controller@{Controller}}
-\subsubsection[{\texorpdfstring{controller\+Type}{controllerType}}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf Controller\+::controller\+Type}}\hypertarget{classController_a86221d052db839985bd6e4d73013cd06}{}\label{classController_a86221d052db839985bd6e4d73013cd06}
+\index{Controller@{Controller}!Controller\+Type@{Controller\+Type}}
+\index{Controller\+Type@{Controller\+Type}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{Controller\+Type}{ControllerType}}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf Controller\+::\+Controller\+Type}}\hypertarget{classController_aa6d956c4c220461a4152415ffa78690a}{}\label{classController_aa6d956c4c220461a4152415ffa78690a}
 
 
 Specifies the different implemented control laws. 
@@ -241,11 +202,11 @@ Specifies the different implemented control laws.
 \item[Enumerator]\par
 \begin{description}
 \index{pseudo\+\_\+inverse@{pseudo\+\_\+inverse}!Controller@{Controller}}\index{Controller@{Controller}!pseudo\+\_\+inverse@{pseudo\+\_\+inverse}}\item[{\em 
-pseudo\+\_\+inverse\hypertarget{classController_a86221d052db839985bd6e4d73013cd06ad2e9073ef821965020410686a3c89483}{}\label{classController_a86221d052db839985bd6e4d73013cd06ad2e9073ef821965020410686a3c89483}
+pseudo\+\_\+inverse\hypertarget{classController_aa6d956c4c220461a4152415ffa78690aad2e9073ef821965020410686a3c89483}{}\label{classController_aa6d956c4c220461a4152415ffa78690aad2e9073ef821965020410686a3c89483}
 }]Control law is based on pseudo inveres the input for generate a output (least squares optimisation) \index{lypanov@{lypanov}!Controller@{Controller}}\index{Controller@{Controller}!lypanov@{lypanov}}\item[{\em 
-lypanov\hypertarget{classController_a86221d052db839985bd6e4d73013cd06aed0e850e561d54619d85f32c37f5bfab}{}\label{classController_a86221d052db839985bd6e4d73013cd06aed0e850e561d54619d85f32c37f5bfab}
+lypanov\hypertarget{classController_aa6d956c4c220461a4152415ffa78690aaed0e850e561d54619d85f32c37f5bfab}{}\label{classController_aa6d956c4c220461a4152415ffa78690aaed0e850e561d54619d85f32c37f5bfab}
 }]Control law is based on the lyapunov approache. Output is determined from a lyapunov stable function \index{angle\+\_\+distance@{angle\+\_\+distance}!Controller@{Controller}}\index{Controller@{Controller}!angle\+\_\+distance@{angle\+\_\+distance}}\item[{\em 
-angle\+\_\+distance\hypertarget{classController_a86221d052db839985bd6e4d73013cd06a7ab0ee34114a951d4491d6eb73500cdc}{}\label{classController_a86221d052db839985bd6e4d73013cd06a7ab0ee34114a951d4491d6eb73500cdc}
+angle\+\_\+distance\hypertarget{classController_aa6d956c4c220461a4152415ffa78690aa7ab0ee34114a951d4491d6eb73500cdc}{}\label{classController_aa6d956c4c220461a4152415ffa78690aa7ab0ee34114a951d4491d6eb73500cdc}
 }]Control law based on linear approach in angle and distance respectively \end{description}
 \end{Desc}
 
@@ -270,60 +231,107 @@ Construct a new \hyperlink{classController}{Controller} object.
 
 
 \subsection{Member Function Documentation}
-\index{Controller@{Controller}!calc\+\_\+angle\+\_\+distance@{calc\+\_\+angle\+\_\+distance}}
-\index{calc\+\_\+angle\+\_\+distance@{calc\+\_\+angle\+\_\+distance}!Controller@{Controller}}
-\subsubsection[{\texorpdfstring{calc\+\_\+angle\+\_\+distance(double kr, double kphi)}{calc_angle_distance(double kr, double kphi)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::calc\+\_\+angle\+\_\+distance (
+\index{Controller@{Controller}!calc\+Lyapunov@{calc\+Lyapunov}}
+\index{calc\+Lyapunov@{calc\+Lyapunov}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{calc\+Lyapunov(\+Lyapunov\+Parameter parameter, Velocity\+Eulerian desired, tf\+::\+Transform relative)}{calcLyapunov(LyapunovParameter parameter, VelocityEulerian desired, tf::Transform relative)}}]{\setlength{\rightskip}{0pt plus 5cm}struct {\bf Controller\+::\+Control\+Vector} Controller\+::calc\+Lyapunov (
 \begin{DoxyParamCaption}
-\item[{double}]{kr, }
-\item[{double}]{kphi}
+\item[{{\bf Lyapunov\+Parameter}}]{parameter, }
+\item[{{\bf Velocity\+Eulerian}}]{desired, }
+\item[{tf\+::\+Transform}]{relative}
 \end{DoxyParamCaption}
-)}\hypertarget{classController_a63249412728814430174c740d358a5c0}{}\label{classController_a63249412728814430174c740d358a5c0}
+)}\hypertarget{classController_a5342dd66c1228e651e569d9b1c31d82e}{}\label{classController_a5342dd66c1228e651e569d9b1c31d82e}
+
+\begin{DoxyParams}{Parameters}
+{\em parameter} & Set of lyapunov parameter for calculating the control vector \\
+\hline
+{\em desired} & Desired velocities in eulerian description (moved base). Contains angular and linear velocity \\
+\hline
+{\em relative} & Transformation from current to target state \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\hyperlink{structController_1_1ControlVector}{Control\+Vector} 
+\end{DoxyReturn}
+\index{Controller@{Controller}!control\+Difference2control\+Difference\+Msg@{control\+Difference2control\+Difference\+Msg}}
+\index{control\+Difference2control\+Difference\+Msg@{control\+Difference2control\+Difference\+Msg}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{control\+Difference2control\+Difference\+Msg(\+Control\+Difference \&difference, multi\+\_\+robot\+\_\+msgs\+::\+Control\+Difference \&msg)}{controlDifference2controlDifferenceMsg(ControlDifference &difference, multi_robot_msgs::ControlDifference &msg)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::control\+Difference2control\+Difference\+Msg (
+\begin{DoxyParamCaption}
+\item[{{\bf Control\+Difference} \&}]{difference, }
+\item[{multi\+\_\+robot\+\_\+msgs\+::\+Control\+Difference \&}]{msg}
+\end{DoxyParamCaption}
+)}\hypertarget{classController_a866cee7328e1318e118c884a850a0e34}{}\label{classController_a866cee7328e1318e118c884a850a0e34}
 
 
-Calculate control output just by angle difference and eklidian difference from target. 
+Converts Control\+Difference struct to a C\+Ontrol state message. 
 
 
 \begin{DoxyParams}{Parameters}
-{\em kr} & Control gain in linear direction \\
+{\em difference} & Control\+Difference to be converted \\
 \hline
-{\em kphi} & Control gain in angular direction \\
+{\em msg} & Referenze to the msg the conversion is stored in \\
 \hline
 \end{DoxyParams}
-\index{Controller@{Controller}!calc\+\_\+\+Lyapunov@{calc\+\_\+\+Lyapunov}}
-\index{calc\+\_\+\+Lyapunov@{calc\+\_\+\+Lyapunov}!Controller@{Controller}}
-\subsubsection[{\texorpdfstring{calc\+\_\+\+Lyapunov(double kx, double ky, double kphi, double vd, double omegad)}{calc_Lyapunov(double kx, double ky, double kphi, double vd, double omegad)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::calc\+\_\+\+Lyapunov (
+\index{Controller@{Controller}!control\+State2control\+State\+Msg@{control\+State2control\+State\+Msg}}
+\index{control\+State2control\+State\+Msg@{control\+State2control\+State\+Msg}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{control\+State2control\+State\+Msg(\+Control\+State \&state, multi\+\_\+robot\+\_\+msgs\+::\+Control\+State \&msg)}{controlState2controlStateMsg(ControlState &state, multi_robot_msgs::ControlState &msg)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::control\+State2control\+State\+Msg (
 \begin{DoxyParamCaption}
-\item[{double}]{kx, }
-\item[{double}]{ky, }
-\item[{double}]{kphi, }
-\item[{double}]{vd, }
-\item[{double}]{omegad}
+\item[{{\bf Controller\+::\+Control\+State} \&}]{state, }
+\item[{multi\+\_\+robot\+\_\+msgs\+::\+Control\+State \&}]{msg}
 \end{DoxyParamCaption}
-)}\hypertarget{classController_a56568ee07bb72983576e9d7c10eb3e83}{}\label{classController_a56568ee07bb72983576e9d7c10eb3e83}
+)}\hypertarget{classController_a753fe3680abc7c9ba3040f6fcb638ac2}{}\label{classController_a753fe3680abc7c9ba3040f6fcb638ac2}
 
 
-Calculates the lyapunov base control output from a given input. 
+Converts \hyperlink{structController_1_1ControlState}{Control\+State} struct to a C\+Ontrol state message. 
 
 
 \begin{DoxyParams}{Parameters}
-{\em kx} & Control gain in x-\/direction \\
+{\em state} & Control state to be converted \\
 \hline
-{\em ky} & Control gain in y-\/direction \\
-\hline
-{\em kphi} & Control gain in z-\/direction \\
-\hline
-{\em vd} & Desired linear velocity \\
-\hline
-{\em omegad} & Desired angular velocity \\
+{\em msg} & Referenze to the msg the conversion is stored in \\
 \hline
 \end{DoxyParams}
-\index{Controller@{Controller}!link\+\_\+current\+\_\+odom@{link\+\_\+current\+\_\+odom}}
-\index{link\+\_\+current\+\_\+odom@{link\+\_\+current\+\_\+odom}!Controller@{Controller}}
-\subsubsection[{\texorpdfstring{link\+\_\+current\+\_\+odom(std\+::string topic\+\_\+name)}{link_current_odom(std::string topic_name)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::link\+\_\+current\+\_\+odom (
+\index{Controller@{Controller}!control\+Vector2control\+Vector\+Msg@{control\+Vector2control\+Vector\+Msg}}
+\index{control\+Vector2control\+Vector\+Msg@{control\+Vector2control\+Vector\+Msg}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{control\+Vector2control\+Vector\+Msg(\+Control\+Vector \&control, multi\+\_\+robot\+\_\+msgs\+::\+Control\+Vector \&msg)}{controlVector2controlVectorMsg(ControlVector &control, multi_robot_msgs::ControlVector &msg)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::control\+Vector2control\+Vector\+Msg (
+\begin{DoxyParamCaption}
+\item[{{\bf Control\+Vector} \&}]{control, }
+\item[{multi\+\_\+robot\+\_\+msgs\+::\+Control\+Vector \&}]{msg}
+\end{DoxyParamCaption}
+)}\hypertarget{classController_a06c1aab700c5918b76e33c35f3da8ea8}{}\label{classController_a06c1aab700c5918b76e33c35f3da8ea8}
+
+
+Converts \hyperlink{structController_1_1ControlVector}{Control\+Vector} struct to a C\+Ontrol state message. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em control} & \hyperlink{structController_1_1ControlVector}{Control\+Vector} to be converted \\
+\hline
+{\em msg} & Referenze to the msg the conversion is stored in \\
+\hline
+\end{DoxyParams}
+\index{Controller@{Controller}!current\+Odom\+Callback@{current\+Odom\+Callback}}
+\index{current\+Odom\+Callback@{current\+Odom\+Callback}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{current\+Odom\+Callback(nav\+\_\+msgs\+::\+Odometry msg)}{currentOdomCallback(nav_msgs::Odometry msg)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::current\+Odom\+Callback (
+\begin{DoxyParamCaption}
+\item[{nav\+\_\+msgs\+::\+Odometry}]{msg}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{classController_a9bf99e0d40660b832c2e70691e9f0a1c}{}\label{classController_a9bf99e0d40660b832c2e70691e9f0a1c}
+
+
+Callback for incoming odometry data for the current robot odometry. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & Incoming message \\
+\hline
+\end{DoxyParams}
+\index{Controller@{Controller}!link\+Current\+Odom@{link\+Current\+Odom}}
+\index{link\+Current\+Odom@{link\+Current\+Odom}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{link\+Current\+Odom(std\+::string topic\+\_\+name)}{linkCurrentOdom(std::string topic_name)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::link\+Current\+Odom (
 \begin{DoxyParamCaption}
 \item[{std\+::string}]{topic\+\_\+name}
 \end{DoxyParamCaption}
-)}\hypertarget{classController_add4a8227097c30e5f165977cfa0ce22c}{}\label{classController_add4a8227097c30e5f165977cfa0ce22c}
+)}\hypertarget{classController_aa0ea10adc7a81124663fb01693acef17}{}\label{classController_aa0ea10adc7a81124663fb01693acef17}
 
 
 Links the current odometry topic to the controller. At this topic the current odomotry of the robot must be published. 
@@ -333,13 +341,13 @@ Links the current odometry topic to the controller. At this topic the current od
 {\em topic\+\_\+name} & Name of the topic \\
 \hline
 \end{DoxyParams}
-\index{Controller@{Controller}!link\+\_\+output\+\_\+control\+\_\+data@{link\+\_\+output\+\_\+control\+\_\+data}}
-\index{link\+\_\+output\+\_\+control\+\_\+data@{link\+\_\+output\+\_\+control\+\_\+data}!Controller@{Controller}}
-\subsubsection[{\texorpdfstring{link\+\_\+output\+\_\+control\+\_\+data(std\+::string topic\+\_\+name)}{link_output_control_data(std::string topic_name)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::link\+\_\+output\+\_\+control\+\_\+data (
+\index{Controller@{Controller}!link\+Output\+Control\+Data@{link\+Output\+Control\+Data}}
+\index{link\+Output\+Control\+Data@{link\+Output\+Control\+Data}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{link\+Output\+Control\+Data(std\+::string topic\+\_\+name)}{linkOutputControlData(std::string topic_name)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::link\+Output\+Control\+Data (
 \begin{DoxyParamCaption}
 \item[{std\+::string}]{topic\+\_\+name}
 \end{DoxyParamCaption}
-)}\hypertarget{classController_abc1909639580e5359228c87fbd3a622b}{}\label{classController_abc1909639580e5359228c87fbd3a622b}
+)}\hypertarget{classController_a6412541600d7444f00f8e48cea0ed024}{}\label{classController_a6412541600d7444f00f8e48cea0ed024}
 
 
 Links the meta data of the controller to a given topic. 
@@ -349,29 +357,13 @@ Links the meta data of the controller to a given topic.
 {\em topic\+\_\+name} & Name of the topic \\
 \hline
 \end{DoxyParams}
-\index{Controller@{Controller}!link\+\_\+output\+\_\+state@{link\+\_\+output\+\_\+state}}
-\index{link\+\_\+output\+\_\+state@{link\+\_\+output\+\_\+state}!Controller@{Controller}}
-\subsubsection[{\texorpdfstring{link\+\_\+output\+\_\+state(std\+::string topic\+\_\+name)}{link_output_state(std::string topic_name)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::link\+\_\+output\+\_\+state (
+\index{Controller@{Controller}!link\+Output\+Velocity@{link\+Output\+Velocity}}
+\index{link\+Output\+Velocity@{link\+Output\+Velocity}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{link\+Output\+Velocity(std\+::string topic\+\_\+name)}{linkOutputVelocity(std::string topic_name)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::link\+Output\+Velocity (
 \begin{DoxyParamCaption}
 \item[{std\+::string}]{topic\+\_\+name}
 \end{DoxyParamCaption}
-)}\hypertarget{classController_a9b8949013d52e365754e170a9cad158c}{}\label{classController_a9b8949013d52e365754e170a9cad158c}
-
-
-Links the output ste of the controller to a given topic. 
-
-
-\begin{DoxyParams}{Parameters}
-{\em topic\+\_\+name} & Name of the topic \\
-\hline
-\end{DoxyParams}
-\index{Controller@{Controller}!link\+\_\+output\+\_\+velocity@{link\+\_\+output\+\_\+velocity}}
-\index{link\+\_\+output\+\_\+velocity@{link\+\_\+output\+\_\+velocity}!Controller@{Controller}}
-\subsubsection[{\texorpdfstring{link\+\_\+output\+\_\+velocity(std\+::string topic\+\_\+name)}{link_output_velocity(std::string topic_name)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::link\+\_\+output\+\_\+velocity (
-\begin{DoxyParamCaption}
-\item[{std\+::string}]{topic\+\_\+name}
-\end{DoxyParamCaption}
-)}\hypertarget{classController_afdf03808aee4a1cfcf65a7198ab1a9aa}{}\label{classController_afdf03808aee4a1cfcf65a7198ab1a9aa}
+)}\hypertarget{classController_a7bde6b39b2b2cccb1dd866841f672f99}{}\label{classController_a7bde6b39b2b2cccb1dd866841f672f99}
 
 
 Links the output velocity of the controller to a given topic. 
@@ -383,13 +375,13 @@ O\+U\+T\+P\+U\+TS.
 {\em topic\+\_\+name} & Name of the topic \\
 \hline
 \end{DoxyParams}
-\index{Controller@{Controller}!link\+\_\+target\+\_\+odometry@{link\+\_\+target\+\_\+odometry}}
-\index{link\+\_\+target\+\_\+odometry@{link\+\_\+target\+\_\+odometry}!Controller@{Controller}}
-\subsubsection[{\texorpdfstring{link\+\_\+target\+\_\+odometry(std\+::string topic\+\_\+name)}{link_target_odometry(std::string topic_name)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::link\+\_\+target\+\_\+odometry (
+\index{Controller@{Controller}!link\+Target\+Odom@{link\+Target\+Odom}}
+\index{link\+Target\+Odom@{link\+Target\+Odom}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{link\+Target\+Odom(std\+::string topic\+\_\+name)}{linkTargetOdom(std::string topic_name)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::link\+Target\+Odom (
 \begin{DoxyParamCaption}
 \item[{std\+::string}]{topic\+\_\+name}
 \end{DoxyParamCaption}
-)}\hypertarget{classController_a7bf32883aed714275c99d6d182993b73}{}\label{classController_a7bf32883aed714275c99d6d182993b73}
+)}\hypertarget{classController_a633d84f97952551654ee70acc31810c6}{}\label{classController_a633d84f97952551654ee70acc31810c6}
 
 
 Links the target/desired odometry topic to the controller. At this topic the desired odometry is published. 
@@ -399,47 +391,13 @@ Links the target/desired odometry topic to the controller. At this topic the des
 {\em topic\+\_\+name} & Name of the topic \\
 \hline
 \end{DoxyParams}
-\index{Controller@{Controller}!link\+\_\+target\+\_\+state@{link\+\_\+target\+\_\+state}}
-\index{link\+\_\+target\+\_\+state@{link\+\_\+target\+\_\+state}!Controller@{Controller}}
-\subsubsection[{\texorpdfstring{link\+\_\+target\+\_\+state(std\+::string topic\+\_\+name)}{link_target_state(std::string topic_name)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::link\+\_\+target\+\_\+state (
+\index{Controller@{Controller}!set\+Lyapunov@{set\+Lyapunov}}
+\index{set\+Lyapunov@{set\+Lyapunov}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{set\+Lyapunov(\+Controller\+::\+Lyapunov\+Parameter param)}{setLyapunov(Controller::LyapunovParameter param)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::set\+Lyapunov (
 \begin{DoxyParamCaption}
-\item[{std\+::string}]{topic\+\_\+name}
+\item[{{\bf Controller\+::\+Lyapunov\+Parameter}}]{param}
 \end{DoxyParamCaption}
-)}\hypertarget{classController_a5f5318b08e7b99d2e5f09c59a6eb61aa}{}\label{classController_a5f5318b08e7b99d2e5f09c59a6eb61aa}
-
-
-Links the target/desired velocity topic to the controller. At this topic the desired velocity is published. 
-
-
-\begin{DoxyParams}{Parameters}
-{\em topic\+\_\+name} & Name of the topic Links the target/desired state topic to the controller. At this topic the current state of the robot is published.\\
-\hline
-{\em topic\+\_\+name} & Name of the topic \\
-\hline
-\end{DoxyParams}
-\index{Controller@{Controller}!link\+\_\+target\+\_\+velocity@{link\+\_\+target\+\_\+velocity}}
-\index{link\+\_\+target\+\_\+velocity@{link\+\_\+target\+\_\+velocity}!Controller@{Controller}}
-\subsubsection[{\texorpdfstring{link\+\_\+target\+\_\+velocity(std\+::string topic\+\_\+name)}{link_target_velocity(std::string topic_name)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::link\+\_\+target\+\_\+velocity (
-\begin{DoxyParamCaption}
-\item[{std\+::string}]{topic\+\_\+name}
-\end{DoxyParamCaption}
-)}\hypertarget{classController_a82a7c805f6e4e0689c675134903e9e58}{}\label{classController_a82a7c805f6e4e0689c675134903e9e58}
-
-
-Links the target/desired velocity topic to the controller. At this topic the current desired velocity is published. 
-
-
-\begin{DoxyParams}{Parameters}
-{\em topic\+\_\+name} & Name of the topic \\
-\hline
-\end{DoxyParams}
-\index{Controller@{Controller}!set\+\_\+lyapunov@{set\+\_\+lyapunov}}
-\index{set\+\_\+lyapunov@{set\+\_\+lyapunov}!Controller@{Controller}}
-\subsubsection[{\texorpdfstring{set\+\_\+lyapunov(\+Controller\+::lyapunov param)}{set_lyapunov(Controller::lyapunov param)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::set\+\_\+lyapunov (
-\begin{DoxyParamCaption}
-\item[{{\bf Controller\+::lyapunov}}]{param}
-\end{DoxyParamCaption}
-)}\hypertarget{classController_a2ebb5b813be3525b44af61eb6f165964}{}\label{classController_a2ebb5b813be3525b44af61eb6f165964}
+)}\hypertarget{classController_abda96416fab439c188ef494a2b2a0c8e}{}\label{classController_abda96416fab439c188ef494a2b2a0c8e}
 
 
 Sets the parameter of the lyapunov control law. 
@@ -449,13 +407,13 @@ Sets the parameter of the lyapunov control law.
 {\em param} & Parameterset as defined in lyapunov struct \\
 \hline
 \end{DoxyParams}
-\index{Controller@{Controller}!set\+\_\+lyapunov@{set\+\_\+lyapunov}}
-\index{set\+\_\+lyapunov@{set\+\_\+lyapunov}!Controller@{Controller}}
-\subsubsection[{\texorpdfstring{set\+\_\+lyapunov(std\+::vector$<$ float $>$ param)}{set_lyapunov(std::vector< float > param)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::set\+\_\+lyapunov (
+\index{Controller@{Controller}!set\+Lyapunov@{set\+Lyapunov}}
+\index{set\+Lyapunov@{set\+Lyapunov}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{set\+Lyapunov(std\+::vector$<$ float $>$ param)}{setLyapunov(std::vector< float > param)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::set\+Lyapunov (
 \begin{DoxyParamCaption}
 \item[{std\+::vector$<$ float $>$}]{param}
 \end{DoxyParamCaption}
-)}\hypertarget{classController_afb2d5fec93db7b68a16767823f4c1675}{}\label{classController_afb2d5fec93db7b68a16767823f4c1675}
+)}\hypertarget{classController_a1f77caed7a7951ca2f4cf7928f88669d}{}\label{classController_a1f77caed7a7951ca2f4cf7928f88669d}
 
 
 Sets the parameter of the lyapunov control law. 
@@ -465,13 +423,13 @@ Sets the parameter of the lyapunov control law.
 {\em param} & vector of given parameters \mbox{[}kx,ky,ktheta,vd,omega\mbox{]} \\
 \hline
 \end{DoxyParams}
-\index{Controller@{Controller}!set\+\_\+name@{set\+\_\+name}}
-\index{set\+\_\+name@{set\+\_\+name}!Controller@{Controller}}
-\subsubsection[{\texorpdfstring{set\+\_\+name(std\+::string name)}{set_name(std::string name)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::set\+\_\+name (
+\index{Controller@{Controller}!set\+Name@{set\+Name}}
+\index{set\+Name@{set\+Name}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{set\+Name(std\+::string name)}{setName(std::string name)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::set\+Name (
 \begin{DoxyParamCaption}
 \item[{std\+::string}]{name}
 \end{DoxyParamCaption}
-)}\hypertarget{classController_a88f2d54fedd04bd767e4d6e36e6dc2b3}{}\label{classController_a88f2d54fedd04bd767e4d6e36e6dc2b3}
+)}\hypertarget{classController_a177d0d6cd7cdb7784ae9c506debfa2c6}{}\label{classController_a177d0d6cd7cdb7784ae9c506debfa2c6}
 
 
 Set the name of object. 
@@ -481,16 +439,16 @@ Set the name of object.
 {\em name} & Name to be set \\
 \hline
 \end{DoxyParams}
-\index{Controller@{Controller}!set\+\_\+reference@{set\+\_\+reference}}
-\index{set\+\_\+reference@{set\+\_\+reference}!Controller@{Controller}}
-\subsubsection[{\texorpdfstring{set\+\_\+reference(double x, double y, double z, double angle)}{set_reference(double x, double y, double z, double angle)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::set\+\_\+reference (
+\index{Controller@{Controller}!set\+Reference@{set\+Reference}}
+\index{set\+Reference@{set\+Reference}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{set\+Reference(double x, double y, double z, double angle)}{setReference(double x, double y, double z, double angle)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::set\+Reference (
 \begin{DoxyParamCaption}
 \item[{double}]{x, }
 \item[{double}]{y, }
 \item[{double}]{z, }
 \item[{double}]{angle}
 \end{DoxyParamCaption}
-)}\hypertarget{classController_ade57ae23226a7565521694c87ec79c90}{}\label{classController_ade57ae23226a7565521694c87ec79c90}
+)}\hypertarget{classController_a156a66bd7cd6340106accbb982b6238b}{}\label{classController_a156a66bd7cd6340106accbb982b6238b}
 
 
 Set the reference of the mobile robot to be controlled from a global frame. 
@@ -506,14 +464,14 @@ Set the reference of the mobile robot to be controlled from a global frame.
 {\em angle} & Angular-\/position of robot \\
 \hline
 \end{DoxyParams}
-\index{Controller@{Controller}!set\+\_\+reference@{set\+\_\+reference}}
-\index{set\+\_\+reference@{set\+\_\+reference}!Controller@{Controller}}
-\subsubsection[{\texorpdfstring{set\+\_\+reference(std\+::vector$<$ double $>$ coord, double angle)}{set_reference(std::vector< double > coord, double angle)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::set\+\_\+reference (
+\index{Controller@{Controller}!set\+Reference@{set\+Reference}}
+\index{set\+Reference@{set\+Reference}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{set\+Reference(std\+::vector$<$ double $>$ coord, double angle)}{setReference(std::vector< double > coord, double angle)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::set\+Reference (
 \begin{DoxyParamCaption}
 \item[{std\+::vector$<$ double $>$}]{coord, }
 \item[{double}]{angle}
 \end{DoxyParamCaption}
-)}\hypertarget{classController_aefad16ae5d5df8baac0ed044018eb6c6}{}\label{classController_aefad16ae5d5df8baac0ed044018eb6c6}
+)}\hypertarget{classController_ae86ed49c452a9e94568312ef743aa082}{}\label{classController_ae86ed49c452a9e94568312ef743aa082}
 
 
 Set the reference of the mobile robot to be controlled from a global frame. 
@@ -525,13 +483,13 @@ Set the reference of the mobile robot to be controlled from a global frame.
 {\em angle} & angel of the robot \\
 \hline
 \end{DoxyParams}
-\index{Controller@{Controller}!set\+\_\+type@{set\+\_\+type}}
-\index{set\+\_\+type@{set\+\_\+type}!Controller@{Controller}}
-\subsubsection[{\texorpdfstring{set\+\_\+type(\+Controller\+::controller\+Type type)}{set_type(Controller::controllerType type)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::set\+\_\+type (
+\index{Controller@{Controller}!set\+Type@{set\+Type}}
+\index{set\+Type@{set\+Type}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{set\+Type(\+Controller\+::\+Controller\+Type type)}{setType(Controller::ControllerType type)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::set\+Type (
 \begin{DoxyParamCaption}
-\item[{{\bf Controller\+::controller\+Type}}]{type}
+\item[{{\bf Controller\+::\+Controller\+Type}}]{type}
 \end{DoxyParamCaption}
-)}\hypertarget{classController_a7134d173f5f91755d8a3c7e07ca04da9}{}\label{classController_a7134d173f5f91755d8a3c7e07ca04da9}
+)}\hypertarget{classController_a25202c469ad65696761242dce4e28d76}{}\label{classController_a25202c469ad65696761242dce4e28d76}
 
 
 Sets the type of the used control law. 
@@ -541,13 +499,13 @@ Sets the type of the used control law.
 {\em type} & Type of the controller as defined in controller\+Type \\
 \hline
 \end{DoxyParams}
-\index{Controller@{Controller}!set\+\_\+world\+\_\+frame@{set\+\_\+world\+\_\+frame}}
-\index{set\+\_\+world\+\_\+frame@{set\+\_\+world\+\_\+frame}!Controller@{Controller}}
-\subsubsection[{\texorpdfstring{set\+\_\+world\+\_\+frame(std\+::string frame)}{set_world_frame(std::string frame)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::set\+\_\+world\+\_\+frame (
+\index{Controller@{Controller}!set\+World\+Frame@{set\+World\+Frame}}
+\index{set\+World\+Frame@{set\+World\+Frame}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{set\+World\+Frame(std\+::string frame)}{setWorldFrame(std::string frame)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::set\+World\+Frame (
 \begin{DoxyParamCaption}
 \item[{std\+::string}]{frame}
 \end{DoxyParamCaption}
-)}\hypertarget{classController_aeeb360dd2e4afb5c654f5bca4c0f00ca}{}\label{classController_aeeb360dd2e4afb5c654f5bca4c0f00ca}
+)}\hypertarget{classController_adf25339eadd9b31bc1d6b3e47395942e}{}\label{classController_adf25339eadd9b31bc1d6b3e47395942e}
 
 
 Set the world frame name all references are given in. 
@@ -557,6 +515,50 @@ Set the world frame name all references are given in.
 {\em frame} & Name of the world frame \\
 \hline
 \end{DoxyParams}
+\index{Controller@{Controller}!srv\+Reset@{srv\+Reset}}
+\index{srv\+Reset@{srv\+Reset}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{srv\+Reset(std\+\_\+srvs\+::\+Empty\+Request \&req, std\+\_\+srvs\+::\+Empty\+Response \&res)}{srvReset(std_srvs::EmptyRequest &req, std_srvs::EmptyResponse &res)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Controller\+::srv\+Reset (
+\begin{DoxyParamCaption}
+\item[{std\+\_\+srvs\+::\+Empty\+Request \&}]{req, }
+\item[{std\+\_\+srvs\+::\+Empty\+Response \&}]{res}
+\end{DoxyParamCaption}
+)}\hypertarget{classController_a140aa1ee895337d776f88682640c0746}{}\label{classController_a140aa1ee895337d776f88682640c0746}
+
+
+Service procedure for resetting the \hyperlink{classController}{Controller}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em req} & Reqest for the service \\
+\hline
+{\em res} & Responce of the service \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true succeeded 
+
+false not succeeded 
+\end{DoxyReturn}
+\index{Controller@{Controller}!target\+Odom\+Callback@{target\+Odom\+Callback}}
+\index{target\+Odom\+Callback@{target\+Odom\+Callback}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{target\+Odom\+Callback(nav\+\_\+msgs\+::\+Odometry msg)}{targetOdomCallback(nav_msgs::Odometry msg)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::target\+Odom\+Callback (
+\begin{DoxyParamCaption}
+\item[{nav\+\_\+msgs\+::\+Odometry}]{msg}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{classController_a77f138b6a3699c21cf904041e7e19820}{}\label{classController_a77f138b6a3699c21cf904041e7e19820}
+
+
+Callback for incoming state data for the target odometry of the robot. This is overloaded by child classes. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & Incoming message \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented in \hyperlink{classSlave_a2f80eae9dc8e4e20037c1a371f9b8189}{Slave}.
+
 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}

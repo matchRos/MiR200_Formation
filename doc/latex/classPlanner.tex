@@ -2,6 +2,15 @@
 \label{classPlanner}\index{Planner@{Planner}}
 
 
+A generic planner class that provides general interface functions and architecture.  
+
+
+
+
+{\ttfamily \#include $<$planner.\+h$>$}
+
+
+
 Inheritance diagram for Planner\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
@@ -12,18 +21,17 @@ Inheritance diagram for Planner\+:\nopagebreak
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-{\bfseries Planner} (ros\+::\+Node\+Handle \&\hyperlink{classPlanner_a9714d036f444a07ce90be8d135b9a40c}{nh})\hypertarget{classPlanner_a32475baddd401921adb1aab3ab842210}{}\label{classPlanner_a32475baddd401921adb1aab3ab842210}
+\hyperlink{classPlanner_a32475baddd401921adb1aab3ab842210}{Planner} (ros\+::\+Node\+Handle \&\hyperlink{classPlanner_a9714d036f444a07ce90be8d135b9a40c}{nh})
+\begin{DoxyCompactList}\small\item\em Construct a new \hyperlink{classPlanner}{Planner} object. \end{DoxyCompactList}\item 
+void \hyperlink{classPlanner_a6c1c8d67d0cac41f738b413d1833c007}{start} ()\hypertarget{classPlanner_a6c1c8d67d0cac41f738b413d1833c007}{}\label{classPlanner_a6c1c8d67d0cac41f738b413d1833c007}
 
-\item 
-void {\bfseries start} ()\hypertarget{classPlanner_a6c1c8d67d0cac41f738b413d1833c007}{}\label{classPlanner_a6c1c8d67d0cac41f738b413d1833c007}
+\begin{DoxyCompactList}\small\item\em Starts the planner. \end{DoxyCompactList}\item 
+void \hyperlink{classPlanner_a3d0a3d404d39f59bfc21f275b0da408a}{stop} ()\hypertarget{classPlanner_a3d0a3d404d39f59bfc21f275b0da408a}{}\label{classPlanner_a3d0a3d404d39f59bfc21f275b0da408a}
 
-\item 
-void {\bfseries stop} ()\hypertarget{classPlanner_a3d0a3d404d39f59bfc21f275b0da408a}{}\label{classPlanner_a3d0a3d404d39f59bfc21f275b0da408a}
+\begin{DoxyCompactList}\small\item\em Stops the planner. \end{DoxyCompactList}\item 
+void \hyperlink{classPlanner_a400f2aefad591e55a62e0fb13cb02521}{pause} ()\hypertarget{classPlanner_a400f2aefad591e55a62e0fb13cb02521}{}\label{classPlanner_a400f2aefad591e55a62e0fb13cb02521}
 
-\item 
-void {\bfseries pause} ()\hypertarget{classPlanner_a400f2aefad591e55a62e0fb13cb02521}{}\label{classPlanner_a400f2aefad591e55a62e0fb13cb02521}
-
-\item 
+\begin{DoxyCompactList}\small\item\em Pauses the planner. \end{DoxyCompactList}\item 
 void {\bfseries set\+\_\+start\+\_\+pose} (tf\+::\+Pose pose)\hypertarget{classPlanner_acaf55e0e250d6f3ba14bfcf3c4f06ffb}{}\label{classPlanner_acaf55e0e250d6f3ba14bfcf3c4f06ffb}
 
 \item 
@@ -38,7 +46,10 @@ int {\bfseries iterations\+\_\+counter}\hypertarget{classPlanner_a99b577203757a2
 \item 
 ros\+::\+Node\+Handle \hyperlink{classPlanner_a9714d036f444a07ce90be8d135b9a40c}{nh}\hypertarget{classPlanner_a9714d036f444a07ce90be8d135b9a40c}{}\label{classPlanner_a9714d036f444a07ce90be8d135b9a40c}
 
-\begin{DoxyCompactList}\small\item\em Counter for the iterations of periodic planner functions. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Counter for the iterations of periodic planner functions. \end{DoxyCompactList}\item 
+int {\bfseries iterations}\hypertarget{classPlanner_a19220ea8cd70f4f3bfa3e35e1250ed00}{}\label{classPlanner_a19220ea8cd70f4f3bfa3e35e1250ed00}
+
+\end{DoxyCompactItemize}
 \subsection*{Private Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -92,9 +103,6 @@ bool {\bfseries is\+\_\+planning}\hypertarget{classPlanner_afcb5f703c4d2a54bb8c8
 bool {\bfseries is\+\_\+paused}\hypertarget{classPlanner_a247ba912994c9035473b9ee037aac307}{}\label{classPlanner_a247ba912994c9035473b9ee037aac307}
 
 \item 
-int {\bfseries iterations}\hypertarget{classPlanner_a19220ea8cd70f4f3bfa3e35e1250ed00}{}\label{classPlanner_a19220ea8cd70f4f3bfa3e35e1250ed00}
-
-\item 
 std\+::string {\bfseries frame\+\_\+name}\hypertarget{classPlanner_a1578a9b87a63d6a806ab46a863ec55cb}{}\label{classPlanner_a1578a9b87a63d6a806ab46a863ec55cb}
 
 \item 
@@ -125,6 +133,28 @@ double {\bfseries ang\+\_\+vel}\hypertarget{classPlanner_a026af8deca2879d9f16b9e
 tf\+::\+Transform {\bfseries start\+\_\+reference}\hypertarget{classPlanner_aae0304ebd1813766f1437b80d5195e90}{}\label{classPlanner_aae0304ebd1813766f1437b80d5195e90}
 
 \end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A generic planner class that provides general interface functions and architecture. 
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Planner@{Planner}!Planner@{Planner}}
+\index{Planner@{Planner}!Planner@{Planner}}
+\subsubsection[{\texorpdfstring{Planner(ros\+::\+Node\+Handle \&nh)}{Planner(ros::NodeHandle &nh)}}]{\setlength{\rightskip}{0pt plus 5cm}Planner\+::\+Planner (
+\begin{DoxyParamCaption}
+\item[{ros\+::\+Node\+Handle \&}]{nh}
+\end{DoxyParamCaption}
+)}\hypertarget{classPlanner_a32475baddd401921adb1aab3ab842210}{}\label{classPlanner_a32475baddd401921adb1aab3ab842210}
+
+
+Construct a new \hyperlink{classPlanner}{Planner} object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em nh} & Ros Nodehandle \\
+\hline
+\end{DoxyParams}
 
 
 \subsection{Member Function Documentation}

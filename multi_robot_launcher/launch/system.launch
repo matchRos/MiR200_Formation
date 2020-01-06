@@ -12,7 +12,7 @@
   <arg name="robot_name" value="robot1"/>
   <arg name="robot_x"   value="-1.5" />
   <arg name="robot_y"   value="1.5" />
-  <arg name="robot_yaw" value="0" />
+  <arg name="robot_yaw" value="63.44" />
   <arg name="displ" value="screen"/>  
 </include>
 
@@ -23,7 +23,7 @@
   <arg name="robot_name" value="robot2"/>
   <arg name="robot_x"   value="-1.5" />
   <arg name="robot_y"   value="-1.5" />
-  <arg name="robot_yaw" value="0" />
+  <arg name="robot_yaw" value="-63.44" />
   <arg name="displ" value="screen"/>
 </include>
 

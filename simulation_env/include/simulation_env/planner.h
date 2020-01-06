@@ -7,15 +7,34 @@
 
 //Generic path planning class
 #define PARAM_ITERATION "iterations"
+
+/**
+ * @brief A generic planner class that provides general interface functions and architecture
+ * 
+ */
 class Planner{
    
     public:
+        /**
+         * @brief Construct a new Planner object
+         * 
+         * @param nh Ros Nodehandle
+         */
         Planner(ros::NodeHandle &nh);
-        //Start planning
+        /**
+         * @brief Starts the planner
+         * 
+         */
         void start();
-        //Stop planning and shutdown
+        /**
+         * @brief Stops the planner
+         * 
+         */
         void stop();
-        //Pause planning
+        /**
+         * @brief Pauses the planner
+         * 
+         */
         void pause();
         //Sets the initial pose of the robot from wich the planning starts
         void set_start_pose(tf::Pose pose);

@@ -87,12 +87,16 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classSlave-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Slave Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Class that implements a slave robot for multi robot formation control.  
+ <a href="classSlave.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="slave_8h_source.html">slave.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for Slave:</div>
 <div class="dyncontent">
@@ -106,263 +110,190 @@ Collaboration diagram for Slave:</div>
 <div class="dyncontent">
 <div class="center"><img src="classSlave__coll__graph.png" border="0" usemap="#Slave_coll__map" alt="Collaboration graph"/></div>
 <map name="Slave_coll__map" id="Slave_coll__map">
-<area shape="rect" id="node2" href="classController.html" title="Provides a easy to use implementation of a generic mobile robot controller. " alt="" coords="35,95,114,121"/>
-<area shape="rect" id="node3" href="structController_1_1lyapunov.html" title="Specifies the parameters needed for the lyapunov base control law. " alt="" coords="5,5,144,32"/>
+<area shape="rect" id="node2" href="classController.html" title="Provides a easy to use implementation of a generic mobile robot controller. " alt="" coords="232,109,311,136"/>
+<area shape="rect" id="node3" href="structController_1_1ControlState.html" title="Holds the System state combined by the pose of the system, the cartesian velocity and the angular vel..." alt="" coords="5,5,164,32"/>
+<area shape="rect" id="node4" href="structController_1_1ControlVector.html" title="A struct that holds linear and angular velocity of the Robot since this are the control variable for ..." alt="" coords="188,5,355,32"/>
+<area shape="rect" id="node5" href="structController_1_1LyapunovParameter.html" title="Specifies the parameters needed for the lyapunov based control law. " alt="" coords="379,5,582,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a855a824b462dd05eddaa8d53b27faea4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a855a824b462dd05eddaa8d53b27faea4"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Slave</b> (ros::NodeHandle &amp;<a class="el" href="classController.html#a24e3d3c2536f6ed29018bad1fd53dae2">nh</a>)</td></tr>
+<tr class="memitem:a855a824b462dd05eddaa8d53b27faea4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#a855a824b462dd05eddaa8d53b27faea4">Slave</a> (ros::NodeHandle &amp;<a class="el" href="classController.html#a24e3d3c2536f6ed29018bad1fd53dae2">nh</a>)</td></tr>
+<tr class="memdesc:a855a824b462dd05eddaa8d53b27faea4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new <a class="el" href="classSlave.html" title="Class that implements a slave robot for multi robot formation control. ">Slave</a> object.  <a href="#a855a824b462dd05eddaa8d53b27faea4">More...</a><br /></td></tr>
 <tr class="separator:a855a824b462dd05eddaa8d53b27faea4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b5d1d499c7bd05d5260fbe5b8afbbb5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9b5d1d499c7bd05d5260fbe5b8afbbb5"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#a9b5d1d499c7bd05d5260fbe5b8afbbb5">scope</a> ()</td></tr>
-<tr class="memdesc:a9b5d1d499c7bd05d5260fbe5b8afbbb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">A Scope within the execute function. Repeating calculation in inheriting classes are implemented here. <br /></td></tr>
-<tr class="separator:a9b5d1d499c7bd05d5260fbe5b8afbbb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classController"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classController')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classController.html">Controller</a></td></tr>
 <tr class="memitem:a7341f9092e1977cdd2a1492c4422c019 inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a7341f9092e1977cdd2a1492c4422c019">Controller</a> (ros::NodeHandle &amp;<a class="el" href="classController.html#a24e3d3c2536f6ed29018bad1fd53dae2">nh</a>)</td></tr>
 <tr class="memdesc:a7341f9092e1977cdd2a1492c4422c019 inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new <a class="el" href="classController.html" title="Provides a easy to use implementation of a generic mobile robot controller. ">Controller</a> object.  <a href="#a7341f9092e1977cdd2a1492c4422c019">More...</a><br /></td></tr>
 <tr class="separator:a7341f9092e1977cdd2a1492c4422c019 inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a88f2d54fedd04bd767e4d6e36e6dc2b3 inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a88f2d54fedd04bd767e4d6e36e6dc2b3">set_name</a> (std::string <a class="el" href="classController.html#af81f22d8b64d915769acfb8e8d89e0c8">name</a>)</td></tr>
-<tr class="memdesc:a88f2d54fedd04bd767e4d6e36e6dc2b3 inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the name of object.  <a href="#a88f2d54fedd04bd767e4d6e36e6dc2b3">More...</a><br /></td></tr>
-<tr class="separator:a88f2d54fedd04bd767e4d6e36e6dc2b3 inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade57ae23226a7565521694c87ec79c90 inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#ade57ae23226a7565521694c87ec79c90">set_reference</a> (double x, double y, double z, double angle)</td></tr>
-<tr class="memdesc:ade57ae23226a7565521694c87ec79c90 inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the reference of the mobile robot to be controlled from a global frame.  <a href="#ade57ae23226a7565521694c87ec79c90">More...</a><br /></td></tr>
-<tr class="separator:ade57ae23226a7565521694c87ec79c90 inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aefad16ae5d5df8baac0ed044018eb6c6 inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#aefad16ae5d5df8baac0ed044018eb6c6">set_reference</a> (std::vector&lt; double &gt; coord, double angle)</td></tr>
-<tr class="memdesc:aefad16ae5d5df8baac0ed044018eb6c6 inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the reference of the mobile robot to be controlled from a global frame.  <a href="#aefad16ae5d5df8baac0ed044018eb6c6">More...</a><br /></td></tr>
-<tr class="separator:aefad16ae5d5df8baac0ed044018eb6c6 inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a417d33a8ecc6e83f3c43e3a4da74cd inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3a417d33a8ecc6e83f3c43e3a4da74cd"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_reference</b> ()</td></tr>
-<tr class="separator:a3a417d33a8ecc6e83f3c43e3a4da74cd inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeeb360dd2e4afb5c654f5bca4c0f00ca inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#aeeb360dd2e4afb5c654f5bca4c0f00ca">set_world_frame</a> (std::string frame)</td></tr>
-<tr class="memdesc:aeeb360dd2e4afb5c654f5bca4c0f00ca inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the world frame name all references are given in.  <a href="#aeeb360dd2e4afb5c654f5bca4c0f00ca">More...</a><br /></td></tr>
-<tr class="separator:aeeb360dd2e4afb5c654f5bca4c0f00ca inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7134d173f5f91755d8a3c7e07ca04da9 inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a7134d173f5f91755d8a3c7e07ca04da9">set_type</a> (<a class="el" href="classController.html#a86221d052db839985bd6e4d73013cd06">Controller::controllerType</a> <a class="el" href="classController.html#af2488a28d3390288db92fa1d92aaed52">type</a>)</td></tr>
-<tr class="memdesc:a7134d173f5f91755d8a3c7e07ca04da9 inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the type of the used control law.  <a href="#a7134d173f5f91755d8a3c7e07ca04da9">More...</a><br /></td></tr>
-<tr class="separator:a7134d173f5f91755d8a3c7e07ca04da9 inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ebb5b813be3525b44af61eb6f165964 inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a2ebb5b813be3525b44af61eb6f165964">set_lyapunov</a> (<a class="el" href="structController_1_1lyapunov.html">Controller::lyapunov</a> param)</td></tr>
-<tr class="memdesc:a2ebb5b813be3525b44af61eb6f165964 inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the parameter of the lyapunov control law.  <a href="#a2ebb5b813be3525b44af61eb6f165964">More...</a><br /></td></tr>
-<tr class="separator:a2ebb5b813be3525b44af61eb6f165964 inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb2d5fec93db7b68a16767823f4c1675 inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#afb2d5fec93db7b68a16767823f4c1675">set_lyapunov</a> (std::vector&lt; float &gt; param)</td></tr>
-<tr class="memdesc:afb2d5fec93db7b68a16767823f4c1675 inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the parameter of the lyapunov control law.  <a href="#afb2d5fec93db7b68a16767823f4c1675">More...</a><br /></td></tr>
-<tr class="separator:afb2d5fec93db7b68a16767823f4c1675 inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0758387181bc5902176813cc686cb088 inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0758387181bc5902176813cc686cb088"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a0758387181bc5902176813cc686cb088">load_parameter</a> ()</td></tr>
-<tr class="memdesc:a0758387181bc5902176813cc686cb088 inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loading parameter for a specified <a class="el" href="classController.html" title="Provides a easy to use implementation of a generic mobile robot controller. ">Controller</a>. Empty for <a class="el" href="classController.html" title="Provides a easy to use implementation of a generic mobile robot controller. ">Controller</a> base class and implemented in inheriting classes. <br /></td></tr>
-<tr class="separator:a0758387181bc5902176813cc686cb088 inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ab87934c4f7a266cfdb86e0f36bc1b5 inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0ab87934c4f7a266cfdb86e0f36bc1b5"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a0ab87934c4f7a266cfdb86e0f36bc1b5">~Controller</a> ()</td></tr>
+<tr class="memdesc:a0ab87934c4f7a266cfdb86e0f36bc1b5 inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the <a class="el" href="classController.html" title="Provides a easy to use implementation of a generic mobile robot controller. ">Controller</a> object. <br /></td></tr>
+<tr class="separator:a0ab87934c4f7a266cfdb86e0f36bc1b5 inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a177d0d6cd7cdb7784ae9c506debfa2c6 inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a177d0d6cd7cdb7784ae9c506debfa2c6">setName</a> (std::string <a class="el" href="classController.html#af81f22d8b64d915769acfb8e8d89e0c8">name</a>)</td></tr>
+<tr class="memdesc:a177d0d6cd7cdb7784ae9c506debfa2c6 inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the name of object.  <a href="#a177d0d6cd7cdb7784ae9c506debfa2c6">More...</a><br /></td></tr>
+<tr class="separator:a177d0d6cd7cdb7784ae9c506debfa2c6 inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a156a66bd7cd6340106accbb982b6238b inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a156a66bd7cd6340106accbb982b6238b">setReference</a> (double x, double y, double z, double angle)</td></tr>
+<tr class="memdesc:a156a66bd7cd6340106accbb982b6238b inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the reference of the mobile robot to be controlled from a global frame.  <a href="#a156a66bd7cd6340106accbb982b6238b">More...</a><br /></td></tr>
+<tr class="separator:a156a66bd7cd6340106accbb982b6238b inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae86ed49c452a9e94568312ef743aa082 inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#ae86ed49c452a9e94568312ef743aa082">setReference</a> (std::vector&lt; double &gt; coord, double angle)</td></tr>
+<tr class="memdesc:ae86ed49c452a9e94568312ef743aa082 inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the reference of the mobile robot to be controlled from a global frame.  <a href="#ae86ed49c452a9e94568312ef743aa082">More...</a><br /></td></tr>
+<tr class="separator:ae86ed49c452a9e94568312ef743aa082 inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf25339eadd9b31bc1d6b3e47395942e inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#adf25339eadd9b31bc1d6b3e47395942e">setWorldFrame</a> (std::string frame)</td></tr>
+<tr class="memdesc:adf25339eadd9b31bc1d6b3e47395942e inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the world frame name all references are given in.  <a href="#adf25339eadd9b31bc1d6b3e47395942e">More...</a><br /></td></tr>
+<tr class="separator:adf25339eadd9b31bc1d6b3e47395942e inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25202c469ad65696761242dce4e28d76 inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a25202c469ad65696761242dce4e28d76">setType</a> (<a class="el" href="classController.html#aa6d956c4c220461a4152415ffa78690a">Controller::ControllerType</a> <a class="el" href="classController.html#a17792cff397dc69baca568c7d03f2fc8">type</a>)</td></tr>
+<tr class="memdesc:a25202c469ad65696761242dce4e28d76 inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the type of the used control law.  <a href="#a25202c469ad65696761242dce4e28d76">More...</a><br /></td></tr>
+<tr class="separator:a25202c469ad65696761242dce4e28d76 inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abda96416fab439c188ef494a2b2a0c8e inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#abda96416fab439c188ef494a2b2a0c8e">setLyapunov</a> (<a class="el" href="structController_1_1LyapunovParameter.html">Controller::LyapunovParameter</a> param)</td></tr>
+<tr class="memdesc:abda96416fab439c188ef494a2b2a0c8e inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the parameter of the lyapunov control law.  <a href="#abda96416fab439c188ef494a2b2a0c8e">More...</a><br /></td></tr>
+<tr class="separator:abda96416fab439c188ef494a2b2a0c8e inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f77caed7a7951ca2f4cf7928f88669d inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a1f77caed7a7951ca2f4cf7928f88669d">setLyapunov</a> (std::vector&lt; float &gt; param)</td></tr>
+<tr class="memdesc:a1f77caed7a7951ca2f4cf7928f88669d inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the parameter of the lyapunov control law.  <a href="#a1f77caed7a7951ca2f4cf7928f88669d">More...</a><br /></td></tr>
+<tr class="separator:a1f77caed7a7951ca2f4cf7928f88669d inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59e60885d5307979faf477435507069a inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a59e60885d5307979faf477435507069a"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a59e60885d5307979faf477435507069a">loadParameter</a> ()</td></tr>
+<tr class="memdesc:a59e60885d5307979faf477435507069a inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loading parameter for a specified <a class="el" href="classController.html" title="Provides a easy to use implementation of a generic mobile robot controller. ">Controller</a>. Empty for <a class="el" href="classController.html" title="Provides a easy to use implementation of a generic mobile robot controller. ">Controller</a> base class and implemented in inheriting classes. <br /></td></tr>
+<tr class="separator:a59e60885d5307979faf477435507069a inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55c77d2e41634c9b21543647f74eec4c inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a55c77d2e41634c9b21543647f74eec4c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a55c77d2e41634c9b21543647f74eec4c">load</a> ()</td></tr>
 <tr class="memdesc:a55c77d2e41634c9b21543647f74eec4c inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loading of ROS parameterset for this controller. <br /></td></tr>
 <tr class="separator:a55c77d2e41634c9b21543647f74eec4c inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add4a8227097c30e5f165977cfa0ce22c inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#add4a8227097c30e5f165977cfa0ce22c">link_current_odom</a> (std::string topic_name)</td></tr>
-<tr class="memdesc:add4a8227097c30e5f165977cfa0ce22c inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Links the current odometry topic to the controller. At this topic the current odomotry of the robot must be published.  <a href="#add4a8227097c30e5f165977cfa0ce22c">More...</a><br /></td></tr>
-<tr class="separator:add4a8227097c30e5f165977cfa0ce22c inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a82a7c805f6e4e0689c675134903e9e58 inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a82a7c805f6e4e0689c675134903e9e58">link_target_velocity</a> (std::string topic_name)</td></tr>
-<tr class="memdesc:a82a7c805f6e4e0689c675134903e9e58 inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Links the target/desired velocity topic to the controller. At this topic the current desired velocity is published.  <a href="#a82a7c805f6e4e0689c675134903e9e58">More...</a><br /></td></tr>
-<tr class="separator:a82a7c805f6e4e0689c675134903e9e58 inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f5318b08e7b99d2e5f09c59a6eb61aa inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a5f5318b08e7b99d2e5f09c59a6eb61aa">link_target_state</a> (std::string topic_name)</td></tr>
-<tr class="memdesc:a5f5318b08e7b99d2e5f09c59a6eb61aa inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Links the target/desired velocity topic to the controller. At this topic the desired velocity is published.  <a href="#a5f5318b08e7b99d2e5f09c59a6eb61aa">More...</a><br /></td></tr>
-<tr class="separator:a5f5318b08e7b99d2e5f09c59a6eb61aa inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7bf32883aed714275c99d6d182993b73 inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a7bf32883aed714275c99d6d182993b73">link_target_odometry</a> (std::string topic_name)</td></tr>
-<tr class="memdesc:a7bf32883aed714275c99d6d182993b73 inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Links the target/desired odometry topic to the controller. At this topic the desired odometry is published.  <a href="#a7bf32883aed714275c99d6d182993b73">More...</a><br /></td></tr>
-<tr class="separator:a7bf32883aed714275c99d6d182993b73 inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afdf03808aee4a1cfcf65a7198ab1a9aa inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#afdf03808aee4a1cfcf65a7198ab1a9aa">link_output_velocity</a> (std::string topic_name)</td></tr>
-<tr class="memdesc:afdf03808aee4a1cfcf65a7198ab1a9aa inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Links the output velocity of the controller to a given topic.  <a href="#afdf03808aee4a1cfcf65a7198ab1a9aa">More...</a><br /></td></tr>
-<tr class="separator:afdf03808aee4a1cfcf65a7198ab1a9aa inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b8949013d52e365754e170a9cad158c inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a9b8949013d52e365754e170a9cad158c">link_output_state</a> (std::string topic_name)</td></tr>
-<tr class="memdesc:a9b8949013d52e365754e170a9cad158c inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Links the output ste of the controller to a given topic.  <a href="#a9b8949013d52e365754e170a9cad158c">More...</a><br /></td></tr>
-<tr class="separator:a9b8949013d52e365754e170a9cad158c inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc1909639580e5359228c87fbd3a622b inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#abc1909639580e5359228c87fbd3a622b">link_output_control_data</a> (std::string topic_name)</td></tr>
-<tr class="memdesc:abc1909639580e5359228c87fbd3a622b inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Links the meta data of the controller to a given topic.  <a href="#abc1909639580e5359228c87fbd3a622b">More...</a><br /></td></tr>
-<tr class="separator:abc1909639580e5359228c87fbd3a622b inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a56568ee07bb72983576e9d7c10eb3e83 inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a56568ee07bb72983576e9d7c10eb3e83">calc_Lyapunov</a> (double kx, double ky, double kphi, double vd, double omegad)</td></tr>
-<tr class="memdesc:a56568ee07bb72983576e9d7c10eb3e83 inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the lyapunov base control output from a given input.  <a href="#a56568ee07bb72983576e9d7c10eb3e83">More...</a><br /></td></tr>
-<tr class="separator:a56568ee07bb72983576e9d7c10eb3e83 inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a63249412728814430174c740d358a5c0 inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a63249412728814430174c740d358a5c0">calc_angle_distance</a> (double kr, double kphi)</td></tr>
-<tr class="memdesc:a63249412728814430174c740d358a5c0 inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate control output just by angle difference and eklidian difference from target.  <a href="#a63249412728814430174c740d358a5c0">More...</a><br /></td></tr>
-<tr class="separator:a63249412728814430174c740d358a5c0 inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6661eb7307219216a7cb0a90e2a07e4d inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6661eb7307219216a7cb0a90e2a07e4d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a6661eb7307219216a7cb0a90e2a07e4d">execute</a> ()</td></tr>
-<tr class="memdesc:a6661eb7307219216a7cb0a90e2a07e4d inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scope of the controller that is called in control frequence. <br /></td></tr>
-<tr class="separator:a6661eb7307219216a7cb0a90e2a07e4d inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0ea10adc7a81124663fb01693acef17 inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#aa0ea10adc7a81124663fb01693acef17">linkCurrentOdom</a> (std::string topic_name)</td></tr>
+<tr class="memdesc:aa0ea10adc7a81124663fb01693acef17 inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Links the current odometry topic to the controller. At this topic the current odomotry of the robot must be published.  <a href="#aa0ea10adc7a81124663fb01693acef17">More...</a><br /></td></tr>
+<tr class="separator:aa0ea10adc7a81124663fb01693acef17 inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a633d84f97952551654ee70acc31810c6 inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a633d84f97952551654ee70acc31810c6">linkTargetOdom</a> (std::string topic_name)</td></tr>
+<tr class="memdesc:a633d84f97952551654ee70acc31810c6 inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Links the target/desired odometry topic to the controller. At this topic the desired odometry is published.  <a href="#a633d84f97952551654ee70acc31810c6">More...</a><br /></td></tr>
+<tr class="separator:a633d84f97952551654ee70acc31810c6 inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bde6b39b2b2cccb1dd866841f672f99 inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a7bde6b39b2b2cccb1dd866841f672f99">linkOutputVelocity</a> (std::string topic_name)</td></tr>
+<tr class="memdesc:a7bde6b39b2b2cccb1dd866841f672f99 inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Links the output velocity of the controller to a given topic.  <a href="#a7bde6b39b2b2cccb1dd866841f672f99">More...</a><br /></td></tr>
+<tr class="separator:a7bde6b39b2b2cccb1dd866841f672f99 inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6412541600d7444f00f8e48cea0ed024 inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a6412541600d7444f00f8e48cea0ed024">linkOutputControlData</a> (std::string topic_name)</td></tr>
+<tr class="memdesc:a6412541600d7444f00f8e48cea0ed024 inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Links the meta data of the controller to a given topic.  <a href="#a6412541600d7444f00f8e48cea0ed024">More...</a><br /></td></tr>
+<tr class="separator:a6412541600d7444f00f8e48cea0ed024 inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bf99e0d40660b832c2e70691e9f0a1c inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a9bf99e0d40660b832c2e70691e9f0a1c">currentOdomCallback</a> (nav_msgs::Odometry msg)</td></tr>
+<tr class="memdesc:a9bf99e0d40660b832c2e70691e9f0a1c inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback for incoming odometry data for the current robot odometry.  <a href="#a9bf99e0d40660b832c2e70691e9f0a1c">More...</a><br /></td></tr>
+<tr class="separator:a9bf99e0d40660b832c2e70691e9f0a1c inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5342dd66c1228e651e569d9b1c31d82e inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structController_1_1ControlVector.html">ControlVector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a5342dd66c1228e651e569d9b1c31d82e">calcLyapunov</a> (<a class="el" href="structController_1_1LyapunovParameter.html">LyapunovParameter</a> parameter, <a class="el" href="classController.html#a6849bee332c04d67ac6f3052cccd2669">VelocityEulerian</a> desired, tf::Transform relative)</td></tr>
+<tr class="separator:a5342dd66c1228e651e569d9b1c31d82e inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe0a6e0155a0b159efe425e635d3ae76 inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abe0a6e0155a0b159efe425e635d3ae76"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#abe0a6e0155a0b159efe425e635d3ae76">execute</a> (const ros::TimerEvent &amp;ev)</td></tr>
+<tr class="memdesc:abe0a6e0155a0b159efe425e635d3ae76 inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scope of the controller that is called in control frequence. <br /></td></tr>
+<tr class="separator:abe0a6e0155a0b159efe425e635d3ae76 inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5515748f1b0c82f015e039c817ee5f7 inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab5515748f1b0c82f015e039c817ee5f7"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#ab5515748f1b0c82f015e039c817ee5f7">reset</a> ()</td></tr>
 <tr class="memdesc:ab5515748f1b0c82f015e039c817ee5f7 inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resetting controller to initial state. <br /></td></tr>
 <tr class="separator:ab5515748f1b0c82f015e039c817ee5f7 inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a35b38608f67e7c1c34f6b7186db32ad7 inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a35b38608f67e7c1c34f6b7186db32ad7"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a35b38608f67e7c1c34f6b7186db32ad7">current_odom_callback</a> (nav_msgs::Odometry msg)</td></tr>
-<tr class="memdesc:a35b38608f67e7c1c34f6b7186db32ad7 inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback for input odometry message. Is executed everytima a Odometry input is incoming. Writes data to input current_pose. <br /></td></tr>
-<tr class="separator:a35b38608f67e7c1c34f6b7186db32ad7 inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae24861b9ecd088dc3a58db860fc417b1 inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae24861b9ecd088dc3a58db860fc417b1"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>srv_reset</b> (std_srvs::EmptyRequest &amp;req, std_srvs::EmptyResponse &amp;res)</td></tr>
-<tr class="separator:ae24861b9ecd088dc3a58db860fc417b1 inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a140aa1ee895337d776f88682640c0746 inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a140aa1ee895337d776f88682640c0746">srvReset</a> (std_srvs::EmptyRequest &amp;req, std_srvs::EmptyResponse &amp;res)</td></tr>
+<tr class="memdesc:a140aa1ee895337d776f88682640c0746 inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Service procedure for resetting the <a class="el" href="classController.html" title="Provides a easy to use implementation of a generic mobile robot controller. ">Controller</a>.  <a href="#a140aa1ee895337d776f88682640c0746">More...</a><br /></td></tr>
+<tr class="separator:a140aa1ee895337d776f88682640c0746 inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a753fe3680abc7c9ba3040f6fcb638ac2 inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a753fe3680abc7c9ba3040f6fcb638ac2">controlState2controlStateMsg</a> (<a class="el" href="structController_1_1ControlState.html">ControlState</a> &amp;state, multi_robot_msgs::ControlState &amp;msg)</td></tr>
+<tr class="memdesc:a753fe3680abc7c9ba3040f6fcb638ac2 inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts <a class="el" href="structController_1_1ControlState.html" title="Holds the System state combined by the pose of the system, the cartesian velocity and the angular vel...">ControlState</a> struct to a COntrol state message.  <a href="#a753fe3680abc7c9ba3040f6fcb638ac2">More...</a><br /></td></tr>
+<tr class="separator:a753fe3680abc7c9ba3040f6fcb638ac2 inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a866cee7328e1318e118c884a850a0e34 inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a866cee7328e1318e118c884a850a0e34">controlDifference2controlDifferenceMsg</a> (<a class="el" href="classController.html#a75a1e2f93842f65d1263f7d3c2fd8898">ControlDifference</a> &amp;difference, multi_robot_msgs::ControlDifference &amp;msg)</td></tr>
+<tr class="memdesc:a866cee7328e1318e118c884a850a0e34 inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts ControlDifference struct to a COntrol state message.  <a href="#a866cee7328e1318e118c884a850a0e34">More...</a><br /></td></tr>
+<tr class="separator:a866cee7328e1318e118c884a850a0e34 inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06c1aab700c5918b76e33c35f3da8ea8 inherit pub_methods_classController"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a06c1aab700c5918b76e33c35f3da8ea8">controlVector2controlVectorMsg</a> (<a class="el" href="structController_1_1ControlVector.html">ControlVector</a> &amp;control, multi_robot_msgs::ControlVector &amp;msg)</td></tr>
+<tr class="memdesc:a06c1aab700c5918b76e33c35f3da8ea8 inherit pub_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts <a class="el" href="structController_1_1ControlVector.html" title="A struct that holds linear and angular velocity of the Robot since this are the control variable for ...">ControlVector</a> struct to a COntrol state message.  <a href="#a06c1aab700c5918b76e33c35f3da8ea8">More...</a><br /></td></tr>
+<tr class="separator:a06c1aab700c5918b76e33c35f3da8ea8 inherit pub_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:a2a38a730d6ac93fcced035a7d764612d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#a2a38a730d6ac93fcced035a7d764612d">optimal_control</a> ()</td></tr>
-<tr class="separator:a2a38a730d6ac93fcced035a7d764612d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a09394d0f823a06e04f6259ee490bc867"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a09394d0f823a06e04f6259ee490bc867"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#a09394d0f823a06e04f6259ee490bc867">target_state_callback</a> (geometry_msgs::PoseStamped msg)</td></tr>
-<tr class="memdesc:a09394d0f823a06e04f6259ee490bc867"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback for input target state message. Is executed everytima a target state input is incoming. Writes data to target_pose state. <br /></td></tr>
-<tr class="separator:a09394d0f823a06e04f6259ee490bc867"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2227f30ab058b623de7f6a940d079c90"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2227f30ab058b623de7f6a940d079c90"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#a2227f30ab058b623de7f6a940d079c90">target_velocities_callback</a> (geometry_msgs::Twist msg)</td></tr>
-<tr class="memdesc:a2227f30ab058b623de7f6a940d079c90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback for input velocitiy message. Is executed everytime a velocitiy input is incoming. Writes data to input state. <br /></td></tr>
-<tr class="separator:a2227f30ab058b623de7f6a940d079c90"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d732637d1c0d06c214112a381ead6be"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0d732637d1c0d06c214112a381ead6be"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#a0d732637d1c0d06c214112a381ead6be">target_odometry_callback</a> (nav_msgs::Odometry msg)</td></tr>
-<tr class="memdesc:a0d732637d1c0d06c214112a381ead6be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback for input target odometry message. Is executed everytima a target odometry input is incoming. Writes data to target_pose state and target_vel. <br /></td></tr>
-<tr class="separator:a0d732637d1c0d06c214112a381ead6be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:ae16b74032864ebb31211f992d37a73ab"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae16b74032864ebb31211f992d37a73ab"></a>
-ros::Subscriber&#160;</td><td class="memItemRight" valign="bottom"><b>master_odom</b></td></tr>
-<tr class="separator:ae16b74032864ebb31211f992d37a73ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab6effa214fce2263784c296ecba8d3e0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab6effa214fce2263784c296ecba8d3e0"></a>
-tf::Pose&#160;</td><td class="memItemRight" valign="bottom"><b>master_pose</b></td></tr>
-<tr class="separator:ab6effa214fce2263784c296ecba8d3e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a663a689ac0141f7ab00e58944a405a6f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structController_1_1ControlVector.html">ControlVector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#a663a689ac0141f7ab00e58944a405a6f">optimal_control</a> ()</td></tr>
+<tr class="memdesc:a663a689ac0141f7ab00e58944a405a6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates a Control vector by pseudo inverting the Jacobian of the Robot.  <a href="#a663a689ac0141f7ab00e58944a405a6f">More...</a><br /></td></tr>
+<tr class="separator:a663a689ac0141f7ab00e58944a405a6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f80eae9dc8e4e20037c1a371f9b8189"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSlave.html#a2f80eae9dc8e4e20037c1a371f9b8189">targetOdomCallback</a> (nav_msgs::Odometry msg)</td></tr>
+<tr class="memdesc:a2f80eae9dc8e4e20037c1a371f9b8189"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overloads the target odometry callback and expands it with transformation needed for slave robots.  <a href="#a2f80eae9dc8e4e20037c1a371f9b8189">More...</a><br /></td></tr>
+<tr class="separator:a2f80eae9dc8e4e20037c1a371f9b8189"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_types_classController"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classController')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classController.html">Controller</a></td></tr>
-<tr class="memitem:a86221d052db839985bd6e4d73013cd06 inherit pub_types_classController"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a86221d052db839985bd6e4d73013cd06">controllerType</a> { <a class="el" href="classController.html#a86221d052db839985bd6e4d73013cd06ad2e9073ef821965020410686a3c89483">pseudo_inverse</a> =1, 
-<a class="el" href="classController.html#a86221d052db839985bd6e4d73013cd06aed0e850e561d54619d85f32c37f5bfab">lypanov</a> =2, 
-<a class="el" href="classController.html#a86221d052db839985bd6e4d73013cd06a7ab0ee34114a951d4491d6eb73500cdc">angle_distance</a> =3
- }<tr class="memdesc:a86221d052db839985bd6e4d73013cd06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies the different implemented control laws.  <a href="classController.html#a86221d052db839985bd6e4d73013cd06">More...</a><br /></td></tr>
+<tr class="memitem:aa6d956c4c220461a4152415ffa78690a inherit pub_types_classController"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#aa6d956c4c220461a4152415ffa78690a">ControllerType</a> { <a class="el" href="classController.html#aa6d956c4c220461a4152415ffa78690aad2e9073ef821965020410686a3c89483">pseudo_inverse</a> =1, 
+<a class="el" href="classController.html#aa6d956c4c220461a4152415ffa78690aaed0e850e561d54619d85f32c37f5bfab">lypanov</a> =2, 
+<a class="el" href="classController.html#aa6d956c4c220461a4152415ffa78690aa7ab0ee34114a951d4491d6eb73500cdc">angle_distance</a> =3
+ }<tr class="memdesc:aa6d956c4c220461a4152415ffa78690a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies the different implemented control laws.  <a href="classController.html#aa6d956c4c220461a4152415ffa78690a">More...</a><br /></td></tr>
 </td></tr>
-<tr class="separator:a86221d052db839985bd6e4d73013cd06 inherit pub_types_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_methods_classController"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classController')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classController.html">Controller</a></td></tr>
-<tr class="memitem:a5f86e07f526598b251e345a908923950 inherit pro_methods_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5f86e07f526598b251e345a908923950"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a5f86e07f526598b251e345a908923950">getTransformation</a> ()</td></tr>
-<tr class="memdesc:a5f86e07f526598b251e345a908923950 inherit pro_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Listen to all neccesary trasnformations. <br /></td></tr>
-<tr class="separator:a5f86e07f526598b251e345a908923950 inherit pro_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6859e3a43be2fa31cb82ace3954e746 inherit pro_methods_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae6859e3a43be2fa31cb82ace3954e746"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#ae6859e3a43be2fa31cb82ace3954e746">publish</a> ()</td></tr>
-<tr class="memdesc:ae6859e3a43be2fa31cb82ace3954e746 inherit pro_methods_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Publish all outgoing data. <br /></td></tr>
-<tr class="separator:ae6859e3a43be2fa31cb82ace3954e746 inherit pro_methods_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:aa6d956c4c220461a4152415ffa78690a inherit pub_types_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ab3d947ee649f6bac652de6a00e8148 inherit pub_types_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7ab3d947ee649f6bac652de6a00e8148"></a>
+typedef tf::Vector3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a7ab3d947ee649f6bac652de6a00e8148">VelocityCartesian</a></td></tr>
+<tr class="memdesc:a7ab3d947ee649f6bac652de6a00e8148 inherit pub_types_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines VelocityCartesian wich is used to stores cartesian defined velocities. <br /></td></tr>
+<tr class="separator:a7ab3d947ee649f6bac652de6a00e8148 inherit pub_types_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b8b4035525237f0112b81d44a23da2c inherit pub_types_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1b8b4035525237f0112b81d44a23da2c"></a>
+typedef tf::Vector3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a1b8b4035525237f0112b81d44a23da2c">PositionCartesian</a></td></tr>
+<tr class="memdesc:a1b8b4035525237f0112b81d44a23da2c inherit pub_types_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines PositionCartesian wich is used to store a cartesian defined position. <br /></td></tr>
+<tr class="separator:a1b8b4035525237f0112b81d44a23da2c inherit pub_types_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75a1e2f93842f65d1263f7d3c2fd8898 inherit pub_types_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a75a1e2f93842f65d1263f7d3c2fd8898"></a>
+typedef tf::Transform&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a75a1e2f93842f65d1263f7d3c2fd8898">ControlDifference</a></td></tr>
+<tr class="memdesc:a75a1e2f93842f65d1263f7d3c2fd8898 inherit pub_types_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines ControlDifference wich is a transformation from the current state in the target state. <br /></td></tr>
+<tr class="separator:a75a1e2f93842f65d1263f7d3c2fd8898 inherit pub_types_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6849bee332c04d67ac6f3052cccd2669 inherit pub_types_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6849bee332c04d67ac6f3052cccd2669"></a>
+typedef <a class="el" href="structController_1_1ControlVector.html">ControlVector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a6849bee332c04d67ac6f3052cccd2669">VelocityEulerian</a></td></tr>
+<tr class="memdesc:a6849bee332c04d67ac6f3052cccd2669 inherit pub_types_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines VelocityEulerian wich is used to store Velocities wich are defined locally in the moved base system. <br /></td></tr>
+<tr class="separator:a6849bee332c04d67ac6f3052cccd2669 inherit pub_types_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classController"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classController')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classController.html">Controller</a></td></tr>
 <tr class="memitem:a24e3d3c2536f6ed29018bad1fd53dae2 inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a24e3d3c2536f6ed29018bad1fd53dae2"></a>
 ros::NodeHandle&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a24e3d3c2536f6ed29018bad1fd53dae2">nh</a></td></tr>
 <tr class="memdesc:a24e3d3c2536f6ed29018bad1fd53dae2 inherit pro_attribs_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Node Handle. <br /></td></tr>
 <tr class="separator:a24e3d3c2536f6ed29018bad1fd53dae2 inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afea373f808d583e4ad613f119439a8f5 inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afea373f808d583e4ad613f119439a8f5"></a>
-tf::TransformListener *&#160;</td><td class="memItemRight" valign="bottom"><b>listener</b></td></tr>
+tf::TransformListener *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#afea373f808d583e4ad613f119439a8f5">listener</a></td></tr>
+<tr class="memdesc:afea373f808d583e4ad613f119439a8f5 inherit pro_attribs_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Listener for any transformation. <br /></td></tr>
 <tr class="separator:afea373f808d583e4ad613f119439a8f5 inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2488a28d3390288db92fa1d92aaed52 inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af2488a28d3390288db92fa1d92aaed52"></a>
-<a class="el" href="classController.html#a86221d052db839985bd6e4d73013cd06">controllerType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#af2488a28d3390288db92fa1d92aaed52">type</a></td></tr>
-<tr class="memdesc:af2488a28d3390288db92fa1d92aaed52 inherit pro_attribs_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of control algorythm that is used. <br /></td></tr>
-<tr class="separator:af2488a28d3390288db92fa1d92aaed52 inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8428549596cff57f48390ac25706545a inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8428549596cff57f48390ac25706545a"></a>
-ros::Publisher&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a8428549596cff57f48390ac25706545a">pub_vel_out</a></td></tr>
-<tr class="memdesc:a8428549596cff57f48390ac25706545a inherit pro_attribs_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">publisher object for velocity outoput topic <br /></td></tr>
-<tr class="separator:a8428549596cff57f48390ac25706545a inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6abeaf23d1c17d6af6eecf7d1479fe31 inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6abeaf23d1c17d6af6eecf7d1479fe31"></a>
-ros::Publisher&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a6abeaf23d1c17d6af6eecf7d1479fe31">pub_state_out</a></td></tr>
-<tr class="memdesc:a6abeaf23d1c17d6af6eecf7d1479fe31 inherit pro_attribs_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">publisher object for state output topic <br /></td></tr>
-<tr class="separator:a6abeaf23d1c17d6af6eecf7d1479fe31 inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afde3eefcf7ac040b2a38a8d1e95a6077 inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afde3eefcf7ac040b2a38a8d1e95a6077"></a>
-ros::Publisher&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#afde3eefcf7ac040b2a38a8d1e95a6077">pub_control_data</a></td></tr>
-<tr class="memdesc:afde3eefcf7ac040b2a38a8d1e95a6077 inherit pro_attribs_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">publisher object for control difference topic <br /></td></tr>
-<tr class="separator:afde3eefcf7ac040b2a38a8d1e95a6077 inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ecc749bf5bd484c978940c5a6afe03f inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1ecc749bf5bd484c978940c5a6afe03f"></a>
-ros::Subscriber&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a1ecc749bf5bd484c978940c5a6afe03f">sub_vel_target</a></td></tr>
-<tr class="memdesc:a1ecc749bf5bd484c978940c5a6afe03f inherit pro_attribs_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subscirber object for input topic. <br /></td></tr>
-<tr class="separator:a1ecc749bf5bd484c978940c5a6afe03f inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a855093341ac8afa84efd841654fedaf5 inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a855093341ac8afa84efd841654fedaf5"></a>
-ros::Subscriber&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a855093341ac8afa84efd841654fedaf5">sub_odom_current</a></td></tr>
-<tr class="memdesc:a855093341ac8afa84efd841654fedaf5 inherit pro_attribs_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subscriber object for odometry. <br /></td></tr>
-<tr class="separator:a855093341ac8afa84efd841654fedaf5 inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adabc3d493b55a60400c74bd4264dbc6e inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adabc3d493b55a60400c74bd4264dbc6e"></a>
-ros::Subscriber&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#adabc3d493b55a60400c74bd4264dbc6e">sub_state_target</a></td></tr>
-<tr class="memdesc:adabc3d493b55a60400c74bd4264dbc6e inherit pro_attribs_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subscriber object for target state of controller. <br /></td></tr>
-<tr class="separator:adabc3d493b55a60400c74bd4264dbc6e inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f8a52684719804ecb90c57145513366 inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7f8a52684719804ecb90c57145513366"></a>
-ros::Subscriber&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a7f8a52684719804ecb90c57145513366">sub_target_odometry</a></td></tr>
-<tr class="memdesc:a7f8a52684719804ecb90c57145513366 inherit pro_attribs_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subscriber object for target odometry topic. <br /></td></tr>
-<tr class="separator:a7f8a52684719804ecb90c57145513366 inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae981013bac649b6310e924b6a126bc40 inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae981013bac649b6310e924b6a126bc40"></a>
-ros::ServiceServer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#ae981013bac649b6310e924b6a126bc40">reset_service</a></td></tr>
-<tr class="memdesc:ae981013bac649b6310e924b6a126bc40 inherit pro_attribs_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Service for resetting the controller. <br /></td></tr>
-<tr class="separator:ae981013bac649b6310e924b6a126bc40 inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af81f22d8b64d915769acfb8e8d89e0c8 inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af81f22d8b64d915769acfb8e8d89e0c8"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#af81f22d8b64d915769acfb8e8d89e0c8">name</a></td></tr>
-<tr class="memdesc:af81f22d8b64d915769acfb8e8d89e0c8 inherit pro_attribs_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of the node respective <a class="el" href="classController.html" title="Provides a easy to use implementation of a generic mobile robot controller. ">Controller</a>. <br /></td></tr>
-<tr class="separator:af81f22d8b64d915769acfb8e8d89e0c8 inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae01171e69d9b735e44964662275fc77c inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae01171e69d9b735e44964662275fc77c"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#ae01171e69d9b735e44964662275fc77c">world_frame</a></td></tr>
 <tr class="memdesc:ae01171e69d9b735e44964662275fc77c inherit pro_attribs_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of the world frame. <br /></td></tr>
 <tr class="separator:ae01171e69d9b735e44964662275fc77c inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a538a49aa6e62ee89de241874b7f26625 inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a538a49aa6e62ee89de241874b7f26625"></a>
-tf::Vector3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a538a49aa6e62ee89de241874b7f26625">ang_vel_in</a></td></tr>
-<tr class="memdesc:a538a49aa6e62ee89de241874b7f26625 inherit pro_attribs_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">target linear velocity <br /></td></tr>
-<tr class="separator:a538a49aa6e62ee89de241874b7f26625 inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab94918bba11d4526cd5dc20e64655845 inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab94918bba11d4526cd5dc20e64655845"></a>
-tf::Vector3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#ab94918bba11d4526cd5dc20e64655845">lin_vel_in</a></td></tr>
-<tr class="memdesc:ab94918bba11d4526cd5dc20e64655845 inherit pro_attribs_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">target angular velocity <br /></td></tr>
-<tr class="separator:ab94918bba11d4526cd5dc20e64655845 inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac7b5300b4fc0b2436d4a17d4bb60b078 inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac7b5300b4fc0b2436d4a17d4bb60b078"></a>
-tf::Vector3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#ac7b5300b4fc0b2436d4a17d4bb60b078">lin_vel_out</a></td></tr>
-<tr class="memdesc:ac7b5300b4fc0b2436d4a17d4bb60b078 inherit pro_attribs_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Outgoing linear velocity. <br /></td></tr>
-<tr class="separator:ac7b5300b4fc0b2436d4a17d4bb60b078 inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c96a76667a4298cd15f6b49a9e23ceb inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8c96a76667a4298cd15f6b49a9e23ceb"></a>
-tf::Vector3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a8c96a76667a4298cd15f6b49a9e23ceb">ang_vel_out</a></td></tr>
-<tr class="memdesc:a8c96a76667a4298cd15f6b49a9e23ceb inherit pro_attribs_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Outgoing angular velocity. <br /></td></tr>
-<tr class="separator:a8c96a76667a4298cd15f6b49a9e23ceb inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaad279e91ae825ab17121759ec46f539 inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaad279e91ae825ab17121759ec46f539"></a>
-tf::StampedTransform&#160;</td><td class="memItemRight" valign="bottom"><b>world2robot</b></td></tr>
-<tr class="separator:aaad279e91ae825ab17121759ec46f539 inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0fbeee8dd4ee75f98ca860f1878ba4dd inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0fbeee8dd4ee75f98ca860f1878ba4dd"></a>
-tf::StampedTransform&#160;</td><td class="memItemRight" valign="bottom"><b>world2odom</b></td></tr>
-<tr class="separator:a0fbeee8dd4ee75f98ca860f1878ba4dd inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a171362bdb7fa9335627a5c16e3716525 inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a171362bdb7fa9335627a5c16e3716525"></a>
-tf::Transform&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a171362bdb7fa9335627a5c16e3716525">control_dif</a></td></tr>
-<tr class="memdesc:a171362bdb7fa9335627a5c16e3716525 inherit pro_attribs_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transformation from current to target. <br /></td></tr>
-<tr class="separator:a171362bdb7fa9335627a5c16e3716525 inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a804862aff250a2857c2e145615ae0fdb inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a804862aff250a2857c2e145615ae0fdb"></a>
-tf::Pose&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a804862aff250a2857c2e145615ae0fdb">reference_pose</a></td></tr>
-<tr class="memdesc:a804862aff250a2857c2e145615ae0fdb inherit pro_attribs_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference pose to a global system. <br /></td></tr>
-<tr class="separator:a804862aff250a2857c2e145615ae0fdb inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9575ed78c8b37c15f425deb48a3fe413 inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9575ed78c8b37c15f425deb48a3fe413"></a>
-tf::Pose&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a9575ed78c8b37c15f425deb48a3fe413">current_pose</a></td></tr>
-<tr class="memdesc:a9575ed78c8b37c15f425deb48a3fe413 inherit pro_attribs_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pose of <a class="el" href="classController.html" title="Provides a easy to use implementation of a generic mobile robot controller. ">Controller</a> at the moment in world. <br /></td></tr>
-<tr class="separator:a9575ed78c8b37c15f425deb48a3fe413 inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa27e5e790f798a9dd55078b24a326dd6 inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa27e5e790f798a9dd55078b24a326dd6"></a>
-tf::Pose&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#aa27e5e790f798a9dd55078b24a326dd6">target_pose</a></td></tr>
-<tr class="memdesc:aa27e5e790f798a9dd55078b24a326dd6 inherit pro_attribs_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Target for the <a class="el" href="classController.html" title="Provides a easy to use implementation of a generic mobile robot controller. ">Controller</a> poses. <br /></td></tr>
-<tr class="separator:aa27e5e790f798a9dd55078b24a326dd6 inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b52649fc2e291a276a1ad62e8440a6f inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3b52649fc2e291a276a1ad62e8440a6f"></a>
-<a class="el" href="structController_1_1lyapunov.html">lyapunov</a>&#160;</td><td class="memItemRight" valign="bottom"><b>lyapunov_parameter</b></td></tr>
-<tr class="separator:a3b52649fc2e291a276a1ad62e8440a6f inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a18cb9e47664e29810d99a17a3997fd79 inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a18cb9e47664e29810d99a17a3997fd79"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>kx</b></td></tr>
-<tr class="separator:a18cb9e47664e29810d99a17a3997fd79 inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75a14de3b905db8fc247c2264e55f90b inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a75a14de3b905db8fc247c2264e55f90b"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>ky</b></td></tr>
-<tr class="separator:a75a14de3b905db8fc247c2264e55f90b inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf8a5d288ffb3537a7aa00745bd5a7b3 inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acf8a5d288ffb3537a7aa00745bd5a7b3"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>kphi</b></td></tr>
-<tr class="separator:acf8a5d288ffb3537a7aa00745bd5a7b3 inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af75dc7cabc84c25933aec4e42bd9533a inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af75dc7cabc84c25933aec4e42bd9533a"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>omegad</b></td></tr>
-<tr class="separator:af75dc7cabc84c25933aec4e42bd9533a inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad67f667a4fcbcfc6cd74e9dec88b6f98 inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad67f667a4fcbcfc6cd74e9dec88b6f98"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>vd</b></td></tr>
-<tr class="separator:ad67f667a4fcbcfc6cd74e9dec88b6f98 inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab107c130b9466fd6d7116306218b4a95 inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab107c130b9466fd6d7116306218b4a95"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>kr</b></td></tr>
-<tr class="separator:ab107c130b9466fd6d7116306218b4a95 inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b8aa757ac74e51a1bb6fc959ffc5a14 inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9b8aa757ac74e51a1bb6fc959ffc5a14"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>kang</b></td></tr>
-<tr class="separator:a9b8aa757ac74e51a1bb6fc959ffc5a14 inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e0e569456498e5670a48244c22cafc9 inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4e0e569456498e5670a48244c22cafc9"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>loaded_parameter</b></td></tr>
-<tr class="separator:a4e0e569456498e5670a48244c22cafc9 inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaca736f25e7da33272ded507e0c8057f inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaca736f25e7da33272ded507e0c8057f"></a>
+<a class="el" href="structController_1_1ControlState.html">ControlState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#aaca736f25e7da33272ded507e0c8057f">current_state_</a></td></tr>
+<tr class="memdesc:aaca736f25e7da33272ded507e0c8057f inherit pro_attribs_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">The current state of the robot. <br /></td></tr>
+<tr class="separator:aaca736f25e7da33272ded507e0c8057f inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8412c8448970cf820f932cff02d69d33 inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8412c8448970cf820f932cff02d69d33"></a>
+<a class="el" href="structController_1_1ControlState.html">ControlState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a8412c8448970cf820f932cff02d69d33">target_state_</a></td></tr>
+<tr class="memdesc:a8412c8448970cf820f932cff02d69d33 inherit pro_attribs_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">The target state of the robot. <br /></td></tr>
+<tr class="separator:a8412c8448970cf820f932cff02d69d33 inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe3b54c59a80046661f0030a573539d7 inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afe3b54c59a80046661f0030a573539d7"></a>
+<a class="el" href="classController.html#a75a1e2f93842f65d1263f7d3c2fd8898">ControlDifference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#afe3b54c59a80046661f0030a573539d7">control_dif_</a></td></tr>
+<tr class="memdesc:afe3b54c59a80046661f0030a573539d7 inherit pro_attribs_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transformation from current configuration to target configuration. <br /></td></tr>
+<tr class="separator:afe3b54c59a80046661f0030a573539d7 inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaafcd892e9e6080e839a1348a7ef40db inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaafcd892e9e6080e839a1348a7ef40db"></a>
+<a class="el" href="structController_1_1ControlVector.html">ControlVector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#aaafcd892e9e6080e839a1348a7ef40db">control_</a></td></tr>
+<tr class="memdesc:aaafcd892e9e6080e839a1348a7ef40db inherit pro_attribs_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">The calculated control vector. <br /></td></tr>
+<tr class="separator:aaafcd892e9e6080e839a1348a7ef40db inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa713beca2ef8152d273bbc6fc38f7fc8 inherit pro_attribs_classController"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa713beca2ef8152d273bbc6fc38f7fc8"></a>
+tf::Transform&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#aa713beca2ef8152d273bbc6fc38f7fc8">world2reference_</a></td></tr>
+<tr class="memdesc:aa713beca2ef8152d273bbc6fc38f7fc8 inherit pro_attribs_classController"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transformation from a world to the controllers refrence frame. <br /></td></tr>
+<tr class="separator:aa713beca2ef8152d273bbc6fc38f7fc8 inherit pro_attribs_classController"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Class that implements a slave robot for multi robot formation control. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a855a824b462dd05eddaa8d53b27faea4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Slave::Slave </td>
+          <td>(</td>
+          <td class="paramtype">ros::NodeHandle &amp;&#160;</td>
+          <td class="paramname"><em>nh</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Construct a new <a class="el" href="classSlave.html" title="Class that implements a slave robot for multi robot formation control. ">Slave</a> object. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">nh</td><td>NodeHandle </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a2a38a730d6ac93fcced035a7d764612d"></a>
+<a class="anchor" id="a663a689ac0141f7ab00e58944a405a6f"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -370,7 +301,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>loaded_parameter</b><
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Slave::optimal_control </td>
+          <td class="memname"><a class="el" href="structController_1_1ControlVector.html">Controller::ControlVector</a> Slave::optimal_control </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -382,7 +313,43 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>loaded_parameter</b><
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This implements a least sqaures determination of control vector [v,omega] [control.v control.omega] from the given cartesian velocity state d/dt[x,y,phi] (cart_vel) </p>
+
+<p>Calculates a Control vector by pseudo inverting the Jacobian of the Robot. </p>
+<dl class="section return"><dt>Returns</dt><dd>ControlVector Calculated Control Vector </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a2f80eae9dc8e4e20037c1a371f9b8189"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Slave::targetOdomCallback </td>
+          <td>(</td>
+          <td class="paramtype">nav_msgs::Odometry&#160;</td>
+          <td class="paramname"><em>msg</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Overloads the target odometry callback and expands it with transformation needed for slave robots. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">msg</td><td>Incoming message at the target odometry topic </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented from <a class="el" href="classController.html#a77f138b6a3699c21cf904041e7e19820">Controller</a>.</p>
 
 </div>
 </div>

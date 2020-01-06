@@ -11,21 +11,32 @@
 #include <math.h>
 #include <stdio.h>
 
+/**
+ * @brief Class that implements a slave robot for multi robot formation control
+ * 
+ */
 class Slave:public Controller{
     public:
+        /**
+         * @brief Construct a new Slave object
+         * 
+         * @param nh NodeHandle
+         */
         Slave(ros::NodeHandle &nh);        
-        void scope();  
-
+        
     private:
-        ros::Subscriber master_odom;
-
-        ///This implements a least sqaures determination of control vector [v,omega] [control.v control.omega] 
-        ///from the given cartesian velocity state d/dt[x,y,phi] (cart_vel)
-        void optimal_control();
-        void target_state_callback(geometry_msgs::PoseStamped msg) ; 
-        void target_velocities_callback(geometry_msgs::Twist msg);
-        void target_odometry_callback(nav_msgs::Odometry msg);
-        tf::Pose master_pose;
- 
+        /**
+         * @brief Calculates a Control vector by pseudo inverting the Jacobian of the Robot
+         * 
+         * @return ControlVector Calculated Control Vector
+         */
+        ControlVector optimal_control();
+        /**
+         * @brief Overloads the target odometry callback and expands it with transformation needed for slave robots.
+         * 
+         * @param msg  Incoming message at the target odometry topic
+         */
+        void targetOdomCallback(nav_msgs::Odometry msg);
+        
 
 };

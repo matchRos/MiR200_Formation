@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['ktheta',['ktheta',['../structController_1_1lyapunov.html#acfdb5c6549627067f54273b7fbc6ac2b',1,'Controller::lyapunov']]],
-  ['kx',['kx',['../structController_1_1lyapunov.html#a56b832234c79347ed03bdfa1f88aa530',1,'Controller::lyapunov']]],
-  ['ky',['ky',['../structController_1_1lyapunov.html#a3790be122f461506e1b7a30d8a2316a4',1,'Controller::lyapunov']]]
+  ['kphi',['kphi',['../structController_1_1LyapunovParameter.html#a4ffd5e85451097367940acc6536d2a4c',1,'Controller::LyapunovParameter']]],
+  ['kx',['kx',['../structController_1_1LyapunovParameter.html#a4183bf21c97669dc44d4f67cb9a0d26c',1,'Controller::LyapunovParameter']]],
+  ['ky',['ky',['../structController_1_1LyapunovParameter.html#a4cde698202cddb2fb3971fcc0f0804ca',1,'Controller::LyapunovParameter']]]
 ];
