@@ -2,7 +2,7 @@
 robot1:
   world_frame: "/map" #global frame. Has to be the same for hole correspiondent formation
 
-  topic_current_odometry:  "mobile_base_controller/odom"  #topic the current odometry of the robot is published at
+  topic_current_odometry:  "odometry/filtered"  #topic the current odometry of the robot is published at
 
   topic_target_odometry: "/trajectory_odom" #topi  the target odometry of the robot is published at
 
@@ -14,7 +14,7 @@ robot1:
 robot2:
   world_frame: "/map"
 
-  topic_current_odometry:   "mobile_base_controller/odom"
+  topic_current_odometry:   "odometry/filtered"
 
   topic_target_odometry: "/trajectory_odom"
   
@@ -25,7 +25,7 @@ robot2:
 robot_master:
   world_frame: "/map"
 
-  topic_current_odometry: "mobile_base_controller/odom"
+  topic_current_odometry: "odometry/filtered"
 
   topic_target_odometry: "/trajectory_odom"
 
