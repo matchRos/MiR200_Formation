@@ -13,6 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   roscpp
   tf
+  multi_robot_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -127,7 +128,10 @@ add_library(planner
   include/${PROJECT_NAME}/planner.h
   src/planner.cpp
 )
-
+add_library(formation
+  include/${PROJECT_NAME}/formation.h
+  src/formation.cpp 
+)
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
@@ -141,6 +145,7 @@ add_executable(circle_node src/circle_node.cpp)
 add_executable(lissajous_node src/lissajous_node.cpp)
 add_executable(planner_node src/planner_node.cpp)
 add_executable(ground_truth_broadcaster_node src/ground_truth_broadcaster_node.cpp)
+add_executable(measurement_node src/measurement_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -170,6 +175,10 @@ target_link_libraries(planner_node
   ${catkin_LIBRARIES}
 )
 target_link_libraries(ground_truth_broadcaster_node
+  ${catkin_LIBRARIES}
+)
+target_link_libraries(measurement_node
+  formation
   ${catkin_LIBRARIES}
 )
 #############
