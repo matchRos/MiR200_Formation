@@ -8,9 +8,8 @@
   
   
   <!-- Load URDF -->  
-  <include file="$(find mir_description)/launch/upload_mir_urdf.launch" />
+   <param name="robot_description" command="$(find xacro)/xacro --inorder $(find mir_description)/urdf/mir.urdf.xacro tf_prefix:=$(arg controller_name)"/>
 
- 
   <!-- Spawn the robot into Gazebo -->
   <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model $(arg controller_name)
     -x $(arg robot_x) -y $(arg robot_y) -Y $(arg robot_yaw) "/>
@@ -29,7 +28,7 @@
 
 <!-- Add passive + mimic joints to joint_states topic  -->
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
-    <rosparam param="source_list" subst_value="True">[$(arg controller_name)/joint_states]</rosparam>
+    <rosparam param="source_list" subst_value="True">[joint_states]</rosparam>
     <param name="rate" value="200.0" />
   </node>
 
@@ -42,10 +41,10 @@
   <node pkg="topic_tools" type="relay" name="b_scan_relay" args="b_scan scan"/>
   <node pkg="topic_tools" type="relay" name="f_scan_relay" args="f_scan scan"/>
   
-<!-- EKF: extended Kalman filter that predicts the state of the robot in time
+<!-- EKF: extended Kalman filter that predicts the state of the robot in time-->
   <include file="$(find mir_gazebo)/launch/includes/ekf.launch.xml">
   <arg name="tf_prefix" value="$(arg controller_name)/" />
-  </include>-->
+  </include>
 
 
 
