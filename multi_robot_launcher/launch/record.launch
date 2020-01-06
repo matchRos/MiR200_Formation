@@ -2,10 +2,10 @@
 <!-- Start a recorded simulation-->
 <launch>
   <arg name="filename" default="test"/>
-  <arg name="type" default="circle" />
+  <arg name="type" default="lissa" />
 
-  <rosparam file="$(find simulation_env)/config/Circle.yaml" command="load"></rosparam>
-  <rosparam file="$(find simulation_env)/config/Lissajous.yaml" command="load"></rosparam>
+  <!-- Load the formation parameter file-->
+  <rosparam file="$(find multi_robot_launcher)/config/sim_formation.yaml" command="load"></rosparam>
 
   <include file="$(find mir_description)/launch/upload_mir_urdf.launch" />
 
