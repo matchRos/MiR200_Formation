@@ -196,7 +196,7 @@ class Controller{
          
         /*Calculations and executions ####################################################################################################################
         ##################################################################################################################################################*/
-       /**
+        /**
         * @brief Calculates the lyapunov base control output from a given input
         * 
         * @param kx Control gain in x-direction
