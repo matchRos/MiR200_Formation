@@ -53,6 +53,7 @@ add_message_files(
   ControlState.msg
   ControlData.msg
   ControlDifference.msg
+  Formation.msg
 )
 
 ## Generate services in the 'srv' folder
