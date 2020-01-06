@@ -1,0 +1,50 @@
+# -----------------------------------
+robot1:
+  world_frame: "/map" #global frame. Has to be the same for hole correspiondent formation
+
+  topic_current_odometry:  "mobile_base_controller/odom"  #topic the current odometry of the robot is published at
+
+  topic_target_odometry: "/trajectory_odom" #topi  the target odometry of the robot is published at
+
+  controller_type: 2                            # 1-> pseudo_invers 2->lyapov 3->angl_dist
+
+
+
+
+robot2:
+  world_frame: "/map"
+
+  topic_current_odometry:   "mobile_base_controller/odom"
+
+  topic_target_odometry: "/trajectory_odom"
+  
+  controller_type: 2                             # 1-> pseudo_invers 2->lyapov 3->angl_dist
+
+
+
+robot_master:
+  world_frame: "/map"
+
+  topic_current_odometry: "mobile_base_controller/odom"
+
+  topic_target_odometry: "/trajectory_odom"
+
+  controller_type: 2                            # 1-> pseudo_invers 2->lyapov 3->angl_dist
+
+
+algorithm:
+  lyapunov: [7.0,7.0,11.0]               # parameter for lyapunov algorythm: kx,kphi,vd,omegad
+  
+
+planner: #lissajous parameter set
+  iterations: 1
+  omega: 0.05
+  ratio: 1
+  phaseshift: 1.57079632679
+  amplifier_x: 5.0
+  amplifier_y: 5.0
+
+# planner:
+#   iterations: 10
+#   radius: 5.0
+#   omega : 0.05

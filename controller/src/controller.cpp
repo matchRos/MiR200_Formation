@@ -349,6 +349,7 @@ void Controller::publish()
                                     nh.resolveName("base_footprint"));
     this->broadcaster_.sendTransform(base_link);
 
+    //Publish reference link
     geometry_msgs::TransformStamped msg2;
     msg2.header.stamp = ros::Time::now();
     msg2.header.frame_id =this->world_frame ;
