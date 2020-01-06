@@ -3,7 +3,7 @@
 #include<math.h>
 #include<geometry_msgs/PoseStamped.h>
 #include<nav_msgs/Odometry.h>
-#include<std_srvs/SetBool.h>
+#include<std_srvs/Empty.h>
 
 //Generic path planning class
 #define PARAM_ITERATION "iterations"
@@ -88,11 +88,11 @@ class Planner{
         ///service procedure for satrting the planner
         ///@param req : Reqest the service is getting
         ///@param res : Response the service is sending
-        bool srv_start( std_srvs::SetBool::Request &req,std_srvs::SetBool::Response &res);
+        bool srv_start( std_srvs::EmptyRequest &req, std_srvs::EmptyResponse &res);
         ///service procedure for stopping the planner
         ///@param req : Reqest the service is getting
         ///@param res : Response the service is sending
-        bool srv_stop( std_srvs::SetBool::Request &req,std_srvs::SetBool::Response &res);
+        bool srv_stop( std_srvs::EmptyRequest &req, std_srvs::EmptyResponse &res);
 
         
 

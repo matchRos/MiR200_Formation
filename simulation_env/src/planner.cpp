@@ -64,18 +64,12 @@ void Planner::pause()
     this->is_paused=true;
 }
 
-bool Planner::srv_start(std_srvs::SetBool::Request &req, std_srvs::SetBool::Response &res)
+bool Planner::srv_start(std_srvs::EmptyRequest &req, std_srvs::EmptyResponse &res)
 {
-    if(req.data)
-    {
-        this->start();
-    }
+    if(this->is_planning)
+    {this->pause();}
     else
-    {
-        this->pause();
-    }
-    res.success=true;
-    return true;
+    {this->start();}
 }
 
 void Planner::stop()
@@ -83,13 +77,9 @@ void Planner::stop()
     ROS_INFO("Shutting down node: %s",ros::this_node::getName().c_str());
     ros::shutdown();
 }
-bool Planner::srv_stop(std_srvs::SetBool::Request &req, std_srvs::SetBool::Response &res)
+bool Planner::srv_stop(std_srvs::EmptyRequest &req, std_srvs::EmptyResponse &res)
 {
-    if(req.data)
-    {
-        this->stop();
-    }
-    res.success=true;
+    this->stop();
     return true;
 }
 
