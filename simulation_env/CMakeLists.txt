@@ -132,6 +132,7 @@ add_library(formation
   include/${PROJECT_NAME}/formation.h
   src/formation.cpp 
 )
+add_dependencies(formation ${catkin_EXPORTED_TARGETS})
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
@@ -144,7 +145,6 @@ add_executable(${PROJECT_NAME}_node src/simulation_env_node.cpp)
 add_executable(circle_node src/circle_node.cpp)
 add_executable(lissajous_node src/lissajous_node.cpp)
 add_executable(planner_node src/planner_node.cpp)
-add_executable(ground_truth_broadcaster_node src/ground_truth_broadcaster_node.cpp)
 add_executable(measurement_node src/measurement_node.cpp)
 
 ## Rename C++ executable without prefix
@@ -174,9 +174,7 @@ target_link_libraries(planner_node
   planner
   ${catkin_LIBRARIES}
 )
-target_link_libraries(ground_truth_broadcaster_node
-  ${catkin_LIBRARIES}
-)
+
 target_link_libraries(measurement_node
   formation
   ${catkin_LIBRARIES}
