@@ -1,4 +1,17 @@
 # -----------------------------------
+formation:
+  names: ["robot_master","robot1","robot2"]
+  
+  robot_master:
+    pose: [0 , 0 , 0, 0]
+
+  robot1:
+    pose: [2 , 2 , 0, 0]
+
+  robot2:
+    pose: [-2 , -2 , 0, 0]
+
+
 robot1:
   world_frame: "/map" #global frame. Has to be the same for hole correspiondent formation
 
@@ -36,15 +49,12 @@ algorithm:
   lyapunov: [7.0,7.0,11.0]               # parameter for lyapunov algorythm: kx,kphi,vd,omegad
   
 
-planner: #lissajous parameter set
-  iterations: 1
+planner: 
+  type: 0         #0->lissajous planner 
+  pause: false
+  iterations: 10
   omega: 0.05
   ratio: 1
   phaseshift: 1.57079632679
   amplifier_x: 5.0
   amplifier_y: 5.0
-
-# planner:
-#   iterations: 10
-#   radius: 5.0
-#   omega : 0.05
