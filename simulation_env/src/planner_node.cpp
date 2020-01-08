@@ -3,36 +3,43 @@
 
 int main(int argc,char**argv)
 {
-    //Just zero initialisation for pose
-    tf::Pose ref;
-    ref.setOrigin(tf::Vector3(0,0,0));
-    
-    tf::Quaternion quat;
-    quat.setRPY(0,0,0);
-    ref.setRotation(quat);
+    //Choose planner
+    tf::Pose reference(tf::createIdentityQuaternion(),tf::Vector3(0,0,0));
 
-
-
-    //Choose planner from cammand line
+    ros::NodeHandle nh_planner("planner");
     Planner* planner;
-    if(!strcmp(argv[1],"-circle"))
+    int type;    
+    nh_planner.getParam("/planner/type",type);
+    ROS_INFO("Got parameter /planner/type: %i",type);
+    switch(type)
     {
-        ROS_INFO("Starting Circle Planner!");
-        ros::init(argc,argv,"CirclePlanner");
-        ros::NodeHandle nh("~");
-        planner=new CirclePlanner(nh);
+        case 0:
+        {
+            ROS_INFO("Starting LissajousPlanner!"); 
+            planner=new LissajousPlanner(nh_planner);
+            break;
+        }
+        case 1:
+        {
+             ROS_INFO("Starting Circle Planner!");  
+            planner=new CirclePlanner(nh_planner);
+            break;
+        }
+      
+
     }
-    else if(!strcmp(argv[1],"-lissa"))
-    {
-        ROS_INFO("Starting LissajousPlanner!");
-        ros::init(argc,argv,"LissajousPlanner");
-        ros::NodeHandle nh("~");
-        planner=new LissajousPlanner(nh);
-    }
+   
+    planner->set_start_pose(reference);
     planner->load();
-    planner->set_start_pose(ref);
+    
     ros::Duration(2).sleep();
-    planner->start();
+    bool pause;
+    nh_planner.getParam("planner/pause",pause);
+    ROS_INFO("Got Parameter /planner/pause: %d",pause);
+    if(!pause)
+    {
+        planner->start();
+    }    
     ros::spin();
     delete planner;
 }
