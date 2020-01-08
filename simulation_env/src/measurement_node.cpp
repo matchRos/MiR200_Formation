@@ -7,6 +7,17 @@
 #include <simulation_env/formation.h>
 
 
+Formation form_initial;
+Formation form_target;
+Formation form_current;
+Formation form_estimated;
+
+FormationPublisher* pub_initial;
+FormationPublisher* pub_current;
+FormationPublisher* pub_target;
+FormationPublisher* pub_estimated;
+FormationPublisher* pub_difference;
+
 
 std::vector<tf::Pose> formation_initial;
 
@@ -22,135 +33,149 @@ ros::Publisher formation_target_pub;
 ros::Publisher formation_estimated_pub;
 ros::Publisher formation_difference_pub;
 
-tf::TransformListener* listener;
 
-
-void Formation2Msg(std::vector<tf::Pose>formation,multi_robot_msgs::Formation &msg)
-{    
-    for(int i=0;i<formation.size();i++)
-    {
-        geometry_msgs::Pose pose;
-        tf::poseTFToMsg(formation.at(i),pose);
-        msg.formation.push_back(pose);
-    }
-}
-std::vector<tf::Pose> operator-(std::vector<tf::Pose> first,std::vector<tf::Pose> second)
-{
-    std::vector<tf::Pose> result;
-    for(int i=0;i<second.size();i++)
-    {
-        result.push_back(first.at(i).inverseTimes(second.at(i)));
-    }
-    return result;
-}
 
 void callback_target(nav_msgs::Odometry msg)
 {
-    if(!formation_initial.empty())
-    {
-        for(int i=0;i<formation_initial.size();i++)
+    try{
+        if(!form_initial.empty())
         {
             tf::Transform trafo;
             tf::poseMsgToTF(msg.pose.pose,trafo);
-            if(i<formation_target.size())
-            {
-                formation_target.at(i)=trafo*formation_initial.at(i);
-            }
-            else
-            {
-                formation_target.push_back(trafo*formation_initial.at(i));
-            }        
+            form_target=Formation::transform(form_initial,trafo);
+            
         }
-        multi_robot_msgs::Formation formation_msg;
-        Formation2Msg(formation_target,formation_msg);
-        formation_target_pub.publish(formation_msg);
+        pub_target->publish(form_target);
     }
-    
+    catch(std::exception &e)
+    {
+        ROS_INFO("Target: %s",e.what());
+    }
+   
 }
 
 void callback_pos_master(nav_msgs::Odometry msg)
 {    
-    multi_robot_msgs::Formation formation_msg;
-    tf::poseMsgToTF(msg.pose.pose,formation_current.at(0));
-    Formation2Msg(formation_current,formation_msg);
-    formation_current_pub.publish(formation_msg);
+    try{
+        tf::Pose pose;
+        tf::poseMsgToTF(msg.pose.pose,pose);
+        form_current.modifiePose(0,pose);
+        pub_current->publish(form_current);
+    }
+    catch(std::exception &ex)
+    {
+        ROS_INFO("callback_pos_master: %s",ex.what());
+    }
+    
 }
 
 void callback_pos_slave1(nav_msgs::Odometry msg)
 { 
-    multi_robot_msgs::Formation formation_msg;
-    tf::poseMsgToTF(msg.pose.pose,formation_current.at(1));
-    Formation2Msg(formation_current,formation_msg);
-    formation_current_pub.publish(formation_msg);
+    try{
+        tf::Pose pose;
+        tf::poseMsgToTF(msg.pose.pose,pose);
+        form_current.modifiePose(1,pose);
+        pub_current->publish(form_current);
+    }
+    catch(std::exception &ex)
+    {
+        ROS_INFO("callback_pos_slave1: %s",ex.what());
+    }
+    
 }
 
 void callback_pos_slave2(nav_msgs::Odometry msg)
-{
-    multi_robot_msgs::Formation formation_msg;
-    tf::poseMsgToTF(msg.pose.pose,formation_current.at(2));
-    Formation2Msg(formation_current,formation_msg);
-    formation_current_pub.publish(formation_msg);
-
+{    
+    try{
+        tf::Pose pose;
+        tf::poseMsgToTF(msg.pose.pose,pose);
+        form_current.modifiePose(2,pose);
+        pub_current->publish(form_current);
+    }
+    catch(std::exception &ex)
+    {
+        ROS_INFO("callback_pos_slave2: %s",ex.what());
+    }
 }
-
 
 
 
 void callback_pos_est_master(multi_robot_msgs::ControlData msg)
 {
-    tf::poseMsgToTF(msg.current.pose,formation_estimated.at(0));
-    
-    multi_robot_msgs::Formation formation_msg;
-    Formation2Msg(formation_estimated,formation_msg);
-    formation_estimated_pub.publish(formation_msg);
-        
-    multi_robot_msgs::Formation difference;
-    Formation2Msg(formation_current-formation_target,difference);
-    formation_difference_pub.publish(difference);
+    try
+    {
+        tf::Pose pose;
+        tf::poseMsgToTF(msg.current.pose,pose);
+        form_estimated.modifiePose(0,pose);
+        pub_estimated->publish(form_estimated);
+
+        pub_difference->publish(form_target-form_current); 
+    }
+    catch(std::exception &ex)
+    {
+        ROS_INFO("callback_pos_est_master: %s",ex.what());
+    }  
 }
 
 void callback_pos_est_slave1(multi_robot_msgs::ControlData msg)
 {
-    tf::poseMsgToTF(msg.current.pose,formation_estimated.at(1));
-    
-    multi_robot_msgs::Formation formation_msg;
-    Formation2Msg(formation_estimated,formation_msg);
-    formation_estimated_pub.publish(formation_msg);
+   try
+   {
+        tf::Pose pose;
+        tf::poseMsgToTF(msg.current.pose,pose);
+        form_estimated.modifiePose(1,pose);
+        pub_estimated->publish(form_estimated);
 
-    multi_robot_msgs::Formation difference;
-    Formation2Msg(formation_current-formation_target,difference);
-    formation_difference_pub.publish(difference);
+        pub_difference->publish(form_target-form_current); 
+    }
+    catch(std::exception &ex)
+    {
+        ROS_INFO("callback_pos_est_slave1: %s",ex.what());
+    }
+   
 }
 
 void callback_pos_est_slave2(multi_robot_msgs::ControlData msg)
 {
-    tf::poseMsgToTF(msg.current.pose,formation_estimated.at(2));
-    
-    multi_robot_msgs::Formation formation_msg;
-    Formation2Msg(formation_estimated,formation_msg);
-    formation_estimated_pub.publish(formation_msg);
+    try
+    {
+        tf::Pose pose;
+        tf::poseMsgToTF(msg.current.pose,pose);
+        form_estimated.modifiePose(2,pose);
+        pub_estimated->publish(form_estimated);
 
-    multi_robot_msgs::Formation difference;
-    Formation2Msg(formation_current-formation_target,difference);
-    formation_difference_pub.publish(difference);
-
+        pub_difference->publish(form_target-form_current); 
+    }
+    catch(std::exception &ex)
+    {
+        ROS_INFO("callback_pos_est_slave2: %s",ex.what());
+    }
 }
 
 int main(int argc,char** argv)
 {
-    formation_initial.push_back(tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(0,0,0)));
-    formation_initial.push_back(tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(-1.5,1.5,0)));
-    formation_initial.push_back(tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(-1.5,-1.5,0)));
+    try
+    {
+        form_initial.addRobot(tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(0,0,0)),std::vector<int>{1,2});
+        form_initial.addRobot(tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(-1.5,1.5,0)),std::vector<int>(1,0));
+        form_initial.addRobot(tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(-1.5,-1.5,0)),std::vector<int>(1,0));
 
-    formation_target=formation_initial;
-    formation_estimated=formation_initial;
-    formation_current=formation_initial;
+        form_current=form_initial;
+        form_estimated=form_initial;
+        form_target=form_initial;
+    
+    }
+    catch(std::exception &ex)
+    {
+        ROS_WARN(ex.what());
+    }
+    
+
     
     
     ros::init(argc,argv,"Measure");
     ros::NodeHandle nh;   
 
-    listener=new tf::TransformListener;
 
     ros::Subscriber pos_master=nh.subscribe("robot_master/base_pose_ground_truth",10,callback_pos_master);
     ros::Subscriber pos_slave1=nh.subscribe("robot1/base_pose_ground_truth",10,callback_pos_slave1);
@@ -158,16 +183,21 @@ int main(int argc,char** argv)
 
     ros::Subscriber pos_master_est=nh.subscribe("robot_master/control_data",10,callback_pos_est_master);
     ros::Subscriber pos_slave_est_1=nh.subscribe("robot1/control_data",10,callback_pos_est_slave1);
-    ros::Subscriber pos_slave_est_2=nh.subscribe("robot2/control_data",10,callback_pos_est_slave2);
+    ros::Subscriber pos_slave_est_2=nh.subscribe("robot2/control_data",10,callback_pos_est_slave1);
 
     ros::Subscriber input=nh.subscribe("/trajectory_odom",10,callback_target);
 
-    formation_target_pub=nh.advertise<multi_robot_msgs::Formation>("target_formation",10);
-    formation_current_pub=nh.advertise<multi_robot_msgs::Formation>("current_formation",10);
-    formation_estimated_pub=nh.advertise<multi_robot_msgs::Formation>("estimated_formation",10);
-    formation_difference_pub=nh.advertise<multi_robot_msgs::Formation>("difference_formation",10);;
+    pub_target=new FormationPublisher(nh,"target_formation");
+    pub_current=new FormationPublisher(nh,"current_formation");
+    pub_estimated=new FormationPublisher(nh,"estimated_formation");
+    pub_difference= new FormationPublisher(nh,"difference_formation");
 
     ros::spin();
-    delete listener;
+
+
+    delete pub_target;
+    delete pub_difference;
+    delete pub_initial;
+    delete pub_estimated;
 
 }
