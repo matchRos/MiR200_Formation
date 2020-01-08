@@ -152,6 +152,8 @@ void callback_pos_est_slave2(multi_robot_msgs::ControlData msg)
     }
 }
 
+
+
 int main(int argc,char** argv)
 {
     try
@@ -168,10 +170,7 @@ int main(int argc,char** argv)
     catch(std::exception &ex)
     {
         ROS_WARN(ex.what());
-    }
-    
-
-    
+    }    
     
     ros::init(argc,argv,"Measure");
     ros::NodeHandle nh;   
@@ -183,7 +182,7 @@ int main(int argc,char** argv)
 
     ros::Subscriber pos_master_est=nh.subscribe("robot_master/control_data",10,callback_pos_est_master);
     ros::Subscriber pos_slave_est_1=nh.subscribe("robot1/control_data",10,callback_pos_est_slave1);
-    ros::Subscriber pos_slave_est_2=nh.subscribe("robot2/control_data",10,callback_pos_est_slave1);
+    ros::Subscriber pos_slave_est_2=nh.subscribe("robot2/control_data",10,callback_pos_est_slave2);
 
     ros::Subscriber input=nh.subscribe("/trajectory_odom",10,callback_target);
 
