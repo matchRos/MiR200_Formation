@@ -1,0 +1,11 @@
+formation:
+  names: ["robot_master","robot1","robot2"]
+  
+  robot_master:
+    pose: [0 , 0 , 0, 0]
+
+  robot1:
+    pose: [2 , 2 , 0, 0]
+
+  robot2:
+    pose: [-2 , -2 , 0, 0]
