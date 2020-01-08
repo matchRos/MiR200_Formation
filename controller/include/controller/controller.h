@@ -13,7 +13,7 @@
 #include <multi_robot_msgs/ControlState.h>
 #include <multi_robot_msgs/ControlVector.h>
 #include <multi_robot_msgs/ControlDifference.h>
-
+#include <multi_robot_msgs/SetInitialPose.h>
 
 #include <math.h>
 #include <stdio.h>
@@ -114,6 +114,12 @@ class Controller{
          */
         void setName(std::string name);       
 
+        /**
+         * @brief Set the Reference pose
+         * 
+         * @param pose pose to be set
+         */
+        void setReference(tf::Pose pose);        
         /**
          * @brief Set the reference of the mobile robot to be controlled from a global frame
          * 
@@ -264,6 +270,20 @@ class Controller{
         bool srvReset(std_srvs::EmptyRequest &req, std_srvs::EmptyResponse &res);
 
         /**
+         * @brief Service for setting the initial Pose of the controller
+         * 
+         * @param req Reqest that contains the pose
+         * @param res Response that contains the succeded flag
+         * @return true Succeeded
+         * @return false Not Succeeded
+         */
+        bool srvSetInitial(multi_robot_msgs::SetInitialPoseRequest &req,multi_robot_msgs::SetInitialPoseResponse &res);
+
+
+        //###################################################################################################################################
+        //###################################################################################################################################
+
+        /**
          * @brief Converts ControlState struct to a COntrol state message
          * 
          * @param state Control state to be converted
@@ -307,13 +327,15 @@ class Controller{
         ros::Publisher pub_cmd_vel;                                  ///<publisher object for velocity outoput topic
         ros::Publisher pub_state_out;                                ///<publisher object for state output topic
         ros::Publisher pub_control_data;                             ///<publisher object for control difference topic
-     
+      
         ros::Subscriber sub_odom_current;                            ///<Subscriber object for odometry
         ros::Subscriber sub_odom_target;                             ///<Subscriber object for target odometry topic
 
+        ros::ServiceServer srv_reset;                                ///<Service for resetting the controller
+        ros::ServiceServer srv_set_initial; ///<Service for setting the initial pose
         ros::Timer time_scope_;                                      ///<Timer for control scope
 
-        ros::ServiceServer reset_service;                            ///<Service for resetting the controller
+       
 
         std::string name;                                            ///<Name of the node respective Controller
         

@@ -17,7 +17,9 @@ Controller::Controller(ros::NodeHandle &nh):    nh(nh),
     this->sub_odom_target=this->nh.subscribe("/odom_target",10,&Controller::targetOdomCallback,this);
     
     //Services
-    this->reset_service=nh.advertiseService("reset",&Controller::srvReset,this);
+    this->srv_reset=nh.advertiseService("reset",&Controller::srvReset,this);
+    this->srv_set_initial=nh.advertiseService("set_pose",&Controller::srvSetInitial,this);
+
 
     //Timers
     this->time_scope_ = nh.createTimer(ros::Duration(0.01),&Controller::execute,this);
@@ -89,8 +91,12 @@ void Controller::setName(std::string name)
 
 void Controller::setReference(double x,double y,double z,double angle)
 {
+    setReference(tf::Pose(tf::createQuaternionFromRPY(0,0,angle),tf::Vector3(x,y,z)));  
     
-    this->world2reference_=tf::Pose(tf::createQuaternionFromYaw(angle),tf::Vector3(x,y,z));
+}
+void Controller::setReference(tf::Pose pose)
+{
+    this->world2reference_=pose;
     this->current_state_.pose=this->world2reference_;
     this->target_state_.pose=this->world2reference_;
     ROS_INFO("Set coordiantes of: %s to: %lf %lf %lf",this->name.c_str(),   this->world2reference_.getOrigin().x(),
@@ -315,6 +321,15 @@ void Controller::targetOdomCallback(nav_msgs::Odometry msg)
  bool Controller::srvReset(std_srvs::EmptyRequest &req, std_srvs::EmptyResponse &res)
  {
      this->reset();
+     return true;
+ }
+
+ bool Controller::srvSetInitial(multi_robot_msgs::SetInitialPoseRequest &req,multi_robot_msgs::SetInitialPoseResponse &res )
+ {
+     tf::Pose pose;
+     tf::poseMsgToTF(req.initial_pose,pose);
+     this->setReference(pose);
+     res.succeded=true;   
      return true;
  }
 
