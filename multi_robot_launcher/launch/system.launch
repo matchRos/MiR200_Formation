@@ -4,7 +4,7 @@
 
 
 
-<node pkg="simulation_env" type="measurement_node" name="measurement" />
+<node pkg="simulation_env" type="measurement_node" name="measurement" output="screen" />
 
 <!-- Setup a slave mobile robot-->
 <include file="$(find controller)/launch/slave.launch">
