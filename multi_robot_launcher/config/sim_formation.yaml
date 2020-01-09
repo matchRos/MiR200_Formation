@@ -1,6 +1,6 @@
 # -----------------------------------
 formation:
-  names: ["robot_master","robot1","robot2"]
+  names: ["robot_master","robot1","robot2","robot3"]
   
   robot_master:
     pose: [0 , 0 , 0, 0]
@@ -21,6 +21,7 @@ robot1:
 
   controller_type: 2                            # 1-> pseudo_invers 2->lyapov 3->angl_dist
 
+  lyapunov: [7.0,7.0,11.0]
 
 
 
@@ -33,6 +34,18 @@ robot2:
   
   controller_type: 2                             # 1-> pseudo_invers 2->lyapov 3->angl_dist
 
+  lyapunov: [7.0,7.0,11.0]
+
+robot3:
+  world_frame: "/map"
+
+  topic_current_odometry:   "odometry/filtered"
+
+  topic_target_odometry: "/trajectory_odom"
+  
+  controller_type: 2                             # 1-> pseudo_invers 2->lyapov 3->angl_dist
+
+  lyapunov: [7.0,7.0,11.0]
 
 
 robot_master:
@@ -44,8 +57,6 @@ robot_master:
 
   controller_type: 2                            # 1-> pseudo_invers 2->lyapov 3->angl_dist
 
-
-algorithm:
   lyapunov: [7.0,7.0,11.0]               # parameter for lyapunov algorythm: kx,kphi,vd,omegad
   
 

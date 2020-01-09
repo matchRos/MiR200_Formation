@@ -1,18 +1,20 @@
 # -----------------------------------
 formation:
+
   names: ["robot_master","robot1","robot2"]
   
   robot_master:
     pose: [0 , 0 , 0, 0]
 
   robot1:
-    pose: [2 , 2 , 0, 0]
+    pose: [-1.5 , 1.5 , 0, 0]
 
   robot2:
-    pose: [-2 , -2 , 0, 0]
+    pose: [-1.5 , -1.5 , 0, 0]
 
 
 robot1:
+
   world_frame: "/map" #global frame. Has to be the same for hole correspiondent formation
 
   topic_current_odometry:  "odometry/filtered"  #topic the current odometry of the robot is published at
@@ -22,9 +24,8 @@ robot1:
   controller_type: 2                            # 1-> pseudo_invers 2->lyapov 3->angl_dist
 
 
-
-
 robot2:
+  
   world_frame: "/map"
 
   topic_current_odometry:   "odometry/filtered"
@@ -51,7 +52,7 @@ algorithm:
 
 planner: 
   type: 0         #0->lissajous
-  pause: false
+  pause: true
   iterations: 10
   omega: 0.05
   ratio: 1
