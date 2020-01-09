@@ -296,3 +296,42 @@ void LissajousPlanner::check_period(ros::Duration time)
         this->iterations_counter++;
     }
 }
+
+
+// ################################################################################################################################################
+
+// ################################################################################################################################################
+
+// ###############################################################################################################################################
+
+ClickedPosePlanner::ClickedPosePlanner(ros::NodeHandle &nh):Planner(nh)
+{
+    
+}
+
+
+tf::Vector3 ClickedPosePlanner::get_position(ros::Duration time)
+{
+  
+}
+
+tf::Vector3 ClickedPosePlanner::get_velocity(ros::Duration time)
+{
+  
+}
+
+tf::Quaternion ClickedPosePlanner::get_orientation(ros::Duration time)
+{
+  
+}
+
+double ClickedPosePlanner::get_angular_velocity(ros::Duration time)
+{
+
+}
+
+
+void ClickedPosePlanner::check_period(ros::Duration time)
+{
+
+}

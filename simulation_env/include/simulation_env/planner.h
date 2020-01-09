@@ -168,3 +168,22 @@ class LissajousPlanner:public Planner{
         double get_angular_velocity(ros::Duration time);
         void check_period(ros::Duration time);           
 };
+
+
+
+class ClickedPosePlanner:public Planner{
+    
+    public:
+        ClickedPosePlanner(ros::NodeHandle &nh);
+        tf::Vector3 get_position(ros::Duration time);
+        tf::Quaternion get_orientation(ros::Duration time);
+        tf::Vector3 get_velocity(ros::Duration time);
+        double get_angular_velocity(ros::Duration time);
+        void check_period(ros::Duration time);   
+
+    private:
+        ros::NodeHandle nh_;
+        ros::Subscriber sub_;
+        void callback(geometry_msgs::PoseStamped msg)    
+
+}
