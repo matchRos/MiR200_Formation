@@ -4,7 +4,7 @@
 
 
 
-<node pkg="simulation_env" type="measurement_node" name="measurement" output="screen" />
+<!-- <node pkg="simulation_env" type="measurement_node" name="measurement" output="screen" /> -->
 
 <!-- Setup a slave mobile robot-->
 <include file="$(find controller)/launch/slave.launch">
@@ -15,8 +15,6 @@
   <arg name="displ" value="screen"/>  
 </include>
 
-
-
 <!-- Setup a slave mobile robot-->
 <include file="$(find controller)/launch/slave.launch">
   <arg name="robot_name" value="robot2"/>
@@ -25,7 +23,6 @@
   <arg name="robot_yaw" value="0" />
   <arg name="displ" value="screen"/>
 </include>
-
 
 <!-- Setup a master mobile robot-->
 <include file="$(find controller)/launch/master.launch">
