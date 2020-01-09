@@ -6,15 +6,17 @@ Formation::Formation()
 
 }
 
-void Formation::addRobot(tf::Pose pose,std::vector<int> neighbours)
+void Formation::addRobot(tf::Pose pose,std::string name,std::vector<int> neighbours)
 {
     if(neighbours.empty())
     {
         this->formation_.push_back(pose);
+        this->names_.push_back(name);
     }
     else
     {
         this->formation_.push_back(pose);
+        this->names_.push_back(name);
         int max=*std::max_element(neighbours.begin(),neighbours.end())+1;
         if(formation_.size()>max)
         {
@@ -123,6 +125,22 @@ Formation::Transformation Formation::operator-(Formation &target)
     return res;
 }
 
+std::string Formation::getName(int i)
+{
+    if(i>this->names_.size())
+    {
+        throw std::invalid_argument(std::string("Index %i is out of Formation range",i));
+    }
+    return this->names_[i];
+}
+void Formation::setReferenceFrame(std::string frame_name)
+{
+    this->refrence_frame=frame_name;
+}
+std::string Formation::getReferenceFrame()
+{
+    return this->refrence_frame;
+}
 
 //##############################################################################################################################################################
 
@@ -181,4 +199,34 @@ void FormationPublisher::Formation2Msg(Formation formation,multi_robot_msgs::For
         matrix.array_of_arrays.push_back(row);
     }
     msg.adjacency=matrix;
+}
+
+
+
+
+
+FormationSubscriber::FormationSubscriber(ros::NodeHandle &nh,Formation* formation,std::string topic):formation_(formation)
+{
+    for(int i=0; i<this->formation_->size();i++)
+    {        
+        std::string str=this->formation_->getName(i)+"/"+topic;
+        ROS_INFO("Subscribing to: %s",nh.resolveName(str).c_str());
+        this->odom_subscribers_.push_back(nh.subscribe<nav_msgs::Odometry>(str,10,boost::bind(&FormationSubscriber::callback_subscription,this,_1,i)));
+    }
+}
+
+void FormationSubscriber::callback_subscription(const nav_msgs::OdometryConstPtr& msg,int number)
+{   
+    tf::Pose pose;
+    tf::StampedTransform trafo;
+    tf::poseMsgToTF(msg->pose.pose,pose);
+    try{
+        this->listener_.lookupTransform(this->formation_->getReferenceFrame(),msg->header.frame_id,ros::Time(0),trafo);
+        pose=trafo*pose;
+    }
+    catch(ros::Exception &e)
+    {
+        ROS_WARN("%s",e.what());
+    }
+    this->formation_->modifiePose(number,pose);
 }
