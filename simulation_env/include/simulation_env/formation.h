@@ -4,6 +4,15 @@
 #include <nav_msgs/Odometry.h>
 #include <std_msgs/String.h>
 #include <tf/transform_listener.h>
+#include <laser_geometry/laser_geometry.h>
+#include <numeric>
+#include <sensor_msgs/LaserScan.h>
+#include <sensor_msgs/PointCloud.h>
+#include <geometry_msgs/Point32.h>
+#include <sensor_msgs/ChannelFloat32.h>
+
+
+
 /**
  * @brief A Class for handeling basic mobile Robot formation work. Properly adds Robots to a 
  * formation and provides basic interpretation tools as the adjacency matrix of the formation.
@@ -11,16 +20,23 @@
  */
 class Formation{
     public:
+        enum AdjacencyCalculation{
+            calc_by_pose,
+            calc_by_scan
+        };
+
         /**
          * @brief Defines a Transformation between two Formations
          * 
          */
         typedef Formation Transformation;
+
         /**
          * @brief Construct a new Formation object
          * 
          */
         Formation();
+
         /**
          * @brief Adds another Robot to the formation
          * 
@@ -29,18 +45,43 @@ class Formation{
          * @param neighbours Neighbours of the Robot if they should be linked (optional)
          */
         void addRobot(tf::Pose pose,std::string name,std::vector<int> neighbours=std::vector<int>());
+
         /**
          * @brief Gets the number of Robots within the formation
          * 
          * @return int Number of Robots
          */
         int size();
+
         /**
          * @brief Gets a vector that contains every single robot pose
          * 
          * @return std::vector<tf::Pose> Vector of the robot poses
          */
         std::vector<tf::Pose> getPoses();
+
+        /**
+         * @brief Get the Scan data
+         * 
+         * @return std::vector<sensor_msgs::LaserScan> vector of laser scan data of each robot
+         */
+        std::vector< sensor_msgs::PointCloud> getScan();
+
+        /**
+         * @brief Gets the scan data of  the i-th robot
+         * 
+         * @param i index of the robot to get scan data from
+         * @return sensor_msgs::LaserScan Laser scan data of the i-th robot
+         */
+         sensor_msgs::PointCloud getScan(int i);
+        
+        /**
+         * @brief Get the Combined Scan
+         * 
+         * @return sensor_msgs::LaserScan Combined Laserscan data of the formation
+         */
+         sensor_msgs::PointCloud getCombinedScan();
+
         /**
          * @brief Get the Name of robot i
          * 
@@ -48,24 +89,30 @@ class Formation{
          * @return std::string name of the robot
          */
         std::string getName(int i);
+
         /**
          * @brief Set the Reference Frame object
          * 
          * @param frame_name Name of the frame geometry is defined in
          */
         void setReferenceFrame(std::string frame_name);
+
         /**
          * @brief Get the Reference Frame object
          * 
          * @return std::string Name of the reference frame the geometry is defined in
          */
         std::string getReferenceFrame();
+
+
+        std::vector<sensor_msgs::PointCloud> getClusteredData();
         /**
          * @brief Get the adjacency matrix of the formation
          * 
          * @return std::vector<std::vector<double> > adjacency matrix
          */       
         std::vector<std::vector<double> > getAdjacency();
+
         /**
          * @brief Applies Transformation to the formation
          * 
@@ -74,13 +121,30 @@ class Formation{
          * @return Formation Transformed Formation
          */
         static Formation transform(Formation formation,tf::Transform trafo);
+
         /**
+         * @brief Determines the connectivity matrix from a given neighbours vector
+         * 
+         * @param neighbours Defines the neighbourhood the connectivity is determined from
+         */
+        void determineConnectivity(std::vector<int> neighbours);
+
+         /**
          * @brief Modifies the pose of the ith robot within the Formation
          * 
          * @param i Index of the robot to be modified
          * @param pose modified Pose of the robot
          */
         void modifiePose(int i,tf::Pose pose);
+
+        /**
+         * @brief Modifies the scan data of the ith robot within the Formation
+         * 
+         * @param i Index of the robot to be modified
+         * @param datum modified laserscan data
+         */
+        void modifieLaserdata(int i,  sensor_msgs::PointCloud);
+
         /**
          * @brief Checks wheather the formation doesnt contain any robot
          * 
@@ -88,6 +152,7 @@ class Formation{
          * @return false Formation contains at least one robot
          */
         bool empty();      
+        
         /**
          * @brief Calculates the difference between this and another formations
          * 
@@ -98,13 +163,21 @@ class Formation{
 
        
     private:
+        AdjacencyCalculation adjacency_calculation_; ///<defines how the adjacency matrix of the formation is determined
+        
         std::string refrence_frame; ///<Name of the reference frame geometry is defined in
         std::vector<std::string> names_;    ///<Vector that holds the names of the different robots
         std::vector<tf::Pose> formation_;   ///<contains the poses of the robots
         std::vector<std::vector<double> > adjacency_;   ///<contains the adjacence matrice of the formation
         std::vector<std::vector<bool> > connectivity_;  ///<contains the connectivity matrice of the formation
-
+        std::vector< sensor_msgs::PointCloud> scan_data_; ///<data of the laserscanners of each single robot
+        std::vector<sensor_msgs::PointCloud> clustered_data_;///<data after clustering
+        std::vector<std::vector<double> > calcAdjacencyFromScan(std::vector< sensor_msgs::PointCloud> data);
+        std::vector<std::vector<double> > calcAdjacencyFromPoses(std::vector<tf::Pose> data);
+        sensor_msgs::PointCloud combineScanData(std::vector< sensor_msgs::PointCloud> data);
+        std::vector<sensor_msgs::PointCloud> cluster(sensor_msgs::PointCloud data,std::vector<tf::Point> &centers);
 };
+
 
 
 class FormationPublisher{
@@ -135,7 +208,8 @@ class FormationPublisher{
     private:
         std::string topic_name_;    
         ros::NodeHandle nh_;
-        ros::Publisher publisher_;
+        ros::Publisher pub_form_;
+        ros::Publisher pub_scan_;
 
 };
 
@@ -143,11 +217,16 @@ class FormationPublisher{
 
 class FormationSubscriber{
     public:
-        FormationSubscriber(ros::NodeHandle &nh,Formation* formation,std::string topic);
-        void callback_subscription(const nav_msgs::OdometryConstPtr& msg,int number);
+        FormationSubscriber(ros::NodeHandle &nh,Formation* formation,std::vector<std::string> topics);
+        void callback_odometry(const nav_msgs::OdometryConstPtr& msg,int number);
+        void callback_laserscanner(const sensor_msgs::LaserScanConstPtr &msg, int number);
+        
     private:
+        laser_geometry::LaserProjection projector_;
         Formation* formation_;
         tf::TransformListener listener_;
         std::list<ros::Subscriber> odom_subscribers_;
+        std::list<ros::Subscriber> laser_subscribers_;
+        
 };
 

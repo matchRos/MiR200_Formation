@@ -7,14 +7,25 @@ project(simulation_env)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS
-  controller
+find_package(
+  catkin REQUIRED  cmake_modules
+
+  COMPONENTS
+  roscpp  
+  tf
+  laser_geometry
+
   nav_msgs
   geometry_msgs
-  roscpp
-  tf
+  sensor_msgs
   multi_robot_msgs
+
+  controller 
+  
+  
 )
+find_package(cmake_modules REQUIRED)
+find_package(Eigen REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -109,7 +120,7 @@ catkin_package(
   INCLUDE_DIRS include
   LIBRARIES simulation_env
 #  CATKIN_DEPENDS controller nav_msgs roscpp
-#  DEPENDS system_lib
+  DEPENDS EIGEN
 )
 
 ###########
@@ -121,6 +132,7 @@ catkin_package(
 include_directories(
  include
   ${catkin_INCLUDE_DIRS}
+  ${Eigen_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -132,6 +144,7 @@ add_library(formation
   include/${PROJECT_NAME}/formation.h
   src/formation.cpp 
 )
+
 add_dependencies(formation ${catkin_EXPORTED_TARGETS})
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -167,6 +180,7 @@ target_link_libraries(planner_node
 target_link_libraries(measurement_node
   formation
   ${catkin_LIBRARIES}
+  ${Eigen_LIBRARIES}
 )
 
 target_link_libraries(system_handling_node
