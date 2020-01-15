@@ -304,34 +304,56 @@ void LissajousPlanner::check_period(ros::Duration time)
 
 // ###############################################################################################################################################
 
-ClickedPosePlanner::ClickedPosePlanner(ros::NodeHandle &nh):Planner(nh)
+ClickedPosePlanner::ClickedPosePlanner(ros::NodeHandle &nh,std::string topic_name):Planner(nh)
 {
-    
+    this->sub_=this->nh.subscribe<geometry_msgs::PoseStamped>(topic_name,10,boost::bind(&ClickedPosePlanner::clickedCallback,this,_1));
+    this->pose_=this->start_reference;
 }
 
 
 tf::Vector3 ClickedPosePlanner::get_position(ros::Duration time)
 {
-  
+    this->pose_.getOrigin();
 }
 
 tf::Vector3 ClickedPosePlanner::get_velocity(ros::Duration time)
 {
-  
-}
+    if(this->direction_.length()>0.01)
+    {
+        return this->direction_.normalized();
+    }
+    else
+    {
+        return tf::Vector3(0,0,0);
+    }
+    
+}    
+
 
 tf::Quaternion ClickedPosePlanner::get_orientation(ros::Duration time)
 {
-  
+  return this->pose_.getRotation();
 }
 
 double ClickedPosePlanner::get_angular_velocity(ros::Duration time)
 {
-
+    return 0.0;
 }
-
 
 void ClickedPosePlanner::check_period(ros::Duration time)
 {
+    return;
+}
 
+void ClickedPosePlanner::clickedCallback(const geometry_msgs::PoseStampedConstPtr msg)
+{
+    tf::Pose pose;
+    tf::poseMsgToTF(msg->pose,pose);
+    this->direction_=pose.getOrigin()-this->pose_.getOrigin();
+    this->pose_=pose;
+    
+}
+void ClickedPosePlanner::load()
+{
+    return;
 }

@@ -45,6 +45,7 @@ class Planner{
         int iterations_counter;                                 ///Counter for the iterations of periodic planner functions
         ros::NodeHandle nh;
         int iterations;        
+        tf::Transform start_reference;                          //Transformation for modifieing offset to initial pose
     private:
          
         ros::Timer tim_sampling;                                //Timer for publishing trajectory
@@ -71,7 +72,7 @@ class Planner{
         tf::Quaternion orientation;
         double ang_vel;
         
-        tf::Transform start_reference;                          //Transformation for modifieing offset to initial pose
+   
 
         //Planning Scope as handle for timer event
         void plan(const ros::TimerEvent& events);
@@ -174,16 +175,19 @@ class LissajousPlanner:public Planner{
 class ClickedPosePlanner:public Planner{
     
     public:
-        ClickedPosePlanner(ros::NodeHandle &nh);
+        ClickedPosePlanner(ros::NodeHandle &nh,std::string topic_name);
         tf::Vector3 get_position(ros::Duration time);
         tf::Quaternion get_orientation(ros::Duration time);
         tf::Vector3 get_velocity(ros::Duration time);
         double get_angular_velocity(ros::Duration time);
         void check_period(ros::Duration time);   
 
-    private:
-        ros::NodeHandle nh_;
+    private:       
         ros::Subscriber sub_;
-        void callback(geometry_msgs::PoseStamped msg)    
+        tf::Pose pose_;
+        tf::Vector3 direction_;
+        void clickedCallback(const geometry_msgs::PoseStampedConstPtr msg);
+        void load();
 
-}
+
+};

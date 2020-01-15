@@ -58,25 +58,43 @@ int main(int argc, char** argv)
         }
         case 1:
         {
-             ROS_INFO("Starting Circle Planner!");  
+            ROS_INFO("Starting Circle Planner!");  
             planner=new CirclePlanner(nh_planner);
             break;
+        }
+        case 2:
+        {
+            ROS_INFO("Starting Clicked Pose Planner!");
+            planner=new ClickedPosePlanner(nh_planner,"/move_base_simple/goal");
+            break;
+        }
+        default:
+        {
+            ROS_ERROR("Wrong planner type choosen!");
         }
       
 
     }
-   
-    planner->set_start_pose(reference);
-    planner->load();
-    
-    ros::Duration(2).sleep();
-    bool pause;
-    nh.getParam("planner/pause",pause);
-    ROS_INFO("Got Parameter /planner/pause: %d",pause);
-    if(!pause)
+
+
+    try{
+        planner->set_start_pose(reference);
+        planner->load();
+        
+        ros::Duration(2).sleep();
+        bool pause;
+        nh.getParam("planner/pause",pause);
+        ROS_INFO("Got Parameter /planner/pause: %d",pause);
+        if(!pause)
+        {
+            planner->start();
+        }
+    }
+    catch(std::exception &e)
     {
-        planner->start();
-    }    
+        ROS_WARN("%s",e.what());
+    }
+    
     ros::spin();
     delete planner;
 }
