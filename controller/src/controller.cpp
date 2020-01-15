@@ -22,7 +22,7 @@ Controller::Controller(ros::NodeHandle &nh):    nh(nh),
 
 
     //Timers
-    this->time_scope_ = nh.createTimer(ros::Duration(0.01),&Controller::execute,this);
+    this->time_scope_ = nh.createTimer(ros::Duration(0.005),&Controller::execute,this);
 
     //Flags
     this->loaded_parameter=false;
@@ -364,7 +364,7 @@ void Controller::publish()
                                     nh.resolveName("base_footprint"));
     this->broadcaster_.sendTransform(base_link);
 
-    //Publish reference link
+    // //Publish reference link
     geometry_msgs::TransformStamped msg2;
     msg2.header.stamp = ros::Time::now();
     msg2.header.frame_id =this->world_frame ;
