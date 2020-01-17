@@ -172,6 +172,9 @@ class LissajousPlanner:public Planner{
 
 
 
+//ClickedPose############################################################################################################################################
+//##################################################################################################################################################
+
 class ClickedPosePlanner:public Planner{
     
     public:
@@ -191,3 +194,28 @@ class ClickedPosePlanner:public Planner{
 
 
 };
+
+
+//Euler############################################################################################################################################
+//##################################################################################################################################################
+class EulerPlanner:public Planner{
+    public:
+        EulerPlanner(ros::NodeHandle &nh);
+               
+        void load();
+    
+    private:
+        double omega;
+        double radius_; 
+        std::vector<double> old_value_;  
+        //Calclulation of the curren pose dependent on time
+        tf::Vector3 get_position(ros::Duration time);
+        tf::Quaternion get_orientation(ros::Duration time);
+        tf::Vector3 get_velocity(ros::Duration time);
+        double get_angular_velocity(ros::Duration time);
+        void check_period(ros::Duration time);   
+
+        std::vector<double> clothoid(int order,double L,double R);
+        unsigned int fakultaet(unsigned int zahl);    
+};
+

@@ -7,6 +7,7 @@ Planner::Planner(ros::NodeHandle &nh):nh(nh)
     this->frame_name="/map";
 
     this->tim_sampling=this->nh.createTimer(ros::Duration(0.05),&Planner::plan,this);
+    
     this->pub_current_odometry=nh.advertise<nav_msgs::Odometry>("/trajectory_odom",10);
     this->set_start_service=nh.advertiseService("start_planner",&Planner::srv_start,this);
     this->set_stop_service=nh.advertiseService("stop_planner",&Planner::srv_stop,this);
@@ -16,7 +17,8 @@ Planner::Planner(ros::NodeHandle &nh):nh(nh)
     this->is_planning=false;
     this->iterations=1;
     this->iterations_counter=0;
-
+    
+    this->start_pose=tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(0.0,0.0,0.0));
     this->vel=tf::Vector3(0,0,0);
     this->pos=tf::Vector3(0,0,0);
     this->ang_vel=0.0;
@@ -82,10 +84,6 @@ bool Planner::srv_stop(std_srvs::EmptyRequest &req, std_srvs::EmptyResponse &res
     this->stop();
     return true;
 }
-
-
-
-
 
 void Planner::set_start_pose(tf::Pose pose)
 {
@@ -308,12 +306,13 @@ ClickedPosePlanner::ClickedPosePlanner(ros::NodeHandle &nh,std::string topic_nam
 {
     this->sub_=this->nh.subscribe<geometry_msgs::PoseStamped>(topic_name,10,boost::bind(&ClickedPosePlanner::clickedCallback,this,_1));
     this->pose_=this->start_reference;
+    this->start_reference=tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(0.0,0.0,0.0));
 }
 
 
 tf::Vector3 ClickedPosePlanner::get_position(ros::Duration time)
 {
-    this->pose_.getOrigin();
+    return this->pose_.getOrigin();
 }
 
 tf::Vector3 ClickedPosePlanner::get_velocity(ros::Duration time)
@@ -357,3 +356,74 @@ void ClickedPosePlanner::load()
 {
     return;
 }
+
+
+
+// ################################################################################################################################################
+
+// ################################################################################################################################################
+
+// ################################################################################################################################################
+EulerPlanner::EulerPlanner(ros::NodeHandle &nh):Planner(nh)
+{
+    this->omega=1.0;
+    this->radius_=1.0;
+    ROS_INFO("Constructed Euler Planner!");
+}
+
+
+tf::Vector3 EulerPlanner::get_position(ros::Duration time)
+{  
+    std::vector<double> cloth=this->clothoid(60,this->omega*time.toSec(),this->radius_);
+    return tf::Vector3 (cloth.at(0),cloth.at(1),0.0);
+}
+
+tf::Vector3 EulerPlanner::get_velocity(ros::Duration time)
+{
+    tf::Vector3 res(0.0,0.0,0.0);
+    return res;
+}
+
+tf::Quaternion EulerPlanner::get_orientation(ros::Duration time)
+{
+    return tf::createIdentityQuaternion();
+}
+
+double EulerPlanner::get_angular_velocity(ros::Duration time)
+{
+    // ROS_INFO("Calculate Angular Velocity!");
+    return this->omega;
+}
+
+void EulerPlanner::load()
+{
+    return;
+}
+
+void EulerPlanner::check_period(ros::Duration time)
+{
+    // if(this->omega*time.toSec()>2*M_PI)
+    // {
+    //     this->iterations_counter++;
+    // }
+}
+
+unsigned int EulerPlanner::fakultaet(unsigned int zahl) {
+
+    if (zahl <= 1) {
+
+        return 1; // Die Fakultät von 0 und 1 ist als 1 definiert.
+
+    } else {
+
+        return zahl * fakultaet(zahl - 1);
+
+    }
+}
+
+std::vector<double> EulerPlanner::clothoid(double L,double R)
+{
+    std::vector<double> current;
+}
+
+
