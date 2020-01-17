@@ -158,7 +158,7 @@ add_dependencies(formation ${catkin_EXPORTED_TARGETS})
 add_executable(planner_node src/planner_node.cpp)
 add_executable(measurement_node src/measurement_node.cpp)
 add_executable(system_handling_node src/system_handling_node.cpp)
-add_executable(clothoid_node src/clothoid_node.cpp)
+add_executable(spiral_node src/spiral_node.cpp)
 
 
 ## Rename C++ executable without prefix
