@@ -1,0 +1,5 @@
+planner:
+  iterations: 10
+  growth: 0.33 
+  r0: 3
+  omega : 0.05
