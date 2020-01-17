@@ -174,7 +174,6 @@ class LissajousPlanner:public Planner{
 
 //ClickedPose############################################################################################################################################
 //##################################################################################################################################################
-
 class ClickedPosePlanner:public Planner{
     
     public:
@@ -198,24 +197,26 @@ class ClickedPosePlanner:public Planner{
 
 //Euler############################################################################################################################################
 //##################################################################################################################################################
-class EulerPlanner:public Planner{
+#define PARAM_R0 "r0"
+#define PARAM_GROWTH "growth"
+#define PARAM_OMEGA "omega"
+
+class Spiralplanner:public Planner{
     public:
-        EulerPlanner(ros::NodeHandle &nh);
-               
+        Spiralplanner(ros::NodeHandle &nh);
+        struct SpiralPlan{
+            float r_offset;
+            float r_growth;           
+            float omega;
+        };
+        //Sets the parameter of the planner
+        void set_parameter(double r_offset,double r_growth, double omega);
         void load();
-    
     private:
-        double omega;
-        double radius_; 
-        std::vector<double> old_value_;  
-        //Calclulation of the curren pose dependent on time
+        SpiralPlan plan;
         tf::Vector3 get_position(ros::Duration time);
         tf::Quaternion get_orientation(ros::Duration time);
         tf::Vector3 get_velocity(ros::Duration time);
         double get_angular_velocity(ros::Duration time);
-        void check_period(ros::Duration time);   
-
-        std::vector<double> clothoid(int order,double L,double R);
-        unsigned int fakultaet(unsigned int zahl);    
+        void check_period(ros::Duration time);     
 };
-

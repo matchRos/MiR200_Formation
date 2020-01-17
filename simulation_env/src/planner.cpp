@@ -359,71 +359,75 @@ void ClickedPosePlanner::load()
 
 
 
-// ################################################################################################################################################
-
-// ################################################################################################################################################
-
-// ################################################################################################################################################
-EulerPlanner::EulerPlanner(ros::NodeHandle &nh):Planner(nh)
+//Implementation of a Planner that gives a circle########################################################################################
+//#######################################################################################################################################
+Spiralplanner::Spiralplanner(ros::NodeHandle &nh):Planner(nh)
 {
-    this->omega=1.0;
-    this->radius_=1.0;
-    ROS_INFO("Constructed Euler Planner!");
+ 
 }
-
-
-tf::Vector3 EulerPlanner::get_position(ros::Duration time)
-{  
-    std::vector<double> cloth=this->clothoid(60,this->omega*time.toSec(),this->radius_);
-    return tf::Vector3 (cloth.at(0),cloth.at(1),0.0);
-}
-
-tf::Vector3 EulerPlanner::get_velocity(ros::Duration time)
+void Spiralplanner::set_parameter(double r_offset,double r_growth, double omega)
 {
-    tf::Vector3 res(0.0,0.0,0.0);
-    return res;
+    this->plan.r_offset=r_offset;
+    this->plan.r_growth=r_growth;
+    this->plan.omega=omega;
 }
 
-tf::Quaternion EulerPlanner::get_orientation(ros::Duration time)
+
+tf::Vector3 Spiralplanner::get_position(ros::Duration time)
 {
-    return tf::createIdentityQuaternion();
+    double t=time.toSec();    
+    tf::Vector3 pos(sin(this->plan.omega*t)*(this->plan.r_offset+this->plan.r_growth*this->plan.omega*t),
+                    -cos(this->plan.omega*t)*(this->plan.r_offset+this->plan.r_growth*this->plan.omega*t),
+                    0);
+    return pos;
+
 }
 
-double EulerPlanner::get_angular_velocity(ros::Duration time)
+tf::Quaternion Spiralplanner::get_orientation(ros::Duration time)
 {
-    // ROS_INFO("Calculate Angular Velocity!");
-    return this->omega;
+    return tf::createQuaternionFromYaw(this->plan.omega*time.toSec());
 }
 
-void EulerPlanner::load()
+tf::Vector3 Spiralplanner::get_velocity(ros::Duration time)
 {
-    return;
+    double t=time.toSec();
+    tf::Vector3 vel(cos(this->plan.omega*t)*(this->plan.r_offset+this->plan.r_growth*this->plan.omega*t)+sin(this->plan.omega*t)*this->plan.r_growth*this->plan.omega,
+                    sin(this->plan.omega*t)*(this->plan.r_offset+this->plan.r_growth*this->plan.omega*t)-cos(this->plan.omega*t)*this->plan.r_growth*this->plan.omega,
+                    0.0);
+    return vel;
 }
 
-void EulerPlanner::check_period(ros::Duration time)
+double Spiralplanner::get_angular_velocity(ros::Duration time)
 {
-    // if(this->omega*time.toSec()>2*M_PI)
-    // {
-    //     this->iterations_counter++;
-    // }
+    return this->plan.omega;    
 }
 
-unsigned int EulerPlanner::fakultaet(unsigned int zahl) {
-
-    if (zahl <= 1) {
-
-        return 1; // Die Fakultät von 0 und 1 ist als 1 definiert.
-
-    } else {
-
-        return zahl * fakultaet(zahl - 1);
-
+void Spiralplanner::load()
+{
+    try{
+        this->nh.getParam(PARAM_ITERATION,this->iterations);
+        this->nh.getParam(PARAM_GROWTH,this->plan.r_growth);
+        this->nh.getParam(PARAM_OMEGA,this->plan.omega);
+        this->nh.getParam(PARAM_R0,this->plan.r_offset);
+        ROS_INFO("Loaded %s : R_OFfset: %f  r_growth %f Omega: %f",    
+                                                        ros::this_node::getName().c_str(),
+                                                        this->plan.r_offset,
+                                                        this->plan.r_growth,
+                                                        this->plan.omega);
     }
+    catch(...)
+    {
+        ROS_INFO("Error due loading paramter of: %s",ros::this_node::getName().c_str());
+    }
+   
 }
 
-std::vector<double> EulerPlanner::clothoid(double L,double R)
+void Spiralplanner::check_period(ros::Duration time)
 {
-    std::vector<double> current;
+    if(this->plan.omega*time.toSec()>2*M_PI)
+    {
+        this->iterations_counter++;
+    }
 }
 
 
