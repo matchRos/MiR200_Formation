@@ -177,7 +177,7 @@ target_link_libraries(planner_node
   planner
   ${catkin_LIBRARIES}
 )
-target_link_libraries(clothoid_node
+target_link_libraries(spiral_node
   planner
   ${catkin_LIBRARIES}
 )
