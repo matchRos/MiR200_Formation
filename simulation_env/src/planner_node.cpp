@@ -1,6 +1,12 @@
 #include<ros/ros.h>
 #include<simulation_env/planner.h>
 
+enum ControllerTypes{
+    lissajous,
+    circle,
+    spiral
+};
+
 int main(int argc,char**argv)
 {
     //Choose planner
@@ -13,19 +19,24 @@ int main(int argc,char**argv)
     ROS_INFO("Got parameter /planner/type: %i",type);
     switch(type)
     {
-        case 0:
+        case lissajous:
         {
             ROS_INFO("Starting LissajousPlanner!"); 
             planner=new LissajousPlanner(nh_planner);
             break;
         }
-        case 1:
+        case circle:
         {
              ROS_INFO("Starting Circle Planner!");  
             planner=new CirclePlanner(nh_planner);
             break;
         }
-      
+        case spiral:
+        {
+            ROS_INFO("Starting Spiral Planner");
+            planner=new Spiralplanner(nh_planner);
+        }
+              
 
     }
    
