@@ -4,6 +4,7 @@
 #include <sensor_msgs/LaserScan.h>
 #include <laser_geometry/laser_geometry.h>
 #include <numeric>
+#include <tf/transform_listener.h>
 
 class LaserPredictor{
     public:
@@ -18,7 +19,9 @@ class LaserPredictor{
             }
         };
         
-        LaserPredictor(ros::NodeHandle &nh);
+        LaserPredictor( ros::NodeHandle &nh,
+                        std::string topic_name_front,
+                        std::string topic_name_back);
 
         int getNumberOfPredictions();
 
@@ -26,9 +29,24 @@ class LaserPredictor{
 
         tf::Pose getPose(int i);
 
+        sensor_msgs::PointCloud getRegisteredPoints();
+
+        void guess(GuessedValues values);
+
     private:
         ros::NodeHandle nh_;
-        ros::Subscriber sub_;
+
+        tf::TransformListener listener_;
+        ros::Subscriber sub_front_;
+        ros::Subscriber sub_back_;
+
+        bool first_front_msgs_received_;
+        bool first_back_msgs_received_;
+
+        std::string base_frame_;
+
+        tf::StampedTransform trafo_front_;
+        tf::StampedTransform trafo_back_;
 
         laser_geometry::LaserProjection projector_;
 
@@ -37,8 +55,9 @@ class LaserPredictor{
         GuessedValues guessed_values_;       
 
 
-        std::vector<sensor_msgs::PointCloud> kMeans(sensor_msgs::PointCloud &data,std::vector<tf::Point> &centers); 
-        std::vector<sensor_msgs::PointCloud> kMeans(sensor_msgs::PointCloud &data,std::vector<tf::Pose> &centers); 
+        std::vector<tf::Point> kMeans(sensor_msgs::PointCloud &data,std::vector<tf::Point> &centers); 
+        std::vector<tf::Point> kMeans(sensor_msgs::PointCloud &data,std::vector<tf::Pose> &centers); 
 
-        void subscriberCallback(const sensor_msgs::LaserScanPtr msg);
+        void subscriberFrontCallback(const sensor_msgs::LaserScanConstPtr msg);
+        void subscriberBackCallback(const sensor_msgs::LaserScanConstPtr msg);
 };

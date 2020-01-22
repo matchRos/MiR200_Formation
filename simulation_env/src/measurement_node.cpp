@@ -5,6 +5,7 @@
 #include <tf/transform_listener.h>
 #include <multi_robot_msgs/ControlData.h>
 #include <simulation_env/formation.h>
+#include <controller/laser_predictor.h>
 
 
 Formation form_initial;
@@ -72,12 +73,32 @@ int main(int argc,char** argv)
     FormationSubscriber sub_curr(nh,&form_current,topics_current);
     FormationSubscriber sub_est(nh,&form_estimated,topics_est);
 
+    ros::Publisher pub=nh.advertise<sensor_msgs::PointCloud>("clustered_data",10);
+    ros::Publisher pub2=nh.advertise<geometry_msgs::PoseStamped>("estaminated_pose",10);
+    
+    
+    std::vector<tf::Pose> guessed_poses;
+    guessed_poses.push_back(tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(2.0,0.0,0.0)));
+    guessed_poses.push_back(tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(0.0,3.0,0.0)));
+    
+    LaserPredictor::GuessedValues start;
+    start.poses=guessed_poses;
+    ros::NodeHandle robot2("robot2");
+    LaserPredictor predictor(robot2,"f_scan","b_scan");
+    predictor.guess(start);
+
+
     ros::Rate rate(10);
     while(ros::ok())
     {
        try{
            // pub_tar.publish(form_target);
             pub_curr.publish(form_current);
+            pub.publish(predictor.getRegisteredPoints());
+            geometry_msgs::PoseStamped pose;
+            pose.header.frame_id="robot2/front_laser_link";
+            tf::poseTFToMsg(predictor.getPose(0),pose.pose);
+            pub2.publish(pose);
             //pub_est.publish(form_estimated);
             //pub_dif.publish(form_target-form_estimated);
        }
