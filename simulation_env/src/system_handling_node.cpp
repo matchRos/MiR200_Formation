@@ -4,6 +4,7 @@
 #include <tf/tf.h>
 #include <simulation_env/planner.h>
 
+
 int main(int argc, char** argv)
 {
     ros::init(argc,argv,"SystemHandler");
@@ -66,6 +67,12 @@ int main(int argc, char** argv)
         {
             ROS_INFO("Starting Clicked Pose Planner!");
             planner=new ClickedPosePlanner(nh_planner,"/move_base_simple/goal");
+            break;
+        }
+        case 3:
+        {
+            ROS_INFO("Starting Spiral Planner");
+            planner=new Spiralplanner(nh_planner);
             break;
         }
         default:
