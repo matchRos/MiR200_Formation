@@ -2,18 +2,25 @@ cmake_minimum_required(VERSION 2.8.3)
 project(controller)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-# add_compile_options(-std=c++11)
+add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS
+find_package(
+  catkin REQUIRED COMPONENTS
   geometry_msgs
   nav_msgs
+  sensor_msgs
   multi_robot_msgs
+  laser_geometry
   roscpp
   tf  
 )
+find_package(cmake_modules REQUIRED)
+find_package(Eigen REQUIRED)
+
+
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -108,7 +115,7 @@ catkin_package(
   INCLUDE_DIRS include
   LIBRARIES controller
 #  CATKIN_DEPENDS geometry_msgs nav_msgs roscpp multi_robot_msgs
-#  DEPENDS system_lib
+  DEPENDS EIGEN
 )
 
 ###########
@@ -118,10 +125,10 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-  include
+ include
   ${catkin_INCLUDE_DIRS}
+  ${Eigen_INCLUDE_DIRS}
 )
-
 ## Declare a C++ library
 add_library(controller
 
@@ -133,6 +140,9 @@ add_library(controller
 
   include/controller/slave.h
   src/slave.cpp
+
+  include/controller/laser_predictor.h
+  src/laser_predictor.cpp
 )
 
 ## Add cmake target dependencies of the library
@@ -158,6 +168,7 @@ add_executable(master_node src/master_node.cpp)
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(controller
+  ${Eigen_LIBRARIES}
   ${catkin_LIBRARIES}
 )
 target_link_libraries(slave_node
