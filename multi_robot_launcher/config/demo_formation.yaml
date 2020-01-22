@@ -51,16 +51,16 @@ algorithm:
   
 
 planner: 
-  type: 0         #0->lissajous
+  type: 3         #0->lissajous
   pause: true
   iterations: 10
+  
+  growth: 0.33 
+  r0: 3
+  omega : 0.05
+
   omega: 0.05
   ratio: 1
   phaseshift: 1.57079632679
   amplifier_x: 5.0
   amplifier_y: 5.0
-
-# planner:
-#   iterations: 10
-#   radius: 5.0
-#   omega : 0.05
