@@ -1,3 +1,5 @@
+#pragma once
+
 #include <ros/ros.h>
 #include <tf/tf.h>
 #include <sensor_msgs/PointCloud.h>
@@ -19,6 +21,7 @@ class LaserPredictor{
          * 
          */
         struct Frames{
+            Frames(){};
             /**
              * @brief Construct a new Frames object
              * 
@@ -77,6 +80,7 @@ class LaserPredictor{
         typedef Frames Topics;
 
 
+        LaserPredictor();
         /**
          * @brief Construct a new Laser Predictor object
          * 

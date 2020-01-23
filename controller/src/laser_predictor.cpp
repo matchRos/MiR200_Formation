@@ -1,5 +1,10 @@
 #include <controller/laser_predictor.h>
 
+LaserPredictor::LaserPredictor()
+{
+    
+}
+
 LaserPredictor::LaserPredictor( ros::NodeHandle &nh,
                                 Frames frames,
                                 Topics topics):
