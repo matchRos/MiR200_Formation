@@ -6,6 +6,11 @@ Formation::Formation()
 
 }
 
+Formation::Formation(ros::NodeHandle &nh):nh_(nh)
+{
+
+}
+
 void Formation::addRobot(tf::Pose pose,std::string name,std::vector<int> neighbours)
 {
     if(neighbours.empty())
@@ -21,6 +26,30 @@ void Formation::addRobot(tf::Pose pose,std::string name,std::vector<int> neighbo
         this->adjacency_.resize(connectivity_.size(), std::vector<double>(connectivity_.size(),0.0));        
     }
 }
+
+void Formation::addRobot(Formation::RobotProperties robot_properties)
+{
+    if( robot_properties.name!="" &&
+        robot_properties.laser_frames.back!="" &&
+        robot_properties.laser_frames.base!="" &&
+        robot_properties.laser_frames.front!=""&&
+        robot_properties.laser_topics.back!="" &&
+        robot_properties.laser_topics.front!=""&&
+        !robot_properties.neighbours.empty()       )
+    {
+        Robot robot;
+        robot.pose=robot_properties.pose;
+        robot.predictor=LaserPointer(new LaserPredictor(this->nh_,robot_properties.laser_frames,robot_properties.laser_topics));
+        robot.predictor->startClustering(10);
+
+    }
+    else
+    {
+        throw std::invalid_argument("Robot to add to formation contains errors! See if everything is initalised properly!");
+    }
+    
+}
+
 
 int Formation::size()
 {
@@ -48,11 +77,22 @@ void Formation::modifiePose(int i,tf::Pose pose)
     } 
 }
 
+
+
+
+
 Formation::Matrix<double> Formation::getAdjacency()
 {
     this->determineAdjacency();
     return this->adjacency_;
 }
+
+
+LaserPredictor::Cloud Formation::getScannerPrediction(std::string name)
+{
+    this->formation_map_[name].predictor->getClusteredPoints();
+}
+
 
 
 void Formation::determineAdjacency()

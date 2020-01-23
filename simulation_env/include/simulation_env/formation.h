@@ -13,6 +13,8 @@
 #include <geometry_msgs/Point32.h>
 #include <sensor_msgs/ChannelFloat32.h>
 
+#include <controller/laser_predictor.h>
+
 
 
 /**
@@ -21,22 +23,49 @@
  * 
  */
 class Formation{
-
+    
     public:
+        /**
+         * @brief Template for a generic matrix as std::vector of std::vectors
+         * 
+         * @tparam T type of the matrix values
+         */
+        template <typename T>
+        using Matrix =std::vector<std::vector<T> >;
+
+        typedef std::vector<std::string> Neighbours;
+
+        typedef std::shared_ptr<LaserPredictor> LaserPointer;
+
+        struct RobotProperties{
+            RobotProperties(){}
+            std::string name;
+            tf::Pose pose;
+            Formation::Neighbours neighbours;
+            LaserPredictor::Frames laser_frames;
+            LaserPredictor::Topics laser_topics;
+        };
+
+        struct Robot{
+            Robot(){};
+            tf::Pose pose;
+            LaserPointer predictor;            
+        };
+
+    
         /**
          * @brief Defines a Transformation between two Formations
          * 
          */
         typedef Formation Transformation;
 
-        template <typename T>
-        using Matrix =std::vector<std::vector<T> >;
-
+      
+        Formation();
         /**
          * @brief Construct a new Formation object
          * 
          */
-        Formation();
+        Formation(ros::NodeHandle &nh_);
 
         /**
          * @brief Adds another Robot to the formation
@@ -46,6 +75,8 @@ class Formation{
          * @param neighbours Neighbours of the Robot if they should be linked (optional)
          */
         void addRobot(tf::Pose pose,std::string name,std::vector<int> neighbours=std::vector<int>());
+
+        void addRobot(RobotProperties robot);
 
         /**
          * @brief Set the Reference Frame object
@@ -61,6 +92,8 @@ class Formation{
          * @param pose modified Pose of the robot
          */
         void modifiePose(int i,tf::Pose pose);
+
+        LaserPredictor::Cloud getScannerPrediction(std::string name);
 
 
 
@@ -134,11 +167,15 @@ class Formation{
 
        
     private:
+        ros::NodeHandle nh_;
         std::string refrence_frame; ///<Name of the reference frame geometry is defined in
         
         std::vector<std::string> names_;    ///<Vector that holds the names of the different robots
         std::vector<tf::Pose> formation_;   ///<contains the poses of the robots
+
+        std::map<std::string,Robot> formation_map_; ///<Maps a special robot to its correspondence Properties
         
+
         Matrix<double>  adjacency_;   ///<contains the adjacence matrice of the formation
         Matrix<bool>  connectivity_;  ///<contains the connectivity matrice of the formation
 
