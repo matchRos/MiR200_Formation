@@ -2,10 +2,16 @@
 #include <nav_msgs/Odometry.h>
 #include <tf/tf.h>
 #include <multi_robot_msgs/Formation.h>
+
+
 #include <tf/transform_listener.h>
 #include <multi_robot_msgs/ControlData.h>
-#include <simulation_env/formation.h>
+
 #include <controller/laser_predictor.h>
+
+#include <simulation_env/formation.h>
+#include <simulation_env/formation_publisher.h>
+#include <simulation_env/formation_subscriber.h>
 
 
 Formation form_initial;

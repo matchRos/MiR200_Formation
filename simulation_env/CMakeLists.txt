@@ -142,7 +142,11 @@ add_library(planner
 )
 add_library(formation
   include/${PROJECT_NAME}/formation.h
-  src/formation.cpp 
+  include/${PROJECT_NAME}/formation_publisher.h
+  include/${PROJECT_NAME}/formation_subscriber.h
+  src/formation.cpp
+  src/formation_subscriber.cpp
+  src/formation_publisher.cpp 
 )
 
 add_dependencies(formation ${catkin_EXPORTED_TARGETS})
