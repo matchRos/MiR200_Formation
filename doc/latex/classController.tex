@@ -11,8 +11,7 @@ Provides a easy to use implementation of a generic mobile robot controller.
 
 
 
-Inheritance diagram for Controller\+:
-\nopagebreak
+Inheritance diagram for Controller\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -67,6 +66,8 @@ typedef \hyperlink{structController_1_1ControlVector}{Control\+Vector} \hyperlin
 \begin{DoxyCompactList}\small\item\em Destroy the \hyperlink{classController}{Controller} object. \end{DoxyCompactList}\item 
 void \hyperlink{classController_a177d0d6cd7cdb7784ae9c506debfa2c6}{set\+Name} (std\+::string \hyperlink{classController_af81f22d8b64d915769acfb8e8d89e0c8}{name})
 \begin{DoxyCompactList}\small\item\em Set the name of object. \end{DoxyCompactList}\item 
+void \hyperlink{classController_a7d989fe559c8e852eedb464b4a006748}{set\+Reference} (tf\+::\+Pose pose)
+\begin{DoxyCompactList}\small\item\em Set the Reference pose. \end{DoxyCompactList}\item 
 void \hyperlink{classController_a156a66bd7cd6340106accbb982b6238b}{set\+Reference} (double x, double y, double z, double angle)
 \begin{DoxyCompactList}\small\item\em Set the reference of the mobile robot to be controlled from a global frame. \end{DoxyCompactList}\item 
 void \hyperlink{classController_ae86ed49c452a9e94568312ef743aa082}{set\+Reference} (std\+::vector$<$ double $>$ coord, double angle)
@@ -107,6 +108,8 @@ void \hyperlink{classController_ab5515748f1b0c82f015e039c817ee5f7}{reset} ()\hyp
 \begin{DoxyCompactList}\small\item\em Resetting controller to initial state. \end{DoxyCompactList}\item 
 bool \hyperlink{classController_a140aa1ee895337d776f88682640c0746}{srv\+Reset} (std\+\_\+srvs\+::\+Empty\+Request \&req, std\+\_\+srvs\+::\+Empty\+Response \&res)
 \begin{DoxyCompactList}\small\item\em Service procedure for resetting the \hyperlink{classController}{Controller}. \end{DoxyCompactList}\item 
+bool \hyperlink{classController_a2845a1e4b0c146206d4a03b757e82d5b}{srv\+Set\+Initial} (multi\+\_\+robot\+\_\+msgs\+::\+Set\+Initial\+Pose\+Request \&req, multi\+\_\+robot\+\_\+msgs\+::\+Set\+Initial\+Pose\+Response \&res)
+\begin{DoxyCompactList}\small\item\em Service for setting the initial Pose of the controller. \end{DoxyCompactList}\item 
 void \hyperlink{classController_a753fe3680abc7c9ba3040f6fcb638ac2}{control\+State2control\+State\+Msg} (\hyperlink{structController_1_1ControlState}{Control\+State} \&state, multi\+\_\+robot\+\_\+msgs\+::\+Control\+State \&msg)
 \begin{DoxyCompactList}\small\item\em Converts \hyperlink{structController_1_1ControlState}{Control\+State} struct to a C\+Ontrol state message. \end{DoxyCompactList}\item 
 void \hyperlink{classController_a866cee7328e1318e118c884a850a0e34}{control\+Difference2control\+Difference\+Msg} (\hyperlink{classController_a75a1e2f93842f65d1263f7d3c2fd8898}{Control\+Difference} \&difference, multi\+\_\+robot\+\_\+msgs\+::\+Control\+Difference \&msg)
@@ -122,6 +125,9 @@ ros\+::\+Node\+Handle \hyperlink{classController_a24e3d3c2536f6ed29018bad1fd53da
 tf\+::\+Transform\+Listener $\ast$ \hyperlink{classController_afea373f808d583e4ad613f119439a8f5}{listener}\hypertarget{classController_afea373f808d583e4ad613f119439a8f5}{}\label{classController_afea373f808d583e4ad613f119439a8f5}
 
 \begin{DoxyCompactList}\small\item\em Listener for any transformation. \end{DoxyCompactList}\item 
+tf\+::\+Transform\+Broadcaster \hyperlink{classController_a934f19927283d24fbf79b5d62e23bed3}{broadcaster\+\_\+}\hypertarget{classController_a934f19927283d24fbf79b5d62e23bed3}{}\label{classController_a934f19927283d24fbf79b5d62e23bed3}
+
+\begin{DoxyCompactList}\small\item\em Broadcaster for broadcasting transformations. \end{DoxyCompactList}\item 
 std\+::string \hyperlink{classController_ae01171e69d9b735e44964662275fc77c}{world\+\_\+frame}\hypertarget{classController_ae01171e69d9b735e44964662275fc77c}{}\label{classController_ae01171e69d9b735e44964662275fc77c}
 
 \begin{DoxyCompactList}\small\item\em Name of the world frame. \end{DoxyCompactList}\item 
@@ -167,12 +173,15 @@ ros\+::\+Subscriber \hyperlink{classController_a855093341ac8afa84efd841654fedaf5
 ros\+::\+Subscriber \hyperlink{classController_a7c21cd887b80a3ebceae1e5e320c6ad8}{sub\+\_\+odom\+\_\+target}\hypertarget{classController_a7c21cd887b80a3ebceae1e5e320c6ad8}{}\label{classController_a7c21cd887b80a3ebceae1e5e320c6ad8}
 
 \begin{DoxyCompactList}\small\item\em Subscriber object for target odometry topic. \end{DoxyCompactList}\item 
+ros\+::\+Service\+Server \hyperlink{classController_a06c03b4a779d0c6cfcacef97eb36c6bd}{srv\+\_\+reset}\hypertarget{classController_a06c03b4a779d0c6cfcacef97eb36c6bd}{}\label{classController_a06c03b4a779d0c6cfcacef97eb36c6bd}
+
+\begin{DoxyCompactList}\small\item\em Service for resetting the controller. \end{DoxyCompactList}\item 
+ros\+::\+Service\+Server \hyperlink{classController_a64d3c8a18c05e8d4ab47598875a09bc1}{srv\+\_\+set\+\_\+initial}\hypertarget{classController_a64d3c8a18c05e8d4ab47598875a09bc1}{}\label{classController_a64d3c8a18c05e8d4ab47598875a09bc1}
+
+\begin{DoxyCompactList}\small\item\em Service for setting the initial pose. \end{DoxyCompactList}\item 
 ros\+::\+Timer \hyperlink{classController_a96e34ca6ebe5b7c8035982ff98270f4b}{time\+\_\+scope\+\_\+}\hypertarget{classController_a96e34ca6ebe5b7c8035982ff98270f4b}{}\label{classController_a96e34ca6ebe5b7c8035982ff98270f4b}
 
 \begin{DoxyCompactList}\small\item\em Timer for control scope. \end{DoxyCompactList}\item 
-ros\+::\+Service\+Server \hyperlink{classController_ae981013bac649b6310e924b6a126bc40}{reset\+\_\+service}\hypertarget{classController_ae981013bac649b6310e924b6a126bc40}{}\label{classController_ae981013bac649b6310e924b6a126bc40}
-
-\begin{DoxyCompactList}\small\item\em Service for resetting the controller. \end{DoxyCompactList}\item 
 std\+::string \hyperlink{classController_af81f22d8b64d915769acfb8e8d89e0c8}{name}\hypertarget{classController_af81f22d8b64d915769acfb8e8d89e0c8}{}\label{classController_af81f22d8b64d915769acfb8e8d89e0c8}
 
 \begin{DoxyCompactList}\small\item\em Name of the node respective \hyperlink{classController}{Controller}. \end{DoxyCompactList}\item 
@@ -441,6 +450,22 @@ Set the name of object.
 \end{DoxyParams}
 \index{Controller@{Controller}!set\+Reference@{set\+Reference}}
 \index{set\+Reference@{set\+Reference}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{set\+Reference(tf\+::\+Pose pose)}{setReference(tf::Pose pose)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::set\+Reference (
+\begin{DoxyParamCaption}
+\item[{tf\+::\+Pose}]{pose}
+\end{DoxyParamCaption}
+)}\hypertarget{classController_a7d989fe559c8e852eedb464b4a006748}{}\label{classController_a7d989fe559c8e852eedb464b4a006748}
+
+
+Set the Reference pose. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pose} & pose to be set \\
+\hline
+\end{DoxyParams}
+\index{Controller@{Controller}!set\+Reference@{set\+Reference}}
+\index{set\+Reference@{set\+Reference}!Controller@{Controller}}
 \subsubsection[{\texorpdfstring{set\+Reference(double x, double y, double z, double angle)}{setReference(double x, double y, double z, double angle)}}]{\setlength{\rightskip}{0pt plus 5cm}void Controller\+::set\+Reference (
 \begin{DoxyParamCaption}
 \item[{double}]{x, }
@@ -538,6 +563,30 @@ Service procedure for resetting the \hyperlink{classController}{Controller}.
 true succeeded 
 
 false not succeeded 
+\end{DoxyReturn}
+\index{Controller@{Controller}!srv\+Set\+Initial@{srv\+Set\+Initial}}
+\index{srv\+Set\+Initial@{srv\+Set\+Initial}!Controller@{Controller}}
+\subsubsection[{\texorpdfstring{srv\+Set\+Initial(multi\+\_\+robot\+\_\+msgs\+::\+Set\+Initial\+Pose\+Request \&req, multi\+\_\+robot\+\_\+msgs\+::\+Set\+Initial\+Pose\+Response \&res)}{srvSetInitial(multi_robot_msgs::SetInitialPoseRequest &req, multi_robot_msgs::SetInitialPoseResponse &res)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Controller\+::srv\+Set\+Initial (
+\begin{DoxyParamCaption}
+\item[{multi\+\_\+robot\+\_\+msgs\+::\+Set\+Initial\+Pose\+Request \&}]{req, }
+\item[{multi\+\_\+robot\+\_\+msgs\+::\+Set\+Initial\+Pose\+Response \&}]{res}
+\end{DoxyParamCaption}
+)}\hypertarget{classController_a2845a1e4b0c146206d4a03b757e82d5b}{}\label{classController_a2845a1e4b0c146206d4a03b757e82d5b}
+
+
+Service for setting the initial Pose of the controller. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em req} & Reqest that contains the pose \\
+\hline
+{\em res} & Response that contains the succeded flag \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true Succeeded 
+
+false Not Succeeded 
 \end{DoxyReturn}
 \index{Controller@{Controller}!target\+Odom\+Callback@{target\+Odom\+Callback}}
 \index{target\+Odom\+Callback@{target\+Odom\+Callback}!Controller@{Controller}}

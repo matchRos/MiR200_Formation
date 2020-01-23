@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['control_5f',['control_',['../classController.html#aaafcd892e9e6080e839a1348a7ef40db',1,'Controller']]],
-  ['control_5fdif_5f',['control_dif_',['../classController.html#afe3b54c59a80046661f0030a573539d7',1,'Controller']]],
-  ['current_5fstate_5f',['current_state_',['../classController.html#aaca736f25e7da33272ded507e0c8057f',1,'Controller']]]
+  ['back',['back',['../structLaserPredictor_1_1Frames.html#a28b95577e6a88d8211ddaa9f99fb90f4',1,'LaserPredictor::Frames::back()'],['../structLaserPredictor_1_1Transforms.html#a06e94a39aa0a24421366af139cf82f8e',1,'LaserPredictor::Transforms::back()'],['../structLaserPredictor_1_1Data.html#a28c147023eef318db330a6aaf0ad222e',1,'LaserPredictor::Data::back()']]],
+  ['base',['base',['../structLaserPredictor_1_1Frames.html#a279efa689fc1b142d95055b8d85b0b3e',1,'LaserPredictor::Frames']]],
+  ['broadcaster_5f',['broadcaster_',['../classController.html#a934f19927283d24fbf79b5d62e23bed3',1,'Controller']]]
 ];

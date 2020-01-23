@@ -1,7 +1,4 @@
 var searchData=
 [
-  ['pause',['pause',['../classPlanner.html#a400f2aefad591e55a62e0fb13cb02521',1,'Planner']]],
-  ['planner',['Planner',['../classPlanner.html#a32475baddd401921adb1aab3ab842210',1,'Planner']]],
-  ['publish',['publish',['../classController.html#ae6859e3a43be2fa31cb82ace3954e746',1,'Controller']]],
-  ['publish_5frefrence',['publish_refrence',['../classController.html#a8509c67c73d26e981ef0972f44dc73ca',1,'Controller']]]
+  ['kmeans',['kMeans',['../classLaserPredictor.html#add653d4ca2963a783974769c75b3480b',1,'LaserPredictor::kMeans(Cloud &amp;data, Points &amp;centers)'],['../classLaserPredictor.html#a9f9f6b1484e431291893c4bf9045b6b3',1,'LaserPredictor::kMeans(Cloud &amp;data, Poses &amp;centers)']]]
 ];

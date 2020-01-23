@@ -170,6 +170,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a177d0d6cd7cdb7784ae9c506debfa2c6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a177d0d6cd7cdb7784ae9c506debfa2c6">setName</a> (std::string <a class="el" href="classController.html#af81f22d8b64d915769acfb8e8d89e0c8">name</a>)</td></tr>
 <tr class="memdesc:a177d0d6cd7cdb7784ae9c506debfa2c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the name of object.  <a href="#a177d0d6cd7cdb7784ae9c506debfa2c6">More...</a><br /></td></tr>
 <tr class="separator:a177d0d6cd7cdb7784ae9c506debfa2c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d989fe559c8e852eedb464b4a006748"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a7d989fe559c8e852eedb464b4a006748">setReference</a> (tf::Pose pose)</td></tr>
+<tr class="memdesc:a7d989fe559c8e852eedb464b4a006748"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the Reference pose.  <a href="#a7d989fe559c8e852eedb464b4a006748">More...</a><br /></td></tr>
+<tr class="separator:a7d989fe559c8e852eedb464b4a006748"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a156a66bd7cd6340106accbb982b6238b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a156a66bd7cd6340106accbb982b6238b">setReference</a> (double x, double y, double z, double angle)</td></tr>
 <tr class="memdesc:a156a66bd7cd6340106accbb982b6238b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the reference of the mobile robot to be controlled from a global frame.  <a href="#a156a66bd7cd6340106accbb982b6238b">More...</a><br /></td></tr>
 <tr class="separator:a156a66bd7cd6340106accbb982b6238b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -227,6 +230,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a140aa1ee895337d776f88682640c0746"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a140aa1ee895337d776f88682640c0746">srvReset</a> (std_srvs::EmptyRequest &amp;req, std_srvs::EmptyResponse &amp;res)</td></tr>
 <tr class="memdesc:a140aa1ee895337d776f88682640c0746"><td class="mdescLeft">&#160;</td><td class="mdescRight">Service procedure for resetting the <a class="el" href="classController.html" title="Provides a easy to use implementation of a generic mobile robot controller. ">Controller</a>.  <a href="#a140aa1ee895337d776f88682640c0746">More...</a><br /></td></tr>
 <tr class="separator:a140aa1ee895337d776f88682640c0746"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2845a1e4b0c146206d4a03b757e82d5b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a2845a1e4b0c146206d4a03b757e82d5b">srvSetInitial</a> (multi_robot_msgs::SetInitialPoseRequest &amp;req, multi_robot_msgs::SetInitialPoseResponse &amp;res)</td></tr>
+<tr class="memdesc:a2845a1e4b0c146206d4a03b757e82d5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Service for setting the initial Pose of the controller.  <a href="#a2845a1e4b0c146206d4a03b757e82d5b">More...</a><br /></td></tr>
+<tr class="separator:a2845a1e4b0c146206d4a03b757e82d5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a753fe3680abc7c9ba3040f6fcb638ac2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a753fe3680abc7c9ba3040f6fcb638ac2">controlState2controlStateMsg</a> (<a class="el" href="structController_1_1ControlState.html">ControlState</a> &amp;state, multi_robot_msgs::ControlState &amp;msg)</td></tr>
 <tr class="memdesc:a753fe3680abc7c9ba3040f6fcb638ac2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts <a class="el" href="structController_1_1ControlState.html" title="Holds the System state combined by the pose of the system, the cartesian velocity and the angular vel...">ControlState</a> struct to a COntrol state message.  <a href="#a753fe3680abc7c9ba3040f6fcb638ac2">More...</a><br /></td></tr>
 <tr class="separator:a753fe3680abc7c9ba3040f6fcb638ac2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -247,6 +253,10 @@ ros::NodeHandle&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 tf::TransformListener *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#afea373f808d583e4ad613f119439a8f5">listener</a></td></tr>
 <tr class="memdesc:afea373f808d583e4ad613f119439a8f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Listener for any transformation. <br /></td></tr>
 <tr class="separator:afea373f808d583e4ad613f119439a8f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a934f19927283d24fbf79b5d62e23bed3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a934f19927283d24fbf79b5d62e23bed3"></a>
+tf::TransformBroadcaster&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a934f19927283d24fbf79b5d62e23bed3">broadcaster_</a></td></tr>
+<tr class="memdesc:a934f19927283d24fbf79b5d62e23bed3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Broadcaster for broadcasting transformations. <br /></td></tr>
+<tr class="separator:a934f19927283d24fbf79b5d62e23bed3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae01171e69d9b735e44964662275fc77c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae01171e69d9b735e44964662275fc77c"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#ae01171e69d9b735e44964662275fc77c">world_frame</a></td></tr>
 <tr class="memdesc:ae01171e69d9b735e44964662275fc77c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of the world frame. <br /></td></tr>
@@ -305,14 +315,18 @@ ros::Subscriber&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 ros::Subscriber&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a7c21cd887b80a3ebceae1e5e320c6ad8">sub_odom_target</a></td></tr>
 <tr class="memdesc:a7c21cd887b80a3ebceae1e5e320c6ad8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subscriber object for target odometry topic. <br /></td></tr>
 <tr class="separator:a7c21cd887b80a3ebceae1e5e320c6ad8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06c03b4a779d0c6cfcacef97eb36c6bd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a06c03b4a779d0c6cfcacef97eb36c6bd"></a>
+ros::ServiceServer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a06c03b4a779d0c6cfcacef97eb36c6bd">srv_reset</a></td></tr>
+<tr class="memdesc:a06c03b4a779d0c6cfcacef97eb36c6bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Service for resetting the controller. <br /></td></tr>
+<tr class="separator:a06c03b4a779d0c6cfcacef97eb36c6bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64d3c8a18c05e8d4ab47598875a09bc1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a64d3c8a18c05e8d4ab47598875a09bc1"></a>
+ros::ServiceServer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a64d3c8a18c05e8d4ab47598875a09bc1">srv_set_initial</a></td></tr>
+<tr class="memdesc:a64d3c8a18c05e8d4ab47598875a09bc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Service for setting the initial pose. <br /></td></tr>
+<tr class="separator:a64d3c8a18c05e8d4ab47598875a09bc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96e34ca6ebe5b7c8035982ff98270f4b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a96e34ca6ebe5b7c8035982ff98270f4b"></a>
 ros::Timer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a96e34ca6ebe5b7c8035982ff98270f4b">time_scope_</a></td></tr>
 <tr class="memdesc:a96e34ca6ebe5b7c8035982ff98270f4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Timer for control scope. <br /></td></tr>
 <tr class="separator:a96e34ca6ebe5b7c8035982ff98270f4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae981013bac649b6310e924b6a126bc40"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae981013bac649b6310e924b6a126bc40"></a>
-ros::ServiceServer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#ae981013bac649b6310e924b6a126bc40">reset_service</a></td></tr>
-<tr class="memdesc:ae981013bac649b6310e924b6a126bc40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Service for resetting the controller. <br /></td></tr>
-<tr class="separator:ae981013bac649b6310e924b6a126bc40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af81f22d8b64d915769acfb8e8d89e0c8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af81f22d8b64d915769acfb8e8d89e0c8"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#af81f22d8b64d915769acfb8e8d89e0c8">name</a></td></tr>
 <tr class="memdesc:af81f22d8b64d915769acfb8e8d89e0c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of the node respective <a class="el" href="classController.html" title="Provides a easy to use implementation of a generic mobile robot controller. ">Controller</a>. <br /></td></tr>
@@ -731,6 +745,30 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
+<a class="anchor" id="a7d989fe559c8e852eedb464b4a006748"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Controller::setReference </td>
+          <td>(</td>
+          <td class="paramtype">tf::Pose&#160;</td>
+          <td class="paramname"><em>pose</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the Reference pose. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pose</td><td>pose to be set </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="a156a66bd7cd6340106accbb982b6238b"></a>
 <div class="memitem">
 <div class="memproto">
@@ -898,6 +936,44 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="section return"><dt>Returns</dt><dd>true succeeded </dd>
 <dd>
 false not succeeded </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a2845a1e4b0c146206d4a03b757e82d5b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Controller::srvSetInitial </td>
+          <td>(</td>
+          <td class="paramtype">multi_robot_msgs::SetInitialPoseRequest &amp;&#160;</td>
+          <td class="paramname"><em>req</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">multi_robot_msgs::SetInitialPoseResponse &amp;&#160;</td>
+          <td class="paramname"><em>res</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Service for setting the initial Pose of the controller. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">req</td><td>Reqest that contains the pose </td></tr>
+    <tr><td class="paramname">res</td><td>Response that contains the succeded flag </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true Succeeded </dd>
+<dd>
+false Not Succeeded </dd></dl>
 
 </div>
 </div>

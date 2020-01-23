@@ -105,7 +105,9 @@ Inheritance diagram for Planner:</div>
 <div class="center"><img src="classPlanner__inherit__graph.png" border="0" usemap="#Planner_inherit__map" alt="Inheritance graph"/></div>
 <map name="Planner_inherit__map" id="Planner_inherit__map">
 <area shape="rect" id="node2" href="classCirclePlanner.html" title="CirclePlanner" alt="" coords="5,80,105,107"/>
-<area shape="rect" id="node3" href="classLissajousPlanner.html" title="LissajousPlanner" alt="" coords="129,80,251,107"/>
+<area shape="rect" id="node3" href="classClickedPosePlanner.html" title="ClickedPosePlanner" alt="" coords="129,80,269,107"/>
+<area shape="rect" id="node4" href="classLissajousPlanner.html" title="LissajousPlanner" alt="" coords="293,80,415,107"/>
+<area shape="rect" id="node5" href="classSpiralplanner.html" title="Spiralplanner" alt="" coords="439,80,536,107"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -145,6 +147,9 @@ ros::NodeHandle&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 <tr class="memitem:a19220ea8cd70f4f3bfa3e35e1250ed00"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a19220ea8cd70f4f3bfa3e35e1250ed00"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>iterations</b></td></tr>
 <tr class="separator:a19220ea8cd70f4f3bfa3e35e1250ed00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae0304ebd1813766f1437b80d5195e90"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aae0304ebd1813766f1437b80d5195e90"></a>
+tf::Transform&#160;</td><td class="memItemRight" valign="bottom"><b>start_reference</b></td></tr>
+<tr class="separator:aae0304ebd1813766f1437b80d5195e90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -158,10 +163,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>publish</b> ()</td></
 <tr class="separator:a311803ff0901b953c4ff9db7a3f5bb01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ce8028259452e2e17ed07bbb0c8463a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlanner.html#a0ce8028259452e2e17ed07bbb0c8463a">transform_values</a> (tf::Transform trafo)</td></tr>
 <tr class="separator:a0ce8028259452e2e17ed07bbb0c8463a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aef1abb6588a8fb7953183bc5f3479857"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlanner.html#aef1abb6588a8fb7953183bc5f3479857">srv_start</a> (std_srvs::SetBool::Request &amp;req, std_srvs::SetBool::Response &amp;res)</td></tr>
-<tr class="separator:aef1abb6588a8fb7953183bc5f3479857"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac98453a1cd02d1d77055900f4fc4741f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlanner.html#ac98453a1cd02d1d77055900f4fc4741f">srv_stop</a> (std_srvs::SetBool::Request &amp;req, std_srvs::SetBool::Response &amp;res)</td></tr>
-<tr class="separator:ac98453a1cd02d1d77055900f4fc4741f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a6a50634353cf10b7e4d0e1266c55b7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlanner.html#a2a6a50634353cf10b7e4d0e1266c55b7">srv_start</a> (std_srvs::EmptyRequest &amp;req, std_srvs::EmptyResponse &amp;res)</td></tr>
+<tr class="separator:a2a6a50634353cf10b7e4d0e1266c55b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65994104a9915ef59dd2360008bb24f0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlanner.html#a65994104a9915ef59dd2360008bb24f0">srv_stop</a> (std_srvs::EmptyRequest &amp;req, std_srvs::EmptyResponse &amp;res)</td></tr>
+<tr class="separator:a65994104a9915ef59dd2360008bb24f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab388545a3fd2f37f70403d8484473a12"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab388545a3fd2f37f70403d8484473a12"></a>
 virtual tf::Vector3&#160;</td><td class="memItemRight" valign="bottom"><b>get_position</b> (ros::Duration time)=0</td></tr>
 <tr class="separator:ab388545a3fd2f37f70403d8484473a12"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -225,9 +230,6 @@ tf::Quaternion&#160;</td><td class="memItemRight" valign="bottom"><b>orientation
 <tr class="memitem:a026af8deca2879d9f16b9eeddd003d88"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a026af8deca2879d9f16b9eeddd003d88"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>ang_vel</b></td></tr>
 <tr class="separator:a026af8deca2879d9f16b9eeddd003d88"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae0304ebd1813766f1437b80d5195e90"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aae0304ebd1813766f1437b80d5195e90"></a>
-tf::Transform&#160;</td><td class="memItemRight" valign="bottom"><b>start_reference</b></td></tr>
-<tr class="separator:aae0304ebd1813766f1437b80d5195e90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A generic planner class that provides general interface functions and architecture. </p>
@@ -287,7 +289,7 @@ tf::Transform&#160;</td><td class="memItemRight" valign="bottom"><b>start_refere
 
 </div>
 </div>
-<a class="anchor" id="aef1abb6588a8fb7953183bc5f3479857"></a>
+<a class="anchor" id="a2a6a50634353cf10b7e4d0e1266c55b7"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -297,13 +299,13 @@ tf::Transform&#160;</td><td class="memItemRight" valign="bottom"><b>start_refere
         <tr>
           <td class="memname">bool Planner::srv_start </td>
           <td>(</td>
-          <td class="paramtype">std_srvs::SetBool::Request &amp;&#160;</td>
+          <td class="paramtype">std_srvs::EmptyRequest &amp;&#160;</td>
           <td class="paramname"><em>req</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std_srvs::SetBool::Response &amp;&#160;</td>
+          <td class="paramtype">std_srvs::EmptyResponse &amp;&#160;</td>
           <td class="paramname"><em>res</em>&#160;</td>
         </tr>
         <tr>
@@ -328,7 +330,7 @@ tf::Transform&#160;</td><td class="memItemRight" valign="bottom"><b>start_refere
 
 </div>
 </div>
-<a class="anchor" id="ac98453a1cd02d1d77055900f4fc4741f"></a>
+<a class="anchor" id="a65994104a9915ef59dd2360008bb24f0"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -338,13 +340,13 @@ tf::Transform&#160;</td><td class="memItemRight" valign="bottom"><b>start_refere
         <tr>
           <td class="memname">bool Planner::srv_stop </td>
           <td>(</td>
-          <td class="paramtype">std_srvs::SetBool::Request &amp;&#160;</td>
+          <td class="paramtype">std_srvs::EmptyRequest &amp;&#160;</td>
           <td class="paramname"><em>req</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std_srvs::SetBool::Response &amp;&#160;</td>
+          <td class="paramtype">std_srvs::EmptyResponse &amp;&#160;</td>
           <td class="paramname"><em>res</em>&#160;</td>
         </tr>
         <tr>

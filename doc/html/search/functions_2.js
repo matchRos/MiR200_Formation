@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['get_5ftransform',['get_transform',['../classPlanner.html#a311803ff0901b953c4ff9db7a3f5bb01',1,'Planner']]]
+  ['determineconnectivity',['determineConnectivity',['../classFormation.html#ac00c13020c113c8fc618393e3e9564f6',1,'Formation']]]
 ];

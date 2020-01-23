@@ -15,7 +15,7 @@ Inheritance diagram for Planner\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=264pt]{classPlanner__inherit__graph}
+\includegraphics[width=350pt]{classPlanner__inherit__graph}
 \end{center}
 \end{figure}
 \subsection*{Public Member Functions}
@@ -49,6 +49,9 @@ ros\+::\+Node\+Handle \hyperlink{classPlanner_a9714d036f444a07ce90be8d135b9a40c}
 \begin{DoxyCompactList}\small\item\em Counter for the iterations of periodic planner functions. \end{DoxyCompactList}\item 
 int {\bfseries iterations}\hypertarget{classPlanner_a19220ea8cd70f4f3bfa3e35e1250ed00}{}\label{classPlanner_a19220ea8cd70f4f3bfa3e35e1250ed00}
 
+\item 
+tf\+::\+Transform {\bfseries start\+\_\+reference}\hypertarget{classPlanner_aae0304ebd1813766f1437b80d5195e90}{}\label{classPlanner_aae0304ebd1813766f1437b80d5195e90}
+
 \end{DoxyCompactItemize}
 \subsection*{Private Member Functions}
 \begin{DoxyCompactItemize}
@@ -63,9 +66,9 @@ tf\+::\+Transform \hyperlink{classPlanner_a311803ff0901b953c4ff9db7a3f5bb01}{get
 \item 
 void \hyperlink{classPlanner_a0ce8028259452e2e17ed07bbb0c8463a}{transform\+\_\+values} (tf\+::\+Transform trafo)
 \item 
-bool \hyperlink{classPlanner_aef1abb6588a8fb7953183bc5f3479857}{srv\+\_\+start} (std\+\_\+srvs\+::\+Set\+Bool\+::\+Request \&req, std\+\_\+srvs\+::\+Set\+Bool\+::\+Response \&res)
+bool \hyperlink{classPlanner_a2a6a50634353cf10b7e4d0e1266c55b7}{srv\+\_\+start} (std\+\_\+srvs\+::\+Empty\+Request \&req, std\+\_\+srvs\+::\+Empty\+Response \&res)
 \item 
-bool \hyperlink{classPlanner_ac98453a1cd02d1d77055900f4fc4741f}{srv\+\_\+stop} (std\+\_\+srvs\+::\+Set\+Bool\+::\+Request \&req, std\+\_\+srvs\+::\+Set\+Bool\+::\+Response \&res)
+bool \hyperlink{classPlanner_a65994104a9915ef59dd2360008bb24f0}{srv\+\_\+stop} (std\+\_\+srvs\+::\+Empty\+Request \&req, std\+\_\+srvs\+::\+Empty\+Response \&res)
 \item 
 virtual tf\+::\+Vector3 {\bfseries get\+\_\+position} (ros\+::\+Duration time)=0\hypertarget{classPlanner_ab388545a3fd2f37f70403d8484473a12}{}\label{classPlanner_ab388545a3fd2f37f70403d8484473a12}
 
@@ -129,9 +132,6 @@ tf\+::\+Quaternion {\bfseries orientation}\hypertarget{classPlanner_a3ce130c29c0
 \item 
 double {\bfseries ang\+\_\+vel}\hypertarget{classPlanner_a026af8deca2879d9f16b9eeddd003d88}{}\label{classPlanner_a026af8deca2879d9f16b9eeddd003d88}
 
-\item 
-tf\+::\+Transform {\bfseries start\+\_\+reference}\hypertarget{classPlanner_aae0304ebd1813766f1437b80d5195e90}{}\label{classPlanner_aae0304ebd1813766f1437b80d5195e90}
-
 \end{DoxyCompactItemize}
 
 
@@ -172,12 +172,12 @@ Gets the transformation form the given pose to the pose at timestamp zero
 \end{DoxyParams}
 \index{Planner@{Planner}!srv\+\_\+start@{srv\+\_\+start}}
 \index{srv\+\_\+start@{srv\+\_\+start}!Planner@{Planner}}
-\subsubsection[{\texorpdfstring{srv\+\_\+start(std\+\_\+srvs\+::\+Set\+Bool\+::\+Request \&req, std\+\_\+srvs\+::\+Set\+Bool\+::\+Response \&res)}{srv_start(std_srvs::SetBool::Request &req, std_srvs::SetBool::Response &res)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Planner\+::srv\+\_\+start (
+\subsubsection[{\texorpdfstring{srv\+\_\+start(std\+\_\+srvs\+::\+Empty\+Request \&req, std\+\_\+srvs\+::\+Empty\+Response \&res)}{srv_start(std_srvs::EmptyRequest &req, std_srvs::EmptyResponse &res)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Planner\+::srv\+\_\+start (
 \begin{DoxyParamCaption}
-\item[{std\+\_\+srvs\+::\+Set\+Bool\+::\+Request \&}]{req, }
-\item[{std\+\_\+srvs\+::\+Set\+Bool\+::\+Response \&}]{res}
+\item[{std\+\_\+srvs\+::\+Empty\+Request \&}]{req, }
+\item[{std\+\_\+srvs\+::\+Empty\+Response \&}]{res}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classPlanner_aef1abb6588a8fb7953183bc5f3479857}{}\label{classPlanner_aef1abb6588a8fb7953183bc5f3479857}
+)\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classPlanner_a2a6a50634353cf10b7e4d0e1266c55b7}{}\label{classPlanner_a2a6a50634353cf10b7e4d0e1266c55b7}
 service procedure for satrting the planner 
 \begin{DoxyParams}{Parameters}
 {\em req} & \+: Reqest the service is getting \\
@@ -187,12 +187,12 @@ service procedure for satrting the planner
 \end{DoxyParams}
 \index{Planner@{Planner}!srv\+\_\+stop@{srv\+\_\+stop}}
 \index{srv\+\_\+stop@{srv\+\_\+stop}!Planner@{Planner}}
-\subsubsection[{\texorpdfstring{srv\+\_\+stop(std\+\_\+srvs\+::\+Set\+Bool\+::\+Request \&req, std\+\_\+srvs\+::\+Set\+Bool\+::\+Response \&res)}{srv_stop(std_srvs::SetBool::Request &req, std_srvs::SetBool::Response &res)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Planner\+::srv\+\_\+stop (
+\subsubsection[{\texorpdfstring{srv\+\_\+stop(std\+\_\+srvs\+::\+Empty\+Request \&req, std\+\_\+srvs\+::\+Empty\+Response \&res)}{srv_stop(std_srvs::EmptyRequest &req, std_srvs::EmptyResponse &res)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Planner\+::srv\+\_\+stop (
 \begin{DoxyParamCaption}
-\item[{std\+\_\+srvs\+::\+Set\+Bool\+::\+Request \&}]{req, }
-\item[{std\+\_\+srvs\+::\+Set\+Bool\+::\+Response \&}]{res}
+\item[{std\+\_\+srvs\+::\+Empty\+Request \&}]{req, }
+\item[{std\+\_\+srvs\+::\+Empty\+Response \&}]{res}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classPlanner_ac98453a1cd02d1d77055900f4fc4741f}{}\label{classPlanner_ac98453a1cd02d1d77055900f4fc4741f}
+)\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classPlanner_a65994104a9915ef59dd2360008bb24f0}{}\label{classPlanner_a65994104a9915ef59dd2360008bb24f0}
 service procedure for stopping the planner 
 \begin{DoxyParams}{Parameters}
 {\em req} & \+: Reqest the service is getting \\

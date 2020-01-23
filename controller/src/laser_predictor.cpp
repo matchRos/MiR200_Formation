@@ -67,7 +67,7 @@ int LaserPredictor::getNumberOfPredictions()
 }
 LaserPredictor::Poses LaserPredictor::getPose()
 {
-    std::vector<tf::Point> points=this->kMeans(this->point_cloud_,this->poses_);
+    std::vector<tf::Point> points=this->kMeans(this->data_.combined,this->poses_);
     Poses poses;
     for (auto point :points)
     {
@@ -75,7 +75,7 @@ LaserPredictor::Poses LaserPredictor::getPose()
     }
     if(poses.empty())
     {
-        throw NoPredicitonException();
+        throw std::out_of_range("No poses estaminated!");
     }
     return poses;
 }
@@ -96,11 +96,11 @@ tf::Pose LaserPredictor::getPose(int i)
 }
 sensor_msgs::PointCloud LaserPredictor::getRegisteredPoints()
 {
-    return this->point_cloud_;
+    return this->data_.combined;
 }
 sensor_msgs::PointCloud LaserPredictor::getClusteredPoints()
 {
-    return this->clustered_point_cloud;
+    return this->data_.clustered;
 }
 
 
@@ -227,8 +227,8 @@ std::vector<tf::Point> LaserPredictor::kMeans(sensor_msgs::PointCloud &data,Pose
 
 void LaserPredictor::clustering(const ros::TimerEvent &event)
 {
-    this->clustered_point_cloud=this->point_cloud_;
-    this->kMeans(this->clustered_point_cloud,this->poses_);
+    this->data_.clustered=this->data_.combined;
+    this->kMeans(this->data_.clustered,this->poses_);
 }
 
 
@@ -297,22 +297,22 @@ void LaserPredictor::startClustering(double frequenzy)
 
 void LaserPredictor::subscriberFrontCallback(const sensor_msgs::LaserScanConstPtr msg)
 {
-    this->front_data_=sensor_msgs::PointCloud();
-    this->projector_.projectLaser(*msg,this->front_data_);
-    this->transformCloud(this->front_data_,this->trafos_.front);
-    this->front_data_.header.frame_id=this->nh_.resolveName(this->frames_.base);
-    this->point_cloud_=this->combineData(this->front_data_,this->back_data_);
+    this->data_.front=sensor_msgs::PointCloud();
+    this->projector_.projectLaser(*msg,this->data_.front);
+    this->transformCloud(this->data_.front,this->trafos_.front);
+    this->data_.front.header.frame_id=this->nh_.resolveName(this->frames_.base);
+    this->data_.combined=this->combineData(this->data_.front,this->data_.back);
     return;
 }
 
 
 void LaserPredictor::subscriberBackCallback(const sensor_msgs::LaserScanConstPtr msg)
 {
-    this->back_data_=sensor_msgs::PointCloud();
-    this->projector_.projectLaser(*msg,this->back_data_);
-    this->transformCloud(this->back_data_,this->trafos_.back);
-    this->back_data_.header.frame_id=this->nh_.resolveName(this->frames_.base);
-    this->point_cloud_=this->combineData(this->front_data_,this->back_data_);    
+    this->data_.back=sensor_msgs::PointCloud();
+    this->projector_.projectLaser(*msg,this->data_.back);
+    this->transformCloud(this->data_.back,this->trafos_.back);
+    this->data_.back.header.frame_id=this->nh_.resolveName(this->frames_.base);
+    this->data_.combined=this->combineData(this->data_.front,this->data_.back);    
     return;       
 }
 
