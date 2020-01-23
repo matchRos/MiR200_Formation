@@ -14,34 +14,51 @@
 #include <simulation_env/formation_subscriber.h>
 
 
-Formation form_initial;
-Formation form_target;
+// Formation form_initial;
+// Formation form_target;
 
 
-void callback_target(nav_msgs::Odometry msg)
-{
-    try{
-        if(!form_initial.empty())
-        {
-            tf::Transform trafo;
-            tf::poseMsgToTF(msg.pose.pose,trafo);
-            form_target=Formation::transform(form_initial,trafo);
+// void callback_target(nav_msgs::Odometry msg)
+// {
+//     try{
+//         if(!form_initial.empty())
+//         {
+//             tf::Transform trafo;
+//             tf::poseMsgToTF(msg.pose.pose,trafo);
+//             form_target=Formation::transform(form_initial,trafo);
             
-        }
-    }
-    catch(std::exception &e)
-    {
-        ROS_INFO("Target: %s",e.what());
-    }
+//         }
+//     }
+//     catch(std::exception &e)
+//     {
+//         ROS_INFO("Target: %s",e.what());
+//     }
    
-}
+// }
 
 int main(int argc,char** argv)
 {
     ros::init(argc,argv,"Measure");
+   
     ros::NodeHandle nh;    
+
+   
+    LaserPredictor::Frames frames_master("base_link","front_laser_link","back_laser_link");
+    LaserPredictor::Topics topics_master("none","f_scan","b_scan");
+    Formation::RobotProperties properties;
+    properties.name="robot1";
+    properties.neighbours=Formation::Neighbours{"robot_master","robot_1"};
+    properties.pose=tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(0.0,0.0,0.0));
+    properties.laser_frames=frames_master;
+    properties.laser_topics=topics_master;
+
+    ros::NodeHandle nh_master("robot_master");
+    Formation test(nh_master);
+    test.addRobot(properties);
     
+    Formation form_initial;
     
+        
     try
     {
         form_initial.setReferenceFrame("/map");
@@ -56,7 +73,7 @@ int main(int argc,char** argv)
         ROS_WARN("%s",ex.what());
     }    
 
-    ros::Subscriber input=nh.subscribe("/trajectory_odom",10,callback_target);    
+    // ros::Subscriber input=nh.subscribe("/trajectory_odom",10,callback_target);    
 
    
 
@@ -68,7 +85,7 @@ int main(int argc,char** argv)
 
     Formation form_current=form_initial;
     Formation form_estimated=form_initial;
-    form_target=form_initial;
+    // form_target=form_initial;
 
     std::vector<std::string> topics_current;
     topics_current.push_back("base_pose_ground_truth");
@@ -103,7 +120,7 @@ int main(int argc,char** argv)
        try{
            // pub_tar.publish(form_target);
             pub_curr.publish(form_current);
-            pub.publish(predictor.getClusteredPoints());
+            pub.publish(test.getScannerPrediction("robot_master"));
             // geometry_msgs::PoseStamped pose;
             // pose.header.frame_id="robot2/front_laser_link";
             // tf::poseTFToMsg(predictor.getPose(0),pose.pose);
