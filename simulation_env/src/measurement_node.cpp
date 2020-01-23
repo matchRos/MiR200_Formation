@@ -39,15 +39,15 @@ int main(int argc,char** argv)
     try
     {
         form_initial.setReferenceFrame("/map");
-        form_initial.addRobot(tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(-1.5,-1.5,0)),"robot2",std::vector<int>(2,1));
+        form_initial.addRobot(tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(-1.5,-1.5,0)),"robot2",std::vector<int>{2,1});
         form_initial.addRobot(tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(0,0,0)),"robot_master",std::vector<int>{0,2});
-        form_initial.addRobot(tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(-1.5,1.5,0)),"robot1",std::vector<int>(1,0));
+        form_initial.addRobot(tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(-1.5,1.5,0)),"robot1",std::vector<int>{1,0});
       
         
     }
     catch(std::exception &ex)
     {
-        ROS_WARN(ex.what());
+        ROS_WARN("%s",ex.what());
     }    
 
     ros::Subscriber input=nh.subscribe("/trajectory_odom",10,callback_target);    
@@ -77,15 +77,18 @@ int main(int argc,char** argv)
     ros::Publisher pub2=nh.advertise<geometry_msgs::PoseStamped>("estaminated_pose",10);
     
     
-    std::vector<tf::Pose> guessed_poses;
-    guessed_poses.push_back(tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(2.0,0.0,0.0)));
-    guessed_poses.push_back(tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(0.0,3.0,0.0)));
+   
     
-    LaserPredictor::GuessedValues start;
-    start.poses=guessed_poses;
+    LaserPredictor::Frames frames("base_link","front_laser_link","back_laser_link");
+    LaserPredictor::Topics topics("","f_scan","b_scan");
     ros::NodeHandle robot2("robot2");
-    LaserPredictor predictor(robot2,"f_scan","b_scan");
-    predictor.guess(start);
+    LaserPredictor predictor(robot2,frames,topics);
+
+    LaserPredictor::Poses guessed_poses;
+    guessed_poses.push_back(tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(1.5,1.5,0.0)));
+    guessed_poses.push_back(tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(0.0,3.0,0.0)));
+    predictor.guess(guessed_poses);
+    predictor.startClustering(10);
 
 
     ros::Rate rate(10);
@@ -94,11 +97,11 @@ int main(int argc,char** argv)
        try{
            // pub_tar.publish(form_target);
             pub_curr.publish(form_current);
-            pub.publish(predictor.getRegisteredPoints());
-            geometry_msgs::PoseStamped pose;
-            pose.header.frame_id="robot2/front_laser_link";
-            tf::poseTFToMsg(predictor.getPose(0),pose.pose);
-            pub2.publish(pose);
+            pub.publish(predictor.getClusteredPoints());
+            // geometry_msgs::PoseStamped pose;
+            // pose.header.frame_id="robot2/front_laser_link";
+            // tf::poseTFToMsg(predictor.getPose(0),pose.pose);
+            // pub2.publish(pose);
             //pub_est.publish(form_estimated);
             //pub_dif.publish(form_target-form_estimated);
        }

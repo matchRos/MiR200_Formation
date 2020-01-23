@@ -8,6 +8,7 @@ Panels:
         - /Status1
         - /TF1/Frames1
         - /LaserPredictor1
+        - /LaserPredictor1/Status1
       Splitter Ratio: 0.5
     Tree Height: 775
   - Class: rviz/Selection
@@ -484,7 +485,7 @@ Visualization Manager:
       Class: rviz/PointCloud
       Color: 255; 255; 255
       Color Transformer: Intensity
-      Decay Time: 0
+      Decay Time: 10
       Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
@@ -543,7 +544,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 20.0458603
+      Distance: 10.3421202
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
@@ -558,10 +559,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 1.21979666
+      Pitch: 0.649796426
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 1.60539746
+      Yaw: 3.16539788
     Saved: ~
 Window Geometry:
   Displays:

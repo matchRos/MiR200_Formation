@@ -8,55 +8,79 @@
 
 class LaserPredictor{
     public:
-        struct GuessedValues
-        {
-            int number;
-            std::vector<tf::Pose> poses;            
-            GuessedValues()
+        struct Frames{
+            Frames(std::string base,std::string front, std::string back):   base(base),
+                                                                            front(front),
+                                                                            back(back)
+            {}
+            std::string base;
+            std::string front;
+            std::string back;
+        };
+        
+        
+        struct Transforms{
+            tf::StampedTransform front;
+            tf::StampedTransform back;
+        };
+
+        struct NoPredicitonException : public std::exception {
+            const char * what () const throw () 
             {
-                number=0;                
-                poses.push_back(tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(0,0,0)));
+                std::stringstream ss;
+                return "No Prediction was possible!";
             }
         };
         
+        typedef std::vector<tf::Pose> Poses;
+        typedef std::vector<tf::Point> Points;
+        typedef Frames Topics;
+
         LaserPredictor( ros::NodeHandle &nh,
-                        std::string topic_name_front,
-                        std::string topic_name_back);
+                        Frames frames,
+                        Topics topic);
 
         int getNumberOfPredictions();
 
-        std::vector<tf::Pose> getPose();
+        Poses getPose();
 
         tf::Pose getPose(int i);
 
         sensor_msgs::PointCloud getRegisteredPoints();
+        sensor_msgs::PointCloud getClusteredPoints();
 
-        void guess(GuessedValues values);
+        void guess(Poses values);
+
+        void startClustering(double frequenzy);
 
     private:
         ros::NodeHandle nh_;
 
         tf::TransformListener listener_;
+
         ros::Subscriber sub_front_;
         ros::Subscriber sub_back_;
 
-        bool first_front_msgs_received_;
-        bool first_back_msgs_received_;
+        ros::Timer cluster_scope_;
 
-        std::string base_frame_;
+        Transforms trafos_;
+        Frames frames_;
 
-        tf::StampedTransform trafo_front_;
-        tf::StampedTransform trafo_back_;
+        laser_geometry::LaserProjection projector_;   
 
-        laser_geometry::LaserProjection projector_;
+        sensor_msgs::PointCloud front_data_;
+        sensor_msgs::PointCloud back_data_;
+        sensor_msgs::PointCloud point_cloud_;
 
-        std::vector< tf::Pose> estaminated_poses_;
-        sensor_msgs::PointCloud registered_point_cloud_;
-        GuessedValues guessed_values_;       
+        sensor_msgs::PointCloud clustered_point_cloud;
+        Poses poses_;
 
+        sensor_msgs::PointCloud combineData(sensor_msgs::PointCloud front, sensor_msgs::PointCloud back);
+        void transformCloud(sensor_msgs::PointCloud &cloud, tf::Transform trafo);
 
+        void clustering(const ros::TimerEvent& event);
         std::vector<tf::Point> kMeans(sensor_msgs::PointCloud &data,std::vector<tf::Point> &centers); 
-        std::vector<tf::Point> kMeans(sensor_msgs::PointCloud &data,std::vector<tf::Pose> &centers); 
+        std::vector<tf::Point> kMeans(sensor_msgs::PointCloud &data,Poses &centers); 
 
         void subscriberFrontCallback(const sensor_msgs::LaserScanConstPtr msg);
         void subscriberBackCallback(const sensor_msgs::LaserScanConstPtr msg);
