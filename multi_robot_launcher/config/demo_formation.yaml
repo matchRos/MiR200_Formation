@@ -14,6 +14,7 @@ formation:
 
 
 robot1:
+  publish_tf: true
 
   world_frame: "/map" #global frame. Has to be the same for hole correspiondent formation
 
@@ -25,7 +26,8 @@ robot1:
 
 
 robot2:
-  
+  publish_tf: true
+
   world_frame: "/map"
 
   topic_current_odometry:   "odometry/filtered"
@@ -35,6 +37,8 @@ robot2:
   controller_type: 2                             # 1-> pseudo_invers 2->lyapov 3->angl_dist
 
 robot3:
+  publish_tf: true
+
   world_frame: "/map"
 
   topic_current_odometry:   "odometry/filtered"
@@ -44,6 +48,8 @@ robot3:
   controller_type: 2                             # 1-> pseudo_invers 2->lyapov 3->angl_dist
 
 robot4:
+  publish_tf: true
+
   world_frame: "/map"
 
   topic_current_odometry:   "odometry/filtered"
@@ -54,6 +60,8 @@ robot4:
 
   
 robot_master:
+  publish_tf: true
+
   world_frame: "/map"
 
   topic_current_odometry: "odometry/filtered"

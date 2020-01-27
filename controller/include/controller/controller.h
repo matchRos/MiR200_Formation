@@ -19,6 +19,8 @@
 #include <stdio.h>
 
 
+#define PARAM_PUBISH_TF "publish_tf"
+
 #define PARAM_TARGET_VEL "topic_target_velocity"
 #define PARAM_TARGET_STATE "topic_target_state"
 #define PARAM_TARGET_ODOM "topic_target_odometry"
@@ -335,7 +337,7 @@ class Controller{
         ros::ServiceServer srv_set_initial; ///<Service for setting the initial pose
         ros::Timer time_scope_;                                      ///<Timer for control scope
 
-       
+        bool publish_tf_;
 
         std::string name;                                            ///<Name of the node respective Controller
         

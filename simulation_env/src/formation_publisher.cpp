@@ -95,7 +95,6 @@ void FormationPublisher::publishScanPoses()
 {
     Formation::Poses poses;
     poses=this->formation_->getScannedPose();
-    ROS_WARN("Publihser: %i ",this->scanned_pose_pub_list_.size());
     for(int i=0;i<this->scanned_pose_pub_list_.size();i++)
     {
         geometry_msgs::PoseStamped pose_msg;

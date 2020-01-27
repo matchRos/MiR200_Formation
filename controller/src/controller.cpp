@@ -196,6 +196,10 @@ void Controller::load()
     {
         this->setLyapunov(lyapunov);
     }   
+
+    if(!ros::param::get(PARAM_PUBISH_TF,this->publish_tf_))
+    {publish_tf_=false;}
+    
     
     loadParameter();
     this->loaded_parameter=true;
@@ -357,20 +361,23 @@ void Controller::publish()
     controlVector2controlVectorMsg(this->control_,msg.control);
     this->pub_control_data.publish(msg);
 
-    //Publish base_link
-    tf::StampedTransform base_link( this->world2reference_.inverseTimes(this->current_state_.pose),
-                                    ros::Time::now(),
-                                    nh.resolveName("reference"),
-                                    nh.resolveName("base_footprint"));
-    this->broadcaster_.sendTransform(base_link);
+    if(this->publish_tf_)
+    {
+        //Publish base_link
+        tf::StampedTransform base_link( this->world2reference_.inverseTimes(this->current_state_.pose),
+                                        ros::Time::now(),
+                                        nh.resolveName("reference"),
+                                        nh.resolveName("base_footprint"));
+        this->broadcaster_.sendTransform(base_link);
 
-    // //Publish reference link
-    geometry_msgs::TransformStamped msg2;
-    msg2.header.stamp = ros::Time::now();
-    msg2.header.frame_id =this->world_frame ;
-    msg2.child_frame_id=this->nh.resolveName("reference");
-    tf::transformTFToMsg(this->world2reference_,msg2.transform);
-    this->broadcaster_.sendTransform(msg2);
+        // //Publish reference link
+        geometry_msgs::TransformStamped msg2;
+        msg2.header.stamp = ros::Time::now();
+        msg2.header.frame_id =this->world_frame ;
+        msg2.child_frame_id=this->nh.resolveName("reference");
+        tf::transformTFToMsg(this->world2reference_,msg2.transform);
+        this->broadcaster_.sendTransform(msg2);
+    }
     
 }
 
