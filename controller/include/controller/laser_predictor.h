@@ -55,7 +55,8 @@ class LaserPredictor{
             sensor_msgs::PointCloud front;  ///< Data from the front laser scanner
             sensor_msgs::PointCloud back;   ///< Data from the back laser scanner
             sensor_msgs::PointCloud combined;   ///< Combined data of frot and back laser scanner
-            sensor_msgs::PointCloud clustered;  ///< Clustered data 
+            sensor_msgs::PointCloud combined_clustered;  ///< combined Clustered data 
+            std::vector<sensor_msgs::PointCloud> clusters;   //<Clusters
         };
 
         /**
@@ -79,7 +80,37 @@ class LaserPredictor{
          */
         typedef Frames Topics;
 
+        typedef std::vector<sensor_msgs::PointCloud> Clusters;
 
+
+
+        /**
+         * @brief Combines the data front and back together
+         * 
+         * @param front First Cloud to combine
+         * @param back Second Cloud to combine
+         * @return Cloud Combined cloud
+         */
+        static Cloud combineData(Cloud front, Cloud back);
+
+
+        /**
+         * @brief Applies the transform trafo to each point in the cloud
+         * 
+         * @param cloud cloud to be transformed
+         * @param trafo trafo to be applied
+         */
+        static void transformCloud(Cloud &cloud, tf::Transform trafo);
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
         LaserPredictor();
         /**
          * @brief Construct a new Laser Predictor object
@@ -105,7 +136,7 @@ class LaserPredictor{
          * 
          * @return Poses Predicted Poses
          */
-        Poses getPose();
+        Poses getPoses();
 
         /**
          * @brief Get one of the Pose objects
@@ -158,22 +189,6 @@ class LaserPredictor{
         Data data_; ///<Holds all pointcloud data
         Poses poses_;   ///< Holds all estaminated poses of the robots
         
-        /**
-         * @brief Combines the data front and back together
-         * 
-         * @param front First Cloud to combine
-         * @param back Second Cloud to combine
-         * @return Cloud Combined cloud
-         */
-        Cloud combineData(Cloud front, Cloud back);
-
-        /**
-         * @brief Applies the transform trafo to each point in the cloud
-         * 
-         * @param cloud cloud to be transformed
-         * @param trafo trafo to be applied
-         */
-        void transformCloud(Cloud &cloud, tf::Transform trafo);
 
         /**
          * @brief Timer callback to execute the cluster algorithm
@@ -189,7 +204,7 @@ class LaserPredictor{
          * @param centers Centers wich are modified during the clustering process
          * @return Points Final cluster centers
          */
-        Points kMeans(Cloud &data,Points &centers);
+        Clusters kMeans(Cloud &data,Points &centers);
         
          /**
          * @brief Executes k-means clustering at the data with respect to the guessed cluster ceneters centers
@@ -198,7 +213,7 @@ class LaserPredictor{
          * @param centers Centers wich are modified during the clustering process
          * @return Points Final cluster centers
          */
-        Points kMeans(Cloud &data,Poses &centers); 
+        Clusters kMeans(Cloud &data,Poses &centers); 
 
         /**
          * @brief Callback for the front laser scanner subscribtion

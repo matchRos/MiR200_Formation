@@ -70,27 +70,15 @@ int LaserPredictor::getNumberOfPredictions()
 {
     return this->poses_.size();
 }
-LaserPredictor::Poses LaserPredictor::getPose()
+LaserPredictor::Poses LaserPredictor::getPoses()
 {
-    std::vector<tf::Point> points=this->kMeans(this->data_.combined,this->poses_);
-    Poses poses;
-    for (auto point :points)
-    {
-        poses.push_back(tf::Pose(tf::createIdentityQuaternion(),point));
-    }
-    if(poses.empty())
-    {
-        throw std::out_of_range("No poses estaminated!");
-    }
-    return poses;
+    return this->poses_;
 }
 tf::Pose LaserPredictor::getPose(int i)
 {
-    Poses poses;
-    poses=this->getPose();
-    if(i<poses.size())
+    if(i<this->poses_.size())
     {
-        return poses.at(i);
+        return this->poses_.at(i);
     }   
     else
     {
@@ -105,20 +93,36 @@ sensor_msgs::PointCloud LaserPredictor::getRegisteredPoints()
 }
 sensor_msgs::PointCloud LaserPredictor::getClusteredPoints()
 {
-    return this->data_.clustered;
+    sensor_msgs::PointCloud ret;
+    for(int i=0;i<this->data_.clusters.size();i++)
+    {
+        sensor_msgs::PointCloud cloud=this->data_.clusters.at(i);
+        sensor_msgs::ChannelFloat32 channel;
+        channel.name="Cluster";
+        channel.values.resize(cloud.points.size(),1.0/this->data_.clusters.size()*(i+1));
+        if(cloud.channels.size()>0)
+        {          
+            cloud.channels.at(0)=channel;
+        }
+        else
+        {
+            cloud.channels.push_back(channel);
+        }
+        ret=LaserPredictor::combineData(cloud,ret);
+    }
+    return ret;
 }
 
 
 //Clustering##################################################################################################################################
 // ##########################################################################################################################################
 // ##########################################################################################################################################
-
-LaserPredictor::Points LaserPredictor::kMeans(sensor_msgs::PointCloud &data,std::vector<tf::Point> &centers)
+LaserPredictor::Clusters LaserPredictor::kMeans(sensor_msgs::PointCloud &data,std::vector<tf::Point> &centers)
 {
     if(data.points.size()<1 || centers.size()<1)
     {
-        return std::vector<tf::Point>();
-    }
+        return Clusters();
+    }    
     std::vector<std::vector<tf::Point> >clusters;
     clusters.resize(centers.size());   
 
@@ -129,10 +133,11 @@ LaserPredictor::Points LaserPredictor::kMeans(sensor_msgs::PointCloud &data,std:
     double distance;
     bool convergent=false;
     int iterations=0;
-    std::vector<tf::Point> old_centers=centers;
+    std::vector<tf::Point> old_centers;
+    old_centers.resize(centers.size());
 
-    while(!convergent && iterations<150)
-    {
+    while(!convergent && iterations<100)
+    {      
         for(int i=0;i<data.points.size();i++)
         {
             point=tf::Vector3(data.points.at(i).x,data.points.at(i).y,data.points.at(i).z);
@@ -140,36 +145,42 @@ LaserPredictor::Points LaserPredictor::kMeans(sensor_msgs::PointCloud &data,std:
             for(int k=0;k<centers.size();k++)
             {
                 center=centers.at(k);
-                distance=(point-center).length();
+                distance=(point-center).length2();
                 if(distance<best_distance)
                 {
                     best_cluster=k;
-                    best_distance=distance;
-                    
+                    best_distance=distance;                    
                 }
             }
             clusters.at(best_cluster).push_back(point);
         }
-
-        
-        for(int j=0;j<centers.size();j++)
+       
+        centers=std::vector<tf::Point>();
+        for(auto cluster:clusters)
         {
-            centers.at(j)=std::accumulate(clusters.at(j).begin(),clusters.at(j).end(),tf::Point(0,0,0))/clusters.at(j).size();
-            if(centers.at(j)==old_centers.at(j))
+            if(cluster.size()>0)
             {
-                if(j==0)
-                {
-                    convergent=true;
-                }
-                else
-                {
-                    convergent*=true;
-                }                
+                tf::Point mean=std::accumulate(cluster.begin(),cluster.end(),tf::Point(0.0,0.0,0.0))/cluster.size();
+                centers.push_back(mean);            
             }
-        }  
+        } 
+
+        convergent=true;
+        for(int i=0;i<centers.size();i++)
+        {
+            if(old_centers.at(i)==centers.at(i))
+            {
+                convergent*=true;
+            }
+            else
+            {
+                convergent*=false;
+            }
+        }       
+           
         iterations++;   
     }
-    std::vector<sensor_msgs::PointCloud> result;
+    Clusters result;
     sensor_msgs::ChannelFloat32 channel;
     try
     {      
@@ -194,8 +205,7 @@ LaserPredictor::Points LaserPredictor::kMeans(sensor_msgs::PointCloud &data,std:
     catch(std::exception &e)
     {
         ROS_WARN("In Clustering: %s",e.what());
-    }
-  
+    }  
     data.channels.clear();
     data.points.clear();
     data.header=result.at(0).header;
@@ -203,7 +213,7 @@ LaserPredictor::Points LaserPredictor::kMeans(sensor_msgs::PointCloud &data,std:
     ch.name="cluster";
     for(auto it: result)
     {
-        ch.values.insert(    ch.values.end(),
+        ch.values.insert(   ch.values.end(),
                             it.channels.back().values.begin(),
                             it.channels.back().values.end());
         
@@ -212,14 +222,14 @@ LaserPredictor::Points LaserPredictor::kMeans(sensor_msgs::PointCloud &data,std:
                             it.points.end());
     }
     data.channels.push_back(ch);
-    return centers;
+    return result;
 }
 
-std::vector<tf::Point> LaserPredictor::kMeans(sensor_msgs::PointCloud &data,Poses &centers)
+LaserPredictor::Clusters LaserPredictor::kMeans(sensor_msgs::PointCloud &data,Poses &centers)
 {
     if(data.points.size()<1 || centers.size()<1)
     {
-        return std::vector<tf::Point>();
+        return Clusters();
     }
 
     std::vector<tf::Point> points;
@@ -227,21 +237,26 @@ std::vector<tf::Point> LaserPredictor::kMeans(sensor_msgs::PointCloud &data,Pose
     {
         points.push_back(it.getOrigin());
     }
-    return this->kMeans(data,points);
+    Clusters ret=this->kMeans(data,points);
+    centers.clear();
+    for(auto it:points)
+    {
+        centers.push_back(tf::Pose(tf::createIdentityQuaternion(),it));
+    }
+    return ret;
 }
 
 void LaserPredictor::clustering(const ros::TimerEvent &event)
 {
-    this->data_.clustered=this->data_.combined;
-    this->kMeans(this->data_.clustered,this->poses_);
+    this->data_.combined_clustered=this->data_.combined;
+    this->data_.clusters=this->kMeans(this->data_.combined_clustered,this->poses_);
 }
-
 
 sensor_msgs::PointCloud LaserPredictor::combineData(sensor_msgs::PointCloud front, sensor_msgs::PointCloud back)
 {
     if(front.points.empty() &&  back.points.empty())
     {
-        throw std::invalid_argument("Empty pointcloud should not be combined");
+        return sensor_msgs::PointCloud();
     }
     else if(back.points.empty())
     {
@@ -251,7 +266,6 @@ sensor_msgs::PointCloud LaserPredictor::combineData(sensor_msgs::PointCloud fron
     {
         return back;
     }
-  
     sensor_msgs::PointCloud ret;
     if(front.header.frame_id!=back.header.frame_id)
     {
@@ -262,15 +276,33 @@ sensor_msgs::PointCloud LaserPredictor::combineData(sensor_msgs::PointCloud fron
         ret.header.frame_id=front.header.frame_id;
     }
     ret.header.stamp=ros::Time((front.header.stamp.toSec()+back.header.stamp.toSec())/2.0); 
+    
     ret.points.insert(  ret.points.end(),
                         front.points.begin(),
                         front.points.end());
 
-
-
     ret.points.insert(  ret.points.end(),
-                            back.points.begin(),
-                            back.points.end());   
+                        back.points.begin(),
+                        back.points.end());
+
+    if(front.channels.size()==back.channels.size())
+    {
+        ret.channels.resize(front.channels.size());
+        for(int i=0; i<front.channels.size();i++)
+        {
+            if(front.channels.at(i).name==back.channels.at(i).name)
+            {
+                ret.channels.at(i).name=front.channels.at(i).name;
+                ret.channels.at(i).values.insert(   ret.channels.at(i).values.end(),
+                                                    front.channels.at(i).values.begin(),
+                                                    front.channels.at(i).values.end());
+
+                ret.channels.at(i).values.insert(   ret.channels.at(i).values.end(),
+                                                    back.channels.at(i).values.begin(),
+                                                    back.channels.at(i).values.end());               
+            }
+        }
+    }
     return ret;
    
 }
@@ -279,7 +311,8 @@ void LaserPredictor::transformCloud(sensor_msgs::PointCloud &cloud, tf::Transfor
 {
     if(cloud.points.empty())
     {
-        throw std::invalid_argument("Cannot transform an empty point cloud");
+        // throw std::invalid_argument("Cannot transform an empty point cloud");
+        return;
     }
     for(int i=0;i<cloud.points.size();i++)
     {
@@ -304,9 +337,14 @@ void LaserPredictor::subscriberFrontCallback(const sensor_msgs::LaserScanConstPt
 {
     this->data_.front=sensor_msgs::PointCloud();
     this->projector_.projectLaser(*msg,this->data_.front);
-    this->transformCloud(this->data_.front,this->trafos_.front);
+    if(!data_.front.points.empty())
+    {
+        this->transformCloud(this->data_.front,this->trafos_.front);
+    }
     this->data_.front.header.frame_id=this->nh_.resolveName(this->frames_.base);
     this->data_.combined=this->combineData(this->data_.front,this->data_.back);
+
+   
     return;
 }
 
@@ -315,9 +353,13 @@ void LaserPredictor::subscriberBackCallback(const sensor_msgs::LaserScanConstPtr
 {
     this->data_.back=sensor_msgs::PointCloud();
     this->projector_.projectLaser(*msg,this->data_.back);
-    this->transformCloud(this->data_.back,this->trafos_.back);
+    if(!data_.back.points.empty())
+    {
+        this->transformCloud(this->data_.back,this->trafos_.back);
+    }    
     this->data_.back.header.frame_id=this->nh_.resolveName(this->frames_.base);
     this->data_.combined=this->combineData(this->data_.front,this->data_.back);    
+
     return;       
 }
 

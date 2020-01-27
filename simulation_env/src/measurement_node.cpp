@@ -38,100 +38,69 @@
 
 int main(int argc,char** argv)
 {
-    ros::init(argc,argv,"Measure");
-   
-    ros::NodeHandle nh;    
+    ros::init(argc,argv,"Measure"); 
 
    
-    LaserPredictor::Frames frames_master("base_link","front_laser_link","back_laser_link");
-    LaserPredictor::Topics topics_master("none","f_scan","b_scan");
-    Formation::RobotProperties properties;
-    properties.name="robot1";
-    properties.neighbours=Formation::Neighbours{"robot_master","robot_1"};
-    properties.pose=tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(0.0,0.0,0.0));
-    properties.laser_frames=frames_master;
-    properties.laser_topics=topics_master;
-
-    ros::NodeHandle nh_master("robot_master");
-    Formation test(nh_master);
-    test.addRobot(properties);
-    
-    Formation form_initial;
-    
-        
-    try
-    {
-        form_initial.setReferenceFrame("/map");
-        form_initial.addRobot(tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(-1.5,-1.5,0)),"robot2",std::vector<int>{2,1});
-        form_initial.addRobot(tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(0,0,0)),"robot_master",std::vector<int>{0,2});
-        form_initial.addRobot(tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(-1.5,1.5,0)),"robot1",std::vector<int>{1,0});
-      
-        
-    }
-    catch(std::exception &ex)
-    {
-        ROS_WARN("%s",ex.what());
-    }    
-
-    // ros::Subscriber input=nh.subscribe("/trajectory_odom",10,callback_target);    
-
-   
-
-    ros::NodeHandle nh2("formation");
-    FormationPublisher pub_tar(nh2,"target_formation");
-    FormationPublisher pub_curr(nh2,"current_formation");
-    FormationPublisher pub_est(nh2,"estimated_formation");
-    FormationPublisher pub_dif(nh2,"difference_formation");
-
-    Formation form_current=form_initial;
-    Formation form_estimated=form_initial;
-    // form_target=form_initial;
-
-    std::vector<std::string> topics_current;
-    topics_current.push_back("base_pose_ground_truth");
-    topics_current.push_back("scan");
-    std::vector<std::string>topics_est;
-    topics_est.push_back("odometry/filtered");
-    
-    FormationSubscriber sub_curr(nh,&form_current,topics_current);
-    FormationSubscriber sub_est(nh,&form_estimated,topics_est);
-
-    ros::Publisher pub=nh.advertise<sensor_msgs::PointCloud>("clustered_data",10);
-    ros::Publisher pub2=nh.advertise<geometry_msgs::PoseStamped>("estaminated_pose",10);
-    
-    
-   
-    
     LaserPredictor::Frames frames("base_link","front_laser_link","back_laser_link");
-    LaserPredictor::Topics topics("","f_scan","b_scan");
-    ros::NodeHandle robot2("robot2");
-    LaserPredictor predictor(robot2,frames,topics);
+    LaserPredictor::Topics topics("none","f_scan","b_scan");
+    
 
-    LaserPredictor::Poses guessed_poses;
-    guessed_poses.push_back(tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(1.5,1.5,0.0)));
-    guessed_poses.push_back(tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(0.0,3.0,0.0)));
-    predictor.guess(guessed_poses);
-    predictor.startClustering(10);
+    Formation::RobotProperties properties_master;
+    properties_master.name="robot_master";
+    properties_master.neighbours=Formation::Neighbours{"robot1","robot2","robot3","robot4"};
+    properties_master.pose=tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(0.0,0.0,0.0));
+    properties_master.laser_frames=frames;
+    properties_master.laser_topics=topics;
 
+    Formation::RobotProperties properties_robot1;
+    properties_robot1.name="robot1";
+    properties_robot1.neighbours=Formation::Neighbours{"robot_master","robot2","robot3","robot4"};
+    properties_robot1.pose=tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(-1.5,1.5,0.0));
+    properties_robot1.laser_frames=frames;
+    properties_robot1.laser_topics=topics;
+
+    Formation::RobotProperties properties_robot2;
+    properties_robot2.name="robot2";
+    properties_robot2.neighbours=Formation::Neighbours{"robot_master","robot1","robot3","robot4"};
+    properties_robot2.pose=tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(-1.5,-1.5,0.0));
+    properties_robot2.laser_frames=frames;
+    properties_robot2.laser_topics=topics;    
+
+    Formation::RobotProperties properties_robot3;
+    properties_robot3.name="robot3";
+    properties_robot3.neighbours=Formation::Neighbours{"robot_master","robot2","robot1","robot4"};
+    properties_robot3.pose=tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(-0.5,-3.5,0.0));
+    properties_robot3.laser_frames=frames;
+    properties_robot3.laser_topics=topics;
+
+    Formation::RobotProperties properties_robot4;
+    properties_robot4.name="robot4";
+    properties_robot4.neighbours=Formation::Neighbours{"robot_master","robot2","robot1","robot3"};
+    properties_robot4.pose=tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(-5.5,-3.5,0.0));
+    properties_robot4.laser_frames=frames;
+    properties_robot4.laser_topics=topics;
+
+    Formation test;
+    test.addRobot(properties_master);
+    test.addRobot(properties_robot1);
+    test.addRobot(properties_robot2);
+    test.addRobot(properties_robot3);
+    test.addRobot(properties_robot4);
+    test.startPrediction(10);
+
+    FormationPublisher pub(&test);
 
     ros::Rate rate(10);
     while(ros::ok())
     {
-       try{
-           // pub_tar.publish(form_target);
-            pub_curr.publish(form_current);
-            pub.publish(test.getScannerPrediction("robot_master"));
-            // geometry_msgs::PoseStamped pose;
-            // pose.header.frame_id="robot2/front_laser_link";
-            // tf::poseTFToMsg(predictor.getPose(0),pose.pose);
-            // pub2.publish(pose);
-            //pub_est.publish(form_estimated);
-            //pub_dif.publish(form_target-form_estimated);
-       }
-       catch(std::exception &e)
-       {
-           ROS_WARN("%s",e.what());
-       }
+        try
+        {
+            pub.publish();
+        }
+        catch(std::exception &e)
+        {
+            ROS_WARN("%s",e.what());
+        }
         
         ros::spinOnce();
         rate.sleep();

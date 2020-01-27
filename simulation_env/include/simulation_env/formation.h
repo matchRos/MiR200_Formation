@@ -37,6 +37,10 @@ class Formation{
 
         typedef std::shared_ptr<LaserPredictor> LaserPointer;
 
+        using Poses=LaserPredictor::Poses;
+
+        using Cloud=LaserPredictor::Cloud;
+
         struct RobotProperties{
             RobotProperties(){}
             std::string name;
@@ -49,7 +53,8 @@ class Formation{
         struct Robot{
             Robot(){};
             tf::Pose pose;
-            LaserPointer predictor;            
+            Neighbours neighbours;
+            LaserPointer predictor;           
         };
 
     
@@ -61,29 +66,9 @@ class Formation{
 
       
         Formation();
-        /**
-         * @brief Construct a new Formation object
-         * 
-         */
-        Formation(ros::NodeHandle &nh_);
 
-        /**
-         * @brief Adds another Robot to the formation
-         * 
-         * @param name Name of the robot for representation
-         * @param pose Pose of the robot to be added
-         * @param neighbours Neighbours of the Robot if they should be linked (optional)
-         */
-        void addRobot(tf::Pose pose,std::string name,std::vector<int> neighbours=std::vector<int>());
 
         void addRobot(RobotProperties robot);
-
-        /**
-         * @brief Set the Reference Frame object
-         * 
-         * @param frame_name Name of the frame geometry is defined in
-         */
-        void setReferenceFrame(std::string frame_name);
 
         /**
          * @brief Modifies the pose of the ith robot within the Formation
@@ -91,12 +76,7 @@ class Formation{
          * @param i Index of the robot to be modified
          * @param pose modified Pose of the robot
          */
-        void modifiePose(int i,tf::Pose pose);
-
-        LaserPredictor::Cloud getScannerPrediction(std::string name);
-
-
-
+        void modifiePose(std::string name,tf::Pose pose);
 
         /**
          * @brief Gets the number of Robots within the formation
@@ -113,82 +93,131 @@ class Formation{
          */
         bool empty();  
 
+
+        /**
+         * @brief Get the Names object
+         * 
+         * @return std::vector<std::string> Names of all robots within the formation
+         */
+        std::vector<std::string> getNames();
+
+        std::string getReferenceFrame();
+
         /**
          * @brief Gets a vector that contains every single robot pose
          * 
          * @return std::vector<tf::Pose> Vector of the robot poses
          */
-        std::vector<tf::Pose> getPoses();        
+        std::vector<tf::Pose> getPoses();    
 
         /**
-         * @brief Get the Name of robot i
+         * @brief Get the Pose object of a specified robot
          * 
-         * @param i Number of the robot
-         * @return std::string name of the robot
+         * @param name Name of the robot to get the pose from
+         * @return tf::Pose pose of the robot
          */
-        std::string getName(int i);        
+        tf::Pose getPose(std::string name);
+
 
         /**
-         * @brief Get the Reference Frame object
+         * @brief Get the Scanner data from all of the formation robots
          * 
-         * @return std::string Name of the reference frame the geometry is defined in
+         * @return Cloud Data from the laser scanners
          */
-        std::string getReferenceFrame();
+        Cloud getScan();
+        
+        /**
+         * @brief Get the Scan data from a specific robot
+         * 
+         * @param name name of the robot
+         * @return Cloud data from its laser scanners
+         */
+        Cloud getScan(std::string name);
 
         /**
-         * @brief Get the adjacency matrix of the formation
+         * @brief Get the clustered scanner data for every robot within the formation
+         * 
+         * @return LaserPredictor::Cloud 
+         */
+        Cloud getClusteredScan();
+
+        /**
+         * @brief Get the Clustered Scan data for a specific robot
+         * 
+         * @param name Name of the robot to get data from
+         * @return Cloud Data from the robots laserscanner
+         */
+        Cloud getClusteredScan(std::string name);
+
+
+         /**
+         * @brief Get the Scanned Poses object
+         * 
+         * @return Poses Poses of the identified neighbours of the robot
+         */
+        Poses getScannedPose();
+
+        /**
+         * @brief Get the Scanned Poses object
+         * 
+         * @param name Name of the robot to get the scanned poses of its neighbours from 
+         * @return Poses Poses of the identified neighbours of the robot
+         */
+        Poses getScannedPose(std::string name);
+
+        /**
+         * @brief Starts the prediciton algorithms within the formation
+         * 
+         * @param frequenzy    Frequenzy at wich a prediction should be calculated
+         */
+        void startPrediction(double frequenzy);
+        
+
+
+
+        /**
+         * @brief Calculates and returns the Adjacency matrix of the formation
          * 
          * @return std::vector<std::vector<double> > adjacency matrix
          */       
-        Matrix<double> getAdjacency();  
-
-
-
-
-
+        Formation::Matrix<double> getAdjacency();  
 
         /**
-         * @brief Applies Transformation to the formation
+         * @brief Calculates and returns the Connectivity matrix of the formation
          * 
-         * @param trafo Transformation to apply
-         * @param formation The Formation object that should be transformed
-         * @return Formation Transformed Formation
+         * @return Formation::Matrix<bool> 
          */
-        static Formation transform(Formation formation,tf::Transform trafo);
+        Formation::Matrix<bool> getConnectivity();
 
-        
-        /**
-         * @brief Calculates the difference between this and another formations
-         * 
-         * @param target The Formation the difference vector leads to
-         * @return Formation 
-         */
-        Transformation operator-(Formation &target);
 
        
     private:
-        ros::NodeHandle nh_;
-        std::string refrence_frame; ///<Name of the reference frame geometry is defined in
-        
-        std::vector<std::string> names_;    ///<Vector that holds the names of the different robots
-        std::vector<tf::Pose> formation_;   ///<contains the poses of the robots
+        std::string reference_frame_;   ///<Name of the referece frame formation geometries are defined in
+        unsigned int number_of_robots_; ///<Contains the number of robots within the formation
 
-        std::map<std::string,Robot> formation_map_; ///<Maps a special robot to its correspondence Properties
-        
-
+        std::map<std::string,Robot> formation_map_; ///<Maps a special robot name to its correspondence Robot
+        std::map<std::string,unsigned int> index_map_;  ///<Maps a special idex of a robot to its name
+     
         Matrix<double>  adjacency_;   ///<contains the adjacence matrice of the formation
         Matrix<bool>  connectivity_;  ///<contains the connectivity matrice of the formation
 
 
+        /**
+         * @brief Determines the connectivity matrix of the formation
+         * 
+         * @return Matrix<bool> Connectivity matrix
+         */
+        Matrix<bool> determineConnectivity();
+
 
         /**
-         * @brief Determines the connectivity matrix from a given neighbours vector
+         * @brief Determines the adjacency matrix of the formation
          * 
-         * @param neighbours Defines the neighbourhood the connectivity is determined from
+         * @return Matrix<double> Adjacency matrix
          */
-        void determineConnectivity(std::vector<int> neighbours);
+        Matrix<double> determineAdjacency();
 
 
-        void determineAdjacency();
+        tf::Transform transformBetweenRobots(Robot robot1, Robot robot2);
 
 };

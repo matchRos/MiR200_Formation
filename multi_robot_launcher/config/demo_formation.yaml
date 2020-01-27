@@ -34,8 +34,25 @@ robot2:
   
   controller_type: 2                             # 1-> pseudo_invers 2->lyapov 3->angl_dist
 
+robot3:
+  world_frame: "/map"
 
+  topic_current_odometry:   "odometry/filtered"
 
+  topic_target_odometry: "/trajectory_odom"
+  
+  controller_type: 2                             # 1-> pseudo_invers 2->lyapov 3->angl_dist
+
+robot4:
+  world_frame: "/map"
+
+  topic_current_odometry:   "odometry/filtered"
+
+  topic_target_odometry: "/trajectory_odom"
+  
+  controller_type: 2                             # 1-> pseudo_invers 2->lyapov 3->angl_dist
+
+  
 robot_master:
   world_frame: "/map"
 
@@ -51,7 +68,7 @@ algorithm:
   
 
 planner: 
-  type: 3         #0->lissajous
+  type: 0         #0->lissajous
   pause: true
   iterations: 10
   

@@ -1,196 +1,252 @@
 #include <simulation_env/formation.h>
 
 
-Formation::Formation()
+Formation::Formation(): number_of_robots_(0),
+                        reference_frame_("map")
+
 {
 
-}
-
-Formation::Formation(ros::NodeHandle &nh):nh_(nh)
-{
-
-}
-
-void Formation::addRobot(tf::Pose pose,std::string name,std::vector<int> neighbours)
-{
-    if(neighbours.empty())
-    {
-        this->formation_.push_back(pose);
-        this->names_.push_back(name);
-    }
-    else
-    {
-        this->formation_.push_back(pose);
-        this->names_.push_back(name);
-        determineConnectivity(neighbours);
-        this->adjacency_.resize(connectivity_.size(), std::vector<double>(connectivity_.size(),0.0));        
-    }
 }
 
 void Formation::addRobot(Formation::RobotProperties robot_properties)
 {
-    if( robot_properties.name!="" &&
-        robot_properties.laser_frames.back!="" &&
-        robot_properties.laser_frames.base!="" &&
-        robot_properties.laser_frames.front!=""&&
-        robot_properties.laser_topics.back!="" &&
-        robot_properties.laser_topics.front!=""&&
-        !robot_properties.neighbours.empty()       )
-    {
-        Robot robot;
-        robot.pose=robot_properties.pose;
-        robot.predictor=LaserPointer(new LaserPredictor(this->nh_,robot_properties.laser_frames,robot_properties.laser_topics));
-        robot.predictor->startClustering(10);
-
-    }
-    else
-    {
+    if( robot_properties.name==""               ||
+        robot_properties.laser_frames.back==""  ||
+        robot_properties.laser_frames.base==""  ||
+        robot_properties.laser_frames.front=="" ||
+        robot_properties.laser_topics.back==""  ||
+        robot_properties.laser_topics.front=="" ||
+        robot_properties.neighbours.empty()       )
+    { 
         throw std::invalid_argument("Robot to add to formation contains errors! See if everything is initalised properly!");
     }
     
+    Robot robot;
+    robot.pose=robot_properties.pose;
+    ros::NodeHandle nh(robot_properties.name);
+    robot.neighbours=robot_properties.neighbours;
+    robot.predictor=LaserPointer(new LaserPredictor(nh,robot_properties.laser_frames,robot_properties.laser_topics));
+    this->formation_map_.insert(std::pair<std::string,Formation::Robot>(robot_properties.name,robot));
+    this->index_map_.insert(std::pair<std::string,unsigned int>(robot_properties.name,this->number_of_robots_));
+    this->number_of_robots_++;
 }
-
 
 int Formation::size()
 {
-    return this->formation_.size();
+    return this->number_of_robots_;
 }
+
 bool Formation::empty()
 {
     return this->size()==0;
 }
 
-std::vector<tf::Pose> Formation::getPoses()
+std::string Formation::getReferenceFrame()
 {
-    return this->formation_;   
+    return this->reference_frame_;
 }
 
-void Formation::modifiePose(int i,tf::Pose pose)
+void Formation::modifiePose(std::string name,tf::Pose pose)
 {
-    if(i<formation_.size())
-    {   
-        this->formation_.at(i)=pose;
-    }
-    else
+    try
     {
-        throw std::invalid_argument("Pose to modified does not belong to this formation!");
-    } 
+        this->formation_map_.at(name).pose=pose;
+    }
+    catch(std::out_of_range &e)
+    {
+        std::stringstream ss;
+        ss<<"Formation: "<<e.what();
+        throw std::out_of_range(ss.str());
+    }   
+}
+
+
+Formation::Poses Formation::getPoses()
+{
+    if(this->formation_map_.empty())
+    {
+        throw std::out_of_range("No Poses in Formation since the formation is empty!");
+    }
+
+    Poses poses;
+    for(auto robot:this->formation_map_)
+    {
+        poses.push_back(robot.second.pose);
+    }
+    return poses;
+}
+
+tf::Pose Formation::getPose(std::string name)
+{
+    return this->formation_map_.at(name).pose;
+}
+
+Formation::Poses Formation::getScannedPose()
+{
+    bool first=true;
+    Poses poses;
+    Robot start=this->formation_map_.begin()->second;
+    poses.push_back(start.pose);
+    for(auto robot:this->formation_map_)
+    {
+        if(first)
+        {
+            first=false;
+        }
+        else
+        {
+            poses.push_back(poses.at(0)*this->transformBetweenRobots(start,robot.second));
+            poses.at(poses.size()-1).setRotation(tf::createIdentityQuaternion());   
+        }    
+    }
+    return poses;
 }
 
 
 
+Formation::Poses Formation::getScannedPose(std::string name)
+{
+    return this->formation_map_.at(name).predictor->getPoses();
+}
 
 
 Formation::Matrix<double> Formation::getAdjacency()
+{  
+    return  this->determineAdjacency();
+}
+
+Formation::Matrix<bool> Formation::getConnectivity()
 {
-    this->determineAdjacency();
-    return this->adjacency_;
+    return this->determineConnectivity();
 }
 
 
-LaserPredictor::Cloud Formation::getScannerPrediction(std::string name)
+Formation::Cloud Formation::getClusteredScan()
 {
-    this->formation_map_[name].predictor->getClusteredPoints();
+    if(this->empty())
+    {
+        throw std::out_of_range("Cannot get scanner data from an empty formation!");
+    }
+    Formation::Cloud cloud;
+    for(auto robot: formation_map_)
+    {
+        Formation::Cloud local;
+        local=robot.second.predictor->getClusteredPoints();        
+        local.header.frame_id=this->reference_frame_;
+        LaserPredictor::transformCloud(local,robot.second.pose);
+        cloud=LaserPredictor::combineData(local,cloud);
+    }
+    return cloud;
+}
+
+Formation::Cloud Formation::getClusteredScan(std::string name)
+{
+    return this->formation_map_.at(name).predictor->getClusteredPoints();
+}
+
+Formation::Cloud Formation::getScan()
+{
+    if(this->empty())
+    {
+        throw std::out_of_range("Cannot get scanner data from an empty formation!");
+    }   
+    Formation::Cloud cloud;
+    for(auto robot: formation_map_)
+    {
+        Formation::Cloud local;
+        local=robot.second.predictor->getRegisteredPoints();        
+        local.header.frame_id=this->reference_frame_;
+        LaserPredictor::transformCloud(local,robot.second.pose);
+        cloud=LaserPredictor::combineData(local,cloud);
+    }
+    return cloud;
+       
+}
+
+Formation::Cloud Formation::getScan(std::string name)
+{
+    return this->formation_map_.at(name).predictor->getRegisteredPoints();
+}
+
+std::vector<std::string> Formation::getNames()
+{
+    std::vector<std::string> names;
+    for(auto robot: this->formation_map_)
+    {
+        names.push_back(robot.first);
+    }
+    return names;
+}
+
+
+void Formation::startPrediction(double frequenzy)
+{    
+    for(auto robot : this->formation_map_)
+    {
+        Poses relative_poses;
+        for(auto neighbour: robot.second.neighbours)
+        {
+            relative_poses.push_back(robot.second.pose.inverseTimes(this->formation_map_.at(neighbour).pose));
+            ROS_WARN("Rel psoes: %lf %lf %lf ",relative_poses.back().getOrigin().x(),relative_poses.back().getOrigin().y(),relative_poses.back().getOrigin().z());
+        }
+        robot.second.predictor->guess(relative_poses);
+        robot.second.predictor->startClustering(frequenzy);
+    }
 }
 
 
 
-void Formation::determineAdjacency()
+Formation::Matrix<bool> Formation::determineConnectivity()
+{
+    Matrix<bool> connectivity;
+    connectivity.resize(this->number_of_robots_,std::vector<bool>(this->number_of_robots_,false));
+
+    for(auto robot : this->formation_map_)
+    {
+        Poses relative_poses;
+        for(auto neighbour: robot.second.neighbours)
+        {
+           connectivity.at(index_map_.at(robot.first)).at(index_map_.at(neighbour))=true;
+        }
+    }
+    return connectivity;
+}
+
+
+Formation::Matrix<double> Formation::determineAdjacency()
 { 
-    this->adjacency_.resize(this->connectivity_.size(),std::vector<double>(this->connectivity_.size(),0.0));
-    
-    for(int i=0;i<this->adjacency_.size();i++)
+    Matrix<double> adjacency;
+    adjacency.resize(this->connectivity_.size(),std::vector<double>(this->connectivity_.size(),0.0));
+    for(auto robot : formation_map_)
     {
-        for(int k=0;k<this->adjacency_.at(i).size();k++)
+        for(auto name: robot.second.neighbours)
         {
-            if(i>=this->formation_.size() || k>=this->formation_.size())
-            {
-                std::stringstream ss;
-                ss<<"Adjacecny matrix wants to connect "<<i<<"with "<<k<<" while formation size is just "<<formation_.size();
-                throw std::invalid_argument(ss.str());
-            }
-            else
-            {
-                 tf::Vector3 distance=this->formation_[i].getOrigin()-this->formation_[k].getOrigin();
-                 this->adjacency_.at(i).at(k)=distance.length();
-            }           
+            tf::Pose pose=this->formation_map_.at(name).pose;
+            double diff=robot.second.pose.inverseTimes(pose).getOrigin().length();
+            unsigned int row=index_map_.at(robot.first);
+            unsigned int col=index_map_.at(name);
+            adjacency.at(row).at(col)=diff;            
         }
     }
+    return adjacency;
 }
 
-void Formation::determineConnectivity(std::vector<int> neighbours)
+tf::Transform Formation::transformBetweenRobots(Formation::Robot robot1, Formation::Robot robot2)
 {
-    int max=*std::max_element(neighbours.begin(),neighbours.end())+1;
-    if(formation_.size()>max)
-    {
-        max=formation_.size();
-    }      
-    this->connectivity_.resize(max, std::vector<bool>(max,false));
-    for(int i=0;i<neighbours.size();i++)
-    {
-        int k=neighbours.at(i);
-        this->connectivity_.at(i).at(k)=true;
-        this->connectivity_.at(k).at(i)=true;
-    }
-}
+    Poses poses1;
+    Poses poses2;
+    poses1=robot1.predictor->getPoses();
+    poses2=robot2.predictor->getPoses();
 
-
-
-
-Formation Formation::transform(Formation formation,tf::Transform trafo)
-{
-    for(int i=0;i<formation.size();i++)
+    for(auto pose1:poses1)
     {
-        formation.formation_.at(i)=trafo*formation.formation_.at(i);
-    }
-    return formation;
-}
-
-Formation::Transformation Formation::operator-(Formation &target)
-{
-    Formation res;
-    if(this->size()!=target.size())
-    {
-        throw std::invalid_argument("Dimentions of formation dont fetch to each other!");
-    }
-    else
-    {
-        if(!adjacency_.empty())
+        for(auto pose2:poses2)
         {
-            res.adjacency_.resize(target.size(),std::vector<double>(target.size(),0.0));
-            for(int i=0;i<target.adjacency_.size();i++)
+            if((pose1.getOrigin()-pose2.getOrigin()).length()<1.0)
             {
-                for(int k=0;k<target.adjacency_.at(i).size();k++)
-                {
-                    res.adjacency_.at(i).at(k)=target.adjacency_.at(i).at(k)-this->adjacency_.at(i).at(k);
-                }            
+                return pose1;
             }
         }
-
-        res.formation_.resize(target.formation_.size());
-        for(int i=0;i<target.formation_.size();i++)
-        {
-            res.formation_.at(i)=this->formation_.at(i).inverseTimes(target.formation_.at(i));
-        }
-    }    
-    return res;
-}
-
-std::string Formation::getName(int i)
-{
-    if(i>this->names_.size())
-    {
-        throw std::invalid_argument(std::string("Index %i is out of Formation range",i));
     }
-    return this->names_[i];
-}
-
-void Formation::setReferenceFrame(std::string frame_name)
-{
-    this->refrence_frame=frame_name;
-}
-
-std::string Formation::getReferenceFrame()
-{
-    return this->refrence_frame;
+    return tf::Transform();
 }
