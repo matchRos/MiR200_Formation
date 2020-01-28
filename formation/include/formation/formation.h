@@ -10,8 +10,8 @@
 #include <sensor_msgs/PointCloud.h>
 #include <geometry_msgs/Point32.h>
 #include <sensor_msgs/ChannelFloat32.h>
-
 #include <formation/laser_predictor.h>
+#include <formation/odometry_predictor.h>
 
 
 
@@ -23,6 +23,12 @@
 class Formation{
     
     public:
+        enum PoseEstamination{
+            by_laser_scanner,
+            by_odometry,
+            by_ekf
+        };
+
         /**
          * @brief Template for a generic matrix as std::vector of std::vectors
          * 
@@ -43,6 +49,8 @@ class Formation{
          */
         typedef std::shared_ptr<LaserPredictor> LaserPointer;
 
+        typedef std::shared_ptr<OdometryPredictor> OdomPointer;
+
         /**
          * @brief Brings Poses up to scope
          * 
@@ -60,13 +68,16 @@ class Formation{
          * @brief Defines Properties of a Robot
          * 
          */
-        struct RobotProperties{
+        struct RobotProperties
+        {
             RobotProperties(){}
             std::string name;   ///<Name of the robot
             tf::Pose pose;  ///<Pose of the robot
             Formation::Neighbours neighbours;   ///<neighbours of the robot by name
             LaserPredictor::Frames laser_frames;    //<Frames of the laserscanner links
             LaserPredictor::Topics laser_topics;    ///<Topics the laserscanner messages are published at
+            std::string odom_topic; ///<Name of the odometry topic
+            std::string ekf_topic;  ///<Name of the ekf topic
         };
 
         /**
@@ -77,7 +88,9 @@ class Formation{
             Robot(){};
             tf::Pose pose;  ///<Pose of the robot
             Neighbours neighbours;  ///<Neighbours of the robot
-            LaserPointer predictor; ///<LaserPredictor fro this robot
+            LaserPointer laser; ///<LaserPredictor for this robot
+            OdomPointer odom;   ///<OdometryPredictor for this robot
+            OdomPointer ekf;    ///<EKF Predictor for this robot
         };
 
     
@@ -95,6 +108,20 @@ class Formation{
          */
         Formation();
 
+        /**
+         * @brief Gets the number of Robots within the formation
+         * 
+         * @return int Number of Robots
+         */
+        int size();
+
+        /**
+         * @brief Checks wheather the formation doesnt contain any robot
+         * 
+         * @return true Formation is empty
+         * @return false Formation contains at least one robot
+         */
+        bool empty(); 
 
         /**
          * @brief Adds a robot with given properties to the formation
@@ -112,28 +139,11 @@ class Formation{
         void modifiePose(std::string name,tf::Pose pose);
 
         /**
-         * @brief Gets the number of Robots within the formation
-         * 
-         * @return int Number of Robots
-         */
-        int size();
-
-        /**
-         * @brief Checks wheather the formation doesnt contain any robot
-         * 
-         * @return true Formation is empty
-         * @return false Formation contains at least one robot
-         */
-        bool empty();  
-
-
-        /**
          * @brief Get the Names object
          * 
          * @return std::vector<std::string> Names of all robots within the formation
          */
         std::vector<std::string> getNames();
-
 
         /**
          * @brief Get the Reference Frame object
@@ -147,7 +157,7 @@ class Formation{
          * 
          * @return std::vector<tf::Pose> Vector of the robot poses
          */
-        std::vector<tf::Pose> getPoses();    
+        Poses getPose();    
 
         /**
          * @brief Get the Pose object of a specified robot
@@ -240,6 +250,14 @@ class Formation{
      
         Matrix<double>  adjacency_;   ///<contains the adjacence matrice of the formation
         Matrix<bool>  connectivity_;  ///<contains the connectivity matrice of the formation
+
+        tf::Pose getPoseByLaser(std::string name);
+        tf::Pose getPoseByOdom(std::string name);
+        tf::Pose getPoseByEkf(std::string name);
+        
+        Poses getPoseByLaser();
+        Poses getPoseByOdom();
+        Poses getPoseByEkf();
 
         /**
          * @brief Determines the connectivity matrix of the formation

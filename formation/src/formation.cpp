@@ -25,7 +25,8 @@ void Formation::addRobot(Formation::RobotProperties robot_properties)
     robot.pose=robot_properties.pose;
     ros::NodeHandle nh(robot_properties.name);
     robot.neighbours=robot_properties.neighbours;
-    robot.predictor=LaserPointer(new LaserPredictor(nh,robot_properties.laser_frames,robot_properties.laser_topics));
+    robot.laser=LaserPointer(new LaserPredictor(nh,robot_properties.laser_frames,robot_properties.laser_topics));
+    robot.odom=OdomPointer(new OdometryPredictor(nh,robot_properties.odom_topic,robot_properties.pose));
     this->formation_map_.insert(std::pair<std::string,Formation::Robot>(robot_properties.name,robot));
     this->index_map_.insert(std::pair<std::string,unsigned int>(robot_properties.name,this->number_of_robots_));
     this->number_of_robots_++;
@@ -61,7 +62,7 @@ void Formation::modifiePose(std::string name,tf::Pose pose)
 }
 
 
-Formation::Poses Formation::getPoses()
+Formation::Poses Formation::getPose()
 {
     if(this->formation_map_.empty())
     {
@@ -106,7 +107,7 @@ Formation::Poses Formation::getScannedPose()
 
 Formation::Poses Formation::getScannedPose(std::string name)
 {
-    return this->formation_map_.at(name).predictor->getPoses();
+    return this->formation_map_.at(name).laser->getPoses();
 }
 
 
@@ -131,7 +132,7 @@ Formation::Cloud Formation::getClusteredScan()
     for(auto robot: formation_map_)
     {
         Formation::Cloud local;
-        local=robot.second.predictor->getClusteredPoints();        
+        local=robot.second.laser->getClusteredPoints();        
         local.header.frame_id=this->reference_frame_;
         LaserPredictor::transformCloud(local,robot.second.pose);
         cloud=LaserPredictor::combineData(local,cloud);
@@ -141,7 +142,7 @@ Formation::Cloud Formation::getClusteredScan()
 
 Formation::Cloud Formation::getClusteredScan(std::string name)
 {
-    return this->formation_map_.at(name).predictor->getClusteredPoints();
+    return this->formation_map_.at(name).laser->getClusteredPoints();
 }
 
 Formation::Cloud Formation::getScan()
@@ -154,7 +155,7 @@ Formation::Cloud Formation::getScan()
     for(auto robot: formation_map_)
     {
         Formation::Cloud local;
-        local=robot.second.predictor->getRegisteredPoints();        
+        local=robot.second.laser->getRegisteredPoints();        
         local.header.frame_id=this->reference_frame_;
         LaserPredictor::transformCloud(local,robot.second.pose);
         cloud=LaserPredictor::combineData(local,cloud);
@@ -165,7 +166,7 @@ Formation::Cloud Formation::getScan()
 
 Formation::Cloud Formation::getScan(std::string name)
 {
-    return this->formation_map_.at(name).predictor->getRegisteredPoints();
+    return this->formation_map_.at(name).laser->getRegisteredPoints();
 }
 
 std::vector<std::string> Formation::getNames()
@@ -189,8 +190,8 @@ void Formation::startPrediction(double frequenzy)
             relative_poses.push_back(robot.second.pose.inverseTimes(this->formation_map_.at(neighbour).pose));
             ROS_WARN("Rel psoes: %lf %lf %lf ",relative_poses.back().getOrigin().x(),relative_poses.back().getOrigin().y(),relative_poses.back().getOrigin().z());
         }
-        robot.second.predictor->guess(relative_poses);
-        robot.second.predictor->startClustering(frequenzy);
+        robot.second.laser->guess(relative_poses);
+        robot.second.laser->startClustering(frequenzy);
     }
 }
 
@@ -235,8 +236,8 @@ tf::Transform Formation::transformBetweenRobots(Formation::Robot robot1, Formati
 {
     Poses poses1;
     Poses poses2;
-    poses1=robot1.predictor->getPoses();
-    poses2=robot2.predictor->getPoses();
+    poses1=robot1.laser->getPoses();
+    poses2=robot2.laser->getPoses();
 
     for(auto pose1:poses1)
     {

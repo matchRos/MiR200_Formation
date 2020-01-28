@@ -248,8 +248,21 @@ void LaserPredictor::guess(Poses poses)
 
 void LaserPredictor::clustering(const ros::TimerEvent &event)
 {
-    this->data_.combined_clustered=this->data_.combined;
-    this->data_.clusters=this->kMeans(this->data_.combined_clustered,this->poses_);
+    try{
+        this->data_.combined_clustered=this->data_.combined;
+        this->data_.clusters=this->kMeans(this->data_.combined_clustered,this->poses_);
+    }
+    catch(std::out_of_range &e)
+    {
+        std::stringstream ss;
+        ss<<"K-Means clustering out of range: "<<e.what();
+        throw std::out_of_range(ss.str().c_str());
+    }
+    catch(std::exception &e)
+    {
+        ROS_WARN("K-Means clustering threw exception!");
+        throw;
+    }
 }
 
 void LaserPredictor::startClustering(double frequenzy)
@@ -316,7 +329,6 @@ void LaserPredictor::transformCloud(sensor_msgs::PointCloud &cloud, tf::Transfor
 {
     if(cloud.points.empty())
     {
-        throw std::invalid_argument("Cannot transform an empty point cloud");
         return;
     }
     for(int i=0;i<cloud.points.size();i++)
@@ -341,7 +353,7 @@ void LaserPredictor::subscriberFrontCallback(const sensor_msgs::LaserScanConstPt
     if(!data_.front.points.empty())
     {
         this->transformCloud(this->data_.front,this->trafos_.front);
-    }
+    }    
     this->data_.front.header.frame_id=this->nh_.resolveName(this->frames_.base);
     this->data_.combined=this->combineData(this->data_.front,this->data_.back);
 

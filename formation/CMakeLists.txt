@@ -132,10 +132,12 @@ add_library(${PROJECT_NAME}
   include/${PROJECT_NAME}/formation_publisher.h
   include/${PROJECT_NAME}/formation_subscriber.h
   include/${PROJECT_NAME}/laser_predictor.h
+  include/${PROJECT_NAME}/odometry_predictor.h
   src/laser_predictor.cpp
   src/formation.cpp
   src/formation_subscriber.cpp
-  src/formation_publisher.cpp 
+  src/formation_publisher.cpp
+  src/odometry_predictor.cpp
 )
 add_dependencies(${PROJECT_NAME} ${catkin_EXPORTED_TARGETS})
 
