@@ -7,8 +7,7 @@ Panels:
         - /Global Options1
         - /Status1
         - /TF1/Frames1
-        - /LaserPredictor1/Status1
-        - /Pose1
+        - /LaserPredictor1
       Splitter Ratio: 0.5
     Tree Height: 775
   - Class: rviz/Selection
@@ -260,7 +259,7 @@ Visualization Manager:
       Size (Pixels): 3
       Size (m): 0.00999999978
       Style: Flat Squares
-      Topic: /formation/clustered_scan
+      Topic: /formation/robot_master/clustered_scan
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true

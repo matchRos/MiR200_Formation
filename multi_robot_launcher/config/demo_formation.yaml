@@ -35,29 +35,6 @@ robot2:
   topic_target_odometry: "/trajectory_odom"
   
   controller_type: 2                             # 1-> pseudo_invers 2->lyapov 3->angl_dist
-
-robot3:
-  publish_tf: true
-
-  world_frame: "/map"
-
-  topic_current_odometry:   "odometry/filtered"
-
-  topic_target_odometry: "/trajectory_odom"
-  
-  controller_type: 2                             # 1-> pseudo_invers 2->lyapov 3->angl_dist
-
-robot4:
-  publish_tf: true
-
-  world_frame: "/map"
-
-  topic_current_odometry:   "odometry/filtered"
-
-  topic_target_odometry: "/trajectory_odom"
-  
-  controller_type: 2                             # 1-> pseudo_invers 2->lyapov 3->angl_dist
-
   
 robot_master:
   publish_tf: true

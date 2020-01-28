@@ -24,24 +24,6 @@
   <arg name="displ" value="screen"/>
 </include>
 
-<!-- Setup a slave mobile robot -->
-<include file="$(find controller)/launch/slave.launch">
-  <arg name="robot_name" value="robot3"/>
-  <arg name="robot_x"   value="-0.5" />
-  <arg name="robot_y"   value="-3.5" />
-  <arg name="robot_yaw" value="0" />
-  <arg name="displ" value="screen"/>
-</include>
-
-<!-- Setup a slave mobile robot -->
-<include file="$(find controller)/launch/slave.launch">
-  <arg name="robot_name" value="robot4"/>
-  <arg name="robot_x"   value="-5.5" />
-  <arg name="robot_y"   value="-3.5" />
-  <arg name="robot_yaw" value="0" />
-  <arg name="displ" value="screen"/>
-</include>
-
 <!-- Setup a master mobile robot-->
 <include file="$(find controller)/launch/master.launch">
   <arg name="robot_name" value="robot_master"/>
