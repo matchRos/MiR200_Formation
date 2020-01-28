@@ -110,7 +110,6 @@ void FormationPublisher::allocScannedPosePublishers(ros::NodeHandle nh_topic,std
     {
         std::stringstream ss;
         ss<<"prediction_"<<this->scanned_pose_sep_pub_list_.at(name).size();
-        ROS_WARN("Expanding publisher lsit to size: %i!",this->scanned_pose_sep_pub_list_.at(name).size());
         this->scanned_pose_sep_pub_list_.at(name).push_back(nh_topic.advertise<geometry_msgs::PoseStamped>(ss.str(),1));        
     }
 }

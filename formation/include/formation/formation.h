@@ -31,28 +31,53 @@ class Formation{
         template <typename T>
         using Matrix =std::vector<std::vector<T> >;
 
+        /**
+         * @brief Defines Neighbours as vector of robot names
+         * 
+         */
         typedef std::vector<std::string> Neighbours;
 
+        /**
+         * @brief Defines LaserPointer as shared pointer to a LaserPredictor
+         * 
+         */
         typedef std::shared_ptr<LaserPredictor> LaserPointer;
 
+        /**
+         * @brief Brings Poses up to scope
+         * 
+         */
         using Poses=LaserPredictor::Poses;
 
+        /**
+         * @brief Brings Cloud up to scope
+         * 
+         */
         using Cloud=LaserPredictor::Cloud;
 
+        
+        /**
+         * @brief Defines Properties of a Robot
+         * 
+         */
         struct RobotProperties{
             RobotProperties(){}
-            std::string name;
-            tf::Pose pose;
-            Formation::Neighbours neighbours;
-            LaserPredictor::Frames laser_frames;
-            LaserPredictor::Topics laser_topics;
+            std::string name;   ///<Name of the robot
+            tf::Pose pose;  ///<Pose of the robot
+            Formation::Neighbours neighbours;   ///<neighbours of the robot by name
+            LaserPredictor::Frames laser_frames;    //<Frames of the laserscanner links
+            LaserPredictor::Topics laser_topics;    ///<Topics the laserscanner messages are published at
         };
 
+        /**
+         * @brief Holds a robot to handle with formation member stuff
+         * 
+         */
         struct Robot{
             Robot(){};
-            tf::Pose pose;
-            Neighbours neighbours;
-            LaserPointer predictor;           
+            tf::Pose pose;  ///<Pose of the robot
+            Neighbours neighbours;  ///<Neighbours of the robot
+            LaserPointer predictor; ///<LaserPredictor fro this robot
         };
 
     
@@ -63,9 +88,19 @@ class Formation{
         typedef Formation Transformation;
 
       
+
+        /**
+         * @brief Construct a new Formation object
+         * 
+         */
         Formation();
 
 
+        /**
+         * @brief Adds a robot with given properties to the formation
+         * 
+         * @param robot Properties of the added robot
+         */
         void addRobot(RobotProperties robot);
 
         /**
@@ -99,6 +134,12 @@ class Formation{
          */
         std::vector<std::string> getNames();
 
+
+        /**
+         * @brief Get the Reference Frame object
+         * 
+         * @return std::string Name of the reference frame formation wide geometry is defined in
+         */
         std::string getReferenceFrame();
 
         /**
@@ -195,10 +236,10 @@ class Formation{
 
         std::map<std::string,Robot> formation_map_; ///<Maps a special robot name to its correspondence Robot
         std::map<std::string,unsigned int> index_map_;  ///<Maps a special idex of a robot to its name
+
      
         Matrix<double>  adjacency_;   ///<contains the adjacence matrice of the formation
         Matrix<bool>  connectivity_;  ///<contains the connectivity matrice of the formation
-
 
         /**
          * @brief Determines the connectivity matrix of the formation
@@ -217,5 +258,4 @@ class Formation{
 
 
         tf::Transform transformBetweenRobots(Robot robot1, Robot robot2);
-
 };

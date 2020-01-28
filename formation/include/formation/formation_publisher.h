@@ -20,13 +20,22 @@ class FormationPublisher{
         FormationPublisher(Formation* formation);
 
 
-
+        /**
+         * @brief Publishs the laser scan data of the hole formation
+         * 
+         */
         void publishLaserScans();
 
-
+        /**
+         * @brief Publishs the clustered laser scan data of the hole formation
+         * 
+         */
         void publishClusteredLaserScans();
 
-
+        /**
+         * @brief Publishs the Poses wich are predicted by the laser scanner data
+         * 
+         */
         void publishScanPoses();
 
         /**
