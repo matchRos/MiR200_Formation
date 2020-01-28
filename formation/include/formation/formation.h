@@ -20,15 +20,18 @@
  * formation and provides basic interpretation tools as the adjacency matrix of the formation.
  * 
  */
+
+   
+
+
 class Formation{
-    
-    public:
-        enum PoseEstamination{
+    public:        
+        enum PoseEstamination
+        {
             by_laser_scanner,
             by_odometry,
             by_ekf
         };
-
         /**
          * @brief Template for a generic matrix as std::vector of std::vectors
          * 
@@ -153,19 +156,37 @@ class Formation{
         std::string getReferenceFrame();
 
         /**
-         * @brief Gets a vector that contains every single robot pose
+         * @brief Gets a vector that contains every single robot pose. Estamination of pose is specified by the class type paramter
          * 
          * @return std::vector<tf::Pose> Vector of the robot poses
          */
-        Poses getPose();    
+        Poses getPose();
 
         /**
-         * @brief Get the Pose object of a specified robot
+         * @brief Get the Poses object.
+         * 
+         * @param type type of estamination to be used
+         * @return Poses Estaminated poses
+         */
+        Poses getPose(PoseEstamination type);  
+
+        /**
+         * @brief Get the Pose object of a specified robot. Estamination of pose is specified by the class type paramter
          * 
          * @param name Name of the robot to get the pose from
          * @return tf::Pose pose of the robot
          */
         tf::Pose getPose(std::string name);
+
+        /**
+         * @brief Get the Poses object of a specified robot
+         * 
+         * @param name Name of the robot
+         * @param type type of pose estamination
+         * @return tf::Pose Pose of the robot
+         */
+        tf::Pose getPose(std::string name,PoseEstamination type);
+
 
 
         /**
@@ -250,6 +271,9 @@ class Formation{
      
         Matrix<double>  adjacency_;   ///<contains the adjacence matrice of the formation
         Matrix<bool>  connectivity_;  ///<contains the connectivity matrice of the formation
+
+        PoseEstamination type_;
+        
 
         tf::Pose getPoseByLaser(std::string name);
         tf::Pose getPoseByOdom(std::string name);

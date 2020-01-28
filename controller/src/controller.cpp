@@ -369,7 +369,7 @@ void Controller::publish()
                                         nh.resolveName("reference"),
                                         nh.resolveName("base_footprint"));
         this->broadcaster_.sendTransform(base_link);
-
+    }
         // //Publish reference link
         geometry_msgs::TransformStamped msg2;
         msg2.header.stamp = ros::Time::now();
@@ -377,7 +377,7 @@ void Controller::publish()
         msg2.child_frame_id=this->nh.resolveName("reference");
         tf::transformTFToMsg(this->world2reference_,msg2.transform);
         this->broadcaster_.sendTransform(msg2);
-    }
+   
     
 }
 

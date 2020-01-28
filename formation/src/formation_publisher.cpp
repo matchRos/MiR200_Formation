@@ -15,8 +15,9 @@ FormationPublisher::FormationPublisher(Formation* formation):formation_(formatio
     for(auto name:this->formation_->getNames())
     {
         ros::NodeHandle nh(this->nh_.resolveName(name));
-        this->scanned_pose_pub_list_.push_back(nh.advertise<geometry_msgs::PoseStamped>("scan_pose",10));
-        this->scanned_pose_sep_pub_list_.insert(std::pair<std::string,std::vector<ros::Publisher> >(name,std::vector<ros::Publisher>()));        
+        this->scanned_pose_pub_list_.push_back(nh.advertise<geometry_msgs::PoseStamped>("scan_pose",10));       
+        this->scanned_pose_sep_pub_list_.insert(std::pair<std::string,std::vector<ros::Publisher> >(name,std::vector<ros::Publisher>()));
+        this->pose_pub_list_.insert(std::pair<std::string,ros::Publisher >(name,nh.advertise<geometry_msgs::PoseStamped>("pose",10)));        
         this->scan_pub_list_.insert(std::pair<std::string,ros::Publisher>(name,(nh.advertise<sensor_msgs::PointCloud>("scan",10))));
         this->cluster_scan_pub_list_.insert(std::pair<std::string,ros::Publisher>(name,(nh.advertise<sensor_msgs::PointCloud>("clustered_scan",10))));
     }
@@ -32,13 +33,26 @@ void FormationPublisher::publish()
     }
     else
     {
+        this->publishPoses();
         this->publishLaserScans();
         this->publishClusteredLaserScans();
         this->publishScanPoses();
+
         this->publishSeperatedClusterScans();
         this->publishSeperatedLaserScans();
         this->publishSeperatedScannedPoses();
     }    
+}
+
+void FormationPublisher::publishPoses()
+{
+    for(auto publisher:this->pose_pub_list_)
+    {
+        geometry_msgs::PoseStamped msg;
+        msg.header.frame_id=this->formation_->getReferenceFrame();
+        tf::poseTFToMsg(this->formation_->getPose(publisher.first),msg.pose);
+        publisher.second.publish(msg);
+    }
 }
 
 void FormationPublisher::publishLaserScans()

@@ -8,6 +8,7 @@ OdometryPredictor::OdometryPredictor(): topic_name_("odom"),
     this->odom_sub_=this->nh_.subscribe<nav_msgs::Odometry>(topic_name_,10,boost::bind(&OdometryPredictor::callbackOdometry,this,_1));
 }
 
+
 OdometryPredictor::OdometryPredictor(ros::NodeHandle &nh):  topic_name_("odometry/filtered"),
                                                             nh_(nh),
                                                             initial_trafo_(tf::Transform(tf::createIdentityQuaternion(),tf::Vector3(0.0,0.0,0.0)))
@@ -15,10 +16,11 @@ OdometryPredictor::OdometryPredictor(ros::NodeHandle &nh):  topic_name_("odometr
     this->odom_sub_=this->nh_.subscribe<nav_msgs::Odometry>(topic_name_,10,boost::bind(&OdometryPredictor::callbackOdometry,this,_1));
 }
 
+
 OdometryPredictor::OdometryPredictor(ros::NodeHandle &nh,std::string topic_name,tf::Transform initial_trafo):
-                                        nh_(nh),
-                                        topic_name_(topic_name),
-                                        initial_trafo_(initial_trafo)
+                                                            nh_(nh),
+                                                            topic_name_(topic_name),
+                                                            initial_trafo_(initial_trafo)
 {
     this->odom_sub_=this->nh_.subscribe<nav_msgs::Odometry>(topic_name_,10,boost::bind(&OdometryPredictor::callbackOdometry,this,_1));  
 }

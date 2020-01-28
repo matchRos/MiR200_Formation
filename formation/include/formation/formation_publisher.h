@@ -20,6 +20,8 @@ class FormationPublisher{
         FormationPublisher(Formation* formation);
 
 
+        void publishPoses();
+
         /**
          * @brief Publishs the laser scan data of the hole formation
          * 
@@ -68,7 +70,9 @@ class FormationPublisher{
 
         ros::Publisher scan_pub_;   //< Publihser for the hole formation scanner data
         ros::Publisher cluster_scan_pub_;   //<Publisher for the hole clustered scan data
+      
         std::map<std::string,std::vector<ros::Publisher> > scanned_pose_sep_pub_list_;  //< map that links a robot name to a list of publihshers for publishing every scanned pose
+        std::map<std::string,ros::Publisher> pose_pub_list_;
         std::map<std::string,ros::Publisher> scan_pub_list_;    //< List of publishers for publishing each robots laser scanner data
         std::vector<ros::Publisher> scanned_pose_pub_list_;
         std::map<std::string,ros::Publisher> cluster_scan_pub_list_;    //< List of publisher for publishing each robots clustered laser scanner data

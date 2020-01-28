@@ -2,7 +2,8 @@
 
 
 Formation::Formation(): number_of_robots_(0),
-                        reference_frame_("map")
+                        reference_frame_("map"),
+                        type_(PoseEstamination::by_odometry)
 
 {
 
@@ -27,6 +28,7 @@ void Formation::addRobot(Formation::RobotProperties robot_properties)
     robot.neighbours=robot_properties.neighbours;
     robot.laser=LaserPointer(new LaserPredictor(nh,robot_properties.laser_frames,robot_properties.laser_topics));
     robot.odom=OdomPointer(new OdometryPredictor(nh,robot_properties.odom_topic,robot_properties.pose));
+    robot.ekf=OdomPointer(new OdometryPredictor(nh,robot_properties.ekf_topic,robot_properties.pose));
     this->formation_map_.insert(std::pair<std::string,Formation::Robot>(robot_properties.name,robot));
     this->index_map_.insert(std::pair<std::string,unsigned int>(robot_properties.name,this->number_of_robots_));
     this->number_of_robots_++;
@@ -62,25 +64,88 @@ void Formation::modifiePose(std::string name,tf::Pose pose)
 }
 
 
+//Pose Estaminations ##################################################################################################################################
+//Pose Estaminations ##################################################################################################################################
+//Pose Estaminations ##################################################################################################################################
+
 Formation::Poses Formation::getPose()
 {
-    if(this->formation_map_.empty())
-    {
-        throw std::out_of_range("No Poses in Formation since the formation is empty!");
-    }
+    this->getPose(this->type_);    
+}
 
-    Poses poses;
-    for(auto robot:this->formation_map_)
+Formation::Poses Formation::getPose(PoseEstamination type)
+{
+    switch(type)
     {
-        poses.push_back(robot.second.pose);
+        case PoseEstamination::by_ekf:return this->getPoseByEkf();
+        case PoseEstamination::by_laser_scanner:return this->getPoseByLaser();
+        case PoseEstamination::by_odometry:return this->getPoseByOdom();
+        default: throw std::invalid_argument("No such type of pose estamination!");
     }
-    return poses;
 }
 
 tf::Pose Formation::getPose(std::string name)
 {
-    return this->formation_map_.at(name).pose;
+    return this->getPose(name,this->type_);
 }
+
+tf::Pose Formation::getPose(std::string name,PoseEstamination type)
+{
+    switch(type)
+    {
+        case PoseEstamination::by_ekf:return this->getPoseByEkf(name);
+        case PoseEstamination::by_laser_scanner:return this->getPoseByLaser(name);
+        case PoseEstamination::by_odometry:return this->getPoseByOdom(name);
+        default: throw std::invalid_argument("No such type of pose estamination!");
+    }
+}
+
+Formation::Poses Formation::getPoseByLaser()
+{
+    return Poses();
+}
+
+tf::Pose Formation::getPoseByLaser(std::string name)
+{
+    return tf::Pose();
+}
+
+Formation::Poses Formation::getPoseByOdom()
+{
+    Poses poses;
+    for(auto robot:formation_map_)
+    {
+        poses.push_back(robot.second.odom->getPose());
+    }
+    return poses;
+}
+
+tf::Pose Formation::getPoseByOdom(std::string name)
+{
+    return this->formation_map_.at(name).odom->getPose();
+}
+
+
+Formation::Poses Formation::getPoseByEkf()
+{
+     Poses poses;
+    for(auto robot:formation_map_)
+    {
+        poses.push_back(robot.second.ekf->getPose());
+    }
+    return poses;
+}
+
+tf::Pose Formation::getPoseByEkf(std::string name)
+{
+    return  this->formation_map_.at(name).ekf->getPose();
+}
+
+
+
+
+
+
 
 Formation::Poses Formation::getScannedPose()
 {
@@ -109,18 +174,6 @@ Formation::Poses Formation::getScannedPose(std::string name)
 {
     return this->formation_map_.at(name).laser->getPoses();
 }
-
-
-Formation::Matrix<double> Formation::getAdjacency()
-{  
-    return  this->determineAdjacency();
-}
-
-Formation::Matrix<bool> Formation::getConnectivity()
-{
-    return this->determineConnectivity();
-}
-
 
 Formation::Cloud Formation::getClusteredScan()
 {
@@ -179,6 +232,16 @@ std::vector<std::string> Formation::getNames()
     return names;
 }
 
+Formation::Matrix<double> Formation::getAdjacency()
+{  
+    return  this->determineAdjacency();
+}
+
+Formation::Matrix<bool> Formation::getConnectivity()
+{
+    return this->determineConnectivity();
+}
+
 
 void Formation::startPrediction(double frequenzy)
 {    
@@ -194,7 +257,6 @@ void Formation::startPrediction(double frequenzy)
         robot.second.laser->startClustering(frequenzy);
     }
 }
-
 
 
 Formation::Matrix<bool> Formation::determineConnectivity()

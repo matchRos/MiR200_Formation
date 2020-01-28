@@ -51,6 +51,8 @@ int main(int argc,char** argv)
     properties_master.pose=tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(0.0,0.0,0.0));
     properties_master.laser_frames=frames;
     properties_master.laser_topics=topics;
+    properties_master.ekf_topic="odometry/filtered";
+    properties_master.odom_topic="mobile_base_controller/odom";
 
     Formation::RobotProperties properties_robot1;
     properties_robot1.name="robot1";
@@ -58,20 +60,24 @@ int main(int argc,char** argv)
     properties_robot1.pose=tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(-1.5,1.5,0.0));
     properties_robot1.laser_frames=frames;
     properties_robot1.laser_topics=topics;
+    properties_robot1.ekf_topic="odometry/filtered";
+    properties_robot1.odom_topic="mobile_base_controller/odom";
 
     Formation::RobotProperties properties_robot2;
     properties_robot2.name="robot2";
     properties_robot2.neighbours=Formation::Neighbours{"robot_master","robot1"};
     properties_robot2.pose=tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(-1.5,-1.5,0.0));
     properties_robot2.laser_frames=frames;
-    properties_robot2.laser_topics=topics;    
+    properties_robot2.laser_topics=topics;
+    properties_robot2.ekf_topic="odometry/filtered";
+    properties_robot2.odom_topic="mobile_base_controller/odom";    
 
 
     Formation test;
     test.addRobot(properties_master);
     test.addRobot(properties_robot1);
     test.addRobot(properties_robot2);
-    test.startPrediction(1);
+    test.startPrediction(10);
 
     FormationPublisher pub(&test);
 
