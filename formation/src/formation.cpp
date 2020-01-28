@@ -1,4 +1,4 @@
-#include <simulation_env/formation.h>
+#include <formation/formation.h>
 
 
 Formation::Formation(): number_of_robots_(0),

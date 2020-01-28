@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>simulation_env</name>
+  <name>formation</name>
   <version>0.0.0</version>
-  <description>The simulation_env package</description>
+  <description>The formation package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
   <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
-  <maintainer email="rosmatch@todo.todo">rosmatch</maintainer>
+  <maintainer email="ros_match@todo.todo">ros_match</maintainer>
 
 
   <!-- One license tag required, multiple allowed, one license per tag -->
@@ -19,7 +19,7 @@
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/simulation_env</url> -->
+  <!-- <url type="website">http://wiki.ros.org/formation</url> -->
 
 
   <!-- Author tags are optional, multiple are allowed, one per tag -->
@@ -50,21 +50,14 @@
   <!--   <doc_depend>doxygen</doc_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>cmake_modules</build_depend>
-  <depend>multi_robot_msgs</depend>
+ 
+  <depend>roscpp</depend>
+  <depend>tf</depend>
+  <depend>laser_geometry</depend>
+
+  <depend>geometry_msgs</depend>
+  <depend>nav_msgs</depend>
   <depend>sensor_msgs</depend>
-  <depend>formation</depend>
-
-
-  <build_depend>controller</build_depend>
-  <build_depend>nav_msgs</build_depend>  
-  <build_depend>roscpp</build_depend>
-   <build_depend>laser_geometry</build_depend>
-  <build_export_depend>controller</build_export_depend>
-  <build_export_depend>nav_msgs</build_export_depend>
-  <build_export_depend>roscpp</build_export_depend>
-  <exec_depend>controller</exec_depend>
-  <exec_depend>nav_msgs</exec_depend>
-  <exec_depend>roscpp</exec_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->

@@ -7,11 +7,11 @@
 #include <tf/transform_listener.h>
 #include <multi_robot_msgs/ControlData.h>
 
-#include <controller/laser_predictor.h>
+#include <formation/laser_predictor.h>
 
-#include <simulation_env/formation.h>
-#include <simulation_env/formation_publisher.h>
-#include <simulation_env/formation_subscriber.h>
+#include <formation/formation.h>
+#include <formation/formation_publisher.h>
+#include <formation/formation_subscriber.h>
 
 
 // Formation form_initial;

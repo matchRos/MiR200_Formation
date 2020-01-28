@@ -1,4 +1,4 @@
-#include <controller/laser_predictor.h>
+#include <formation/laser_predictor.h>
 
 LaserPredictor::LaserPredictor()
 {
@@ -12,9 +12,9 @@ LaserPredictor::LaserPredictor( ros::NodeHandle &nh,
                                 frames_(frames)
 {
     ROS_INFO("Laser Predictor: Subscribing to:%s", this->nh_.resolveName(topics.front).c_str());
-    this->sub_front_=this->nh_.subscribe<sensor_msgs::LaserScan>(this->nh_.resolveName(topics.front),100,boost::bind(&LaserPredictor::subscriberFrontCallback,this,_1));
+    this->sub_front_=this->nh_.subscribe<sensor_msgs::LaserScan>(this->nh_.resolveName(topics.front),10,boost::bind(&LaserPredictor::subscriberFrontCallback,this,_1));
     ROS_INFO("Laser Predictor: Subscribing to:%s", this->nh_.resolveName(topics.back).c_str());
-    this->sub_back_=this->nh_.subscribe<sensor_msgs::LaserScan>(this->nh_.resolveName(topics.back),100,boost::bind(&LaserPredictor::subscriberBackCallback,this,_1));
+    this->sub_back_=this->nh_.subscribe<sensor_msgs::LaserScan>(this->nh_.resolveName(topics.back),10,boost::bind(&LaserPredictor::subscriberBackCallback,this,_1));
 
     tf::TransformListener listener;
     ROS_INFO(   "Laser Predicitor: Get transformation from %s to %s",
@@ -61,11 +61,6 @@ LaserPredictor::LaserPredictor( ros::NodeHandle &nh,
 //Getter/Setter##############################################################################################################################
 // ##########################################################################################################################################
 // ##########################################################################################################################################
-
-void LaserPredictor::guess(Poses poses)
-{
-    this->poses_=poses;
-}
 int LaserPredictor::getNumberOfPredictions()
 {
     return this->poses_.size();
@@ -246,10 +241,20 @@ LaserPredictor::Clusters LaserPredictor::kMeans(sensor_msgs::PointCloud &data,Po
     return ret;
 }
 
+void LaserPredictor::guess(Poses poses)
+{
+    this->poses_=poses;
+}
+
 void LaserPredictor::clustering(const ros::TimerEvent &event)
 {
     this->data_.combined_clustered=this->data_.combined;
     this->data_.clusters=this->kMeans(this->data_.combined_clustered,this->poses_);
+}
+
+void LaserPredictor::startClustering(double frequenzy)
+{
+    this->cluster_scope_=this->nh_.createTimer(ros::Duration(1/frequenzy),&LaserPredictor::clustering,this);
 }
 
 sensor_msgs::PointCloud LaserPredictor::combineData(sensor_msgs::PointCloud front, sensor_msgs::PointCloud back)
@@ -311,7 +316,7 @@ void LaserPredictor::transformCloud(sensor_msgs::PointCloud &cloud, tf::Transfor
 {
     if(cloud.points.empty())
     {
-        // throw std::invalid_argument("Cannot transform an empty point cloud");
+        throw std::invalid_argument("Cannot transform an empty point cloud");
         return;
     }
     for(int i=0;i<cloud.points.size();i++)
@@ -324,10 +329,6 @@ void LaserPredictor::transformCloud(sensor_msgs::PointCloud &cloud, tf::Transfor
     }
 }
 
-void LaserPredictor::startClustering(double frequenzy)
-{
-    this->cluster_scope_=this->nh_.createTimer(ros::Duration(1/frequenzy),&LaserPredictor::clustering,this);
-}
 
 //Callbacks##################################################################################################################################
 // ##########################################################################################################################################

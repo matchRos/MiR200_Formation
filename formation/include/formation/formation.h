@@ -2,9 +2,7 @@
 
 #include <ros/ros.h>
 #include <tf/tf.h>
-#include <multi_robot_msgs/Formation.h>
-#include <nav_msgs/Odometry.h>
-#include <std_msgs/String.h>
+
 #include <tf/transform_listener.h>
 #include <laser_geometry/laser_geometry.h>
 #include <numeric>
@@ -13,7 +11,7 @@
 #include <geometry_msgs/Point32.h>
 #include <sensor_msgs/ChannelFloat32.h>
 
-#include <controller/laser_predictor.h>
+#include <formation/laser_predictor.h>
 
 
 

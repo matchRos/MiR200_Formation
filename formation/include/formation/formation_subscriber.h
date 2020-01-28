@@ -1,7 +1,8 @@
 #pragma once
 
 #include <ros/ros.h>
-#include <simulation_env/formation.h>
+#include <nav_msgs/Odometry.h>
+#include <formation/formation.h>
 
 class FormationSubscriber{
     public:

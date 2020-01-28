@@ -20,7 +20,8 @@ class LaserPredictor{
          * @brief Holds the names of all the necessary frames for the prediction class.
          * 
          */
-        struct Frames{
+        struct Frames
+        {
             Frames(){};
             /**
              * @brief Construct a new Frames object
@@ -38,20 +39,24 @@ class LaserPredictor{
             std::string back;   ///<Frame name of the back laser link
         };        
         
+
         /**
          * @brief Holds all necessary transformations
          * 
          */
-        struct Transforms{
+        struct Transforms
+        {
             tf::StampedTransform front; ///<Transformation from front link to base link
             tf::StampedTransform back;  ///<Transformation from back link to base link
         };
+
 
         /**
          * @brief Holds all the data used within the predictor
          * 
          */
-        struct Data{
+        struct Data
+        {
             sensor_msgs::PointCloud front;  ///< Data from the front laser scanner
             sensor_msgs::PointCloud back;   ///< Data from the back laser scanner
             sensor_msgs::PointCloud combined;   ///< Combined data of frot and back laser scanner
@@ -79,7 +84,10 @@ class LaserPredictor{
          * 
          */
         typedef Frames Topics;
-
+        /**
+         * @brief Defines Clusters as vector of PointClouds
+         * 
+         */
         typedef std::vector<sensor_msgs::PointCloud> Clusters;
 
 

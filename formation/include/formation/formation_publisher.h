@@ -1,7 +1,7 @@
 #pragma once
 
 #include<ros/ros.h>
-#include<simulation_env/formation.h>
+#include<formation/formation.h>
 
 class FormationPublisher{
     
@@ -25,6 +25,7 @@ class FormationPublisher{
 
 
         void publishClusteredLaserScans();
+
 
         void publishScanPoses();
 

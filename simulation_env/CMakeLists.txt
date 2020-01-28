@@ -20,7 +20,7 @@ find_package(
   sensor_msgs
   multi_robot_msgs
 
-  controller 
+  formation 
   
   
 )
@@ -140,14 +140,6 @@ add_library(planner
   include/${PROJECT_NAME}/planner.h
   src/planner.cpp
 )
-add_library(formation
-  include/${PROJECT_NAME}/formation.h
-  include/${PROJECT_NAME}/formation_publisher.h
-  include/${PROJECT_NAME}/formation_subscriber.h
-  src/formation.cpp
-  src/formation_subscriber.cpp
-  src/formation_publisher.cpp 
-)
 
 add_dependencies(formation ${catkin_EXPORTED_TARGETS})
 ## Add cmake target dependencies of the library
@@ -185,6 +177,7 @@ target_link_libraries(spiral_node
   planner
   ${catkin_LIBRARIES}
 )
+
 target_link_libraries(measurement_node
   formation
   ${catkin_LIBRARIES}
