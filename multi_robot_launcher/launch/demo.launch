@@ -10,7 +10,6 @@
 
 <include file="$(find multi_robot_launcher)/launch/empty_world.launch">
   <arg name="paused" value="true" />
-  <arg name="world_name" default="worlds/empty.world"/> <!-- Note: the world_name is with respect to GAZEBO_RESOURCE_PATH environmental variable, but can also be an absolute path -->
   <arg name="gui" value="true" />
   <arg name="recording" value="false"/>
 </include>
