@@ -26,9 +26,11 @@ void Formation::addRobot(Formation::RobotProperties robot_properties)
     robot.pose=robot_properties.pose;
     ros::NodeHandle nh(robot_properties.name);
     robot.neighbours=robot_properties.neighbours;
+    
     robot.laser=LaserPointer(new LaserPredictor(nh,robot_properties.laser_frames,robot_properties.laser_topics));
     robot.odom=OdomPointer(new OdometryPredictor(nh,robot_properties.odom_topic,robot_properties.pose));
     robot.ekf=OdomPointer(new OdometryPredictor(nh,robot_properties.ekf_topic,robot_properties.pose));
+    
     this->formation_map_.insert(std::pair<std::string,Formation::Robot>(robot_properties.name,robot));
     this->index_map_.insert(std::pair<std::string,unsigned int>(robot_properties.name,this->number_of_robots_));
     this->number_of_robots_++;

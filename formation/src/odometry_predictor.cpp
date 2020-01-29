@@ -24,6 +24,14 @@ OdometryPredictor::OdometryPredictor(ros::NodeHandle &nh,std::string topic_name,
                                                             topic_name_(topic_name),
                                                             initial_trafo_(initial_trafo)
 {
+    ROS_INFO("Odemetry predictor: Initial Transformation: x:%lf y:%lf z:%lf ; qx: %lf qy:%lf qz:%lf qw:%lf",
+                this->initial_trafo_.getOrigin().x(),
+                this->initial_trafo_.getOrigin().y(),
+                this->initial_trafo_.getOrigin().z(),
+                this->initial_trafo_.getRotation().x(),
+                this->initial_trafo_.getRotation().y(),
+                this->initial_trafo_.getRotation().z(),
+                this->initial_trafo_.getRotation().w());
     ROS_INFO("Odometry predictor: Subscribing to: %s",this->nh_.resolveName(topic_name_).c_str());
     this->odom_sub_=this->nh_.subscribe<nav_msgs::Odometry>(topic_name_,1,boost::bind(&OdometryPredictor::callbackOdometry,this,_1));  
 }
@@ -33,7 +41,7 @@ OdometryPredictor::OdometryPredictor(ros::NodeHandle &nh,std::string topic_name,
 void OdometryPredictor::callbackOdometry(const nav_msgs::OdometryConstPtr msg)
 {
     tf::poseMsgToTF(msg->pose.pose,this->pose_);
-    pose_=pose_*this->initial_trafo_;
+    pose_=this->initial_trafo_*pose_;
 }    
 
 tf::Pose OdometryPredictor::getPose()
