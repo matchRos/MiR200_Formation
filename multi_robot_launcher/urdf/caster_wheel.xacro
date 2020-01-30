@@ -63,10 +63,10 @@
                 </geometry>
                 <xacro:insert_block name="material_dark_grey" />
             </visual>
-            <collision>
+            <collision  >
                 <origin xyz="0 0 0" rpy="0 0 0" />
                 <geometry>
-                <mesh filename="package://mir_description/meshes/visual/wheel.stl" />
+                    <mesh filename="package://mir_description/meshes/visual/wheel.stl" />
                 </geometry>
             </collision>
         </link>

@@ -386,7 +386,7 @@ struct Controller::ControlVector Controller::calcLyapunov(LyapunovParameter para
     double x=relative.getOrigin().getX();
     double y=relative.getOrigin().getY();
     double phi=tf::getYaw(relative.getRotation());
-
+   
     ControlVector output;
     output.v=parameter.kx*x+desired.v*cos(phi);
     output.omega=parameter.kphi*sin(phi)+parameter.ky*desired.v*y+desired.omega;
