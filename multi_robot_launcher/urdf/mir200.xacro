@@ -71,12 +71,12 @@
     </gazebo>
 
     <!-- wheels -->
-    <xacro:actuated_wheel prefix="${prefix}" locationprefix="left" locationright="-1" damping_wheel="0.0" friction_wheel="0.0"/>
+    <xacro:actuated_wheel prefix="${prefix}" locationprefix="left"  locationright="-1" damping_wheel="0.0" friction_wheel="0.0"/>
     <xacro:actuated_wheel prefix="${prefix}" locationprefix="right" locationright="1" damping_wheel="0.0" friction_wheel="0.0"/>
-    <xacro:caster_wheel prefix="${prefix}" locationprefix="fl" locationright="-1" damping_steering="0.0" friction_steering="0.0" damping_wheel="0.0" friction_wheel="0.0"/>
-    <xacro:caster_wheel prefix="${prefix}" locationprefix="fr" locationright="1"  damping_steering="0.0" friction_steering="0.0" damping_wheel="0.0" friction_wheel="0.0"/>
-    <xacro:caster_wheel prefix="${prefix}" locationprefix="bl" locationright="-1" damping_steering="0.0" friction_steering="0.0" damping_wheel="0.0" friction_wheel="0.0"/>
-    <xacro:caster_wheel prefix="${prefix}" locationprefix="br" locationright="1"  damping_steering="0.0" friction_steering="0.0" damping_wheel="0.0" friction_wheel="0.0"/>
+    <xacro:caster_wheel prefix="${prefix}" locationprefix="fl" locationright="-1"   wheel_base_dx="${mir_200_front_caster_wheel_base_dx}" damping_steering="0.0" friction_steering="0.0" damping_wheel="0.0" friction_wheel="0.0"/>
+    <xacro:caster_wheel prefix="${prefix}" locationprefix="fr" locationright="1"    wheel_base_dx="${mir_200_front_caster_wheel_base_dx}" damping_steering="0.0" friction_steering="0.0" damping_wheel="0.0" friction_wheel="0.0"/>
+    <xacro:caster_wheel prefix="${prefix}" locationprefix="bl" locationright="-1"   wheel_base_dx="${mir_200_back_caster_wheel_base_dx}" damping_steering="0.0" friction_steering="0.0" damping_wheel="0.0" friction_wheel="0.0"/>
+    <xacro:caster_wheel prefix="${prefix}" locationprefix="br" locationright="1"    wheel_base_dx="${mir_200_back_caster_wheel_base_dx}" damping_steering="0.0" friction_steering="0.0" damping_wheel="0.0" friction_wheel="0.0"/>
 
     <!-- IMU -->
     <joint name="${prefix}base_link_to_imu_joint" type="fixed">
@@ -97,7 +97,9 @@
       <child link="${prefix}imu_frame" />
       <origin xyz="0 0 0" rpy="0 0 0" />
     </joint>
+
     <link name="${prefix}imu_frame" />
+
 
 
 
@@ -114,6 +116,7 @@
       <child link="${prefix}back_laser_link" />
       <origin xyz="-0.3548 -0.2352 0.1914" rpy="0.0 0.0 ${-0.75 * pi}" />  <!-- from visually matching up the meshes of the MiR and the laser scanner -->
     </joint>
+
     <xacro:sick_s300 prefix="${prefix}" link="back_laser_link" topic="b_scan" />
 
 
@@ -133,16 +136,16 @@
     </joint>
     <link name="${prefix}us_2_frame" />
 
-    
+    <!-- Ultrasound sensor plugin missing ?! -->
 
-    <!-- <joint name="${prefix}base_link_surface_joint" type="fixed">
+    <joint name="${prefix}base_link_surface_joint" type="fixed">
       <origin xyz="${mir_200_act_wheel_dx} 0 0.352" rpy="0 0 0" />
       <parent link="${prefix}base_link" />
       <child link="${prefix}surface" />
       <axis xyz="0 0 1" />
     </joint>
 
-    <link name="${prefix}surface"/> -->
+    <link name="${prefix}surface"/>
 
     <xacro:mir_200_wheel_transmissions prefix="${prefix}"/>
 
