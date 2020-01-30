@@ -14,34 +14,37 @@ formation:
 
 
 robot1:
+
   publish_tf: true
 
   world_frame:  "/map" #global frame. Has to be the same for hole correspiondent formation
 
-  topic_current_odometry:     "base_pose_ground_truth"  #topic the current odometry of the robot is published at
+  topic_current_odometry:     "odometry/filtered"  #topic the current odometry of the robot is published at
 
-  topic_target_odometry:      "/robot_master/base_pose_ground_truth" #topi  the target odometry of the robot is published at
+  topic_target_odometry:      "/robot_master/odometry/filtered" #topi  the target odometry of the robot is published at
 
   controller_type: 2                            # 1-> pseudo_invers 2->lyapov 3->angl_dist
 
 
 robot2:
+
   publish_tf: true
 
   world_frame: "/map"
 
-  topic_current_odometry:     "base_pose_ground_truth"
+  topic_current_odometry:     "odometry/filtered"
 
-  topic_target_odometry:      "/robot_master/base_pose_ground_truth"
+  topic_target_odometry:      "/robot_master/odometry/filtered"
   
   controller_type: 2                             # 1-> pseudo_invers 2->lyapov 3->angl_dist
   
 robot_master:
+
   publish_tf: true
 
   world_frame: "/map"
 
-  topic_current_odometry:     "base_pose_ground_truth"
+  topic_current_odometry:     "odometry/filtered"
 
   topic_target_odometry:      "/trajectory_odom"
 
@@ -49,10 +52,12 @@ robot_master:
 
 
 algorithm:
-  lyapunov: [7.0,7.0,11.0]               # parameter for lyapunov algorythm: kx,kphi,vd,omegad
+
+  lyapunov: [2.0,10.0,2.0]               # parameter for lyapunov algorythm: kx,kphi,vd,omegad
   
 
 planner: 
+
   type: 0         #0->lissajous 
   pause: true
   iterations: 10
@@ -60,8 +65,8 @@ planner:
   growth: 0.33 
   r0: 3
 
-  omega: 0.05
+  omega: 0.03
   ratio: 2
   phaseshift: 0.0
-  amplifier_x: 5.0
-  amplifier_y: 5.0
+  amplifier_x: 3.0
+  amplifier_y: 3.0

@@ -385,7 +385,9 @@ struct Controller::ControlVector Controller::calcLyapunov(LyapunovParameter para
 {
     double x=relative.getOrigin().getX();
     double y=relative.getOrigin().getY();
-    double phi=tf::getYaw(relative.getRotation());
+    double phid=std::atan2(this->target_state_.velocity.y(),this->target_state_.velocity.x());
+    double phi=tf::getYaw(this->current_state_.pose.getRotation());
+    phi=phid-phi;
    
     ControlVector output;
     output.v=parameter.kx*x+desired.v*cos(phi);

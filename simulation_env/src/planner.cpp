@@ -203,7 +203,7 @@ void CirclePlanner::load()
 
 void CirclePlanner::check_period(ros::Duration time)
 {
-    if(this->plan.omega*time.toSec()>2*M_PI)
+    if(this->plan.omega*time.toSec()>(iterations_counter+1)*2*M_PI)
     {
         this->iterations_counter++;
     }
@@ -289,7 +289,7 @@ void LissajousPlanner::load()
 
 void LissajousPlanner::check_period(ros::Duration time)
 {
-    if(this->plan.omegax*time.toSec()>2*M_PI)
+    if(this->plan.omegax*time.toSec()>(this->iterations_counter+1)*2*M_PI)
     {
         this->iterations_counter++;
     }
