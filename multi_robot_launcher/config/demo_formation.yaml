@@ -7,20 +7,20 @@ formation:
     pose: [0 , 0 , 0, 0]
 
   robot1:
-    pose: [-2.5 , 2.5 , 0, 0]
+    pose: [-1.5 , 1.5 , 0, 0]
 
   robot2:
-    pose: [-2.5 , -2.5 , 0, 0]
+    pose: [-1.5 , -1.5 , 0, 0]
 
 
 robot1:
   publish_tf: true
 
-  world_frame: "/map" #global frame. Has to be the same for hole correspiondent formation
+  world_frame:  "/map" #global frame. Has to be the same for hole correspiondent formation
 
-  topic_current_odometry:     "mobile_base_controller/odom"  #topic the current odometry of the robot is published at
+  topic_current_odometry:     "base_pose_ground_truth"  #topic the current odometry of the robot is published at
 
-  topic_target_odometry:      "/robot_master/mobile_base_controller/odom" #topi  the target odometry of the robot is published at
+  topic_target_odometry:      "/robot_master/base_pose_ground_truth" #topi  the target odometry of the robot is published at
 
   controller_type: 2                            # 1-> pseudo_invers 2->lyapov 3->angl_dist
 
@@ -30,9 +30,9 @@ robot2:
 
   world_frame: "/map"
 
-  topic_current_odometry:     "mobile_base_controller/odom"
+  topic_current_odometry:     "base_pose_ground_truth"
 
-  topic_target_odometry:      "/robot_master/mobile_base_controller/odom"
+  topic_target_odometry:      "/robot_master/base_pose_ground_truth"
   
   controller_type: 2                             # 1-> pseudo_invers 2->lyapov 3->angl_dist
   
@@ -41,7 +41,7 @@ robot_master:
 
   world_frame: "/map"
 
-  topic_current_odometry:     "mobile_base_controller/odom"
+  topic_current_odometry:     "base_pose_ground_truth"
 
   topic_target_odometry:      "/trajectory_odom"
 
@@ -53,7 +53,7 @@ algorithm:
   
 
 planner: 
-  type: 3         #0->lissajous 
+  type: 0         #0->lissajous 
   pause: true
   iterations: 10
   

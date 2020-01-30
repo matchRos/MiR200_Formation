@@ -43,6 +43,9 @@ int main(int argc, char** argv)
         set_gazebo_state.call(state);        
     }
 
+
+
+
     //Choose planner
     ros::NodeHandle nh_planner("planner");
     Planner* planner;
