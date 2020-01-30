@@ -244,7 +244,9 @@ class Controller{
         * @return ControlVector 
         */
         struct ControlVector calcLyapunov(LyapunovParameter parameter,VelocityEulerian desired,tf::Transform relative);
- 
+
+        virtual struct ControlVector optimalControl();
+
         /**
          * @brief Scope of the controller that is called in control frequence 
          * 

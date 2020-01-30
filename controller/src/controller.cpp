@@ -396,7 +396,13 @@ struct Controller::ControlVector Controller::calcLyapunov(LyapunovParameter para
     return output;
 }
 
-
+struct Controller::ControlVector Controller::optimalControl()
+{
+    ControlVector ret;
+    ret.v=this->target_state_.velocity.length();
+    ret.omega=this->target_state_.angular_velocity;
+    return ret;
+}
 
 void Controller::execute(const ros::TimerEvent &ev)
 {
@@ -407,8 +413,7 @@ void Controller::execute(const ros::TimerEvent &ev)
     {
             
         case pseudo_inverse: 
-            this->control_.v=this->current_state_.velocity.length();
-            this->control_.omega=this->current_state_.angular_velocity;
+            this->control_=optimalControl();
             break;
         case lypanov:
             desired.omega=this->target_state_.angular_velocity;

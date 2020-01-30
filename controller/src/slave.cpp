@@ -42,6 +42,6 @@ Controller::ControlVector Slave::optimal_control()
 {   
     //Calculate controlvector
     double phi=tf::getYaw(this->current_state_.pose.getRotation());
-    this->control_.v=(cos(phi)*this->target_state_.velocity.x()+sin(phi)*this->target_state_.velocity.y());
+    this->control_.v=cos(phi)*this->target_state_.velocity.x()+sin(phi)*this->target_state_.velocity.y();
     this->control_.omega=this->target_state_.angular_velocity;
 }
