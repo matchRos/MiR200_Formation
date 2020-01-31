@@ -30,11 +30,6 @@ void Slave::targetOdomCallback(nav_msgs::Odometry msg)
     
     // //Calculate position 
     this->target_state_.pose=trafo*this->world2reference_;
-    
-    //Calculate orientation from velocity constrain
-    // double phi;
-    // phi=atan2(this->target_state_.velocity.y(),this->target_state_.velocity.x());
-    // this->target_state_.pose.setRotation(tf::createQuaternionFromRPY(0.0,0.0,phi));
 }
 
 

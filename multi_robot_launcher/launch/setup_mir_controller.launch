@@ -8,7 +8,7 @@
   
   
   <!-- Load URDF -->  
-   <param name="robot_description" command="$(find xacro)/xacro --inorder $(find multi_robot_launcher)/urdf/mir.xacro tf_prefix:=$(arg controller_name)"/>
+   <param name="robot_description" command="$(find xacro)/xacro --inorder $(find multi_robot_launcher)/urdf/mir_gazebo.xacro tf_prefix:=$(arg controller_name)"/>
 
   <!-- Spawn the robot into Gazebo -->
   <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model $(arg controller_name)
