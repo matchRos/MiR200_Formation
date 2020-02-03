@@ -2,10 +2,9 @@
 <!-- Start a recorded simulation-->
 <launch>
   <arg name="filename" default="test"/>
-  <arg name="type" default="lissa" />
 
   <!-- Load the formation parameter file-->
-  <rosparam file="$(find multi_robot_launcher)/config/sim_formation.yaml" command="load"></rosparam>
+  <rosparam file="$(find multi_robot_launcher)/config/formation.yaml" command="load"></rosparam>
 
   <include file="$(find mir_description)/launch/upload_mir_urdf.launch" />
 
@@ -21,7 +20,9 @@
 
   <include file="$(find multi_robot_launcher)/launch/system.launch"></include>
 
- <node name="SystemHandler" pkg="simulation_env" type="system_handling_node" output="screen"/>
+  <node name="SystemHandler" pkg="simulation_env" type="system_handling_node" output="screen" required="true"/>
+
+  <node name="Measure" pkg="simulation_env" type="measurement_node" output="screen"/>
 
   <node name="record_system" pkg="rosbag" type="record" args="record -o $(find multi_robot_launcher)/bag/$(arg filename).bag -a"/>
 

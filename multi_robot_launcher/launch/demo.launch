@@ -5,7 +5,7 @@
 <include file="$(find mir_description)/launch/upload_mir_urdf.launch" />
 
  <!-- Load the formation parameter file-->
-<rosparam file="$(find multi_robot_launcher)/config/demo_formation.yaml" command="load"></rosparam>
+<rosparam file="$(find multi_robot_launcher)/config/formation.yaml" command="load"></rosparam>
 
 
 <include file="$(find multi_robot_launcher)/launch/empty_world.launch">

@@ -1,10 +1,11 @@
+<?xml version="1.0" ?>
+
 <launch>
     <arg name="filename" default="controller"/>
 
+    <node name="play" pkg="rosbag" type="play" args="$(find multi_robot_launcher)/bag/$(arg filename).bag"/> 
 
-<node name="play" pkg="rosbag" type="play" args="$(find multi_robot_launcher)/bag/$(arg filename)"/> 
+    <node name="gazebo" pkg="gazebo_ros" type="gazebo" args="-u -p $(find multi_robot_launcher)/gazebo/$(arg filename)/state.log" />
 
-
-<node type="rviz" name="rviz" pkg="rviz" args="-d $(find multi_robot_launcher)/rviz/system.rviz" />
-
+    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find multi_robot_launcher)/rviz/system.rviz" />
 </launch>
