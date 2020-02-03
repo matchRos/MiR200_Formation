@@ -274,15 +274,52 @@ class Formation{
 
         PoseEstamination type_;
         
-
+        /**
+         * @brief Calcualte the robot pose from the laserscanner data
+         * 
+         * @param name Name of the robot to get the pose of
+         * @return tf::Pose Pose of the robot specified by name
+         */
         tf::Pose getPoseByLaser(std::string name);
-        tf::Pose getPoseByOdom(std::string name);
-        tf::Pose getPoseByEkf(std::string name);
-        
-        Poses getPoseByLaser();
-        Poses getPoseByOdom();
-        Poses getPoseByEkf();
 
+           /**
+         * @brief Calcualte the robot pose from the odomotry data
+         * 
+         * @param name Name of the robot to get the pose of
+         * @return tf::Pose Pose of the robot specified by name
+         */
+        tf::Pose getPoseByOdom(std::string name);
+
+        /**
+         * @brief Calcualte the robot pose from the kalman filtered data
+         * 
+         * @param name Name of the robot to get the pose of
+         * @return tf::Pose Pose of the robot specified by name
+         */
+        tf::Pose getPoseByEkf(std::string name);
+
+        /**
+         * @brief Calcualte the robot poses from the laserscanner data
+         * 
+         * @return Poses Poses of the robots
+         */        
+        Poses getPoseByLaser();
+
+        /**
+         * @brief Calcualte the robot poses from the odometry data
+         * 
+         * @return Poses Poses of the robots
+         */        
+        Poses getPoseByOdom();
+
+        /**
+         * 
+         * @brief Calcualte the robot poses from the kalman filtered data
+         * 
+         * @return Poses Poses of the robots
+         */        
+        Poses getPoseByEkf();
+        
         /**
          * @brief Determines the connectivity matrix of the formation
          * 
