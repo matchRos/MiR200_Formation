@@ -6,7 +6,7 @@
 
  <!-- Load the formation parameter file-->
 <rosparam file="$(find multi_robot_launcher)/config/formation.yaml" command="load"></rosparam>
-
+<rosparam file="$(find multi_robot_launcher)/config/formation_publisher.yaml" command="load"></rosparam>
 
 <include file="$(find multi_robot_launcher)/launch/empty_world.launch">
   <arg name="paused" value="true" />

@@ -18,7 +18,7 @@ FormationPublisher::FormationPublisher(Formation* formation):formation_(formatio
 
     parametr_nh.param("publish_scans",this->publish_scans_,this->publish_scans_);
     parametr_nh.param("publish_scans_clustered_",this->publish_scans_clustered_,this->publish_scans_clustered_);   
-    parametr_nh.param("publish_combined",this->publish_pose_,this->publish_pose_);
+    parametr_nh.param("publish_pose",this->publish_pose_,this->publish_pose_);
     parametr_nh.param("publish_seperated",this->publish_seperated_,this->publish_seperated_);
     parametr_nh.param("publish_combined",this->publish_combined_,this->publish_combined_);
     

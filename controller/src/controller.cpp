@@ -280,7 +280,7 @@ void Controller::currentOdomCallback(nav_msgs::Odometry msg)
     rot.setRotation(trafo.getRotation());
     //Transfor pose and velocity
     pose=trafo*pose;
-    vel=rot*vel;
+    vel=tf::Transform(pose.getRotation(),tf::Vector3(0.0,0.0,0.0))*vel;
            
 
     //Write to member
