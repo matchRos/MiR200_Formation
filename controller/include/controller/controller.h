@@ -32,8 +32,8 @@
 #define PARAM_WORLD_FRAME "world_frame"
 #define PARAM_TYPE "controller_type"
 
-#define PARAM_LYAPUNOV "/algorithm/lyapunov"
-#define PARAM_ANG_DIST "/algorithm/angle_distance"
+#define PARAM_LYAPUNOV "algorithm/lyapunov"
+#define PARAM_ANG_DIST "algorithm/angle_distance"
 
 
 /**

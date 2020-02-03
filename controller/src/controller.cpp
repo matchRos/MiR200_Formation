@@ -152,8 +152,8 @@ void Controller::setLyapunov(std::vector<float> param)
 void Controller::load()
 {
     std::string param;
-
-    if(ros::param::get(PARAM_WORLD_FRAME,param))
+    ros::NodeHandle param_nh(this->nh.resolveName("controller"));
+    if(param_nh.getParam(PARAM_WORLD_FRAME,param))
     {
         ROS_INFO("Loading %s",PARAM_WORLD_FRAME);
         this->setWorldFrame(param);     
@@ -163,7 +163,7 @@ void Controller::load()
         ROS_INFO("Could not load %s for %s",PARAM_WORLD_FRAME,this->name.c_str());
     }
    
-    if(ros::param::get(PARAM_CURRENT_ODOM,param))
+    if(param_nh.getParam(PARAM_CURRENT_ODOM,param))
     {
         ROS_INFO("Loading %s",PARAM_CURRENT_ODOM);
         this->linkCurrentOdom(param);
@@ -173,7 +173,7 @@ void Controller::load()
         ROS_INFO("Could not load %s for %s",PARAM_CURRENT_ODOM,this->name.c_str());
     }
 
-    if(ros::param::get(PARAM_TARGET_ODOM,param))
+    if(param_nh.getParam(PARAM_TARGET_ODOM,param))
     {
         ROS_INFO("Loading %s",PARAM_TARGET_ODOM);
         this->linkTargetOdom(param);
@@ -184,7 +184,7 @@ void Controller::load()
     }
     
     int i;
-    if(ros::param::get(PARAM_TYPE,i))
+    if(param_nh.getParam(PARAM_TYPE,i))
     {
         ROS_INFO("Loading %s ",PARAM_TYPE);
         this->setType(static_cast<Controller::ControllerType>(i));
@@ -192,13 +192,15 @@ void Controller::load()
 
    
     std::vector<float> lyapunov;
-    if( ros::param::get(PARAM_LYAPUNOV,lyapunov))
+    if( param_nh.getParam(PARAM_LYAPUNOV,lyapunov))
     {
         this->setLyapunov(lyapunov);
     }   
 
-    if(!ros::param::get(PARAM_PUBISH_TF,this->publish_tf_))
-    {publish_tf_=false;}
+    if(!param_nh.getParam(PARAM_PUBISH_TF,this->publish_tf_))
+    {
+        publish_tf_=false;
+    }
     
     
     loadParameter();
@@ -253,13 +255,16 @@ void Controller::linkOutputControlData(std::string topic_name)
 ##################################################################################################################################################*/
 void Controller::currentOdomCallback(nav_msgs::Odometry msg)
 {
-    //Get the current pose
+    //Get the current pose defined in header frame
     tf::Pose pose;
     tf::poseMsgToTF(msg.pose.pose,pose);
     
-    //Get the current cartesian velocity
+    //Get the current velocity
+    VelocityEulerian vel_eul;
+    //Project to x axis since sometimes odometry velocity is given in parent framen not in child
+    vel_eul.v=std::sqrt(std::pow(msg.twist.twist.linear.x,2)+std::pow(msg.twist.twist.linear.y,2)+std::pow(msg.twist.twist.linear.z,2));    //Nessescarry since ros is not consistent with odom msg. Sometimes its lagrangian sometimes eulerian
     VelocityCartesian vel;
-    tf::vector3MsgToTF(msg.twist.twist.linear,vel);
+    vel=tf::Vector3(vel_eul.v,0.0,0.0);
 
     //Get the transformation for frames 
     tf::StampedTransform trafo;
@@ -273,10 +278,10 @@ void Controller::currentOdomCallback(nav_msgs::Odometry msg)
     //Get the rotation part
     tf::Transform rot;
     rot.setRotation(trafo.getRotation());
-
-    //Transfor pose and velicity
+    //Transfor pose and velocity
     pose=trafo*pose;
     vel=rot*vel;
+           
 
     //Write to member
     this->current_state_.pose=pose;
