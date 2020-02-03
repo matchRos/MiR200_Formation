@@ -4,10 +4,25 @@ FormationPublisher::FormationPublisher()
 {
 
 }
-FormationPublisher::FormationPublisher(Formation* formation):formation_(formation)
+FormationPublisher::FormationPublisher(Formation* formation):formation_(formation),
+                                                                publish_combined_(true),
+                                                                publish_pose_(true),
+                                                                publish_seperated_(true),
+                                                                publish_scans_(true),
+                                                                publish_scans_clustered_(true)
+                                                    
 
 {
     this->nh_=ros::NodeHandle("formation");
+    ros::NodeHandle parametr_nh("formation_publisher");
+
+    parametr_nh.param("publish_scans",this->publish_scans_,this->publish_scans_);
+    parametr_nh.param("publish_scans_clustered_",this->publish_scans_clustered_,this->publish_scans_clustered_);   
+    parametr_nh.param("publish_combined",this->publish_pose_,this->publish_pose_);
+    parametr_nh.param("publish_seperated",this->publish_seperated_,this->publish_seperated_);
+    parametr_nh.param("publish_combined",this->publish_combined_,this->publish_combined_);
+    
+    
 
     this->scan_pub_=this->nh_.advertise<sensor_msgs::PointCloud>("scan",10);
     this->cluster_scan_pub_=this->nh_.advertise<sensor_msgs::PointCloud>("clustered_scan",10);
@@ -15,8 +30,6 @@ FormationPublisher::FormationPublisher(Formation* formation):formation_(formatio
     for(auto name:this->formation_->getNames())
     {
         ros::NodeHandle nh(this->nh_.resolveName(name));
-        this->scanned_pose_pub_list_.push_back(nh.advertise<geometry_msgs::PoseStamped>("scan_pose",10));       
-        this->scanned_pose_sep_pub_list_.insert(std::pair<std::string,std::vector<ros::Publisher> >(name,std::vector<ros::Publisher>()));
         this->pose_pub_list_.insert(std::pair<std::string,ros::Publisher >(name,nh.advertise<geometry_msgs::PoseStamped>("pose",10)));        
         this->scan_pub_list_.insert(std::pair<std::string,ros::Publisher>(name,(nh.advertise<sensor_msgs::PointCloud>("scan",10))));
         this->cluster_scan_pub_list_.insert(std::pair<std::string,ros::Publisher>(name,(nh.advertise<sensor_msgs::PointCloud>("clustered_scan",10))));
@@ -26,34 +39,47 @@ FormationPublisher::FormationPublisher(Formation* formation):formation_(formatio
 
 void FormationPublisher::publish()
 {
-    if(scanned_pose_sep_pub_list_.empty()   ||  scan_pub_list_.empty()  || cluster_scan_pub_list_.empty())
+    if(pose_pub_list_.empty() || scan_pub_list_.empty()  || cluster_scan_pub_list_.empty())
     {
-        std::string str;
         throw std::invalid_argument("Cannot publish empty Formation!");
     }
     else
     {
-        this->publishPoses();
-        this->publishLaserScans();
-        this->publishClusteredLaserScans();
-        this->publishScanPoses();
-
-        this->publishSeperatedClusterScans();
-        this->publishSeperatedLaserScans();
-        this->publishSeperatedScannedPoses();
+        if(publish_seperated_)
+        {
+            if(publish_pose_)
+            {
+               this->publishPoses();
+            }
+            if(publish_scans_)
+            {
+                this->publishSeperatedLaserScans();   
+            }
+            if(publish_scans_clustered_)
+            {
+                this->publishSeperatedClusterScans();
+            }
+        }
+        if (publish_combined_)
+        {
+            if(publish_pose_)
+            {
+                this->publishPoses();
+            }
+            if(publish_scans_)
+            {
+                this->publishLaserScans();
+            }
+            if(publish_scans_clustered_)
+            {
+                
+                this->publishClusteredLaserScans();
+            }
+        }
     }    
 }
 
-void FormationPublisher::publishPoses()
-{
-    for(auto publisher:this->pose_pub_list_)
-    {
-        geometry_msgs::PoseStamped msg;
-        msg.header.frame_id=this->formation_->getReferenceFrame();
-        tf::poseTFToMsg(this->formation_->getPose(publisher.first),msg.pose);
-        publisher.second.publish(msg);
-    }
-}
+
 
 void FormationPublisher::publishLaserScans()
 {
@@ -81,50 +107,13 @@ void FormationPublisher::publishSeperatedClusterScans()
     }
 }
 
-void FormationPublisher::publishSeperatedScannedPoses()
+void FormationPublisher::publishPoses()
 {
-    for(auto pair:this->scanned_pose_sep_pub_list_)
+    for(auto publisher:this->pose_pub_list_)
     {
-        std::string name=pair.first;
-
-        //Prepare namespaces
-        ros::NodeHandle nh_topic=this->nh_.resolveName(name+"/scanned_poses");
-        Formation::Poses poses=this->formation_->getScannedPose(name);
-
-        //Allocate enought publihser for publishing estaminations
-        allocScannedPosePublishers(nh_topic,name,poses.size());        
-
-        //Publish every esatminated pose
-        for(int i=0; i<pair.second.size();i++)
-        {
-            geometry_msgs::PoseStamped pose_msg;
-            pose_msg.header.frame_id=ros::NodeHandle(name).resolveName("base_link");
-            tf::poseTFToMsg(poses.at(i),pose_msg.pose);
-            pair.second.at(i).publish(pose_msg);
-        }  
+        geometry_msgs::PoseStamped msg;
+        msg.header.frame_id=this->formation_->getReferenceFrame();
+        tf::poseTFToMsg(this->formation_->getPose(publisher.first),msg.pose);
+        publisher.second.publish(msg);
     }
 }
-
-void FormationPublisher::publishScanPoses()
-{
-    Formation::Poses poses;
-    poses=this->formation_->getScannedPose();
-    for(int i=0;i<this->scanned_pose_pub_list_.size();i++)
-    {
-        geometry_msgs::PoseStamped pose_msg;
-        pose_msg.header.frame_id=this->formation_->getReferenceFrame();
-        tf::poseTFToMsg(poses.at(i),pose_msg.pose);
-        this->scanned_pose_pub_list_.at(i).publish(pose_msg);
-    }
-}
-
-void FormationPublisher::allocScannedPosePublishers(ros::NodeHandle nh_topic,std::string name,size_t size)
-{
-    while(size>this->scanned_pose_sep_pub_list_.at(name).size())
-    {
-        std::stringstream ss;
-        ss<<"prediction_"<<this->scanned_pose_sep_pub_list_.at(name).size();
-        this->scanned_pose_sep_pub_list_.at(name).push_back(nh_topic.advertise<geometry_msgs::PoseStamped>(ss.str(),1));        
-    }
-}
-
