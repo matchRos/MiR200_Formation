@@ -178,7 +178,10 @@ tf::Vector3 CirclePlanner::get_velocity(ros::Duration time)
                     0);
     return vel;
 }
-
+ tf::Vector3 CirclePlanner::get_acceleration(ros::Duration time)
+ {
+     return tf::Vector3();
+ }
 double CirclePlanner::get_angular_velocity(ros::Duration time)
 {
     return this->plan.omega;    
@@ -243,6 +246,18 @@ tf::Vector3 LissajousPlanner::get_velocity(ros::Duration time)
     return vel;
 }
 
+ tf::Vector3 LissajousPlanner::get_acceleration(ros::Duration time)
+ {
+
+    double t=time.toSec();
+    double dx=-this->plan.Ax*sin(this->plan.omegax*t)*std::pow(this->plan.omegax,2.0);
+    double dy=-this->plan.Ay*sin(this->plan.omegax*this->plan.ratio*t+this->plan.dphi)*std::pow(this->plan.omegax*this->plan.ratio,2.0);
+    tf::Vector3 acc(dx,
+                    dy,
+                    0);
+    return acc;
+ }
+
 tf::Quaternion LissajousPlanner::get_orientation(ros::Duration time)
 {
     double t=time.toSec();
@@ -255,9 +270,9 @@ tf::Quaternion LissajousPlanner::get_orientation(ros::Duration time)
 
 double LissajousPlanner::get_angular_velocity(ros::Duration time)
 {
-    tf::Vector3 pos=this->get_position(time);
-    tf::Vector3 vel=this->get_velocity(time);
-    return (pos.x()*vel.y()-pos.y()*vel.x())/(pow(pos.x(),2)+pow(pos.y(),2));
+    tf::Vector3 acc(this->get_acceleration(time));
+    tf::Vector3 scale(1.0/this->plan.omegax,1.0/(this->plan.omegax*this->plan.ratio),0.0);
+    return -std::pow(acc.dot(scale),2.0);
 }
 
 
@@ -327,7 +342,10 @@ tf::Vector3 ClickedPosePlanner::get_velocity(ros::Duration time)
     }
     
 }    
-
+ tf::Vector3 ClickedPosePlanner::get_acceleration(ros::Duration time)
+ {
+     return tf::Vector3();
+ }
 
 tf::Quaternion ClickedPosePlanner::get_orientation(ros::Duration time)
 {
@@ -396,6 +414,10 @@ tf::Vector3 Spiralplanner::get_velocity(ros::Duration time)
                     0.0);
     return vel;
 }
+ tf::Vector3 Spiralplanner::get_acceleration(ros::Duration time)
+ {
+     return tf::Vector3();
+ }
 
 double Spiralplanner::get_angular_velocity(ros::Duration time)
 {

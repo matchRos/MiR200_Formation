@@ -103,6 +103,7 @@ class Planner{
         virtual tf::Vector3 get_position(ros::Duration time)=0;
         virtual tf::Quaternion get_orientation(ros::Duration time)=0;
         virtual tf::Vector3 get_velocity(ros::Duration time)=0;
+        virtual tf::Vector3 get_acceleration(ros::Duration time)=0;
         virtual double get_angular_velocity(ros::Duration time)=0;
         virtual void check_period(ros::Duration time)=0;         
         
@@ -131,6 +132,7 @@ class CirclePlanner:public Planner{
         tf::Vector3 get_position(ros::Duration time);
         tf::Quaternion get_orientation(ros::Duration time);
         tf::Vector3 get_velocity(ros::Duration time);
+        tf::Vector3 get_acceleration(ros::Duration time);
         double get_angular_velocity(ros::Duration time);
         void check_period(ros::Duration time);            
         
@@ -166,6 +168,7 @@ class LissajousPlanner:public Planner{
         tf::Vector3 get_position(ros::Duration time);
         tf::Quaternion get_orientation(ros::Duration time);
         tf::Vector3 get_velocity(ros::Duration time);
+        tf::Vector3 get_acceleration(ros::Duration time);
         double get_angular_velocity(ros::Duration time);
         void check_period(ros::Duration time);           
 };
@@ -181,6 +184,7 @@ class ClickedPosePlanner:public Planner{
         tf::Vector3 get_position(ros::Duration time);
         tf::Quaternion get_orientation(ros::Duration time);
         tf::Vector3 get_velocity(ros::Duration time);
+        tf::Vector3 get_acceleration(ros::Duration time);
         double get_angular_velocity(ros::Duration time);
         void check_period(ros::Duration time);   
 
@@ -218,5 +222,6 @@ class Spiralplanner:public Planner{
         tf::Quaternion get_orientation(ros::Duration time);
         tf::Vector3 get_velocity(ros::Duration time);
         double get_angular_velocity(ros::Duration time);
+        tf::Vector3 get_acceleration(ros::Duration time);
         void check_period(ros::Duration time);     
 };
