@@ -4,39 +4,15 @@
   xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
   xmlns:xacro="http://ros.org/wiki/xacro">
   
-  <xacro:include filename="$(find mir_description)/urdf/include/common_properties.urdf.xacro" />
+ 
   <xacro:include filename="$(find mir_description)/urdf/include/imu.gazebo.urdf.xacro" />
   <xacro:include filename="$(find mir_description)/urdf/include/mir_200.gazebo.xacro" />
   <xacro:include filename="$(find mir_description)/urdf/include/mir_200.transmission.xacro" />
   <xacro:include filename="$(find mir_description)/urdf/include/sick_s300.urdf.xacro" />
 
-  <xacro:include filename="$(find multi_robot_launcher)/urdf/caster_wheel.xacro"/>
-  <xacro:include filename="$(find multi_robot_launcher)/urdf/actuated_wheel.xacro"/>
-
-  <xacro:property name="deg_to_rad" value="0.017453293" />
-
-  <xacro:property name="mir_200_base_mass" value="58.0" />
-
-  <xacro:property name="mir_200_act_wheel_radius" value="0.0625" />
-  <xacro:property name="mir_200_act_wheel_width" value="0.032" />
-  <xacro:property name="mir_200_act_wheel_mass" value="1.0" />
-  <xacro:property name="mir_200_act_wheel_dx" value="0.037646" />
-  <xacro:property name="mir_200_act_wheel_dy" value="0.222604" />
-
-  <xacro:property name="mir_200_caster_wheel_radius" value="${mir_200_act_wheel_radius}" />
-  <xacro:property name="mir_200_caster_wheel_width" value="${mir_200_act_wheel_width}" />
-  <xacro:property name="mir_200_caster_wheel_mass" value="${mir_200_act_wheel_mass}" />
-  <xacro:property name="mir_200_caster_wheel_dx" value="-0.0382" />
-  <xacro:property name="mir_200_caster_wheel_dy" value="0" />
-  <xacro:property name="mir_200_caster_wheel_dz" value="-0.094" />
-  <xacro:property name="mir_200_front_caster_wheel_base_dx" value="0.341346" />
-  <xacro:property name="mir_200_back_caster_wheel_base_dx" value="-0.270154" />
-  <xacro:property name="mir_200_caster_wheel_base_dy" value="0.203" />
-  <xacro:property name="mir_200_caster_wheel_base_dz" value="${mir_200_caster_wheel_radius-mir_200_caster_wheel_dz}" />
-
-  <xacro:property name="imu_stdev" value="0.00017" />
-
-
+  <xacro:include filename="$(find multi_robot_launcher)/urdf/material_properties.urdf.xacro" />
+  <xacro:include filename="$(find multi_robot_launcher)/urdf/caster_wheel.urdf.xacro"/>
+  <xacro:include filename="$(find multi_robot_launcher)/urdf/actuated_wheel.urdf.xacro"/>
 
 
   <xacro:macro name="mir_200" params="prefix">
