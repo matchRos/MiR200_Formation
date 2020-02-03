@@ -1,33 +1,36 @@
 <?xml version="1.0" ?>
 
-<!-- Dimensions -->
-<xacro:property name="deg_to_rad" value="0.017453293" />
-<xacro:property name="mir_200_base_mass" value="58.0" />
 
-<xacro:property name="mir_200_act_wheel_radius" value="0.0625" />
-<xacro:property name="mir_200_act_wheel_width" value="0.032" />
-<xacro:property name="mir_200_act_wheel_mass" value="1.0" />
-<xacro:property name="mir_200_act_wheel_dx" value="0.037646" />
-<xacro:property name="mir_200_act_wheel_dy" value="0.222604" />
-
-<xacro:property name="mir_200_caster_wheel_radius" value="${mir_200_act_wheel_radius}" />
-<xacro:property name="mir_200_caster_wheel_width" value="${mir_200_act_wheel_width}" />
-<xacro:property name="mir_200_caster_wheel_mass" value="${mir_200_act_wheel_mass}" />
-<xacro:property name="mir_200_caster_wheel_dx" value="-0.0382" />
-<xacro:property name="mir_200_caster_wheel_dy" value="0" />
-<xacro:property name="mir_200_caster_wheel_dz" value="-0.094" />
-<xacro:property name="mir_200_front_caster_wheel_base_dx" value="0.341346" />
-<xacro:property name="mir_200_back_caster_wheel_base_dx" value="-0.270154" />
-<xacro:property name="mir_200_caster_wheel_base_dy" value="0.203" />
-<xacro:property name="mir_200_caster_wheel_base_dz" value="${mir_200_caster_wheel_radius-mir_200_caster_wheel_dz}" />
-
-<xacro:property name="imu_stdev" value="0.00017" />
 
 
 <!--
   Various useful properties such as constants and materials
  -->
 <robot name="xacro_properties" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- Dimensions -->
+  <xacro:property name="deg_to_rad" value="0.017453293" />
+  <xacro:property name="mir_200_base_mass" value="58.0" />
+
+  <xacro:property name="mir_200_act_wheel_radius" value="0.0625" />
+  <xacro:property name="mir_200_act_wheel_width" value="0.032" />
+  <xacro:property name="mir_200_act_wheel_mass" value="1.0" />
+  <xacro:property name="mir_200_act_wheel_dx" value="0.037646" />
+  <xacro:property name="mir_200_act_wheel_dy" value="0.222604" />
+
+  <xacro:property name="mir_200_caster_wheel_radius" value="${mir_200_act_wheel_radius}" />
+  <xacro:property name="mir_200_caster_wheel_width" value="${mir_200_act_wheel_width}" />
+  <xacro:property name="mir_200_caster_wheel_mass" value="${mir_200_act_wheel_mass}" />
+  <xacro:property name="mir_200_caster_wheel_dx" value="-0.0382" />
+  <xacro:property name="mir_200_caster_wheel_dy" value="0" />
+  <xacro:property name="mir_200_caster_wheel_dz" value="-0.094" />
+  <xacro:property name="mir_200_front_caster_wheel_base_dx" value="0.341346" />
+  <xacro:property name="mir_200_back_caster_wheel_base_dx" value="-0.270154" />
+  <xacro:property name="mir_200_caster_wheel_base_dy" value="0.203" />
+  <xacro:property name="mir_200_caster_wheel_base_dz" value="${mir_200_caster_wheel_radius-mir_200_caster_wheel_dz}" />
+
+  <xacro:property name="imu_stdev" value="0.00017" />
+
   <!-- #################### RViz materials #################### -->
   <xacro:property name="material_white">
     <material name="white">
