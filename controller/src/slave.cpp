@@ -10,7 +10,13 @@ void Slave::targetOdomCallback(nav_msgs::Odometry msg)
     tf::Vector3 ang;
     tf::vector3MsgToTF(msg.twist.twist.angular,ang);
     tf::Vector3 lin;
-    tf::vector3MsgToTF(msg.twist.twist.linear,lin);
+ 
+    //Get the current velocity
+    VelocityEulerian vel_eul;
+    //Project to x axis since sometimes odometry velocity is given in parent framen not in child
+    vel_eul.v=std::sqrt(std::pow(msg.twist.twist.linear.x,2)+std::pow(msg.twist.twist.linear.y,2)+std::pow(msg.twist.twist.linear.z,2));    //Nessescarry since ros is not consistent with odom msg. Sometimes its lagrangian sometimes eulerian
+    VelocityCartesian vel;
+    lin=tf::Vector3(vel_eul.v,0.0,0.0);
 
    
     
