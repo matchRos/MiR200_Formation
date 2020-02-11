@@ -1,0 +1,38 @@
+<?xml version="2.0" ?>
+<!-- Start a none recorded simulation without any planner-->
+<launch>  
+
+<include file="$(find mir_description)/launch/upload_mir_urdf.launch" />
+
+ <!-- Load the formation parameter file-->
+<rosparam file="$(find multi_robot_launcher)/config/formation.yaml" command="load"></rosparam>
+<rosparam file="$(find multi_robot_launcher)/config/formation_publisher.yaml" command="load"></rosparam>
+
+<include file="$(find multi_robot_launcher)/launch/empty_world.launch">
+  <arg name="paused" value="true" />
+  <arg name="gui" value="true" />
+  <arg name="recording" value="false"/>
+</include>
+
+
+<include file="$(find multi_robot_launcher)/launch/system.launch"></include>
+
+<!-- <node name="SystemHandler" pkg="simulation_env" type="system_handling_node" output="screen"/> -->
+
+<node name="static_map_server" pkg="map_server" type="map_server"
+  args="$(find mir_gazebo)/maps/pp_test_5.yaml" ns="/" output="screen">
+  <param name="frame_id" type="string" value="/map"/>
+</node>
+
+<group ns="robot_master">
+  <include file="$(find mir_navigation)/launch/mir_nav/move_base.xml">
+    <arg name="local_planner" value="dwa"/>
+  </include>
+</group>
+
+
+<node name="Measure" pkg="simulation_env" type="measurement_node" output="screen"/>
+
+<node name="rviz" pkg="rviz" type="rviz"   args="-d $(find multi_robot_launcher)/rviz/system.rviz" />
+
+</launch>
