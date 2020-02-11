@@ -26,4 +26,5 @@
 
   <node name="record_system" pkg="rosbag" type="record" args="record -o $(find multi_robot_launcher)/bag/$(arg filename).bag -a"/>
 
+  <node name="record_system_trajectories" pkg="rosbag" type="record" args="record -o $(find multi_robot_launcher)/bag/$(arg filename)_Robots.bag  -e /robot(.*)"/>
 </launch>
