@@ -19,23 +19,38 @@ void Slave::targetOdomCallback(nav_msgs::Odometry msg)
     lin=tf::Vector3(vel_eul.v,0.0,0.0);
 
    
-    
-    //Get necessary transformations
-    tf::Transform trafo;  
-    tf::poseMsgToTF(msg.pose.pose,trafo);
-    tf::Transform rot;
-    rot.setRotation(trafo.getRotation());
+    switch(this->type)
+    {
+        case ControllerType::lypanov:
+        {
+            //Get necessary transformations
+            tf::Transform trafo;  
+            tf::poseMsgToTF(msg.pose.pose,trafo);
+            tf::Transform rot;
+            rot.setRotation(trafo.getRotation());
 
+            
+            //Calculate linear velocities
+            tf::Vector3 rotational;
+            rotational=ang.cross(rot*this->world2reference_.getOrigin());
+            this->target_state_.velocity=rot*lin+rotational;
+            this->target_state_.angular_velocity=ang.z();
+        
+            
+            // //Calculate position 
+            this->target_state_.pose=trafo*this->world2reference_;
+            break;
+        }
+        case ControllerType::angle_distance:
+        {            
+            tf::poseMsgToTF(msg.pose.pose,this->target_state_.pose);
+            this->target_state_.velocity=lin;
+            this->target_state_.angular_velocity=ang.z();
+            break;
+        }
+       
+    }
     
-    //Calculate linear velocities
-    tf::Vector3 rotational;
-    rotational=ang.cross(rot*this->world2reference_.getOrigin());
-    this->target_state_.velocity=rot*lin+rotational;
-    this->target_state_.angular_velocity=ang.z();
-   
-    
-    // //Calculate position 
-    this->target_state_.pose=trafo*this->world2reference_;
 }
 
 

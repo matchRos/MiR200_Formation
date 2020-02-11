@@ -87,8 +87,6 @@ void Controller::setName(std::string name)
     this->linkOutputControlData("control_data");   
 }
 
-
-
 void Controller::setReference(double x,double y,double z,double angle)
 {
     setReference(tf::Pose(tf::createQuaternionFromRPY(0,0,angle),tf::Vector3(x,y,z)));  
@@ -372,7 +370,7 @@ void Controller::publish_refrence()
         this->broadcaster_.sendTransform(msg2); 
 }
 
-struct Controller::ControlVector Controller::calcLyapunov(LyapunovParameter parameter,VelocityEulerian desired,tf::Transform relative)
+Controller::ControlVector Controller::calcLyapunov(LyapunovParameter parameter,VelocityEulerian desired,tf::Transform relative)
 {
     double x=relative.getOrigin().getX();
     double y=relative.getOrigin().getY();
@@ -386,8 +384,39 @@ struct Controller::ControlVector Controller::calcLyapunov(LyapunovParameter para
 
     return output;
 }
+Controller::ControlVector Controller::calcAngleDistance(AngleDistanceParameter parameter,ControlState target, ControlState current)
+{
+    float l12d=this->world2reference_.getOrigin().length();
+    float psi12d=atan2(-world2reference_.getOrigin().y(),-world2reference_.getOrigin().x());
+    if(psi12d<0.0){psi12d+=2*M_PI;}
+    float theta1=tf::getYaw(target_state_.pose.getRotation());
+    if(theta1<0.0){theta1+=2*M_PI;}
+    float theta2=tf::getYaw(current_state_.pose.getRotation());
+    if(theta2<0.0){theta2+=2*M_PI;}
+    tf::Vector3 r=current.pose.inverseTimes(target.pose).getOrigin();
+    
+    
+    float l12=r.length();
+    float psi12=atan2(r.y(),r.x());
+    if(psi12<0.0){psi12+=2*M_PI;}
+    float omega1=current.angular_velocity;
+    float omega2=target.angular_velocity;
+    float v1=current.velocity.length();
+    float v2=target.velocity.length();
 
-struct Controller::ControlVector Controller::optimalControl()
+    float gamma1=theta1+psi12-theta2;
+    float roh12=(parameter.linear_gain*(l12d-l12)+v1*cos(psi12))/cos(gamma1);
+
+
+    ROS_WARN("x %f, y%f ,l12d: %f psi12d: %f theta1: %f theta2: %f psi12: %f l12: %f gamma1: %f roh12: %f",
+                r.x(),r.y(),l12d,psi12d,theta1,theta2,psi12,l12,gamma1,roh12);
+    ControlVector u;
+    u.omega=cos(gamma1)/parameter.d*(parameter.angular_gain*l12*(psi12d-psi12)-v1*sin(psi12)+l12*omega1+roh12*sin(gamma1));
+    u.v=roh12-parameter.d*omega2*tan(gamma1);
+    return u;
+}
+
+Controller::ControlVector Controller::optimalControl()
 {
     ControlVector ret;
     ret.v=this->target_state_.velocity.length();
@@ -412,6 +441,11 @@ void Controller::execute(const ros::TimerEvent &ev)
             this->control_=calcLyapunov(this->lyapunov_parameter,desired,control_dif_);
             break;
         case angle_distance:
+            AngleDistanceParameter param;
+            param.angular_gain=0.05;
+            param.linear_gain=0.12;
+            param.d=0.3;
+            this->control_=calcAngleDistance(param,this->target_state_,this->current_state_);
             break;
         default: 
             break;

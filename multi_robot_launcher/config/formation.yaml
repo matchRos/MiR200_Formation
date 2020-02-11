@@ -20,9 +20,9 @@ robot1:
 
     topic_current_odometry:     "base_pose_ground_truth"  #topic the current odometry of the robot is published at
 
-    topic_target_odometry:      "/trajectory_odom" #topi  the target odometry of the robot is published at
+    topic_target_odometry:      "/robot_master/base_pose_ground_truth" #topi  the target odometry of the robot is published at
 
-    controller_type: 2                            # 1-> pseudo_invers 2->lyapov 3->angl_dist
+    controller_type: 3                            # 1-> pseudo_invers 2->lyapov 3->angl_dist
 
     algorithm:
       lyapunov: [7.0,7.0,11.0]               # parameter for lyapunov algorythm: kx,kphi,vd,omegad
@@ -36,7 +36,7 @@ robot2:
 
     topic_current_odometry:     "base_pose_ground_truth"
 
-    topic_target_odometry:    "/trajectory_odom"
+    topic_target_odometry:    "/robot_master/base_pose_ground_truth"
     
     controller_type: 2                             # 1-> pseudo_invers 2->lyapov 3->angl_dist
     
@@ -54,7 +54,7 @@ robot_master:
 
     topic_target_odometry:      "/trajectory_odom"
 
-    controller_type: 2                            # 1-> pseudo_invers 2->lyapov 3->angl_dist
+    controller_type: 2                           # 1-> pseudo_invers 2->lyapov 3->angl_dist
     
     algorithm:
       lyapunov: [7.0,7.0,11.0]               # parameter for lyapunov algorythm: kx,kphi,vd,omegad
@@ -65,7 +65,7 @@ robot_master:
 planner: 
 
   type: 0        #0->lissajous 1->circle 2->clickedPose 3->spiral
-  pause: false
+  pause: true
   iterations: 2
   
   growth: 0.33 

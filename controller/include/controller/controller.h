@@ -61,9 +61,14 @@ class Controller{
          */
         struct LyapunovParameter
         {
-            float kx;           /**< Control gain in x-direction */
-            float ky;           /**< Control gain in y-direction */ 
-            float kphi;         /**< Control gain in theta-direction */
+            float kx;           ///< Control gain in x-direction 
+            float ky;           ///< Control gain in y-direction  
+            float kphi;         ///< Control gain in theta-direction 
+        };
+        struct AngleDistanceParameter{
+            float angular_gain; ///< Control gain in phi direction  
+            float linear_gain;  ///< Control gain in l direction   
+            float d; 
         };
 
         /**
@@ -245,6 +250,8 @@ class Controller{
         */
         struct ControlVector calcLyapunov(LyapunovParameter parameter,VelocityEulerian desired,tf::Transform relative);
 
+        ControlVector calcAngleDistance(AngleDistanceParameter parameter,ControlState target, ControlState current);
+
         virtual struct ControlVector optimalControl();
 
         /**
@@ -326,7 +333,7 @@ class Controller{
         ControlVector control_;                                     ///<The calculated control vector
 
         tf::Transform world2reference_;                             ///<Transformation from a world to the controllers refrence frame
-
+        ControllerType type;                                         ///<Type of control algorythm that is used
     private:
         ros::Publisher pub_cmd_vel;                                  ///<publisher object for velocity outoput topic
         ros::Publisher pub_state_out;                                ///<publisher object for state output topic
@@ -345,7 +352,7 @@ class Controller{
         
         LyapunovParameter lyapunov_parameter;                        ///<Parameter set for lyapunov determinations
        
-        ControllerType type;                                         ///<Type of control algorythm that is used
+    
 
         bool loaded_parameter;                                       ///<Flag if parameter were loaded from the parameter server
 
