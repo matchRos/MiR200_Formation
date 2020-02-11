@@ -331,11 +331,15 @@ bool Controller::srvSetInitial(multi_robot_msgs::SetInitialPoseRequest &req,mult
 ##################################################################################################################################################*/
 void Controller::publish()
 {
-    //publish output velocities 
-    geometry_msgs::Twist msg_vel;
-    msg_vel.linear.x=this->control_.v;
-    msg_vel.angular.z=this->control_.omega;
-    this->pub_cmd_vel.publish(msg_vel);
+    //publish output velocities
+    if(!this->type==disable)
+    {
+        geometry_msgs::Twist msg_vel;
+        msg_vel.linear.x=this->control_.v;
+        msg_vel.angular.z=this->control_.omega;
+        this->pub_cmd_vel.publish(msg_vel);
+    }
+    
 
 
     //Publish Controller metadata
@@ -374,7 +378,17 @@ Controller::ControlVector Controller::calcLyapunov(LyapunovParameter parameter,V
 {
     double x=relative.getOrigin().getX();
     double y=relative.getOrigin().getY();
-    double phid=std::atan2(this->target_state_.velocity.y(),this->target_state_.velocity.x());
+    double phid;
+    if(this->target_state_.velocity.length()>0.01)
+    {
+        phid=std::atan2(this->target_state_.velocity.y(),this->target_state_.velocity.x());
+    }
+    else
+    {
+       phid=tf::getYaw(this->target_state_.pose.getRotation());
+    }
+    
+    
     double phi=tf::getYaw(this->current_state_.pose.getRotation());
     phi=phid-phi;
    
@@ -431,7 +445,8 @@ void Controller::execute(const ros::TimerEvent &ev)
         
     switch(this->type)
     {
-            
+        case disable:
+            break;    
         case pseudo_inverse: 
             this->control_=optimalControl();
             break;
@@ -451,4 +466,5 @@ void Controller::execute(const ros::TimerEvent &ev)
             break;
     }
     this->publish();
+    
 }

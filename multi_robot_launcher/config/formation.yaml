@@ -22,11 +22,11 @@ robot1:
 
     topic_target_odometry:      "/robot_master/base_pose_ground_truth" #topi  the target odometry of the robot is published at
 
-    controller_type: 3                            # 1-> pseudo_invers 2->lyapov 3->angl_dist
+    controller_type: 2                            # 1-> pseudo_invers 2->lyapov 3->angl_dist
 
     algorithm:
-      lyapunov: [7.0,7.0,11.0]               # parameter for lyapunov algorythm: kx,kphi,vd,omegad
-
+      # lyapunov: [7.0,7.0,11.0]               # parameter for lyapunov algorythm: kx,kphi,vd,omegad
+      lyapunov: [7.0,7.0,3.0]
 
 robot2:
   controller:
@@ -41,8 +41,8 @@ robot2:
     controller_type: 2                             # 1-> pseudo_invers 2->lyapov 3->angl_dist
     
     algorithm:
-      lyapunov: [7.0,7.0,11.0]               # parameter for lyapunov algorythm: kx,kphi,vd,omegad
-  
+      # lyapunov: [7.0,7.0,11.0]               # parameter for lyapunov algorythm: kx,kphi,vd,omegad
+      lyapunov: [7.0,7.0,3.0]
 
 robot_master:  
   controller:
@@ -54,7 +54,7 @@ robot_master:
 
     topic_target_odometry:      "/trajectory_odom"
 
-    controller_type: 2                           # 1-> pseudo_invers 2->lyapov 3->angl_dist
+    controller_type: 0                           # 1-> pseudo_invers 2->lyapov 3->angl_dist
     
     algorithm:
       lyapunov: [7.0,7.0,11.0]               # parameter for lyapunov algorythm: kx,kphi,vd,omegad

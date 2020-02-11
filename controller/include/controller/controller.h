@@ -50,6 +50,7 @@ class Controller{
          * 
          */
         enum ControllerType{
+            disable=0,
             pseudo_inverse=1,   /**< Control law is based on pseudo inveres the input for generate a output (least squares optimisation) */
             lypanov=2,          /**< Control law is based on the lyapunov approache. Output is determined from a lyapunov stable function */
             angle_distance=3    /**< Control law based on linear approach in angle and distance respectively */

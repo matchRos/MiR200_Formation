@@ -17,8 +17,13 @@ void Slave::targetOdomCallback(nav_msgs::Odometry msg)
     vel_eul.v=std::sqrt(std::pow(msg.twist.twist.linear.x,2)+std::pow(msg.twist.twist.linear.y,2)+std::pow(msg.twist.twist.linear.z,2));    //Nessescarry since ros is not consistent with odom msg. Sometimes its lagrangian sometimes eulerian
     VelocityCartesian vel;
     lin=tf::Vector3(vel_eul.v,0.0,0.0);
-
+    
+    //Filtering
    
+    if(std::abs(lin.x())<0.05){lin.setX(0.0);}
+    if(std::abs(lin.y())<0.05){lin.setY(0.0);}
+    if(std::abs(ang.z())<0.05){ang.setZ(0.0);}
+    ROS_WARN("x %f y %f z %f ",lin.x(),lin.y(),ang.z());
     switch(this->type)
     {
         case ControllerType::lypanov:
@@ -28,16 +33,16 @@ void Slave::targetOdomCallback(nav_msgs::Odometry msg)
             tf::poseMsgToTF(msg.pose.pose,trafo);
             tf::Transform rot;
             rot.setRotation(trafo.getRotation());
-
+            
             
             //Calculate linear velocities
             tf::Vector3 rotational;
             rotational=ang.cross(rot*this->world2reference_.getOrigin());
             this->target_state_.velocity=rot*lin+rotational;
             this->target_state_.angular_velocity=ang.z();
-        
+
             
-            // //Calculate position 
+            //Calculate position 
             this->target_state_.pose=trafo*this->world2reference_;
             break;
         }
