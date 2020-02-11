@@ -377,7 +377,7 @@ void ClickedPosePlanner::load()
 
 
 
-//Implementation of a Planner that gives a circle########################################################################################
+//Implementation of a Planner that gives a spiral########################################################################################
 //#######################################################################################################################################
 Spiralplanner::Spiralplanner(ros::NodeHandle &nh):Planner(nh)
 {

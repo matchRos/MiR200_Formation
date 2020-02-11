@@ -110,20 +110,6 @@ void Controller::setReference(std::vector<double> coord,double angle)
     this->setReference(coord[0],coord[1],coord[2],angle);
 }
 
-
-void Controller::publish_refrence()
-{
-    geometry_msgs::TransformStamped msg;
-    msg.header.stamp = ros::Time::now();
-    msg.header.frame_id =this->world_frame ;
-    msg.child_frame_id=this->nh.resolveName("reference");
-    tf::transformTFToMsg(this->world2reference_,msg.transform);
-    static tf2_ros::TransformBroadcaster broadcaster;
-    broadcaster.sendTransform(msg);
-    ROS_INFO("Sending static refrence troansformation from %s to %s", msg.header.frame_id.c_str(),msg.child_frame_id.c_str());
-}
-
-
 void Controller::setType(Controller::ControllerType type)
 {
     ROS_INFO("Setting controller type of %s to: %i",this->name.c_str(),this->type);
@@ -291,7 +277,7 @@ void Controller::currentOdomCallback(nav_msgs::Odometry msg)
 
 void Controller::targetOdomCallback(nav_msgs::Odometry msg)
 {
-   //Get the current pose
+    //Get the current pose
     tf::Pose pose;
     tf::poseMsgToTF(msg.pose.pose,pose);
     
@@ -327,25 +313,23 @@ void Controller::targetOdomCallback(nav_msgs::Odometry msg)
 ##################################################################################################################################################*/
        
 
- bool Controller::srvReset(std_srvs::EmptyRequest &req, std_srvs::EmptyResponse &res)
- {
-     this->reset();
-     return true;
- }
+bool Controller::srvReset(std_srvs::EmptyRequest &req, std_srvs::EmptyResponse &res)
+{
+    this->reset();
+    return true;
+}
 
- bool Controller::srvSetInitial(multi_robot_msgs::SetInitialPoseRequest &req,multi_robot_msgs::SetInitialPoseResponse &res )
- {
-     tf::Pose pose;
-     tf::poseMsgToTF(req.initial_pose,pose);
-     this->setReference(pose);
-     res.succeded=true;   
-     return true;
- }
-
-
+bool Controller::srvSetInitial(multi_robot_msgs::SetInitialPoseRequest &req,multi_robot_msgs::SetInitialPoseResponse &res )
+{
+    tf::Pose pose;
+    tf::poseMsgToTF(req.initial_pose,pose);
+    this->setReference(pose);
+    res.succeded=true;   
+    return true;
+}
 
 
-/*Calculations and executions ####################################################################################################################
+/*Calculations executions and scopes####################################################################################################################
 ##################################################################################################################################################*/
 void Controller::publish()
 {
@@ -375,15 +359,17 @@ void Controller::publish()
                                         nh.resolveName("base_footprint"));
         this->broadcaster_.sendTransform(base_link);
     }
+    this->publish_refrence();    
+}
+void Controller::publish_refrence()
+{
         // //Publish reference link
         geometry_msgs::TransformStamped msg2;
         msg2.header.stamp = ros::Time::now();
         msg2.header.frame_id =this->world_frame ;
         msg2.child_frame_id=this->nh.resolveName("reference");
         tf::transformTFToMsg(this->world2reference_,msg2.transform);
-        this->broadcaster_.sendTransform(msg2);
-   
-    
+        this->broadcaster_.sendTransform(msg2); 
 }
 
 struct Controller::ControlVector Controller::calcLyapunov(LyapunovParameter parameter,VelocityEulerian desired,tf::Transform relative)
@@ -424,6 +410,8 @@ void Controller::execute(const ros::TimerEvent &ev)
             desired.omega=this->target_state_.angular_velocity;
             desired.v=sqrt(pow(this->target_state_.velocity.getX(),2)+pow(this->target_state_.velocity.getY(),2));           
             this->control_=calcLyapunov(this->lyapunov_parameter,desired,control_dif_);
+            break;
+        case angle_distance:
             break;
         default: 
             break;
