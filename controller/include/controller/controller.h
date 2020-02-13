@@ -53,7 +53,8 @@ class Controller{
             disable=0,
             pseudo_inverse=1,   /**< Control law is based on pseudo inveres the input for generate a output (least squares optimisation) */
             lypanov=2,          /**< Control law is based on the lyapunov approache. Output is determined from a lyapunov stable function */
-            angle_distance=3    /**< Control law based on linear approach in angle and distance respectively */
+            angle_distance=3,    /**< Control law based on linear approach in angle and distance respectively */
+            lyapunov_bidirectional=4    ///<Control law based on the lyapunov approach and allows forward and backward movement
         };
         
         /**
@@ -238,22 +239,7 @@ class Controller{
         virtual void targetOdomCallback(nav_msgs::Odometry msg);
         
          
-        /*Calculations and executions ####################################################################################################################
-        ##################################################################################################################################################*/
-       
-        /**
-        * @brief 
-        * 
-        * @param parameter Set of lyapunov parameter for calculating the control vector
-        * @param desired Desired velocities in eulerian description (moved base). Contains angular and linear velocity
-        * @param relative Transformation from current to target state
-        * @return ControlVector 
-        */
-        struct ControlVector calcLyapunov(LyapunovParameter parameter,VelocityEulerian desired,tf::Transform relative);
-
-        ControlVector calcAngleDistance(AngleDistanceParameter parameter,ControlState target, ControlState current);
-
-        virtual struct ControlVector calcOptimalControl();
+     
 
         /**
          * @brief Scope of the controller that is called in control frequence 
@@ -370,5 +356,26 @@ class Controller{
         void publishVelocityCommand();
 
         void publishBaseLink();
+
+
+        /*Calculations and executions ####################################################################################################################
+        ##################################################################################################################################################*/
+       
+        /**
+        * @brief 
+        * 
+        * @param parameter Set of lyapunov parameter for calculating the control vector
+        * @param desired Desired velocities in eulerian description (moved base). Contains angular and linear velocity
+        * @param relative Transformation from current to target state
+        * @return ControlVector 
+        */
+        ControlVector calcLyapunov(LyapunovParameter parameter,VelocityEulerian desired,tf::Transform relative);
+
+        ControlVector calcLyapunovBidirectional(LyapunovParameter parameter,VelocityEulerian desired,tf::Transform relative);
+
+        ControlVector calcAngleDistance(AngleDistanceParameter parameter,ControlState target, ControlState current);
+
+        virtual ControlVector calcOptimalControl();
+
         
 };

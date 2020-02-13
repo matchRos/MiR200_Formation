@@ -27,6 +27,7 @@ void Slave::targetOdomCallback(nav_msgs::Odometry msg)
     switch(this->type)
     {
         case ControllerType::lypanov:
+        case ControllerType::lyapunov_bidirectional:
         {
             //Get necessary transformations
             tf::Transform trafo;  
@@ -46,6 +47,7 @@ void Slave::targetOdomCallback(nav_msgs::Odometry msg)
             this->target_state_.pose=trafo*this->world2reference_;
             break;
         }
+        
         case ControllerType::angle_distance:
         {            
             tf::poseMsgToTF(msg.pose.pose,this->target_state_.pose);

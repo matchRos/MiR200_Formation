@@ -411,6 +411,42 @@ Controller::ControlVector Controller::calcLyapunov(LyapunovParameter parameter,V
     return output;
 }
 
+Controller::ControlVector Controller::calcLyapunovBidirectional(LyapunovParameter parameter,VelocityEulerian desired,tf::Transform relative)
+{
+    double x=relative.getOrigin().getX();
+    double y=relative.getOrigin().getY();
+    double phid;
+    if(this->target_state_.velocity.length()>0.01)
+    {
+        phid=std::atan2(this->target_state_.velocity.y(),this->target_state_.velocity.x());
+        if(phid>M_PI_2)
+        {
+            phid=-(phid-M_PI_2);
+            desired.v*=-1;
+        }
+        else if(phid<-M_PI_2)
+        {
+            phid=M_PI+phid;
+            desired.v*=-1;
+        }
+       
+    }
+    else
+    {
+       phid=tf::getYaw(this->target_state_.pose.getRotation());
+    }
+    
+    
+    double phi=tf::getYaw(this->current_state_.pose.getRotation());
+    phi=phid-phi;
+   
+    ControlVector output;
+    output.v=parameter.kx*x+desired.v*cos(phi);
+    output.omega=parameter.kphi*sin(phi)+parameter.ky*desired.v*y+desired.omega;
+
+    return output;
+}
+
 Controller::ControlVector Controller::calcAngleDistance(AngleDistanceParameter parameter,ControlState target, ControlState current)
 {
     float l12d=this->world2reference_.getOrigin().length();
@@ -460,19 +496,21 @@ void Controller::execute(const ros::TimerEvent &ev)
         
     switch(this->type)
     {
-        case disable:
+        case ControllerType::disable:
+            this->publishReference();     
+            if(this->publish_tf_){this->publishBaseLink();}   
             break;    
-        case pseudo_inverse: 
+        case ControllerType::pseudo_inverse: 
             this->control_=calcOptimalControl();
             this->publish();    
             break;
-        case lypanov:
+        case ControllerType::lypanov:
             desired.omega=this->target_state_.angular_velocity;
             desired.v=sqrt(pow(this->target_state_.velocity.getX(),2)+pow(this->target_state_.velocity.getY(),2));           
             this->control_=calcLyapunov(this->lyapunov_parameter,desired,control_dif_);
             this->publish();    
             break;
-        case angle_distance:
+        case ControllerType::angle_distance:
             AngleDistanceParameter param;
             param.angular_gain=0.05;
             param.linear_gain=0.12;
@@ -480,6 +518,13 @@ void Controller::execute(const ros::TimerEvent &ev)
             this->control_=calcAngleDistance(param,this->target_state_,this->current_state_);
             this->publish();    
             break;
+        case ControllerType::lyapunov_bidirectional:
+            desired.omega=this->target_state_.angular_velocity;
+            desired.v=sqrt(pow(this->target_state_.velocity.getX(),2)+pow(this->target_state_.velocity.getY(),2));           
+            this->control_=calcLyapunovBidirectional(this->lyapunov_parameter,desired,control_dif_);
+            this->publish();    
+            break;
+            
         default: 
             break;
     }
