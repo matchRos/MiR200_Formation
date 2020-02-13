@@ -27,6 +27,7 @@ void Slave::targetOdomCallback(nav_msgs::Odometry msg)
     switch(this->type)
     {
         case ControllerType::lypanov:
+        case ControllerType::pseudo_inverse:
         case ControllerType::lyapunov_bidirectional:
         {
             //Get necessary transformations
@@ -61,10 +62,12 @@ void Slave::targetOdomCallback(nav_msgs::Odometry msg)
 }
 
 
-Controller::ControlVector Slave::optimal_control()
+Controller::ControlVector Slave::calcOptimalControl()
 {   
     //Calculate controlvector
+    ControlVector ret;
     double phi=tf::getYaw(this->current_state_.pose.getRotation());
-    this->control_.v=cos(phi)*this->target_state_.velocity.x()+sin(phi)*this->target_state_.velocity.y();
-    this->control_.omega=this->target_state_.angular_velocity;
+    ret.v=cos(phi)*this->target_state_.velocity.x()+sin(phi)*this->target_state_.velocity.y();
+    ret.omega=this->target_state_.angular_velocity;
+    return ret;
 }

@@ -427,9 +427,8 @@ Controller::ControlVector Controller::calcLyapunovBidirectional(LyapunovParamete
         else if(phid<-M_PI_2)
         {
             phid=M_PI+phid;
-            desired.v*=-1;
-        }
-       
+            desired.v*=-1;  
+        }       
     }
     else
     {
@@ -450,30 +449,27 @@ Controller::ControlVector Controller::calcLyapunovBidirectional(LyapunovParamete
 Controller::ControlVector Controller::calcAngleDistance(AngleDistanceParameter parameter,ControlState target, ControlState current)
 {
     float l12d=this->world2reference_.getOrigin().length();
-    float psi12d=atan2(-world2reference_.getOrigin().y(),-world2reference_.getOrigin().x());
+    float psi12d=atan2(world2reference_.getOrigin().y(),world2reference_.getOrigin().x());
     if(psi12d<0.0){psi12d+=2*M_PI;}
     float theta1=tf::getYaw(target_state_.pose.getRotation());
     if(theta1<0.0){theta1+=2*M_PI;}
     float theta2=tf::getYaw(current_state_.pose.getRotation());
     if(theta2<0.0){theta2+=2*M_PI;}
-    tf::Vector3 r=current.pose.inverseTimes(target.pose).getOrigin();
     
-    
+    tf::Vector3 r=target.pose.inverseTimes(current.pose).getOrigin();   
     float l12=r.length();
+
     float psi12=atan2(r.y(),r.x());
     if(psi12<0.0){psi12+=2*M_PI;}
-    float omega1=current.angular_velocity;
-    float omega2=target.angular_velocity;
-    float v1=current.velocity.length();
-    float v2=target.velocity.length();
+
+    float omega1=target.angular_velocity;
+    float omega2=current.angular_velocity;
+    float v1=target.velocity.length();
+    float v2=current.velocity.length();
 
     float gamma1=theta1+psi12-theta2;
     float roh12=(parameter.linear_gain*(l12d-l12)+v1*cos(psi12))/cos(gamma1);
 
-
-    ROS_WARN("x %f, y%f ,l12d: %f psi12d: %f theta1: %f theta2: %f psi12: %f l12: %f gamma1: %f roh12: %f",
-                r.x(),r.y(),l12d,psi12d,theta1,theta2,psi12,l12,gamma1,roh12);
-    
     ControlVector u;
     u.omega=cos(gamma1)/parameter.d*(parameter.angular_gain*l12*(psi12d-psi12)-v1*sin(psi12)+l12*omega1+roh12*sin(gamma1));
     u.v=roh12-parameter.d*omega2*tan(gamma1);

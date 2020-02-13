@@ -30,7 +30,7 @@ class Slave:public Controller{
          * 
          * @return ControlVector Calculated Control Vector
          */
-        ControlVector optimal_control();
+        ControlVector calcOptimalControl();
         /**
          * @brief Overloads the target odometry callback and expands it with transformation needed for slave robots.
          * 
