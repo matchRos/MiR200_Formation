@@ -22,7 +22,7 @@
 
   <node name="SystemHandler" pkg="simulation_env" type="system_handling_node" output="screen" required="true"/>
 
-  <node name="Measure" pkg="simulation_env" type="measurement_node" output="screen"/>
+  <!-- <node name="Measure" pkg="simulation_env" type="measurement_node" output="screen"/> -->
 
   <node name="record_system" pkg="rosbag" type="record" args="record -o $(find multi_robot_launcher)/bag/$(arg filename).bag -a"/>
 
