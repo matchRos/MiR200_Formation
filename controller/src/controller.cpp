@@ -51,7 +51,7 @@ void Controller::reset()
     }
     else
     {
-        this->publish_refrence();
+        this->publishReference();
     }
     
 }
@@ -76,8 +76,8 @@ void Controller::controlVector2controlVectorMsg(ControlVector &control,multi_rob
 }
 
 
-//################################################################################################
-//Setters
+//##############################################################################################################################################
+//Setters#######################################################################################################################################
 void Controller::setName(std::string name)
 {
     this->name=name;
@@ -87,11 +87,7 @@ void Controller::setName(std::string name)
     this->linkOutputControlData("control_data");   
 }
 
-void Controller::setReference(double x,double y,double z,double angle)
-{
-    setReference(tf::Pose(tf::createQuaternionFromRPY(0,0,angle),tf::Vector3(x,y,z)));  
-    
-}
+
 void Controller::setReference(tf::Pose pose)
 {
     this->world2reference_=pose;
@@ -100,12 +96,18 @@ void Controller::setReference(tf::Pose pose)
     ROS_INFO("Set coordiantes of: %s to: %lf %lf %lf",this->name.c_str(),   this->world2reference_.getOrigin().x(),
                                                                             this->world2reference_.getOrigin().y(),
                                                                             this->world2reference_.getOrigin().z());
-    this->publish_refrence();   
+    this->publishReference();   
 }
 
 void Controller::setReference(std::vector<double> coord,double angle)
 {
     this->setReference(coord[0],coord[1],coord[2],angle);
+}
+
+void Controller::setReference(double x,double y,double z,double angle)
+{
+    setReference(tf::Pose(tf::createQuaternionFromRPY(0,0,angle),tf::Vector3(x,y,z)));  
+    
 }
 
 void Controller::setType(Controller::ControllerType type)
@@ -137,6 +139,8 @@ void Controller::load()
 {
     std::string param;
     ros::NodeHandle param_nh(this->nh.resolveName("controller"));
+
+    //Load the world frame name
     if(param_nh.getParam(PARAM_WORLD_FRAME,param))
     {
         ROS_INFO("Loading %s",PARAM_WORLD_FRAME);
@@ -147,6 +151,7 @@ void Controller::load()
         ROS_INFO("Could not load %s for %s",PARAM_WORLD_FRAME,this->name.c_str());
     }
    
+    //Load current odometry topic
     if(param_nh.getParam(PARAM_CURRENT_ODOM,param))
     {
         ROS_INFO("Loading %s",PARAM_CURRENT_ODOM);
@@ -157,6 +162,7 @@ void Controller::load()
         ROS_INFO("Could not load %s for %s",PARAM_CURRENT_ODOM,this->name.c_str());
     }
 
+    //Load Target odometry topic
     if(param_nh.getParam(PARAM_TARGET_ODOM,param))
     {
         ROS_INFO("Loading %s",PARAM_TARGET_ODOM);
@@ -167,26 +173,26 @@ void Controller::load()
         ROS_INFO("Could not load %s for %s",PARAM_TARGET_ODOM,this->name.c_str());
     }
     
+    //Load Type of controller
     int i;
     if(param_nh.getParam(PARAM_TYPE,i))
     {
         ROS_INFO("Loading %s ",PARAM_TYPE);
         this->setType(static_cast<Controller::ControllerType>(i));
     }
-
-   
+    
+    //Load lyapunov parameter
     std::vector<float> lyapunov;
     if( param_nh.getParam(PARAM_LYAPUNOV,lyapunov))
     {
         this->setLyapunov(lyapunov);
-    }   
-
+    } 
+    
+    //Load parameter for publishing tf
     if(!param_nh.getParam(PARAM_PUBISH_TF,this->publish_tf_))
     {
         publish_tf_=false;
-    }
-    
-    
+    }    
     loadParameter();
     this->loaded_parameter=true;
 
@@ -305,8 +311,6 @@ void Controller::targetOdomCallback(nav_msgs::Odometry msg)
     this->target_state_.velocity=vel;
     this->target_state_.angular_velocity=msg.twist.twist.angular.z;
 }
-
-
 /*Service routines ####################################################################################################################
 ##################################################################################################################################################*/
        
@@ -326,22 +330,29 @@ bool Controller::srvSetInitial(multi_robot_msgs::SetInitialPoseRequest &req,mult
     return true;
 }
 
-
-/*Calculations executions and scopes####################################################################################################################
+/*Publishsing procedures####################################################################################################################
 ##################################################################################################################################################*/
+
 void Controller::publish()
 {
-    //publish output velocities
-    if(!this->type==disable)
-    {
-        geometry_msgs::Twist msg_vel;
-        msg_vel.linear.x=this->control_.v;
-        msg_vel.angular.z=this->control_.omega;
-        this->pub_cmd_vel.publish(msg_vel);
-    }
-    
+    this->publishVelocityCommand();
+    this->publishReference();     
+    if(this->publish_tf_){this->publishBaseLink();}   
+}
 
+void Controller::publishReference()
+{
+    //Publish reference link
+    geometry_msgs::TransformStamped msg2;
+    msg2.header.stamp = ros::Time::now();
+    msg2.header.frame_id =this->world_frame ;
+    msg2.child_frame_id=this->nh.resolveName("reference");
+    tf::transformTFToMsg(this->world2reference_,msg2.transform);
+    this->broadcaster_.sendTransform(msg2); 
+}
 
+void Controller::publishControlMetaData()
+{
     //Publish Controller metadata
     multi_robot_msgs::ControlData msg;
     msg.header.frame_id=this->world_frame;
@@ -351,29 +362,30 @@ void Controller::publish()
     controlState2controlStateMsg(this->target_state_,msg.target);
     controlVector2controlVectorMsg(this->control_,msg.control);
     this->pub_control_data.publish(msg);
-
-    if(this->publish_tf_)
-    {
-        //Publish base_link
-        tf::StampedTransform base_link( this->world2reference_.inverseTimes(this->current_state_.pose),
-                                        ros::Time::now(),
-                                        nh.resolveName("reference"),
-                                        nh.resolveName("base_footprint"));
-        this->broadcaster_.sendTransform(base_link);
-    }
-    this->publish_refrence();    
 }
-void Controller::publish_refrence()
+
+void Controller::publishVelocityCommand()
 {
-        // //Publish reference link
-        geometry_msgs::TransformStamped msg2;
-        msg2.header.stamp = ros::Time::now();
-        msg2.header.frame_id =this->world_frame ;
-        msg2.child_frame_id=this->nh.resolveName("reference");
-        tf::transformTFToMsg(this->world2reference_,msg2.transform);
-        this->broadcaster_.sendTransform(msg2); 
+    geometry_msgs::Twist msg_vel;
+    msg_vel.linear.x=this->control_.v;
+    msg_vel.angular.z=this->control_.omega;
+    this->pub_cmd_vel.publish(msg_vel);
 }
 
+void Controller::publishBaseLink()
+{
+    //Publish base_link
+    tf::StampedTransform base_link( this->world2reference_.inverseTimes(this->current_state_.pose),
+                                    ros::Time::now(),
+                                    nh.resolveName("reference"),
+                                    nh.resolveName("base_footprint"));
+    this->broadcaster_.sendTransform(base_link);
+}
+
+
+
+/*Calculations executions and scopes####################################################################################################################
+##################################################################################################################################################*/
 Controller::ControlVector Controller::calcLyapunov(LyapunovParameter parameter,VelocityEulerian desired,tf::Transform relative)
 {
     double x=relative.getOrigin().getX();
@@ -398,6 +410,7 @@ Controller::ControlVector Controller::calcLyapunov(LyapunovParameter parameter,V
 
     return output;
 }
+
 Controller::ControlVector Controller::calcAngleDistance(AngleDistanceParameter parameter,ControlState target, ControlState current)
 {
     float l12d=this->world2reference_.getOrigin().length();
@@ -424,19 +437,21 @@ Controller::ControlVector Controller::calcAngleDistance(AngleDistanceParameter p
 
     ROS_WARN("x %f, y%f ,l12d: %f psi12d: %f theta1: %f theta2: %f psi12: %f l12: %f gamma1: %f roh12: %f",
                 r.x(),r.y(),l12d,psi12d,theta1,theta2,psi12,l12,gamma1,roh12);
+    
     ControlVector u;
     u.omega=cos(gamma1)/parameter.d*(parameter.angular_gain*l12*(psi12d-psi12)-v1*sin(psi12)+l12*omega1+roh12*sin(gamma1));
     u.v=roh12-parameter.d*omega2*tan(gamma1);
     return u;
 }
 
-Controller::ControlVector Controller::optimalControl()
+Controller::ControlVector Controller::calcOptimalControl()
 {
     ControlVector ret;
     ret.v=this->target_state_.velocity.length();
     ret.omega=this->target_state_.angular_velocity;
     return ret;
 }
+
 
 void Controller::execute(const ros::TimerEvent &ev)
 {
@@ -448,12 +463,14 @@ void Controller::execute(const ros::TimerEvent &ev)
         case disable:
             break;    
         case pseudo_inverse: 
-            this->control_=optimalControl();
+            this->control_=calcOptimalControl();
+            this->publish();    
             break;
         case lypanov:
             desired.omega=this->target_state_.angular_velocity;
             desired.v=sqrt(pow(this->target_state_.velocity.getX(),2)+pow(this->target_state_.velocity.getY(),2));           
             this->control_=calcLyapunov(this->lyapunov_parameter,desired,control_dif_);
+            this->publish();    
             break;
         case angle_distance:
             AngleDistanceParameter param;
@@ -461,10 +478,10 @@ void Controller::execute(const ros::TimerEvent &ev)
             param.linear_gain=0.12;
             param.d=0.3;
             this->control_=calcAngleDistance(param,this->target_state_,this->current_state_);
+            this->publish();    
             break;
         default: 
             break;
     }
-    this->publish();
     
 }

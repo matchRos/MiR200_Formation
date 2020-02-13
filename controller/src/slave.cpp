@@ -23,7 +23,7 @@ void Slave::targetOdomCallback(nav_msgs::Odometry msg)
     if(std::abs(lin.x())<0.05){lin.setX(0.0);}
     if(std::abs(lin.y())<0.05){lin.setY(0.0);}
     if(std::abs(ang.z())<0.05){ang.setZ(0.0);}
-    ROS_WARN("x %f y %f z %f ",lin.x(),lin.y(),ang.z());
+    
     switch(this->type)
     {
         case ControllerType::lypanov:

@@ -253,7 +253,7 @@ class Controller{
 
         ControlVector calcAngleDistance(AngleDistanceParameter parameter,ControlState target, ControlState current);
 
-        virtual struct ControlVector optimalControl();
+        virtual struct ControlVector calcOptimalControl();
 
         /**
          * @brief Scope of the controller that is called in control frequence 
@@ -363,6 +363,12 @@ class Controller{
          * @brief Adding the world frame. Broadcastes a world frame respectiveliy the robot reference frame expressed in world coordinates.
          * 
          */
-        void publish_refrence();
+        void publishReference();
+
+        void publishControlMetaData();
+
+        void publishVelocityCommand();
+
+        void publishBaseLink();
         
 };
