@@ -33,58 +33,59 @@
     
   
     
-    <model name='ground_plane'>
-      <static>1</static>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <plane>
-              <normal>0 0 1</normal>
-              <size>100 100</size>
-            </plane>
-          </geometry>
-          <surface>
-            <friction>
-              <ode>
-                <mu>100</mu>
-                <mu2>50</mu2>
-                <slip1>1110.0</slip1>
-                <slip2>1110.0</slip2>
-              </ode>
-              <torsional>
-                <ode/>
-              </torsional>
-            </friction>
-            <contact>
+  <model name='ground_plane'>
+    <static>1</static>
+    <link name='link'>
+      <collision name='collision'>
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>100 100</size>
+          </plane>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>100</mu>
+              <mu2>50</mu2>
+              <slip1>1110.0</slip1>
+              <slip2>1110.0</slip2>
+            </ode>
+            <torsional>
               <ode/>
-            </contact>
-            <bounce/>
-          </surface>
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <cast_shadows>0</cast_shadows>
-          <geometry>
-            <plane>
-              <normal>0 0 1</normal>
-              <size>100 100</size>
-            </plane>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Grey</name>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-    </model>
+            </torsional>
+          </friction>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+        </surface>
+        <max_contacts>10</max_contacts>
+      </collision>
+      <visual name='visual'>
+        <cast_shadows>0</cast_shadows>
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>100 100</size>
+          </plane>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Grey</name>
+          </script>
+        </material>
+      </visual>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+
     
   <model name="box">
-    <pose>-0.9 0 0.5 0 0 0</pose>
+    <pose>-0.9 0 0.4 0 0 0</pose>
     <link name="link">
      <inertial>
         <mass>100</mass>        
@@ -106,19 +107,19 @@
           </friction>
           <contact>
             <ode>
-              <min_depth>0.005</min_depth>
-              <kp>1e8</kp>
-            </ode>
+              <min_depth>0.05</min_depth>
+              <kp>1e7</kp>
+            </ode> 
           </contact>
         </surface>
       </collision>
       <visual name="visual">
-        <geometry>
+         <geometry>
           <box>
-             <size>3 4 0.1</size>
-          </box>        
+            <size>3 4 0.1</size>
+          </box>
         </geometry>
-        <transparency>0.2</transparency>
+        <transparency>0.15</transparency>
         <material>
           <ambient>0 0 0 1</ambient>
           <emissive>0 0 0 1 </emissive>
@@ -127,7 +128,58 @@
     </link>
   </model>
    
-    
+
+
+  <model name="bridge">
+    <pose>-0.9 0 0.462 0 0 1.57</pose>
+    <link name="link">
+      <inertial>
+        <mass>30</mass>        
+      </inertial>
+      <collision name="collision">
+        <geometry>
+          <mesh>
+              <uri>/home/ros_match/catkin_ws/src/multi_robot_system/multi_robot_launcher/worlds/models/Paige_Creek_Bridge.stl</uri>
+              <scale>0.06 0.06 0.06</scale>
+          </mesh>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.2</mu>
+              <mu2>0.2</mu2>
+              <!--<slip1>100</slip1>
+              <slip1>200</slip1>-->
+            </ode>
+          </friction>
+          <contact>      
+            <ode>
+              <min_depth>0.05</min_depth>
+              <kp>1e7</kp>
+            </ode>    
+          </contact>
+        </surface>
+      </collision>
+      <visual name="visual">
+          <geometry>
+          <mesh>
+              <uri>/home/ros_match/catkin_ws/src/multi_robot_system/multi_robot_launcher/worlds/models/Paige_Creek_Bridge.stl</uri>
+              <scale>0.06 0.06 0.06</scale>
+          </mesh>
+        </geometry>
+        <transparency>0.15</transparency>
+        <material>
+          <ambient>0 0 0 1</ambient>
+          <emissive>0 0 0 1 </emissive>
+        </material>
+      </visual>
+    </link>
+  </model>
+  
+
+
+
+
     <spherical_coordinates>
       <surface_model>EARTH_WGS84</surface_model>
       <latitude_deg>0</latitude_deg>
