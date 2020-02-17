@@ -10,7 +10,5 @@ int main(int argc, char **argv)
 
    
     Master master=Master(argv[1],formation_ns_,robot_ns_,parameter_ns);
-    master.setReference(atof(argv[2]),atof(argv[3]),0.0,atof(argv[4]));  
-
     ros::spin();
 }

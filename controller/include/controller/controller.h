@@ -176,32 +176,7 @@ class Controller{
          */
         void setName(std::string name);       
 
-        /**
-         * @brief Set the Reference pose
-         * 
-         * @param pose pose to be set
-         */
-        void setReference(tf::Pose pose);        
-        /**
-         * @brief Set the reference of the mobile robot to be controlled from a global frame
-         * 
-         * @param x X-position of robot
-         * @param y Y-position of robot
-         * @param z Z-position of robot
-         * @param angle Angular-position of robot 
-         */
-        void setReference(double x,double y,double z,double angle);
-        /**
-         * @brief Set the reference of the mobile robot to be controlled from a global frame
-         * 
-         * @param coord vector of the robot position [x,y,z]
-         * @param angle angel of the robot
-         */
-        void setReference(std::vector<double> coord,double angle);
-  
 
-
-       
         /**
          * @brief Set the world frame name all references are given in
          * 
@@ -210,15 +185,31 @@ class Controller{
         void setWorldFrame(std::string frame);
 
         /**
+         * @brief Set the Reference pose
+         * 
+         * @param pose pose to be set
+         */
+        void setReference(tf::Pose pose);          
+
+        /**
          * @brief Sets the type of the used control law
          * 
          * @param type Type of the controller as defined in controllerType
          */
         void setType(Controller::ControllerType type);
 
-
+        /**
+         * @brief Set the Control Parameter object
+         * 
+         * @param param Lyapunov parameters
+         */
         void setControlParameter(Controller::LyapunovParameter param);
 
+        /**
+         * @brief Set the Control Parameter object
+         * 
+         * @param param Angle Distance Parameters
+         */
         void setControlParameter(Controller::AngleDistanceParameter param);
 
 

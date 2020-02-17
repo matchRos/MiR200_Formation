@@ -2,25 +2,25 @@
 <!-- Start a none recorded simulation without any planner-->
 <launch>  
 
-<include file="$(find mir_description)/launch/upload_mir_urdf.launch" />
-
  <!-- Load the formation parameter file-->
 <rosparam file="$(find multi_robot_launcher)/config/formation.yaml" command="load"></rosparam>
 <rosparam file="$(find multi_robot_launcher)/config/formation_publisher.yaml" command="load"></rosparam>
 
-<include file="$(find multi_robot_launcher)/launch/empty_world.launch">
+<include file="$(find multi_robot_launcher)/launch/gazebo.launch">
+  <arg name="world_name" value="$(find multi_robot_launcher)/worlds/empty.world"/>
   <arg name="paused" value="true" />
   <arg name="gui" value="true" />
   <arg name="recording" value="false"/>
 </include>
 
+<!-- Setting up the Formation of robots -->
+<param name="/formation/robot_master/controller/controller_type" type="int" value="0"/> 
+<include file="$(find multi_robot_launcher)/launch/formation.launch"></include>
 
-<include file="$(find multi_robot_launcher)/launch/system.launch"></include>
 
-<!-- <node name="SystemHandler" pkg="simulation_env" type="system_handling_node" output="screen"/> -->
-
+<!-- Start navigation stuff -->
 <node name="static_map_server" pkg="map_server" type="map_server"
-  args="$(find mir_gazebo)/maps/pp_test_5.yaml" ns="/" output="screen">
+  args="$(find mir_gazebo)/maps/empty_cost.yaml" ns="/" output="screen">
   <param name="frame_id" type="string" value="/map"/>
 </node>
 
@@ -30,8 +30,6 @@
   </include>
 </group>
 
-
-<node name="Measure" pkg="simulation_env" type="measurement_node" output="screen"/>
 
 <node name="rviz" pkg="rviz" type="rviz"   args="-d $(find multi_robot_launcher)/rviz/system.rviz" />
 

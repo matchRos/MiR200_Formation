@@ -3,67 +3,71 @@ formation:
   names: ["robot_master","robot1","robot2"]
   
   robot_master:
-    pose: [0 , 0 , 0, 0]
+        
+    controller:
 
-  robot1:
-    pose: [-1.5 , 1.5 , 0, 0]
+      reference: [0 , 0 , 0, 0 ,0 ,0 ]    #X Y Z R P Y
+      
+      publish_tf: true
 
-  robot2:
-    pose: [-1.5 , -1.5 , 0, 0]
+      world_frame: "/map"
 
+      topic_current_odometry:     "base_pose_ground_truth"
 
-robot1:
-  controller:
-    publish_tf: true
+      topic_target_odometry:      "/trajectory_odom"
 
-    world_frame:  "/map" #global frame. Has to be the same for hole correspiondent formation
-
-    topic_current_odometry:     "base_pose_ground_truth"  #topic the current odometry of the robot is published at
-
-    topic_target_odometry:      "/robot_master/base_pose_ground_truth" #topi  the target odometry of the robot is published at
-
-    controller_type: 3                            # 1-> pseudo_invers 2->lyapov 3->angl_dist
-
-    algorithm:
-      # lyapunov: [7.0,7.0,11.0]               # parameter for lyapunov algorythm: kx,kphi,vd,omegad
-      lyapunov: [7.0,7.0,3.0]
-
-robot2:
-  controller:
-    publish_tf: true
-
-    world_frame: "/map"
-
-    topic_current_odometry:     "base_pose_ground_truth"
-
-    topic_target_odometry:    "/robot_master/base_pose_ground_truth"
+      controller_type: 2                           # 1-> pseudo_invers 2->lyapov 3->angl_dist    
     
-    controller_type: 3                            # 1-> pseudo_invers 2->lyapov 3->angl_dist
-    
-    algorithm:
-      # lyapunov: [7.0,7.0,11.0]               # parameter for lyapunov algorythm: kx,kphi,vd,omegad
-      lyapunov: [7.0,7.0,3.0]
-
-robot_master:  
-  controller:
-    publish_tf: true
-
-    world_frame: "/map"
-
-    topic_current_odometry:     "base_pose_ground_truth"
-
-    topic_target_odometry:      "/trajectory_odom"
-
-    controller_type: 2                           # 1-> pseudo_invers 2->lyapov 3->angl_dist
-    
-    algorithm:
       lyapunov: [7.0,7.0,11.0]               # parameter for lyapunov algorythm: kx,kphi,vd,omegad
 
+      angle_distance: [0.05,0.12,0.3]   # parameter for angle distance algorythm: kl,kpsi,d
 
+
+  robot1:
+  
+    controller:
+
+      reference: [-1.75 , 1.75, 0, 0 ,0 ,0 ]    #X Y Z R P Y
+
+      publish_tf: true
+
+      world_frame:  "/map" #global frame. Has to be the same for hole correspiondent formation
+
+      topic_current_odometry:     "base_pose_ground_truth"  #topic the current odometry of the robot is published at
+
+      topic_target_odometry:      "/robot_master/base_pose_ground_truth" #topi  the target odometry of the robot is published at
+
+      controller_type: 2                            # 1-> pseudo_invers 2->lyapov 3->angl_dist
+
+      # lyapunov: [7.0,7.0,11.0]               # parameter for lyapunov algorythm: kx,kphi,vd,omegad
+      lyapunov: [7.0,7.0,3.0]
+
+      angle_distance: [7.0,5.0,0.3]   # parameter for angle distance algorythm: kl,kpsi,d
+
+
+  robot2:
+   
+    controller:
+
+      reference: [-1.75 , -1.75, 0, 0 ,0 ,0 ]    #X Y Z R P Y
+
+      publish_tf: true
+
+      world_frame: "/map"
+
+      topic_current_odometry:     "base_pose_ground_truth"
+
+      topic_target_odometry:    "/robot_master/base_pose_ground_truth"
+      
+      controller_type: 2                            # 1-> pseudo_invers 2->lyapov 3->angl_dist
+      
+      # lyapunov: [7.0,7.0,11.0]               # parameter for lyapunov algorythm: kx,kphi,vd,omegad
+      lyapunov: [7.0,7.0,3.0]
+
+      angle_distance: [7.0,5.0,0.3]   # parameter for angle distance algorythm: kl,kpsi,d
   
 
 planner: 
-
   type: 0        #0->lissajous 1->circle 2->clickedPose 3->spiral
   pause: false
   iterations: 2

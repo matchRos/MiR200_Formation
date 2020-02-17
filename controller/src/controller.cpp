@@ -64,7 +64,22 @@ void Controller::load()
     {
         ROS_WARN("Could not load %s",this->param_nh_.resolveName(PARAM_WORLD_FRAME).c_str());
     }
-   
+    
+    //Load the reference of the controller input data
+    std::vector<float> ref;
+    if(this->param_nh_.getParam(PARAM_REFERENCE_POSE,ref))
+    {
+        if(ref.size()!=6)
+        {
+            throw std::invalid_argument("Wrong number of Pose parameter!");
+        }
+        tf::Pose pose(tf::createQuaternionFromRPY(ref[3],ref[4],ref[5]),tf::Vector3(ref[0],ref[1],ref[2]));
+        this->setReference(pose);
+    }
+    else
+    {
+        ROS_WARN("Could not load %s",this->param_nh_.resolveName(PARAM_REFERENCE_POSE).c_str());
+    }
 
     //Load current odometry topic
     if(this->param_nh_.getParam(PARAM_CURRENT_ODOM,param))
@@ -99,6 +114,11 @@ void Controller::load()
         ROS_WARN("Could not load %s",this->param_nh_.resolveName(PARAM_TYPE).c_str());
     }
 
+    //Load parameter if tf should be published
+    if(!this->param_nh_.getParam(PARAM_PUBISH_TF,this->publish_tf_))
+    {
+        ROS_WARN("Could not load %s",this->param_nh_.resolveName(PARAM_PUBISH_TF).c_str());
+    }
     
     //Load lyapunov parameter
     std::vector<float> lyapunov;
@@ -121,14 +141,8 @@ void Controller::load()
     else
     {
         ROS_WARN("Could not load %s",this->param_nh_.resolveName(PARAM_ANG_DIST).c_str());
-    }
-    
-    
-    //Load parameter if tf should be published
-    if(!this->param_nh_.getParam(PARAM_PUBISH_TF,this->publish_tf_))
-    {
-        ROS_WARN("Could not load %s",this->param_nh_.resolveName(PARAM_PUBISH_TF).c_str());
-    }
+    }   
+  
 }
 
 
@@ -152,16 +166,6 @@ void Controller::setReference(tf::Pose pose)
     this->publishReference();   
 }
 
-void Controller::setReference(std::vector<double> coord,double angle)
-{
-    this->setReference(coord[0],coord[1],coord[2],angle);
-}
-
-void Controller::setReference(double x,double y,double z,double angle)
-{
-    setReference(tf::Pose(tf::createQuaternionFromRPY(0,0,angle),tf::Vector3(x,y,z)));  
-    
-}
 
 void Controller::setType(Controller::ControllerType type)
 {  

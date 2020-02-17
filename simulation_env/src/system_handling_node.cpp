@@ -22,11 +22,11 @@ int main(int argc, char** argv)
     {
         ros::ServiceClient set_robot_state=nh.serviceClient<multi_robot_msgs::SetInitialPose>(names.at(i)+"/set_pose");
         set_robot_state.waitForExistence();
-        std::string param="formation/"+names.at(i)+"/pose";
+        std::string param="formation/"+names.at(i)+"/controller/reference";
         std::vector<double> pose_vec;
         nh.getParam(param,pose_vec);    
 
-        tf::Pose pose(tf::createQuaternionFromRPY(0,0,pose_vec.at(3)),tf::Vector3(pose_vec[0],pose_vec[1],pose_vec[2])); 
+        tf::Pose pose(tf::createQuaternionFromRPY(pose_vec.at(3),pose_vec.at(4),pose_vec.at(5)),tf::Vector3(pose_vec[0],pose_vec[1],pose_vec[2])); 
         if(i==0)
         {
             reference=pose;
