@@ -1,41 +1,23 @@
 #include <controller/controller.h>
 
-Controller::Controller(ros::NodeHandle &nh):    nh(nh),
-                                                control_dif_(tf::createIdentityQuaternion(),
-                                                            tf::Vector3(0,0,0))
+Controller::Controller( std::string name,
+                        ros::NodeHandle nh,
+                        ros::NodeHandle nh_topics,
+                        ros::NodeHandle nh_parameters
+                        )                                                        
 {
-                                           
-    this->listener=new tf::TransformListener(nh);
-    this->name=nh.getNamespace();
-
-    //Publishers
-    this->pub_cmd_vel=this->nh.advertise<geometry_msgs::Twist>("/out",10);
-    this->pub_control_data=this->nh.advertise<multi_robot_msgs::ControlData>("/control_data",10);
-    
-    //Subscribers
-    this->sub_odom_current=this->nh.subscribe("/odom_current",10,&Controller::currentOdomCallback,this);   
-    this->sub_odom_target=this->nh.subscribe("/odom_target",10,&Controller::targetOdomCallback,this);
-    
-    //Services
-    this->srv_reset=nh.advertiseService("reset",&Controller::srvReset,this);
-    this->srv_set_initial=nh.advertiseService("set_pose",&Controller::srvSetInitial,this);
-
-
-    //Timers
+    this->param_nh_=nh_parameters;
+    this->robot_nh_=nh_topics;
+    //Setting up a nescessary transform lsitener                                    
+    this->listener=new tf::TransformListener(nh_topics);
+    //Setting up timer for execution;
     this->time_scope_ = nh.createTimer(ros::Duration(0.005),&Controller::execute,this);
-
-    //Flags
-    this->loaded_parameter=false;
-
-    this->target_state_.pose=tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(0,0,0));
-    this->target_state_.angular_velocity=0;
-    this->target_state_.velocity=VelocityCartesian(0,0,0);
-
-
-    this->current_state_.pose=tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(0,0,0));
-    this->current_state_.angular_velocity=0;
-    this->current_state_.velocity=VelocityCartesian(0,0,0);
-
+    //Setting of controller name
+    this->setName(name);
+    //Loading parameter from parameter server
+    this->load();
+    //Initialize control difference
+    control_dif_=tf::Transform(tf::createIdentityQuaternion(),tf::Vector3(0,0,0));
 } 
 
 Controller::~Controller()
@@ -45,15 +27,7 @@ Controller::~Controller()
 
 void Controller::reset()
 {  
-    if(loaded_parameter)
-    {
-        this->load();    
-    }
-    else
-    {
-        this->publishReference();
-    }
-    
+    this->load();    
 }
 
 
@@ -78,10 +52,89 @@ void Controller::controlVector2controlVectorMsg(ControlVector &control,multi_rob
 
 //##############################################################################################################################################
 //Setters#######################################################################################################################################
+void Controller::load()
+{
+    //Load the world frame name
+    std::string param;
+    if(this->param_nh_.getParam(PARAM_WORLD_FRAME,param))
+    {
+        this->setWorldFrame(param);     
+    }
+    else
+    {
+        ROS_WARN("Could not load %s",this->param_nh_.resolveName(PARAM_WORLD_FRAME).c_str());
+    }
+   
+
+    //Load current odometry topic
+    if(this->param_nh_.getParam(PARAM_CURRENT_ODOM,param))
+    {
+        this->linkCurrentOdom(param);
+    }
+    else
+    {
+       ROS_WARN("Could not load %s",this->param_nh_.resolveName(PARAM_CURRENT_ODOM).c_str());
+    }
+
+
+    //Load Target odometry topic
+    if(this->param_nh_.getParam(PARAM_TARGET_ODOM,param))
+    {
+        this->linkTargetOdom(param);
+    }
+    else
+    {
+        ROS_WARN("Could not load %s",this->param_nh_.resolveName(PARAM_TARGET_ODOM).c_str());
+    }
+
+    
+    //Load Type of controller
+    int i;
+    if(this->param_nh_.getParam(PARAM_TYPE,i))
+    {
+        this->setType(static_cast<Controller::ControllerType>(i));
+    }
+    else
+    {
+        ROS_WARN("Could not load %s",this->param_nh_.resolveName(PARAM_TYPE).c_str());
+    }
+
+    
+    //Load lyapunov parameter
+    std::vector<float> lyapunov;
+    if(this->param_nh_.getParam(PARAM_LYAPUNOV,lyapunov))
+    {
+        this->setControlParameter(LyapunovParameter(lyapunov));
+    } 
+    else
+    {
+       ROS_WARN("Could not load %s",this->param_nh_.resolveName(PARAM_LYAPUNOV).c_str());
+    }
+
+    
+    //Load angle distance parameter
+    std::vector<float> angle_distance;
+    if(this->param_nh_.getParam(PARAM_ANG_DIST,angle_distance))
+    {
+        this->setControlParameter(AngleDistanceParameter(angle_distance));
+    }
+    else
+    {
+        ROS_WARN("Could not load %s",this->param_nh_.resolveName(PARAM_ANG_DIST).c_str());
+    }
+    
+    
+    //Load parameter if tf should be published
+    if(!this->param_nh_.getParam(PARAM_PUBISH_TF,this->publish_tf_))
+    {
+        ROS_WARN("Could not load %s",this->param_nh_.resolveName(PARAM_PUBISH_TF).c_str());
+    }
+}
+
+
 void Controller::setName(std::string name)
 {
     this->name=name;
-    this->nh.resolveName(name);
 
     this->linkOutputVelocity("mobile_base_controller/cmd_vel");
     this->linkOutputControlData("control_data");   
@@ -111,9 +164,9 @@ void Controller::setReference(double x,double y,double z,double angle)
 }
 
 void Controller::setType(Controller::ControllerType type)
-{
-    ROS_INFO("Setting controller type of %s to: %i",this->name.c_str(),this->type);
+{  
     this->type=type;
+    ROS_INFO("Setting controller type of %s to: %i",this->name.c_str(),this->type); 
 }
 
 void Controller::setWorldFrame(std::string frame)
@@ -122,86 +175,19 @@ void Controller::setWorldFrame(std::string frame)
     ROS_INFO("Setting world frame of %s to: %s",this->name.c_str(),this->world_frame.c_str());
 }
 
-void Controller::setLyapunov(Controller::LyapunovParameter param)
+void Controller::setControlParameter(Controller::LyapunovParameter param)
 {
-    this->lyapunov_parameter=param;
-}
-void Controller::setLyapunov(std::vector<float> param)
-{
-    Controller::LyapunovParameter parameter;
-    parameter.kx=param[0];
-    parameter.ky=param[1];
-    parameter.kphi=param[2];
-    this->setLyapunov(parameter);
+    this->lyapunov_parameter_=param;
+    ROS_INFO("Set lyapunov parameter to: X gain: %f, Y gain: %f, Phi gain: %f",param.kx,param.ky,param.kphi);
 }
 
-void Controller::load()
+void Controller::setControlParameter(Controller::AngleDistanceParameter param)
 {
-    std::string param;
-    ros::NodeHandle param_nh(this->nh.resolveName("controller"));
-
-    //Load the world frame name
-    if(param_nh.getParam(PARAM_WORLD_FRAME,param))
-    {
-        ROS_INFO("Loading %s",PARAM_WORLD_FRAME);
-        this->setWorldFrame(param);     
-    }
-    else
-    {
-        ROS_INFO("Could not load %s for %s",PARAM_WORLD_FRAME,this->name.c_str());
-    }
-   
-    //Load current odometry topic
-    if(param_nh.getParam(PARAM_CURRENT_ODOM,param))
-    {
-        ROS_INFO("Loading %s",PARAM_CURRENT_ODOM);
-        this->linkCurrentOdom(param);
-    }
-    else
-    {
-        ROS_INFO("Could not load %s for %s",PARAM_CURRENT_ODOM,this->name.c_str());
-    }
-
-    //Load Target odometry topic
-    if(param_nh.getParam(PARAM_TARGET_ODOM,param))
-    {
-        ROS_INFO("Loading %s",PARAM_TARGET_ODOM);
-        this->linkTargetOdom(param);
-    }
-    else
-    {
-        ROS_INFO("Could not load %s for %s",PARAM_TARGET_ODOM,this->name.c_str());
-    }
-    
-    //Load Type of controller
-    int i;
-    if(param_nh.getParam(PARAM_TYPE,i))
-    {
-        ROS_INFO("Loading %s ",PARAM_TYPE);
-        this->setType(static_cast<Controller::ControllerType>(i));
-    }
-    
-    //Load lyapunov parameter
-    std::vector<float> lyapunov;
-    if( param_nh.getParam(PARAM_LYAPUNOV,lyapunov))
-    {
-        this->setLyapunov(lyapunov);
-    } 
-    
-    //Load parameter for publishing tf
-    if(!param_nh.getParam(PARAM_PUBISH_TF,this->publish_tf_))
-    {
-        publish_tf_=false;
-    }    
-    loadParameter();
-    this->loaded_parameter=true;
-
+    this->angle_distance_parameter_=param;
+    ROS_INFO("Set angular distance parameter to: Angular gain: %f, Linear gain %f, Coliision difference %f",param.angular_gain,param.linear_gain,param.d);
 }
 
-void Controller::loadParameter()
-{
-    return;
-}
+
 
 
  /*Linking topics #################################################################################################################################
@@ -336,6 +322,7 @@ bool Controller::srvSetInitial(multi_robot_msgs::SetInitialPoseRequest &req,mult
 void Controller::publish()
 {
     this->publishVelocityCommand();
+    this->publishControlMetaData();
     this->publishReference();     
     if(this->publish_tf_){this->publishBaseLink();}   
 }
@@ -346,7 +333,7 @@ void Controller::publishReference()
     geometry_msgs::TransformStamped msg2;
     msg2.header.stamp = ros::Time::now();
     msg2.header.frame_id =this->world_frame ;
-    msg2.child_frame_id=this->nh.resolveName("reference");
+    msg2.child_frame_id=this->robot_nh_.resolveName("reference");
     tf::transformTFToMsg(this->world2reference_,msg2.transform);
     this->broadcaster_.sendTransform(msg2); 
 }
@@ -377,8 +364,8 @@ void Controller::publishBaseLink()
     //Publish base_link
     tf::StampedTransform base_link( this->world2reference_.inverseTimes(this->current_state_.pose),
                                     ros::Time::now(),
-                                    nh.resolveName("reference"),
-                                    nh.resolveName("base_footprint"));
+                                    robot_nh_.resolveName("reference"),
+                                    robot_nh_.resolveName("base_footprint"));
     this->broadcaster_.sendTransform(base_link);
 }
 
@@ -503,21 +490,17 @@ void Controller::execute(const ros::TimerEvent &ev)
         case ControllerType::lypanov:
             desired.omega=this->target_state_.angular_velocity;
             desired.v=sqrt(pow(this->target_state_.velocity.getX(),2)+pow(this->target_state_.velocity.getY(),2));           
-            this->control_=calcLyapunov(this->lyapunov_parameter,desired,control_dif_);
+            this->control_=calcLyapunov(this->lyapunov_parameter_,desired,control_dif_);
             this->publish();    
             break;
-        case ControllerType::angle_distance:
-            AngleDistanceParameter param;
-            param.angular_gain=0.05;
-            param.linear_gain=0.12;
-            param.d=0.3;
-            this->control_=calcAngleDistance(param,this->target_state_,this->current_state_);
+        case ControllerType::angle_distance:           
+            this->control_=calcAngleDistance(this->angle_distance_parameter_,this->target_state_,this->current_state_);
             this->publish();    
             break;
         case ControllerType::lyapunov_bidirectional:
             desired.omega=this->target_state_.angular_velocity;
             desired.v=sqrt(pow(this->target_state_.velocity.getX(),2)+pow(this->target_state_.velocity.getY(),2));           
-            this->control_=calcLyapunovBidirectional(this->lyapunov_parameter,desired,control_dif_);
+            this->control_=calcLyapunovBidirectional(this->lyapunov_parameter_,desired,control_dif_);
             this->publish();    
             break;
             

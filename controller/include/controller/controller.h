@@ -21,6 +21,7 @@
 
 #define PARAM_PUBISH_TF "publish_tf"
 
+#define PARAM_REFERENCE_POSE "reference"
 #define PARAM_TARGET_VEL "topic_target_velocity"
 #define PARAM_TARGET_STATE "topic_target_state"
 #define PARAM_TARGET_ODOM "topic_target_odometry"
@@ -32,8 +33,8 @@
 #define PARAM_WORLD_FRAME "world_frame"
 #define PARAM_TYPE "controller_type"
 
-#define PARAM_LYAPUNOV "algorithm/lyapunov"
-#define PARAM_ANG_DIST "algorithm/angle_distance"
+#define PARAM_LYAPUNOV "lyapunov"
+#define PARAM_ANG_DIST "angle_distance"
 
 
 /**
@@ -49,7 +50,8 @@ class Controller{
          * @brief Specifies the different implemented control laws
          * 
          */
-        enum ControllerType{
+        enum ControllerType
+        {
             disable=0,
             pseudo_inverse=1,   /**< Control law is based on pseudo inveres the input for generate a output (least squares optimisation) */
             lypanov=2,          /**< Control law is based on the lyapunov approache. Output is determined from a lyapunov stable function */
@@ -65,21 +67,62 @@ class Controller{
         {
             float kx;           ///< Control gain in x-direction 
             float ky;           ///< Control gain in y-direction  
-            float kphi;         ///< Control gain in theta-direction 
+            float kphi;         ///< Control gain in theta-direction
+
+            LyapunovParameter(){kx=0.0;ky=0.0;kphi=0.0;};
+            LyapunovParameter(float kx,float ky,float kphi){this->kx=kx;this->ky=ky;this->kphi=kphi;}
+            LyapunovParameter(std::vector<float> param)
+            {
+                if(param.size()!=3)
+                {
+                    throw std::invalid_argument("Wrong number of LyapunovParameters");
+                }
+                else
+                {
+                    this->kx=param[0];
+                    this->ky=param[1];
+                    this->kphi=param[2];
+                }
+            }
+                
         };
-        struct AngleDistanceParameter{
+
+        /**
+         * @brief Specifies the Parameters of the angle distance based control law
+         * 
+         */
+        struct AngleDistanceParameter
+        {
             float angular_gain; ///< Control gain in phi direction  
             float linear_gain;  ///< Control gain in l direction   
             float d; 
+
+            AngleDistanceParameter(){angular_gain=0.0;linear_gain=0.0;d=0.0;};
+            AngleDistanceParameter(float angular_gain,float linear_gain,float d){this->angular_gain=angular_gain;this->linear_gain=linear_gain;this->d=d;}
+            AngleDistanceParameter(std::vector<float> param)
+            {
+                if(param.size()!=3)
+                {
+                    throw std::invalid_argument("Wrong number of AngleDistanceParameters");
+                }
+                else
+                {
+                    this->angular_gain=param[0];
+                    this->linear_gain=param[1];
+                    this->d=param[2];
+                }
+            }
         };
 
         /**
          * @brief A struct that holds linear and angular velocity of the Robot since this are the control variable for kinematic tracking control
          * 
          */
-        struct ControlVector{
+        struct ControlVector
+        {
             double v;                   ///<Linear velocity
             double omega;               ///<Angular velocity
+            ControlVector(){v=0.0;omega=0.0;}
         };
         typedef ControlVector VelocityEulerian;                     ///<Defines VelocityEulerian wich is used to store Velocities wich are defined locally in the moved base system
 
@@ -87,10 +130,17 @@ class Controller{
          * @brief Holds the System state combined by the pose of the system, the cartesian velocity and the angular velocity
          * 
          */
-        struct ControlState{
+        struct ControlState
+        {
             tf::Pose pose;                  ///<Complete pose of the robot in 3 dimensional space
             VelocityCartesian velocity;     ///<Velocity in cartesian space
             double angular_velocity;        ///<Angular velocity around z-axis
+            ControlState()
+            {
+                pose=tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(0.0,0.0,0.0));
+                velocity=tf::Vector3(0.0,0.0,0.0);
+                angular_velocity=0.0;
+            }
         };
 
 
@@ -103,7 +153,10 @@ class Controller{
          * 
          * @param nh Ros nodehandle for managing namespaces and ros functionality within the controller object
          */
-        Controller(ros::NodeHandle &nh);
+        Controller( std::string name,
+                    ros::NodeHandle nh=ros::NodeHandle("~"),
+                    ros::NodeHandle nh_topics=ros::NodeHandle("~"),
+                    ros::NodeHandle nh_parameters=ros::NodeHandle("~"));
         /**
          * @brief Destroy the Controller object
          * 
@@ -163,23 +216,12 @@ class Controller{
          */
         void setType(Controller::ControllerType type);
 
-        /**
-         * @brief Sets the parameter of the lyapunov control law
-         * 
-         * @param param Parameterset as defined in lyapunov struct
-         */
-        void setLyapunov(Controller::LyapunovParameter param);
 
-        /**
-         * @brief  Sets the parameter of the lyapunov control law
-         * 
-         * @param param vector of given parameters [kx,ky,ktheta,vd,omega]
-         */
-        void setLyapunov(std::vector<float> param);
+        void setControlParameter(Controller::LyapunovParameter param);
 
-        ///Loading parameter for a specified Controller. Empty for Controller base class and implemented in inheriting classes.
-        virtual void loadParameter();
-       
+        void setControlParameter(Controller::AngleDistanceParameter param);
+
+
         /**
          * @brief Loading of ROS parameterset for this controller
          * 
@@ -310,6 +352,8 @@ class Controller{
         
     protected:
         ros::NodeHandle nh;                                         ///<Node Handle
+        ros::NodeHandle robot_nh_;
+        ros::NodeHandle param_nh_;
         tf::TransformListener* listener;                            ///<Listener for any transformation
         tf::TransformBroadcaster broadcaster_;                      ///<Broadcaster for broadcasting transformations
         std::string world_frame;                                    ///<Name of the world frame
@@ -337,11 +381,10 @@ class Controller{
 
         std::string name;                                            ///<Name of the node respective Controller
         
-        LyapunovParameter lyapunov_parameter;                        ///<Parameter set for lyapunov determinations
+        LyapunovParameter lyapunov_parameter_;                        ///<Parameter set for lyapunov determinations
+        AngleDistanceParameter angle_distance_parameter_;   ///<Parameter set for angle distance control law
        
-    
 
-        bool loaded_parameter;                                       ///<Flag if parameter were loaded from the parameter server
 
         void publish();                                              ///<Publish all outgoing data
 

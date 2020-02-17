@@ -14,6 +14,9 @@ class Master:public Controller{
          * 
          * @param nh Nodehandle
          */
-        Master(ros::NodeHandle &nh);
+        Master(std::string name,
+                ros::NodeHandle nh=ros::NodeHandle("~"),
+                ros::NodeHandle nh_topics=ros::NodeHandle("~"),
+                ros::NodeHandle nh_parameters=ros::NodeHandle("~"));
     private:
 };

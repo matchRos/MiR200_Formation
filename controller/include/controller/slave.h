@@ -22,7 +22,10 @@ class Slave:public Controller{
          * 
          * @param nh NodeHandle
          */
-        Slave(ros::NodeHandle &nh);        
+        Slave(  std::string name,
+                ros::NodeHandle nh=ros::NodeHandle("~"),
+                ros::NodeHandle nh_topics=ros::NodeHandle("~"),
+                ros::NodeHandle nh_parameters=ros::NodeHandle("~"));        
         
     private:
         /**

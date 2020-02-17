@@ -1,6 +1,9 @@
 #include <controller/slave.h>
 
-Slave::Slave(ros::NodeHandle &nh):Controller(nh)
+Slave::Slave(   std::string name,
+                ros::NodeHandle nh,
+                ros::NodeHandle nh_topics,
+                ros::NodeHandle nh_parameters):Controller(name,nh,nh_topics,nh_parameters)
 {
 } 
 
@@ -18,8 +21,7 @@ void Slave::targetOdomCallback(nav_msgs::Odometry msg)
     VelocityCartesian vel;
     lin=tf::Vector3(vel_eul.v,0.0,0.0);
     
-    //Filtering
-   
+    //Filtering   
     if(std::abs(lin.x())<0.05){lin.setX(0.0);}
     if(std::abs(lin.y())<0.05){lin.setY(0.0);}
     if(std::abs(ang.z())<0.05){ang.setZ(0.0);}
