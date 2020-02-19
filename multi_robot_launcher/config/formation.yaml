@@ -1,71 +1,136 @@
 # -----------------------------------
 formation:
-  names: ["robot_master","robot1","robot2"]
-  
-  robot_master:
-        
-    controller:
+  # names: ["robot_master1","robot_master2","robot1","robot2","robot3","robot4"]
+   names: ["robot_master1","robot1","robot2"]
 
-      reference: [0 , 0 , 0, 0 ,0 ,0 ]    #X Y Z R P Y
+   robot_master1:
       
-      publish_tf: true
+  controller:
 
-      world_frame: "/map"
-
-      topic_current_odometry:     "base_pose_ground_truth"
-
-      topic_target_odometry:      "/trajectory_odom"
-
-      controller_type: 2                           # 1-> pseudo_invers 2->lyapov 3->angl_dist    
+    reference: [-1.5 , 0 , 0, 0 ,0 ,0 ]    #X Y Z R P Y
     
-      lyapunov: [7.0,7.0,11.0]               # parameter for lyapunov algorythm: kx,kphi,vd,omegad
+    publish_tf: true
 
-      angle_distance: [0.05,0.12,0.3]   # parameter for angle distance algorythm: kl,kpsi,d
+    world_frame: "/map"
 
+    topic_current_odometry:     "base_pose_ground_truth"
 
-  robot1:
+    topic_target_odometry:      "/trajectory_odom"
+
+    controller_type: 2                           # 1-> pseudo_invers 2->lyapov 3->angl_dist    
   
-    controller:
+    lyapunov: [7.0,7.0,11.0]               # parameter for lyapunov algorythm: kx,kphi,vd,omegad
 
-      reference: [-1.75 , 1.75, 0, 0 ,0 ,0 ]    #X Y Z R P Y
-
-      publish_tf: true
-
-      world_frame:  "/map" #global frame. Has to be the same for hole correspiondent formation
-
-      topic_current_odometry:     "base_pose_ground_truth"  #topic the current odometry of the robot is published at
-
-      topic_target_odometry:      "/robot_master/base_pose_ground_truth" #topi  the target odometry of the robot is published at
-
-      controller_type: 2                            # 1-> pseudo_invers 2->lyapov 3->angl_dist
-
-      # lyapunov: [7.0,7.0,11.0]               # parameter for lyapunov algorythm: kx,kphi,vd,omegad
-      lyapunov: [7.0,7.0,3.0]
-
-      angle_distance: [7.0,5.0,0.3]   # parameter for angle distance algorythm: kl,kpsi,d
+    angle_distance: [0.05,0.12,0.3]   # parameter for angle distance algorythm: kl,kpsi,d
 
 
-  robot2:
-   
-    controller:
-
-      reference: [-1.75 , -1.75, 0, 0 ,0 ,0 ]    #X Y Z R P Y
-
-      publish_tf: true
-
-      world_frame: "/map"
-
-      topic_current_odometry:     "base_pose_ground_truth"
-
-      topic_target_odometry:    "/robot_master/base_pose_ground_truth"
-      
-      controller_type: 2                            # 1-> pseudo_invers 2->lyapov 3->angl_dist
-      
-      # lyapunov: [7.0,7.0,11.0]               # parameter for lyapunov algorythm: kx,kphi,vd,omegad
-      lyapunov: [7.0,7.0,3.0]
-
-      angle_distance: [7.0,5.0,0.3]   # parameter for angle distance algorythm: kl,kpsi,d
+robot1:
   
+  controller:
+
+    reference: [-2.25 , -1.25, 0, 0 ,0 ,0 ]    #X Y Z R P Y
+
+    publish_tf: true
+
+    world_frame: "/map"
+
+    topic_current_odometry:     "base_pose_ground_truth"
+
+    topic_target_odometry:    "/robot_master1/base_pose_ground_truth"
+    
+    controller_type: 2                            # 1-> pseudo_invers 2->lyapov 3->angl_dist
+    
+    # lyapunov: [7.0,7.0,11.0]               # parameter for lyapunov algorythm: kx,kphi,vd,omegad
+    lyapunov: [7.0,7.0,3.0]
+
+    angle_distance: [7.0,5.0,0.3]   # parameter for angle distance algorythm: kl,kpsi,d
+
+
+robot2:
+      
+  controller:
+
+    reference: [-2.25 , 1.25, 0, 0 ,0 ,0 ]    #X Y Z R P Y
+
+    publish_tf: true
+
+    world_frame: "/map"
+
+    topic_current_odometry:     "base_pose_ground_truth"
+
+    topic_target_odometry:      "/robot_master1/base_pose_ground_truth"
+
+    controller_type: 2                           # 1-> pseudo_invers 2->lyapov 3->angl_dist    
+
+    lyapunov: [7.0,7.0,11.0]               # parameter for lyapunov algorythm: kx,kphi,vd,omegad
+
+    angle_distance: [0.05,0.12,0.3]   # parameter for angle distance algorythm: kl,kpsi,d
+
+
+robot_master2:
+
+  controller:
+
+    reference: [1.5 , 0 , 0, 0 ,0 ,0 ]    #X Y Z R P Y
+
+    publish_tf: true
+
+    world_frame:  "/map" #global frame. Has to be the same for hole correspiondent formation
+
+    topic_current_odometry:     "base_pose_ground_truth"  #topic the current odometry of the robot is published at
+
+    topic_target_odometry:      "/trajectory_odom" #topi  the target odometry of the robot is published at
+
+    controller_type: 2                            # 1-> pseudo_invers 2->lyapov 3->angl_dist
+
+    # lyapunov: [7.0,7.0,11.0]               # parameter for lyapunov algorythm: kx,kphi,vd,omegad
+    lyapunov: [7.0,7.0,3.0]
+
+    angle_distance: [7.0,5.0,0.3]   # parameter for angle distance algorythm: kl,kpsi,d
+
+robot3:
+
+  controller:
+
+    reference: [2.25 , 1.25, 0, 0 ,0 ,0 ]    #X Y Z R P Y
+
+    publish_tf: true
+
+    world_frame:  "/map" #global frame. Has to be the same for hole correspiondent formation
+
+    topic_current_odometry:     "base_pose_ground_truth"  #topic the current odometry of the robot is published at
+
+    topic_target_odometry:      "/robot_master2/base_pose_ground_truth" #topi  the target odometry of the robot is published at
+
+    controller_type: 2                            # 1-> pseudo_invers 2->lyapov 3->angl_dist
+
+    # lyapunov: [7.0,7.0,11.0]               # parameter for lyapunov algorythm: kx,kphi,vd,omegad
+    lyapunov: [7.0,7.0,3.0]
+
+    angle_distance: [7.0,5.0,0.3]   # parameter for angle distance algorythm: kl,kpsi,d
+
+robot4:
+  
+  controller:
+
+    reference: [2.25 , -1.25, 0, 0 ,0 ,0 ]    #X Y Z R P Y
+
+    publish_tf: true
+
+    world_frame: "/map"
+
+    topic_current_odometry:     "base_pose_ground_truth"
+
+    topic_target_odometry:    "/robot_master2/base_pose_ground_truth"
+    
+    controller_type: 2                            # 1-> pseudo_invers 2->lyapov 3->angl_dist
+    
+    # lyapunov: [7.0,7.0,11.0]               # parameter for lyapunov algorythm: kx,kphi,vd,omegad
+    lyapunov: [7.0,7.0,3.0]
+
+    angle_distance: [7.0,5.0,0.3]   # parameter for angle distance algorythm: kl,kpsi,d
+
+
 
 planner: 
   type: 0        #0->lissajous 1->circle 2->clickedPose 3->spiral
