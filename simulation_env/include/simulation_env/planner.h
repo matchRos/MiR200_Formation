@@ -7,7 +7,7 @@
 
 //Generic path planning class
 #define PARAM_ITERATION "iterations"
-
+#define PARAM_REFERENCE "reference"
 /**
  * @brief A generic planner class that provides general interface functions and architecture
  * 
@@ -37,10 +37,10 @@ class Planner{
          */
         void pause();
         //Sets the initial pose of the robot from wich the planning starts
-        void set_start_pose(tf::Pose pose);
+        void setStartPose(tf::Pose pose);
+        void load();
         //Load nessecarry parameter from ros parameter server
-        virtual void load()=0;
-
+        virtual void loadChild()=0;
     protected:
         int iterations_counter;                                 ///Counter for the iterations of periodic planner functions
         ros::NodeHandle nh;
@@ -80,11 +80,11 @@ class Planner{
 
         ///Gets the transformation form the given pose to the pose at timestamp zero
         ///@param pose : Pose from wich the planner should start
-        tf::Transform get_transform(tf::Pose pose); 
+        tf::Transform getTransform(tf::Pose pose); 
 
         ///Transforming all values that are not rotation or translation invariant
         ///@param trafo : The Transformation applied to all values
-        void transform_values(tf::Transform trafo);       
+        void transformValues(tf::Transform trafo);       
 
         ///service procedure for satrting the planner
         ///@param req : Reqest the service is getting
@@ -124,7 +124,7 @@ class CirclePlanner:public Planner{
         };
         //Sets the parameter of the planner
         void set_parameter(double r=3.0,double omega=0.5);
-        void load();
+        void loadChild();
     private:
         CirclePlan plan;
         //Calclulation of the curren pose dependent on time
@@ -160,7 +160,7 @@ class LissajousPlanner:public Planner{
             float Ay;            //Magnitude y directions
         };
         void set_parameter(float omegax,float dphi=0.0, int ratio=2,float Ax=3.0,float Ay=3.0);
-        void load();
+        void loadChild();
     
     private:
         LissajousPlan plan;
@@ -193,7 +193,7 @@ class ClickedPosePlanner:public Planner{
         tf::Pose pose_;
         tf::Vector3 direction_;
         void clickedCallback(const geometry_msgs::PoseStampedConstPtr msg);
-        void load();
+        void loadChild();
 
 
 };
@@ -215,7 +215,7 @@ class Spiralplanner:public Planner{
         };
         //Sets the parameter of the planner
         void set_parameter(double r_offset,double r_growth, double omega);
-        void load();
+        void loadChild();
     private:
         SpiralPlan plan;
         tf::Vector3 get_position(ros::Duration time);

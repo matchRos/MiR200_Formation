@@ -36,28 +36,24 @@ void Planner::plan(const ros::TimerEvent& event)
     {
         ros::Duration local_time;
         local_time=ros::Time::now()-this->start_time-this->paused;        
+        
         this->vel=this->get_velocity(local_time);
         this->pos=this->get_position(local_time);
         this->orientation=this->get_orientation(local_time);
         this->ang_vel=this->get_angular_velocity(local_time);
         this->check_period(local_time);
+        this->transformValues(this->start_reference);
+        this->publish();
     }
-    else
-    {
-        this->vel=tf::Vector3(0,0,0);
-        this->ang_vel=0;
-    }
-    this->transform_values(this->start_reference);
-    this->publish();
+    
 }
 
 
 void Planner::start()
 {
-    ROS_INFO("Started planner: %s",ros::this_node::getName().c_str());
     this->start_time=ros::Time::now();
     this->is_planning=true;
-    this->start_reference=this->get_transform(this->start_pose);
+    this->start_reference=this->getTransform(this->start_pose);
 }
 
 void Planner::pause()
@@ -85,12 +81,13 @@ bool Planner::srv_stop(std_srvs::EmptyRequest &req, std_srvs::EmptyResponse &res
     return true;
 }
 
-void Planner::set_start_pose(tf::Pose pose)
+void Planner::setStartPose(tf::Pose pose)
 {
     this->start_pose=pose;
 }
 
-tf::Transform Planner::get_transform(tf::Pose pose)
+
+tf::Transform Planner::getTransform(tf::Pose pose)
 {   
     tf::Pose planner_start( this->get_orientation(ros::Duration(0)),
                             this->get_position(ros::Duration(0)));
@@ -100,27 +97,25 @@ tf::Transform Planner::get_transform(tf::Pose pose)
                 planner_start.getOrigin().y(),
                 tf::getYaw(planner_start.getRotation()));
     
-    tf::Transform trafo(planner_start.inverseTimes(pose));
+    tf::Transform trafo(pose*planner_start.inverse());
 
-    ROS_INFO(   "Trafo applied on planner values: x-%lf y-%lf z-%lf x-%lf y-%lf z-%lf w-%lf theta-%lf ",
-                this->start_reference.getOrigin().x(),
-                this->start_reference.getOrigin().y(),
-                this->start_reference.getOrigin().z(),
-                this->start_reference.getRotation().x(),
-                this->start_reference.getRotation().y(),
-                this->start_reference.getRotation().z(),
-                this->start_reference.getRotation().w(),
-                tf::getYaw(this->start_reference.getRotation()));
+    ROS_INFO(   "Trafo applied on planner values: x-%lf y-%lf z-%lf theta-%lf ",
+                trafo.getOrigin().x(),
+                trafo.getOrigin().y(),
+                trafo.getOrigin().z(),               
+                tf::getYaw(trafo.getRotation()));
     return trafo;
 }
 
-void Planner::transform_values(tf::Transform trafo)
+
+void Planner::transformValues(tf::Transform trafo)
 {
     tf::Transform rotate(trafo.getRotation());
     this->vel=rotate*this->vel;
     this->pos=trafo*this->pos;
     this->orientation=rotate*this->orientation;
 }
+
 
 void Planner::publish()
 {    
@@ -134,6 +129,23 @@ void Planner::publish()
     this->pub_current_odometry.publish(msg2);
 }
 
+void Planner::load()
+{
+    if(!this->nh.getParam(PARAM_ITERATION,this->iterations))
+    {
+        ROS_WARN("Could not load %",this->nh.resolveName(PARAM_ITERATION));
+    }
+    std::vector<float> ref_rpy;
+    if(!this->nh.getParam(PARAM_REFERENCE,ref_rpy))
+    {
+        ROS_WARN("Could not load %",this->nh.resolveName(PARAM_REFERENCE));
+    }
+    else
+    {
+        this->setStartPose(tf::Pose(tf::createQuaternionFromRPY(ref_rpy[3],ref_rpy[4],ref_rpy[5]),tf::Vector3(ref_rpy[0],ref_rpy[1],ref_rpy[2])));
+    }    
+    this->loadChild();
+}
 
 
 
@@ -187,7 +199,7 @@ double CirclePlanner::get_angular_velocity(ros::Duration time)
     return this->plan.omega;    
 }
 
-void CirclePlanner::load()
+void CirclePlanner::loadChild()
 {
     try{
         this->nh.getParam(PARAM_ITERATION,this->iterations);
@@ -285,7 +297,7 @@ void LissajousPlanner::set_parameter(float omegax,float dphi,int ratio,float Ax,
     this->plan.ratio=ratio;
 }
 
-void LissajousPlanner::load()
+void LissajousPlanner::loadChild()
 {
     this->nh.getParam(PARAM_ITERATION,this->iterations);
     this->nh.getParam(PARAM_AMP_X,this->plan.Ax);
@@ -370,7 +382,7 @@ void ClickedPosePlanner::clickedCallback(const geometry_msgs::PoseStampedConstPt
     this->pose_=pose;
     
 }
-void ClickedPosePlanner::load()
+void ClickedPosePlanner::loadChild()
 {
     return;
 }
@@ -424,7 +436,7 @@ double Spiralplanner::get_angular_velocity(ros::Duration time)
     return this->plan.omega;    
 }
 
-void Spiralplanner::load()
+void Spiralplanner::loadChild()
 {
     try{
         this->nh.getParam(PARAM_ITERATION,this->iterations);
