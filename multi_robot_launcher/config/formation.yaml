@@ -1,141 +1,9 @@
 # -----------------------------------
-formation:
-  # names: ["robot_master1","robot_master2","robot1","robot2","robot3","robot4"]
-   names: ["robot_master1","robot1","robot2"]
-
-   robot_master1:
-      
-  controller:
-
-    reference: [-1.5 , 0 , 0, 0 ,0 ,0 ]    #X Y Z R P Y
-    
-    publish_tf: true
-
-    world_frame: "/map"
-
-    topic_current_odometry:     "base_pose_ground_truth"
-
-    topic_target_odometry:      "/trajectory_odom"
-
-    controller_type: 2                           # 1-> pseudo_invers 2->lyapov 3->angl_dist    
-  
-    lyapunov: [7.0,7.0,11.0]               # parameter for lyapunov algorythm: kx,kphi,vd,omegad
-
-    angle_distance: [0.05,0.12,0.3]   # parameter for angle distance algorythm: kl,kpsi,d
-
-
-robot1:
-  
-  controller:
-
-    reference: [-2.25 , -1.25, 0, 0 ,0 ,0 ]    #X Y Z R P Y
-
-    publish_tf: true
-
-    world_frame: "/map"
-
-    topic_current_odometry:     "base_pose_ground_truth"
-
-    topic_target_odometry:    "/robot_master1/base_pose_ground_truth"
-    
-    controller_type: 2                            # 1-> pseudo_invers 2->lyapov 3->angl_dist
-    
-    # lyapunov: [7.0,7.0,11.0]               # parameter for lyapunov algorythm: kx,kphi,vd,omegad
-    lyapunov: [7.0,7.0,3.0]
-
-    angle_distance: [7.0,5.0,0.3]   # parameter for angle distance algorythm: kl,kpsi,d
-
-
-robot2:
-      
-  controller:
-
-    reference: [-2.25 , 1.25, 0, 0 ,0 ,0 ]    #X Y Z R P Y
-
-    publish_tf: true
-
-    world_frame: "/map"
-
-    topic_current_odometry:     "base_pose_ground_truth"
-
-    topic_target_odometry:      "/robot_master1/base_pose_ground_truth"
-
-    controller_type: 2                           # 1-> pseudo_invers 2->lyapov 3->angl_dist    
-
-    lyapunov: [7.0,7.0,11.0]               # parameter for lyapunov algorythm: kx,kphi,vd,omegad
-
-    angle_distance: [0.05,0.12,0.3]   # parameter for angle distance algorythm: kl,kpsi,d
-
-
-robot_master2:
-
-  controller:
-
-    reference: [1.5 , 0 , 0, 0 ,0 ,0 ]    #X Y Z R P Y
-
-    publish_tf: true
-
-    world_frame:  "/map" #global frame. Has to be the same for hole correspiondent formation
-
-    topic_current_odometry:     "base_pose_ground_truth"  #topic the current odometry of the robot is published at
-
-    topic_target_odometry:      "/trajectory_odom" #topi  the target odometry of the robot is published at
-
-    controller_type: 2                            # 1-> pseudo_invers 2->lyapov 3->angl_dist
-
-    # lyapunov: [7.0,7.0,11.0]               # parameter for lyapunov algorythm: kx,kphi,vd,omegad
-    lyapunov: [7.0,7.0,3.0]
-
-    angle_distance: [7.0,5.0,0.3]   # parameter for angle distance algorythm: kl,kpsi,d
-
-robot3:
-
-  controller:
-
-    reference: [2.25 , 1.25, 0, 0 ,0 ,0 ]    #X Y Z R P Y
-
-    publish_tf: true
-
-    world_frame:  "/map" #global frame. Has to be the same for hole correspiondent formation
-
-    topic_current_odometry:     "base_pose_ground_truth"  #topic the current odometry of the robot is published at
-
-    topic_target_odometry:      "/robot_master2/base_pose_ground_truth" #topi  the target odometry of the robot is published at
-
-    controller_type: 2                            # 1-> pseudo_invers 2->lyapov 3->angl_dist
-
-    # lyapunov: [7.0,7.0,11.0]               # parameter for lyapunov algorythm: kx,kphi,vd,omegad
-    lyapunov: [7.0,7.0,3.0]
-
-    angle_distance: [7.0,5.0,0.3]   # parameter for angle distance algorythm: kl,kpsi,d
-
-robot4:
-  
-  controller:
-
-    reference: [2.25 , -1.25, 0, 0 ,0 ,0 ]    #X Y Z R P Y
-
-    publish_tf: true
-
-    world_frame: "/map"
-
-    topic_current_odometry:     "base_pose_ground_truth"
-
-    topic_target_odometry:    "/robot_master2/base_pose_ground_truth"
-    
-    controller_type: 2                            # 1-> pseudo_invers 2->lyapov 3->angl_dist
-    
-    # lyapunov: [7.0,7.0,11.0]               # parameter for lyapunov algorythm: kx,kphi,vd,omegad
-    lyapunov: [7.0,7.0,3.0]
-
-    angle_distance: [7.0,5.0,0.3]   # parameter for angle distance algorythm: kl,kpsi,d
-
-
-
 planner: 
   type: 0        #0->lissajous 1->circle 2->clickedPose 3->spiral
-  pause: false
+  pause: true
   iterations: 2
+  reference:  [0.75 , 0 , 0, 0 ,0 ,0 ]    #X Y Z R P Y
   
   growth: 0.33 
   r0: 3
@@ -145,3 +13,52 @@ planner:
   phaseshift: 0.0
   amplifier_x: 3.0
   amplifier_y: 3.0
+
+
+formation:
+  names: ["master","robot1","robot2","robot3","robot4","robot5"] #Names of the robots belonging to one formation
+
+# Remaped, shared parameter for all the robots
+controller_type: 2                            # 1-> pseudo_invers 2->lyapov 3->angl_dist
+lyapunov: [7.0,7.0,4.0]               # parameter for lyapunov algorythm: kx,kphi,vd,omegad
+angle_distance: [7.0,5.0,0.3]   # parameter for angle distance algorythm: kl,kpsi,d  
+topic_current_odometry: "base_pose_ground_truth"  #Source of state estamination
+publish_tf: true  #Should be published at tf?
+world_frame: "/map" #Name of the map frame
+
+master:      
+  controller: 
+    controller_type: 0
+    reference: [0.75 , 0 , 0, 0 ,0 ,0 ]    #X Y Z R P Y    
+    topic_target_odometry:      "/trajectory_odom"
+
+robot1:  
+  controller:
+    master: "master"
+    reference: [1.25 , -1.25, 0, 0 ,0 ,0 ]    #X Y Z R P Y
+    topic_target_odometry:    "/master/base_pose_ground_truth"   
+
+robot2:      
+  controller:
+    master: "master"
+    reference: [1.25 , 1.25, 0, 0 ,0 ,0 ]    #X Y Z R P Y
+    topic_target_odometry:       "/master/base_pose_ground_truth" #topi  the target odometry of the robot is published at
+
+robot3:
+  controller:
+    master: "master"
+    reference: [-1.5,1.25, 0, 0 ,0 ,0 ]    #X Y Z R P Y
+    topic_target_odometry:      "/master/base_pose_ground_truth" #topi  the target odometry of the robot is published at
+
+robot4:  
+  controller:
+    master: "master"
+    reference: [-1.5, -1.25, 0, 0 ,0 ,0 ]    #X Y Z R P Y
+    topic_target_odometry:    "/master/base_pose_ground_truth"     
+
+robot5:
+  controller:
+    master: "master"
+    reference: [-0.75 , 0 , 0, 0 ,0 ,0 ]    #X Y Z R P Y
+    publish_tf: true  
+    topic_target_odometry:       "/master/base_pose_ground_truth" #topi  the target odometry of the robot is published at

@@ -25,9 +25,8 @@
         <arg name="controller_name"     value="$(arg robot_name)" />
     </include>  
   
-    <node name="Controller" pkg="controller" type="slave_node" args="$(arg robot_name) $(arg robot_x) $(arg robot_y)  $(arg robot_yaw)" output="$(arg displ)"></node>
+    <node name="Controller" pkg="controller" type="slave_node" args="$(arg robot_name)" output="$(arg displ)"></node>
 </group> 
-
 </launch>
 
 

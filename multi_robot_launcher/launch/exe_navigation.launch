@@ -24,7 +24,7 @@
   <param name="frame_id" type="string" value="/map"/>
 </node>
 
-<group ns="robot_master">
+<group ns="master">
   <include file="$(find mir_navigation)/launch/mir_nav/move_base.xml">
     <arg name="local_planner" value="dwa"/>
   </include>

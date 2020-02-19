@@ -2,24 +2,58 @@
 <!-- This file launches a system with below defined masters and slaves.-->
 <launch>
 
+
+<!-- Remap parameter for more compact yaml file and shared parameters between the robots -->
+<remap from="/master/controller/lyapunov" to="/lyapunov"/>
+<remap from="/robot1/controller/lyapunov" to="/lyapunov"/>
+<remap from="/robot2/controller/lyapunov" to="/lyapunov"/>
+<remap from="/robot3/controller/lyapunov" to="/lyapunov"/>
+<remap from="/robot4/controller/lyapunov" to="/lyapunov"/>
+<remap from="/robot5/controller/lyapunov" to="/lyapunov"/>
+
+<remap from="/master/controller/angle_distance" to="/angle_distance"/>
+<remap from="/robot1/controller/angle_distance" to="/angle_distance"/>
+<remap from="/robot2/controller/angle_distance" to="/angle_distance"/>
+<remap from="/robot3/controller/angle_distance" to="/angle_distance"/>
+<remap from="/robot4/controller/angle_distance" to="/angle_distance"/>
+<remap from="/robot5/controller/angle_distance" to="/angle_distance"/>
+
+<remap from="/master/controller/publish_tf" to="/publish_tf"/>
+<remap from="/robot1/controller/publish_tf" to="/publish_tf"/>
+<remap from="/robot2/controller/publish_tf" to="/publish_tf"/>
+<remap from="/robot3/controller/publish_tf" to="/publish_tf"/>
+<remap from="/robot4/controller/publish_tf" to="/publish_tf"/>
+<remap from="/robot5/controller/publish_tf" to="/publish_tf"/>
+
+<!-- <remap from="/master/controller/controller_type" to="/controller_type"/> -->
+<remap from="/robot1/controller/controller_type" to="/controller_type"/>
+<remap from="/robot2/controller/controller_type" to="/controller_type"/>
+<remap from="/robot3/controller/controller_type" to="/controller_type"/>
+<remap from="/robot4/controller/controller_type" to="/controller_type"/>
+<remap from="/robot5/controller/controller_type" to="/controller_type"/>
+
+<remap from="/master/controller/world_frame" to="/world_frame"/>
+<remap from="/robot1/controller/world_frame" to="/world_frame"/>
+<remap from="/robot2/controller/world_frame" to="/world_frame"/>
+<remap from="/robot3/controller/world_frame" to="/world_frame"/>
+<remap from="/robot4/controller/world_frame" to="/world_frame"/>
+<remap from="/robot5/controller/world_frame" to="/world_frame"/>
+
+<remap from="/master/controller/topic_current_odometry" to="/topic_current_odometry"/>
+<remap from="/robot1/controller/topic_current_odometry" to="/topic_current_odometry"/>
+<remap from="/robot2/controller/topic_current_odometry" to="/topic_current_odometry"/>
+<remap from="/robot3/controller/topic_current_odometry" to="/topic_current_odometry"/>
+<remap from="/robot4/controller/topic_current_odometry" to="/topic_current_odometry"/>
+<remap from="/robot5/controller/topic_current_odometry" to="/topic_current_odometry"/>
+
 <!-- Setup a master mobile robot-->
-<include file="$(find controller)/launch/slave.launch">
-  <arg name="robot_name" value="robot_master1"/>
+<include file="$(find controller)/launch/master.launch">
+  <arg name="robot_name" value="master"/>
   <arg name="robot_x"   value="-1.0" />  
   <arg name="robot_y"   value="0.0" />
   <arg name="robot_yaw" value="0" />
   <arg name="displ" value="screen"/>
 </include>
-
-<!-- Setup a master mobile robot-->
-<include file="$(find controller)/launch/slave.launch">
-  <arg name="robot_name" value="robot_master2"/>
-  <arg name="robot_x"   value="1.0" />  
-  <arg name="robot_y"   value="0.0" />
-  <arg name="robot_yaw" value="0" />
-  <arg name="displ" value="screen"/>
-</include>
-
 
 <!-- Setup a slave mobile robot-->
 <include file="$(find controller)/launch/slave.launch">
@@ -39,6 +73,8 @@
   <arg name="displ" value="screen"/>
 </include>
 
+
+
 <!-- Setup a slave mobile robot-->
 <include file="$(find controller)/launch/slave.launch">
   <arg name="robot_name" value="robot3"/>
@@ -57,4 +93,13 @@
   <arg name="displ" value="screen"/>
 </include>
 
+<!-- Setup a slave mobile robot-->
+<include file="$(find controller)/launch/slave.launch">
+  <arg name="robot_name" value="robot5"/>
+  <arg name="robot_x"   value="1.0" />  
+  <arg name="robot_y"   value="0.0" />
+  <arg name="robot_yaw" value="0" />
+  <arg name="displ" value="screen"/>
+</include>
 </launch>
+
