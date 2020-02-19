@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<launch>
+    <param name="block_description" 
+        command="$(find xacro)/xacro --inorder $(find multi_robot_launcher)/urdf/bridge.urdf" />
+
+    <!-- <node name="box_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" args="robot_description:=box_description" /> -->
+
+    <!--Spawn the MiR plattform into Gazebo-->
+    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" 
+        args="-urdf -param block_description -model object -x -0.7 -y 0.0 -Y 0.0 -z 0.49" 
+        respawn="false" output="screen"/>          
+</launch>
