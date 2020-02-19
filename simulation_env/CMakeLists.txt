@@ -141,7 +141,7 @@ add_library(planner
   src/planner.cpp
 )
 
-add_dependencies(formation ${catkin_EXPORTED_TARGETS})
+
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
@@ -155,6 +155,8 @@ add_executable(planner_node src/planner_node.cpp)
 add_executable(measurement_node src/measurement_node.cpp)
 add_executable(system_handling_node src/system_handling_node.cpp)
 add_executable(spiral_node src/spiral_node.cpp)
+
+
 
 
 ## Rename C++ executable without prefix
@@ -188,6 +190,11 @@ target_link_libraries(system_handling_node
   planner
   ${catkin_LIBRARIES}
 )
+
+
+add_dependencies(formation ${catkin_EXPORTED_TARGETS})
+add_dependencies(system_handling_node ${catkin_EXPORTED_TARGETS})
+
 #############
 ## Install ##
 #############
