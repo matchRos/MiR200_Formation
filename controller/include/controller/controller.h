@@ -344,7 +344,7 @@ class Controller{
     protected:
         ros::NodeHandle nh;                                         ///<Node Handle
         ros::NodeHandle robot_nh_;
-        ros::NodeHandle param_nh_;
+        ros::NodeHandle controller_nh;
         tf::TransformListener* listener;                            ///<Listener for any transformation
         tf::TransformBroadcaster broadcaster_;                      ///<Broadcaster for broadcasting transformations
         std::string world_frame;                                    ///<Name of the world frame
@@ -365,7 +365,7 @@ class Controller{
         ros::Subscriber sub_odom_target;                             ///<Subscriber object for target odometry topic
 
         ros::ServiceServer srv_reset;                                ///<Service for resetting the controller
-        ros::ServiceServer srv_set_initial; ///<Service for setting the initial pose
+        ros::ServiceServer srv_set_pose;     ///<Service for setting the initial pose
         ros::Timer time_scope_;                                      ///<Timer for control scope
 
         bool publish_tf_;

@@ -6,10 +6,11 @@ Controller::Controller( std::string name,
                         ros::NodeHandle nh_parameters
                         )                                                        
 {
-    this->param_nh_=nh_parameters;
+    this->controller_nh=nh_parameters;
     this->robot_nh_=nh_topics;
     //Setting up a nescessary transform lsitener                                    
     this->listener=new tf::TransformListener(nh_topics);
+
     //Setting up timer for execution;
     this->time_scope_ = nh.createTimer(ros::Duration(0.005),&Controller::execute,this);
     //Setting of controller name
@@ -18,6 +19,7 @@ Controller::Controller( std::string name,
     this->load();
     //Initialize control difference
     control_dif_=tf::Transform(tf::createIdentityQuaternion(),tf::Vector3(0,0,0));
+    this->srv_set_pose=this->controller_nh.advertiseService("set_reference",&Controller::srvSetInitial,this);
 } 
 
 Controller::~Controller()
@@ -56,18 +58,18 @@ void Controller::load()
 {
     //Load the world frame name
     std::string param;
-    if(this->param_nh_.getParam(PARAM_WORLD_FRAME,param))
+    if(this->controller_nh.getParam(PARAM_WORLD_FRAME,param))
     {
         this->setWorldFrame(param);     
     }
     else
     {
-        ROS_WARN("Could not load %s",this->param_nh_.resolveName(PARAM_WORLD_FRAME).c_str());
+        ROS_WARN("Could not load %s",this->controller_nh.resolveName(PARAM_WORLD_FRAME).c_str());
     }
     
     //Load the reference of the controller input data
     std::vector<float> ref;
-    if(this->param_nh_.getParam(PARAM_REFERENCE_POSE,ref))
+    if(this->controller_nh.getParam(PARAM_REFERENCE_POSE,ref))
     {
         if(ref.size()!=6)
         {
@@ -78,69 +80,69 @@ void Controller::load()
     }
     else
     {
-        ROS_WARN("Could not load %s",this->param_nh_.resolveName(PARAM_REFERENCE_POSE).c_str());
+        ROS_WARN("Could not load %s",this->controller_nh.resolveName(PARAM_REFERENCE_POSE).c_str());
     }
 
     //Load current odometry topic
-    if(this->param_nh_.getParam(PARAM_CURRENT_ODOM,param))
+    if(this->controller_nh.getParam(PARAM_CURRENT_ODOM,param))
     {
         this->linkCurrentOdom(param);
     }
     else
     {
-       ROS_WARN("Could not load %s",this->param_nh_.resolveName(PARAM_CURRENT_ODOM).c_str());
+       ROS_WARN("Could not load %s",this->controller_nh.resolveName(PARAM_CURRENT_ODOM).c_str());
     }
 
 
     //Load Target odometry topic
-    if(this->param_nh_.getParam(PARAM_TARGET_ODOM,param))
+    if(this->controller_nh.getParam(PARAM_TARGET_ODOM,param))
     {
         this->linkTargetOdom(param);
     }
     else
     {
-        ROS_WARN("Could not load %s",this->param_nh_.resolveName(PARAM_TARGET_ODOM).c_str());
+        ROS_WARN("Could not load %s",this->controller_nh.resolveName(PARAM_TARGET_ODOM).c_str());
     }
 
     
     //Load Type of controller
     int i;
-    if(this->param_nh_.getParam(PARAM_TYPE,i))
+    if(this->controller_nh.getParam(PARAM_TYPE,i))
     {
         this->setType(static_cast<Controller::ControllerType>(i));
     }
     else
     {
-        ROS_WARN("Could not load %s",this->param_nh_.resolveName(PARAM_TYPE).c_str());
+        ROS_WARN("Could not load %s",this->controller_nh.resolveName(PARAM_TYPE).c_str());
     }
 
     //Load parameter if tf should be published
-    if(!this->param_nh_.getParam(PARAM_PUBISH_TF,this->publish_tf_))
+    if(!this->controller_nh.getParam(PARAM_PUBISH_TF,this->publish_tf_))
     {
-        ROS_WARN("Could not load %s",this->param_nh_.resolveName(PARAM_PUBISH_TF).c_str());
+        ROS_WARN("Could not load %s",this->controller_nh.resolveName(PARAM_PUBISH_TF).c_str());
     }
     
     //Load lyapunov parameter
     std::vector<float> lyapunov;
-    if(this->param_nh_.getParam(PARAM_LYAPUNOV,lyapunov))
+    if(this->controller_nh.getParam(PARAM_LYAPUNOV,lyapunov))
     {
         this->setControlParameter(LyapunovParameter(lyapunov));
     } 
     else
     {
-       ROS_WARN("Could not load %s",this->param_nh_.resolveName(PARAM_LYAPUNOV).c_str());
+       ROS_WARN("Could not load %s",this->controller_nh.resolveName(PARAM_LYAPUNOV).c_str());
     }
 
     
     //Load angle distance parameter
     std::vector<float> angle_distance;
-    if(this->param_nh_.getParam(PARAM_ANG_DIST,angle_distance))
+    if(this->controller_nh.getParam(PARAM_ANG_DIST,angle_distance))
     {
         this->setControlParameter(AngleDistanceParameter(angle_distance));
     }
     else
     {
-        ROS_WARN("Could not load %s",this->param_nh_.resolveName(PARAM_ANG_DIST).c_str());
+        ROS_WARN("Could not load %s",this->controller_nh.resolveName(PARAM_ANG_DIST).c_str());
     }   
   
 }
