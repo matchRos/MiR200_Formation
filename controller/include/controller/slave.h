@@ -26,7 +26,7 @@ class Slave:public Controller{
                 ros::NodeHandle nh=ros::NodeHandle("~"),
                 ros::NodeHandle nh_topics=ros::NodeHandle("~"),
                 ros::NodeHandle nh_parameters=ros::NodeHandle("~"));        
-        
+        void setMasterReference(tf::Pose pose);
     private:
         /**
          * @brief Calculates a Control vector by pseudo inverting the Jacobian of the Robot
@@ -34,6 +34,11 @@ class Slave:public Controller{
          * @return ControlVector Calculated Control Vector
          */
         ControlVector calcOptimalControl();
+
+        ControlVector calcAngleDistance(AngleDistanceParameter parameter,ControlState target, ControlState current);
+       
+        ros::ServiceServer srv_set_reference_;     ///<Service for setting the reference pose
+        tf::Transform master_reference_;
         /**
          * @brief Overloads the target odometry callback and expands it with transformation needed for slave robots.
          * 
@@ -41,5 +46,5 @@ class Slave:public Controller{
          */
         void targetOdomCallback(nav_msgs::Odometry msg);
         
-
+        bool srvSetMasterReference(multi_robot_msgs::SetInitialPoseRequest &req,multi_robot_msgs::SetInitialPoseResponse &res );
 };

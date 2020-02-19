@@ -188,7 +188,7 @@ class Controller{
          * 
          * @param pose pose to be set
          */
-        void setReference(tf::Pose pose);          
+        void setReferenceFrame(tf::Pose pose);          
 
         /**
          * @brief Sets the type of the used control law
@@ -307,7 +307,7 @@ class Controller{
          * @return true Succeeded
          * @return false Not Succeeded
          */
-        bool srvSetInitial(multi_robot_msgs::SetInitialPoseRequest &req,multi_robot_msgs::SetInitialPoseResponse &res);
+        bool srvSetReferenceFrame(multi_robot_msgs::SetInitialPoseRequest &req,multi_robot_msgs::SetInitialPoseResponse &res);
 
 
         //###################################################################################################################################
@@ -344,16 +344,19 @@ class Controller{
         ros::NodeHandle nh;                                         ///<Node Handle
         ros::NodeHandle robot_nh_;
         ros::NodeHandle controller_nh;
+
         tf::TransformListener* listener;                            ///<Listener for any transformation
         tf::TransformBroadcaster broadcaster_;                      ///<Broadcaster for broadcasting transformations
+       
         std::string world_frame;                                    ///<Name of the world frame
+        std::string name;                                            ///<Name of the node respective Controller
         
         ControlState current_state_;                                ///<The current state of the robot
         ControlState target_state_;                                 ///<The target state of the robot
         ControlDifference control_dif_;                             ///<Transformation from current configuration to target configuration
         ControlVector control_;                                     ///<The calculated control vector
 
-        tf::Transform world2reference_;                             ///<Transformation from a world to the controllers refrence frame
+        tf::Transform reference_frame_;                             ///<Transformation from a world to the controllers refrence frame
         ControllerType type;                                         ///<Type of control algorythm that is used
     private:
         ros::Publisher pub_cmd_vel;                                  ///<publisher object for velocity outoput topic
@@ -364,12 +367,12 @@ class Controller{
         ros::Subscriber sub_odom_target;                             ///<Subscriber object for target odometry topic
 
         ros::ServiceServer srv_reset;                                ///<Service for resetting the controller
-        ros::ServiceServer srv_set_pose;     ///<Service for setting the initial pose
+        ros::ServiceServer srv_set_reference_frame_;     ///<Service for setting the initial pose
         ros::Timer time_scope_;                                      ///<Timer for control scope
 
         bool publish_tf_;
 
-        std::string name;                                            ///<Name of the node respective Controller
+      
         
         LyapunovParameter lyapunov_parameter_;                        ///<Parameter set for lyapunov determinations
         AngleDistanceParameter angle_distance_parameter_;   ///<Parameter set for angle distance control law
@@ -382,7 +385,7 @@ class Controller{
          * @brief Adding the world frame. Broadcastes a world frame respectiveliy the robot reference frame expressed in world coordinates.
          * 
          */
-        void publishReference();
+        void publishReferenceFrame();
 
         void publishControlMetaData();
 
@@ -404,9 +407,11 @@ class Controller{
         */
         ControlVector calcLyapunov(LyapunovParameter parameter,ControlState target, ControlState current);
 
-        ControlVector calcAngleDistance(AngleDistanceParameter parameter,ControlState target, ControlState current);
+        virtual ControlVector calcAngleDistance(AngleDistanceParameter parameter,ControlState target, ControlState current);
 
         virtual ControlVector calcOptimalControl();
+
+        ControlVector passVelocity();
 
         
 };

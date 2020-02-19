@@ -19,7 +19,7 @@ Controller::Controller( std::string name,
     this->load();
     //Initialize control difference
     control_dif_=tf::Transform(tf::createIdentityQuaternion(),tf::Vector3(0,0,0));
-    this->srv_set_pose=this->controller_nh.advertiseService("set_reference",&Controller::srvSetInitial,this);
+    this->srv_set_reference_frame_=this->controller_nh.advertiseService("set_reference_frame",&Controller::srvSetReferenceFrame,this);
 } 
 
 Controller::~Controller()
@@ -76,7 +76,7 @@ void Controller::load()
             throw std::invalid_argument("Wrong number of Pose parameter!");
         }
         tf::Pose pose(tf::createQuaternionFromRPY(ref[3],ref[4],ref[5]),tf::Vector3(ref[0],ref[1],ref[2]));
-        this->setReference(pose);
+        this->setReferenceFrame(pose);
     }
     else
     {
@@ -157,15 +157,14 @@ void Controller::setName(std::string name)
 }
 
 
-void Controller::setReference(tf::Pose pose)
+void Controller::setReferenceFrame(tf::Pose pose)
 {
-    this->world2reference_=pose;
-    this->current_state_.pose=this->world2reference_;
-    this->target_state_.pose=this->world2reference_;
-    ROS_INFO("Set coordiantes of: %s to: %lf %lf %lf",this->name.c_str(),   this->world2reference_.getOrigin().x(),
-                                                                            this->world2reference_.getOrigin().y(),
-                                                                            this->world2reference_.getOrigin().z());
-    this->publishReference();   
+    this->reference_frame_=pose;
+    this->current_state_.pose=this->reference_frame_;
+    this->target_state_.pose=this->reference_frame_;
+    ROS_INFO("Set coordiantes of: %s to: %lf %lf %lf",this->name.c_str(),   this->reference_frame_.getOrigin().x(),
+                                                                            this->reference_frame_.getOrigin().y(),
+                                                                            this->reference_frame_.getOrigin().z());  
 }
 
 
@@ -313,11 +312,11 @@ bool Controller::srvReset(std_srvs::EmptyRequest &req, std_srvs::EmptyResponse &
     return true;
 }
 
-bool Controller::srvSetInitial(multi_robot_msgs::SetInitialPoseRequest &req,multi_robot_msgs::SetInitialPoseResponse &res )
+bool Controller::srvSetReferenceFrame(multi_robot_msgs::SetInitialPoseRequest &req,multi_robot_msgs::SetInitialPoseResponse &res )
 {
     tf::Pose pose;
     tf::poseMsgToTF(req.initial_pose,pose);
-    this->setReference(pose);
+    this->setReferenceFrame(pose);
     res.succeded=true;   
     return true;
 }
@@ -328,19 +327,22 @@ bool Controller::srvSetInitial(multi_robot_msgs::SetInitialPoseRequest &req,mult
 void Controller::publish()
 {
     this->publishVelocityCommand();
-    this->publishControlMetaData();
-    this->publishReference();     
-    if(this->publish_tf_){this->publishBaseLink();}   
+    this->publishControlMetaData();   
+    if(this->publish_tf_)
+    {
+        this->publishBaseLink();
+        this->publishReferenceFrame();     
+    }   
 }
 
-void Controller::publishReference()
+void Controller::publishReferenceFrame()
 {
     //Publish reference link
     geometry_msgs::TransformStamped msg2;
     msg2.header.stamp = ros::Time::now();
     msg2.header.frame_id =this->world_frame ;
     msg2.child_frame_id=this->robot_nh_.resolveName("reference");
-    tf::transformTFToMsg(this->world2reference_,msg2.transform);
+    tf::transformTFToMsg(this->reference_frame_,msg2.transform);
     this->broadcaster_.sendTransform(msg2); 
 }
 
@@ -350,7 +352,7 @@ void Controller::publishControlMetaData()
     multi_robot_msgs::ControlData msg;
     msg.header.frame_id=this->world_frame;
     msg.header.stamp=ros::Time::now();
-    controlDifference2controlDifferenceMsg(this->control_dif_,msg.difference);
+    // controlDifference2controlDifferenceMsg(this->control_dif_,msg.difference);
     controlState2controlStateMsg(this->current_state_,msg.current);
     controlState2controlStateMsg(this->target_state_,msg.target);
     controlVector2controlVectorMsg(this->control_,msg.control);
@@ -368,7 +370,7 @@ void Controller::publishVelocityCommand()
 void Controller::publishBaseLink()
 {
     //Publish base_link
-    tf::StampedTransform base_link( this->world2reference_.inverseTimes(this->current_state_.pose),
+    tf::StampedTransform base_link( this->reference_frame_.inverseTimes(this->current_state_.pose),
                                     ros::Time::now(),
                                     robot_nh_.resolveName("reference"),
                                     robot_nh_.resolveName("base_footprint"));
@@ -408,39 +410,7 @@ Controller::ControlVector Controller::calcLyapunov(LyapunovParameter parameter,C
     return output;
 }
 
-
-
-Controller::ControlVector Controller::calcAngleDistance(AngleDistanceParameter parameter,ControlState target, ControlState current)
-{
-    float l12d=this->world2reference_.getOrigin().length();
-    float psi12d=atan2(world2reference_.getOrigin().y(),world2reference_.getOrigin().x());
-    if(psi12d<0.0){psi12d+=2*M_PI;}
-    float theta1=tf::getYaw(target_state_.pose.getRotation());
-    if(theta1<0.0){theta1+=2*M_PI;}
-    float theta2=tf::getYaw(current_state_.pose.getRotation());
-    if(theta2<0.0){theta2+=2*M_PI;}
-    
-    tf::Vector3 r=target.pose.inverseTimes(current.pose).getOrigin();   
-    float l12=r.length();
-
-    float psi12=atan2(r.y(),r.x());
-    if(psi12<0.0){psi12+=2*M_PI;}
-
-    float omega1=target.angular_velocity;
-    float omega2=current.angular_velocity;
-    float v1=target.velocity.length();
-    float v2=current.velocity.length();
-
-    float gamma1=theta1+psi12-theta2;
-    float roh12=(parameter.linear_gain*(l12d-l12)+v1*cos(psi12))/cos(gamma1);
-
-    ControlVector u;
-    u.omega=cos(gamma1)/parameter.d*(parameter.angular_gain*l12*(psi12d-psi12)-v1*sin(psi12)+l12*omega1+roh12*sin(gamma1));
-    u.v=roh12-parameter.d*omega2*tan(gamma1);
-    return u;
-}
-
-Controller::ControlVector Controller::calcOptimalControl()
+Controller::ControlVector Controller::passVelocity()
 {
     ControlVector ret;
     ret.v=this->target_state_.velocity.length();
@@ -449,15 +419,22 @@ Controller::ControlVector Controller::calcOptimalControl()
 }
 
 
-void Controller::execute(const ros::TimerEvent &ev)
+Controller::ControlVector Controller::calcOptimalControl()
 {
-    VelocityEulerian desired;
-    this->control_dif_=this->current_state_.pose.inverseTimes(this->target_state_.pose);    
-        
+    return this->passVelocity();
+}
+
+Controller::ControlVector Controller::calcAngleDistance(AngleDistanceParameter parameter,ControlState target, ControlState current)
+{
+    return this->calcLyapunov(this->lyapunov_parameter_,target, current);
+}
+
+void Controller::execute(const ros::TimerEvent &ev)
+{        
     switch(this->type)
     {
         case ControllerType::disable:
-            this->publishReference();     
+            this->publishReferenceFrame();     
             if(this->publish_tf_){this->publishBaseLink();}   
             break;    
         case ControllerType::pseudo_inverse: 
