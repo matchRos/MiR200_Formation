@@ -379,8 +379,12 @@ void Controller::publishBaseLink()
 
 /*Calculations executions and scopes####################################################################################################################
 ##################################################################################################################################################*/
-Controller::ControlVector Controller::calcLyapunov(LyapunovParameter parameter,VelocityEulerian desired,tf::Transform relative)
+Controller::ControlVector Controller::calcLyapunov(LyapunovParameter parameter,ControlState target, ControlState current)
 {
+    double omega=target.angular_velocity;
+    double v=sqrt(pow(target.velocity.getX(),2)+pow(target.velocity.getY(),2)); 
+    
+    tf::Transform relative=current.pose.inverseTimes(target.pose);
     double x=relative.getOrigin().getX();
     double y=relative.getOrigin().getY();
     double phid;
@@ -398,46 +402,13 @@ Controller::ControlVector Controller::calcLyapunov(LyapunovParameter parameter,V
     phi=phid-phi;
    
     ControlVector output;
-    output.v=parameter.kx*x+desired.v*cos(phi);
-    output.omega=parameter.kphi*sin(phi)+parameter.ky*desired.v*y+desired.omega;
+    output.v=parameter.kx*x+v*cos(phi);
+    output.omega=parameter.kphi*sin(phi)+parameter.ky*v*y+omega;
 
     return output;
 }
 
-Controller::ControlVector Controller::calcLyapunovBidirectional(LyapunovParameter parameter,VelocityEulerian desired,tf::Transform relative)
-{
-    double x=relative.getOrigin().getX();
-    double y=relative.getOrigin().getY();
-    double phid;
-    if(this->target_state_.velocity.length()>0.01)
-    {
-        phid=std::atan2(this->target_state_.velocity.y(),this->target_state_.velocity.x());
-        if(phid>M_PI_2)
-        {
-            phid=-(phid-M_PI_2);
-            desired.v*=-1;
-        }
-        else if(phid<-M_PI_2)
-        {
-            phid=M_PI+phid;
-            desired.v*=-1;  
-        }       
-    }
-    else
-    {
-       phid=tf::getYaw(this->target_state_.pose.getRotation());
-    }
-    
-    
-    double phi=tf::getYaw(this->current_state_.pose.getRotation());
-    phi=phid-phi;
-   
-    ControlVector output;
-    output.v=parameter.kx*x+desired.v*cos(phi);
-    output.omega=parameter.kphi*sin(phi)+parameter.ky*desired.v*y+desired.omega;
 
-    return output;
-}
 
 Controller::ControlVector Controller::calcAngleDistance(AngleDistanceParameter parameter,ControlState target, ControlState current)
 {
@@ -493,23 +464,14 @@ void Controller::execute(const ros::TimerEvent &ev)
             this->control_=calcOptimalControl();
             this->publish();    
             break;
-        case ControllerType::lypanov:
-            desired.omega=this->target_state_.angular_velocity;
-            desired.v=sqrt(pow(this->target_state_.velocity.getX(),2)+pow(this->target_state_.velocity.getY(),2));           
-            this->control_=calcLyapunov(this->lyapunov_parameter_,desired,control_dif_);
+        case ControllerType::lypanov:                   
+            this->control_=calcLyapunov(this->lyapunov_parameter_,this->target_state_,this->current_state_);
             this->publish();    
             break;
         case ControllerType::angle_distance:           
             this->control_=calcAngleDistance(this->angle_distance_parameter_,this->target_state_,this->current_state_);
             this->publish();    
-            break;
-        case ControllerType::lyapunov_bidirectional:
-            desired.omega=this->target_state_.angular_velocity;
-            desired.v=sqrt(pow(this->target_state_.velocity.getX(),2)+pow(this->target_state_.velocity.getY(),2));           
-            this->control_=calcLyapunovBidirectional(this->lyapunov_parameter_,desired,control_dif_);
-            this->publish();    
-            break;
-            
+            break;            
         default: 
             break;
     }

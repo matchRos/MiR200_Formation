@@ -30,7 +30,6 @@ void Slave::targetOdomCallback(nav_msgs::Odometry msg)
     {
         case ControllerType::lypanov:
         case ControllerType::pseudo_inverse:
-        case ControllerType::lyapunov_bidirectional:
         {
             //Get necessary transformations
             tf::Transform trafo;  

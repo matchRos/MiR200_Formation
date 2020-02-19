@@ -56,7 +56,6 @@ class Controller{
             pseudo_inverse=1,   /**< Control law is based on pseudo inveres the input for generate a output (least squares optimisation) */
             lypanov=2,          /**< Control law is based on the lyapunov approache. Output is determined from a lyapunov stable function */
             angle_distance=3,    /**< Control law based on linear approach in angle and distance respectively */
-            lyapunov_bidirectional=4    ///<Control law based on the lyapunov approach and allows forward and backward movement
         };
         
         /**
@@ -403,9 +402,7 @@ class Controller{
         * @param relative Transformation from current to target state
         * @return ControlVector 
         */
-        ControlVector calcLyapunov(LyapunovParameter parameter,VelocityEulerian desired,tf::Transform relative);
-
-        ControlVector calcLyapunovBidirectional(LyapunovParameter parameter,VelocityEulerian desired,tf::Transform relative);
+        ControlVector calcLyapunov(LyapunovParameter parameter,ControlState target, ControlState current);
 
         ControlVector calcAngleDistance(AngleDistanceParameter parameter,ControlState target, ControlState current);
 
