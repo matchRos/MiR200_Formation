@@ -40,7 +40,7 @@ int main(int argc,char**argv)
 
     }
    
-    planner->set_start_pose(reference);
+    planner->setStartPose(reference);
     planner->load();
     
     ros::Duration(2).sleep();

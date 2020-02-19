@@ -46,7 +46,7 @@ int main(int argc,char** argv)
     
 
     Formation::RobotProperties properties_master;
-    properties_master.name="robot_master";
+    properties_master.name="master";
     properties_master.neighbours=Formation::Neighbours{"robot1","robot2"};
     properties_master.pose=tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(0.0,0.0,0.0));
     properties_master.laser_frames=frames;
@@ -56,7 +56,7 @@ int main(int argc,char** argv)
 
     Formation::RobotProperties properties_robot1;
     properties_robot1.name="robot1";
-    properties_robot1.neighbours=Formation::Neighbours{"robot_master","robot2"};
+    properties_robot1.neighbours=Formation::Neighbours{"master","robot2"};
     properties_robot1.pose=tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(-1.5,1.5,0.0));
     properties_robot1.laser_frames=frames;
     properties_robot1.laser_topics=topics;

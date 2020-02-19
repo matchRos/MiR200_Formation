@@ -24,46 +24,87 @@ std::vector<std::string> getRobotNames(ros::NodeHandle nh)
 
 void setReferences(ros::NodeHandle nh)
 {
-    //Wait for the ros set model state service
-    ros::ServiceClient set_gazebo_state=nh.serviceClient<gazebo_msgs::SetModelState>("/gazebo/set_model_state");
-    set_gazebo_state.waitForExistence();
+    
     
     
     std::vector<std::string> names=getRobotNames(nh);
 
-    for(int i=0;i<names.size();i++)
+    for(auto name:names)
     {
-        //Wait for the controller set state service
-        ros::ServiceClient set_robot_state=nh.serviceClient<multi_robot_msgs::SetInitialPose>(names.at(i)+"/controller/set_reference");
-        set_robot_state.waitForExistence();
-
-        //Get the reference parameters (vectors x y z r p y)
-        std::string param="/"+names.at(i)+"/controller/reference";
-        std::vector<double> pose_vec;
-        if(!nh.getParam(param,pose_vec))
+        tf::Pose world_pose,reference_frame,reference_master;
+        
+   
+       
+        std::vector<float> world_pose_rpy;
+        if(!nh.getParam(name+"/controller/reference",world_pose_rpy))
         {
-            ROS_WARN("Could not load %s",nh.resolveName("/"+names.at(i)+"/controller/reference").c_str());
+            ROS_WARN("Could not load: %s",nh.resolveName(name+"controller/reference").c_str());
         }
-        
-        tf::Pose pose(tf::createQuaternionFromRPY(pose_vec.at(3),pose_vec.at(4),pose_vec.at(5)),tf::Vector3(pose_vec[0],pose_vec[1],pose_vec[2])); 
-        
-        //Save pose of the first( the master robot)
-        if(i==0)
+        else
         {
-            reference=pose;
-        }      
+            //Get the robots world pose
+            if(world_pose_rpy.size()!=6)
+            {
+                throw(std::invalid_argument("Wrong number of parameter for rpy pose! 6 Expected!"));
+            }
+            world_pose=tf::Pose(tf::createQuaternionFromRPY(world_pose_rpy[3],world_pose_rpy[4],world_pose_rpy[5]),
+                            tf::Vector3(world_pose_rpy[0],world_pose_rpy[1],world_pose_rpy[2]));
 
+            std::string master_name;
+            if(nh.getParam(name+"/controller/master",master_name)) //There is a master specification
+            {
+                if(!master_name.empty())    //There is a none empty master name
+                {
+                    
+                    //Get the master pose
+                    std::vector<float> master_pose_rpy;
+                    if(!nh.getParam(master_name+"/controller/reference",master_pose_rpy))
+                    {
+                        ROS_WARN("Could not load: %s",nh.resolveName(name+"/controller/reference").c_str());
+                    }
+                    if(master_pose_rpy.size()!=6)
+                    {
+                        throw(std::invalid_argument("Wrong number of parameter for rpy pose! 6 Expected!"));
+                    }
+                    tf::Pose master_pose(   tf::createQuaternionFromRPY(master_pose_rpy[3],master_pose_rpy[4],master_pose_rpy[5]),
+                                            tf::Vector3(master_pose_rpy[0],master_pose_rpy[1],master_pose_rpy[2]));
+
+                    //Call the service for setting the slave pose relative to the master
+                    ros::ServiceClient set_master_reference=nh.serviceClient<multi_robot_msgs::SetInitialPose>(name+"/controller/set__master_reference");
+                    set_master_reference.waitForExistence();
+                    multi_robot_msgs::SetInitialPose call_master_reference;
+                    ROS_INFO("Calling with coordiantes of: %s relative to master to: %lf %lf %lf",   name.c_str(), 
+                                                                           master_pose.getOrigin().x(),
+                                                                            master_pose.getOrigin().y(),
+                                                                            master_pose.getOrigin().z());  
+                    ROS_INFO("Calling with coordiantes of: %s relative to master to: %lf %lf %lf",   name.c_str(), 
+                                                                        world_pose.getOrigin().x(),
+                                                                        world_pose.getOrigin().y(),
+                                                                        world_pose.getOrigin().z());  
+
+                    tf::poseTFToMsg(master_pose.inverseTimes(world_pose),call_master_reference.request.initial_pose);
+                    set_master_reference.call(call_master_reference);
+                }
+            }
+
+        }
+
+        
         //Call the service for setting the controller pose
-        multi_robot_msgs::SetInitialPose call_pose;
-        tf::poseTFToMsg(pose,call_pose.request.initial_pose);
-        set_robot_state.call(call_pose);
+        ros::ServiceClient set_reference_frame=nh.serviceClient<multi_robot_msgs::SetInitialPose>(name+"/controller/set_reference_frame");
+        set_reference_frame.waitForExistence();
+        multi_robot_msgs::SetInitialPose call_reference_frame;
+        tf::poseTFToMsg(world_pose,call_reference_frame.request.initial_pose);
+        set_reference_frame.call(call_reference_frame);
 
-        //Same with gazebo pose
+        //Same with gazebo pose/
+        ros::ServiceClient set_model_state=nh.serviceClient<gazebo_msgs::SetModelState>("/gazebo/set_model_state");
+        set_model_state.waitForExistence();
         gazebo_msgs::SetModelState state;
-        state.request.model_state.model_name=names.at(i);
+        state.request.model_state.model_name=name;
         state.request.model_state.reference_frame="/map";
-        tf::poseTFToMsg(pose, state.request.model_state.pose);
-        set_gazebo_state.call(state);        
+        tf::poseTFToMsg(world_pose, state.request.model_state.pose);
+        set_model_state.call(state);        
     }
 }
 
@@ -112,7 +153,7 @@ void startPlanner(ros::NodeHandle nh)
 
     try
     {
-        planner->set_start_pose(reference);
+        planner->setStartPose(tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(0.0,0.0,0.0)));
         planner->load();
         
         ros::Duration(2).sleep();
