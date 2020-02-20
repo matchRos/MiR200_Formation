@@ -25,6 +25,7 @@
 <remap from="/robot4/controller/publish_tf" to="/publish_tf"/>
 <remap from="/robot5/controller/publish_tf" to="/publish_tf"/>
 
+<!-- Commented since the controller of master often differs from the slave controllers -->
 <!-- <remap from="/master/controller/controller_type" to="/controller_type"/> -->
 <remap from="/robot1/controller/controller_type" to="/controller_type"/>
 <remap from="/robot2/controller/controller_type" to="/controller_type"/>
@@ -45,6 +46,13 @@
 <remap from="/robot3/controller/topic_current_odometry" to="/topic_current_odometry"/>
 <remap from="/robot4/controller/topic_current_odometry" to="/topic_current_odometry"/>
 <remap from="/robot5/controller/topic_current_odometry" to="/topic_current_odometry"/>
+
+<remap from="/master/controller/thresh" to="/thresh"/>
+<remap from="/robot1/controller/thresh" to="/thresh"/>
+<remap from="/robot2/controller/thresh" to="/thresh"/>
+<remap from="/robot3/controller/thresh" to="/thresh"/>
+<remap from="/robot4/controller/thresh" to="/thresh"/>
+<remap from="/robot5/controller/thresh" to="/thresh"/>
 
 <!-- Setup a master mobile robot-->
 <include file="$(find controller)/launch/master.launch">
@@ -72,8 +80,6 @@
   <arg name="robot_yaw" value="0" />
   <arg name="displ" value="screen"/>
 </include>
-
-
 
 <!-- Setup a slave mobile robot-->
 <include file="$(find controller)/launch/slave.launch">

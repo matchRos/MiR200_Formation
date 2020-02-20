@@ -32,9 +32,9 @@ void Slave::targetOdomCallback(nav_msgs::Odometry msg)
     lin=tf::Vector3(vel_eul.v,0.0,0.0);
     
     //Filtering   
-    if(std::abs(lin.x())<0.05){lin.setX(0.0);}
-    if(std::abs(lin.y())<0.05){lin.setY(0.0);}
-    if(std::abs(ang.z())<0.05){ang.setZ(0.0);}
+    if(std::abs(lin.x())<this->thresh_.x()){lin.setX(0.0);}
+    if(std::abs(lin.y())<this->thresh_.y()){lin.setY(0.0);}
+    if(std::abs(ang.z())<this->thresh_.z()){ang.setZ(0.0);}
     
     switch(this->type)
     {

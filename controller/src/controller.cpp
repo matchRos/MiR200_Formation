@@ -83,6 +83,22 @@ void Controller::load()
         ROS_WARN("Could not load %s",this->controller_nh.resolveName(PARAM_REFERENCE_POSE).c_str());
     }
 
+    //Load the reference of the controller input data
+    std::vector<float> thresh;
+    if(this->controller_nh.getParam(PARAM_THRESHOLD,thresh))
+    {
+        if(thresh.size()!=3)
+        {
+            throw std::invalid_argument("Wrong number of Threshold parameter! 3 Expected!");
+        }
+        this->thresh_=VelocityCartesian(thresh[0],thresh[1],thresh[2]);
+    }
+    else
+    {
+        ROS_WARN("Could not load %s",this->controller_nh.resolveName(PARAM_THRESHOLD).c_str());
+    }
+
+
     //Load current odometry topic
     if(this->controller_nh.getParam(PARAM_CURRENT_ODOM,param))
     {
@@ -116,11 +132,13 @@ void Controller::load()
         ROS_WARN("Could not load %s",this->controller_nh.resolveName(PARAM_TYPE).c_str());
     }
 
+
     //Load parameter if tf should be published
     if(!this->controller_nh.getParam(PARAM_PUBISH_TF,this->publish_tf_))
     {
         ROS_WARN("Could not load %s",this->controller_nh.resolveName(PARAM_PUBISH_TF).c_str());
     }
+
     
     //Load lyapunov parameter
     std::vector<float> lyapunov;
@@ -280,6 +298,8 @@ void Controller::targetOdomCallback(nav_msgs::Odometry msg)
     VelocityCartesian vel;
     tf::vector3MsgToTF(msg.twist.twist.linear,vel);
 
+    float ang=msg.twist.twist.angular.z;
+
     //Get the transformation for frames 
     tf::StampedTransform trafo;
     try{
@@ -290,6 +310,10 @@ void Controller::targetOdomCallback(nav_msgs::Odometry msg)
         ROS_WARN("%s",ex.what());
     }
 
+    //Filtering   
+    if(std::abs(vel.x())<this->thresh_.x()){vel.setX(0.0);}
+    if(std::abs(vel.y())<this->thresh_.y()){vel.setY(0.0);}
+    if(std::abs(ang)<this->thresh_.z()){ang=0.0;}
     //Get the rotation part
     tf::Transform rot(trafo.getRotation(),tf::Vector3(0,0,0));
     
@@ -405,7 +429,7 @@ Controller::ControlVector Controller::calcLyapunov(LyapunovParameter parameter,C
    
     ControlVector output;
     output.v=parameter.kx*x+v*cos(phi);
-    output.omega=parameter.kphi*sin(phi)+parameter.ky*v*y+omega;
+    output.omega=omega+parameter.ky*v*y+parameter.kphi*sin(phi);
 
     return output;
 }

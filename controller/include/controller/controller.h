@@ -32,6 +32,7 @@
 #define PARAM_COORD "coord"
 #define PARAM_WORLD_FRAME "world_frame"
 #define PARAM_TYPE "controller_type"
+#define PARAM_THRESHOLD "thresh"
 
 #define PARAM_LYAPUNOV "lyapunov"
 #define PARAM_ANG_DIST "angle_distance"
@@ -358,6 +359,7 @@ class Controller{
 
         tf::Transform reference_frame_;                             ///<Transformation from a world to the controllers refrence frame
         ControllerType type;                                         ///<Type of control algorythm that is used
+        VelocityCartesian thresh_; ///<Threshold velocity. Values smaller then thresh are interpreted as zero
     private:
         ros::Publisher pub_cmd_vel;                                  ///<publisher object for velocity outoput topic
         ros::Publisher pub_state_out;                                ///<publisher object for state output topic
