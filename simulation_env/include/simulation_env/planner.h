@@ -208,7 +208,8 @@ class ClickedPosePlanner:public Planner{
 class Spiralplanner:public Planner{
     public:
         Spiralplanner(ros::NodeHandle &nh);
-        struct SpiralPlan{
+        struct SpiralPlan
+        {
             float r_offset;
             float r_growth;           
             float omega;
@@ -224,4 +225,56 @@ class Spiralplanner:public Planner{
         double get_angular_velocity(ros::Duration time);
         tf::Vector3 get_acceleration(ros::Duration time);
         void check_period(ros::Duration time);     
+};
+
+//Step responce planner
+#define PARAM_STEP_SIZES "step_sizes"
+#define PARAM_DELAY "delay"
+
+class StepResposePlanner:public Planner
+{
+    public:
+        StepResposePlanner(ros::NodeHandle &nh);
+        struct StepPlan
+        {
+            std::vector<float> step_sizes;
+            float delay_time;
+            StepPlan()
+            {
+                step_sizes=std::vector<float>{0.0,0.0,0.0};
+                delay_time=0.0;
+            }
+            StepPlan(std::vector<float> parameter)
+            {
+                if(parameter.size()!=4)
+                {
+                    throw(std::invalid_argument("Wrong number of parameters. Expected 4 for StepResponcePlanner!"));
+                }
+                step_sizes.insert(step_sizes.end(),parameter.begin(),parameter.end());
+                delay_time=parameter.back();
+            }
+            StepPlan(float delay,std::vector<float> parameter)
+            {
+                if(parameter.size()!=3)
+                {
+                    throw(std::invalid_argument("Wrong number of parameters. Expected 4 for StepResponcePlanner!"));
+                }
+                step_sizes.insert(step_sizes.end(),parameter.begin(),parameter.end());
+                delay_time=delay;
+            }
+        };
+        void loadChild();
+    private:
+        StepPlan plan;
+        tf::Vector3 get_position(ros::Duration time);
+        tf::Quaternion get_orientation(ros::Duration time);
+        tf::Vector3 get_velocity(ros::Duration time);
+        double get_angular_velocity(ros::Duration time);
+        tf::Vector3 get_acceleration(ros::Duration time);
+        void check_period(ros::Duration time);
+
+        tf::Vector3 pos_old_;
+        tf::Vector3 pos_new_;
+        tf::Quaternion ori_old_;
+        tf::Quaternion ori_new_;
 };

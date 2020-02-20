@@ -23,10 +23,7 @@ std::vector<std::string> getRobotNames(ros::NodeHandle nh)
 
 
 void setReferences(ros::NodeHandle nh)
-{
-    
-    
-    
+{   
     std::vector<std::string> names=getRobotNames(nh);
 
     for(auto name:names)
@@ -142,6 +139,13 @@ void startPlanner(ros::NodeHandle nh)
             planner=new Spiralplanner(nh_planner);
             break;
         }
+        case 4:
+        {
+            ROS_INFO("Starting StepResponse Planner");
+            planner=new StepResposePlanner(nh_planner);
+            break;
+        }
+
         default:
         {
             ROS_ERROR("Wrong planner type choosen!");

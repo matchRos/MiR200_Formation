@@ -452,8 +452,7 @@ void Spiralplanner::loadChild()
     catch(...)
     {
         ROS_INFO("Error due loading paramter of: %s",ros::this_node::getName().c_str());
-    }
-   
+    }   
 }
 
 void Spiralplanner::check_period(ros::Duration time)
@@ -465,3 +464,76 @@ void Spiralplanner::check_period(ros::Duration time)
 }
 
 
+//Implementation of a StepResponse planner that gives a spiral########################################################################################
+//#######################################################################################################################################
+StepResposePlanner::StepResposePlanner(ros::NodeHandle &nh):Planner(nh)
+{ 
+    this->pos_old_=this->start_reference.getOrigin();
+    this->ori_old_=this->start_reference.getRotation();
+    this->iterations_counter=1;
+}
+
+tf::Vector3 StepResposePlanner::get_position(ros::Duration time)
+{
+    int descide=iterations_counter%3;
+    ROS_INFO("%i",descide);
+    switch(descide)
+    {
+        case 0:  this->pos_new_=this->pos_old_+tf::Vector3(this->plan.step_sizes[0],0.0,0.0);break;
+        case 2:  this->pos_new_=this->pos_old_+tf::Vector3(0.0,this->plan.step_sizes[1],0.0);break;
+        default:  this->pos_new_=this->pos_old_;
+    }
+    return this->pos_new_;
+}
+
+tf::Quaternion StepResposePlanner::get_orientation(ros::Duration time)
+{
+    int descide=iterations_counter%3;
+    switch(descide)
+    {
+        case 1  :  this->ori_new_=tf::createQuaternionFromRPY(0.0,0.0,this->plan.step_sizes[2]*M_PI)*this->ori_old_;break;
+        default:   this->ori_new_=this->ori_old_;
+    }
+    return this->ori_new_;
+}
+
+tf::Vector3 StepResposePlanner::get_velocity(ros::Duration time)
+{
+    return tf::Vector3(0.0,0.0,0.0);
+}
+ tf::Vector3 StepResposePlanner::get_acceleration(ros::Duration time)
+ {
+    return tf::Vector3(0.0,0.0,0.0);
+ }
+
+double StepResposePlanner::get_angular_velocity(ros::Duration time)
+{
+    return 0.0;    
+}
+
+void StepResposePlanner::loadChild()
+{
+    std::vector<float> steps;
+    if(!this->nh.getParam(PARAM_STEP_SIZES,steps))
+    {
+        ROS_WARN("Could not load %s",this->nh.resolveName(PARAM_STEP_SIZES).c_str());
+    }
+
+    float delay;
+    if(!this->nh.getParam(PARAM_DELAY,delay))   
+    {
+        ROS_WARN("Could not load %s",this->nh.resolveName(PARAM_DELAY).c_str());
+    }
+    this->plan=StepPlan(delay,steps);
+}
+
+void StepResposePlanner::check_period(ros::Duration time)
+{
+    float t=time.toSec();
+    if(t>this->iterations_counter*this->plan.delay_time)
+    {
+        this->iterations_counter++;
+        this->pos_old_=this->pos_new_;
+        this->ori_old_=this->ori_new_;
+    }
+}
