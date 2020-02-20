@@ -182,7 +182,7 @@ void linkObject(ros::NodeHandle nh)
     attach.request.link_name_1="base_footprint";
 
     attach.request.model_name_2="object";
-    attach.request.link_name_2="object_link";
+    attach.request.link_name_2="plate_link";
 
     attach.request.joint_type="fixed";
 

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:macro name="object" params="link_name">
+        <link name="${link_name}">       
+            <inertial>
+                <origin xyz="-2.0 -1.0 0.0" rpy="1.57 0.0 1.57" />
+                <mass value="1"/>
+                <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+            </inertial>   
+            <visual>
+                <origin xyz="-2.0 -1.0 0.0" rpy="1.57 0.0 1.57" />
+                <geometry>      
+                    <mesh filename="package://multi_robot_launcher/urdf/meshes/Mcqueen_Car.stl" scale="0.025 0.025 0.025"/>
+                </geometry>
+            </visual>
+        </link> 
+        <gazebo reference="dummie">
+            <material>Gazebo/Orange</material>
+        </gazebo>
+    </xacro:macro>
+</robot>

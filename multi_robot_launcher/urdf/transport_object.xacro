@@ -1,0 +1,46 @@
+ 
+ <robot xmlns:xacro="http://ros.org/wiki/xacro">
+    
+    <!-- Object name specifies the name of the xacro file that should be used as object. 
+    This is the data name in the objects folder and meshes folder too. 
+    xyz are the coordinates where the object should be appear within world system.
+    xyz_size are the size specifiers for the transport plate the object is mounted at.-->
+    <xacro:arg name="object_name" default="" />
+    <xacro:arg name="x" default="" />
+    <xacro:arg name="y" default="" />
+    <xacro:arg name="z" default="" />
+    <xacro:arg name="x_size" default="" />
+    <xacro:arg name="y_size" default="" />
+    <xacro:arg name="z_size" default="" />
+
+
+    <xacro:macro name="transport_object" params="object_name x y z x_size y_size z_size">       
+        <xacro:include filename="$(find multi_robot_launcher)/urdf/objects/${object_name}.xacro"/>        
+        <link name="plate_link">       
+            <inertial>
+                <origin xyz="${x} ${y} ${z}" rpy="0 0 0" />
+                <mass value="1"/>
+                <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+            </inertial>   
+            <visual>
+                <origin xyz="${x} ${y} ${z}" rpy="0 0 0" />
+                <geometry>
+                    <box size = "${x_size} ${y_size} ${z_size}"/>
+                </geometry>           
+            </visual>    
+        </link>
+        <gazebo reference="plate_link">
+            <material>Gazebo/GreyTransparent</material>
+        </gazebo>
+
+        <joint name="fixed_joint" type="fixed">
+            <origin xyz="${x} ${y} ${z}" rpy="0.0 0.0 0.0" />
+            <parent link="plate_link" />
+            <child link="object_link" />
+        </joint>
+
+        <xacro:object link_name="object_link"/>
+    </xacro:macro>
+
+    <xacro:transport_object object_name="$(arg object_name)" x="$(arg x)" y="$(arg y)" z="$(arg z)" x_size="$(arg x_size)" y_size="$(arg y_size)" z_size="$(arg z_size)"/>
+</robot>
