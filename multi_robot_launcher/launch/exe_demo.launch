@@ -7,7 +7,7 @@
 <rosparam file="$(find multi_robot_launcher)/config/formation_publisher.yaml" command="load"></rosparam>
 
 <include file="$(find multi_robot_launcher)/launch/gazebo.launch">
-  <arg name="world_name" value="$(find multi_robot_launcher)/worlds/empty.world"/>
+  <arg name="world_name" value="$(find multi_robot_launcher)/worlds/empty_world_camera.world"/>
   <arg name="paused" value="true" />
   <arg name="gui" value="true" />
   <arg name="recording" value="false"/>
