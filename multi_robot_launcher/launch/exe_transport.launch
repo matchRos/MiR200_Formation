@@ -19,7 +19,7 @@
 <!-- Setting up the transport object -->
 <include file="$(find multi_robot_launcher)/launch/spawn_transport_object.launch"></include>
 
-<node name="SystemHandler" pkg="simulation_env" type="system_handling_node" output="screen" args="-link -reference -plan"/>
+<!-- <node name="SystemHandler" pkg="simulation_env" type="system_handling_node" output="screen" args="-link -reference -plan"/> -->
 
 <node name="rviz" pkg="rviz" type="rviz"   args="-d $(find multi_robot_launcher)/rviz/system.rviz" />
 
