@@ -3,25 +3,21 @@
 <launch>
   <arg name="filename" default="test"/>
 
-  <!-- Load the formation parameter file-->
+ <!-- Load the formation parameter file-->
   <rosparam file="$(find multi_robot_launcher)/config/formation.yaml" command="load"></rosparam>
 
-  <include file="$(find multi_robot_launcher)/launch/empty_world.launch">
+  <include file="$(find multi_robot_launcher)/launch/gazebo.launch">
+    <arg name="world_name" value="$(find multi_robot_launcher)/worlds/empty_world_camera.world"/>
     <arg name="paused" value="false" />
-    <arg name="world_name" default="worlds/empty.world"/> <!-- Note: the world_name is with respect to GAZEBO_RESOURCE_PATH environmental variable, but can also be an absolute path -->
     <arg name="gui" value="false" />
     <arg name="recording" value="true"/>
-    <arg name="file_path" value="$(find multi_robot_launcher)/gazebo/$(arg filename)" />
   </include>
 
-
-  <include file="$(find multi_robot_launcher)/launch/formation.launch"></include>
-
-  <node name="SystemHandler" pkg="simulation_env" type="system_handling_node" output="screen" required="true"/>
-
-  <!-- <node name="Measure" pkg="simulation_env" type="measurement_node" output="screen"/> -->
+<!-- Setting up the Formation of robots -->
+<include file="$(find multi_robot_launcher)/launch/formation.launch"></include>
 
   <node name="record_system" pkg="rosbag" type="record" args="record -o $(find multi_robot_launcher)/bag/$(arg filename).bag -a"/>
 
-  <node name="record_system_trajectories" pkg="rosbag" type="record" args="record -o $(find multi_robot_launcher)/bag/$(arg filename)_Robots.bag  -e /robot(.*)"/>
+  <node name="record_system_trajectories" pkg="rosbag" type="record" args="record -o $(find multi_robot_launcher)/bag/$(arg filename)_Trajectories.bag  -e /robot(.*) /trajectory_odom"/>
+
 </launch>

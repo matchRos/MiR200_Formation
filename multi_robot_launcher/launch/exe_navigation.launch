@@ -14,7 +14,7 @@
 </include>
 
 <!-- Setting up the Formation of robots -->
-<param name="/formation/robot_master/controller/controller_type" type="int" value="0"/> 
+<param name="/robot_master/controller/controller_type" type="int" value="0"/> 
 <include file="$(find multi_robot_launcher)/launch/formation.launch"></include>
 
 
@@ -29,7 +29,6 @@
     <arg name="local_planner" value="dwa"/>
   </include>
 </group>
-
 
 <node name="rviz" pkg="rviz" type="rviz"   args="-d $(find multi_robot_launcher)/rviz/system.rviz" />
 

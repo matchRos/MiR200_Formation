@@ -1,5 +1,7 @@
 <?xml version="1.0" ?>
-<!-- This file launches a system with below defined masters and slaves.-->
+<!-- This file launches a multi robot formation with below defined masters and slaves.
+      If you want to add or substract a robot you have to comment/uncomment the corresponding line of remaping for each parameter and the spawining of the robot below.
+      Maximum testet number of robots is 6 since as a 7th is spawned gazebo crashes.-->
 <launch>
 
 
@@ -11,8 +13,6 @@
 <remap from="/robot3/controller/lyapunov" to="/lyapunov"/>
 <remap from="/robot4/controller/lyapunov" to="/lyapunov"/>
 <remap from="/robot5/controller/lyapunov" to="/lyapunov"/>
-<remap from="/robot6/controller/lyapunov" to="/lyapunov"/>
-<!-- <remap from="/robot7/controller/lyapunov" to="/lyapunov"/> -->
 
 <!-- Remap angle distance parameter of the controller-->
 <remap from="/master/controller/angle_distance" to="/angle_distance"/>
@@ -21,8 +21,6 @@
 <remap from="/robot3/controller/angle_distance" to="/angle_distance"/>
 <remap from="/robot4/controller/angle_distance" to="/angle_distance"/>
 <remap from="/robot5/controller/angle_distance" to="/angle_distance"/>
-<remap from="/robot6/controller/angle_distance" to="/angle_distance"/>
-<!-- <remap from="/robot7/controller/angle_distance" to="/angle_distance"/> -->
 
 <!-- Remap tf publishing parameter of the controller-->
 <remap from="/master/controller/publish_tf" to="/publish_tf"/>
@@ -31,8 +29,6 @@
 <remap from="/robot3/controller/publish_tf" to="/publish_tf"/>
 <remap from="/robot4/controller/publish_tf" to="/publish_tf"/>
 <remap from="/robot5/controller/publish_tf" to="/publish_tf"/>
-<remap from="/robot6/controller/publish_tf" to="/publish_tf"/>
-<!-- <remap from="/robot7/controller/publish_tf" to="/publish_tf"/> -->
 
 <!-- Remap tf publishing parameter of the controller-->
 <!-- Commented since the controller of master often differs from the slave controllers -->
@@ -42,8 +38,6 @@
 <remap from="/robot3/controller/controller_type" to="/controller_type"/>
 <remap from="/robot4/controller/controller_type" to="/controller_type"/>
 <remap from="/robot5/controller/controller_type" to="/controller_type"/>
-<remap from="/robot6/controller/controller_type" to="/controller_type"/>
-<!-- <remap from="/robot7/controller/controller_type" to="/controller_type"/> -->
 
 <!-- Remap world_frame parameter of the controller-->
 <remap from="/master/controller/world_frame" to="/world_frame"/>
@@ -52,8 +46,6 @@
 <remap from="/robot3/controller/world_frame" to="/world_frame"/>
 <remap from="/robot4/controller/world_frame" to="/world_frame"/>
 <remap from="/robot5/controller/world_frame" to="/world_frame"/>
-<remap from="/robot6/controller/world_frame" to="/world_frame"/>
-<!-- <remap from="/robot7/controller/world_frame" to="/world_frame"/> -->
 
 <!-- Remap current odometry parameter of the controller-->
 <remap from="/master/controller/topic_current_odometry" to="/topic_current_odometry"/>
@@ -62,8 +54,6 @@
 <remap from="/robot3/controller/topic_current_odometry" to="/topic_current_odometry"/>
 <remap from="/robot4/controller/topic_current_odometry" to="/topic_current_odometry"/>
 <remap from="/robot5/controller/topic_current_odometry" to="/topic_current_odometry"/>
-<remap from="/robot6/controller/topic_current_odometry" to="/topic_current_odometry"/>
-<!-- <remap from="/robot7/controller/topic_current_odometry" to="/topic_current_odometry"/> -->
 
 
 <!-- Remap stop thresholds parameter of the controller-->
@@ -73,8 +63,6 @@
 <remap from="/robot3/controller/thresh" to="/thresh"/>
 <remap from="/robot4/controller/thresh" to="/thresh"/>
 <remap from="/robot5/controller/thresh" to="/thresh"/>
-<remap from="/robot6/controller/thresh" to="/thresh"/>
-<!-- <remap from="/robot7/controller/thresh" to="/thresh"/> -->
 
 
 <!-- Setup a master mobile robot-->
@@ -130,34 +118,6 @@
   <arg name="robot_yaw" value="0" />
   <arg name="displ" value="screen"/>
 </include> 
-
-<!-- Setup a slave mobile robot-->
-<include file="$(find controller)/launch/slave.launch">
-  <arg name="robot_name" value="robot6"/>
-  <arg name="robot_x"   value="1.0" />  
-  <arg name="robot_y"   value="0.0" />
-  <arg name="robot_yaw" value="0" />
-  <arg name="displ" value="screen"/>
-</include> 
-
-<!-- <include file="$(find controller)/launch/slave.launch">
-  <arg name="robot_name" value="robot7"/>
-  <arg name="robot_x"   value="1.0" />  
-  <arg name="robot_y"   value="0.0" />
-  <arg name="robot_yaw" value="0" />
-  <arg name="displ" value="screen"/>
-</include>  -->
-
-
- <!-- Start the controllers -->
-  <!-- <node name="controller_spawner" pkg="controller_manager" type="spawner" output="screen"
-    args="/master/joint_state_controller /master/mobile_base_controller
-          /robot1/joint_state_controller /robot1/mobile_base_controller
-          /robot2/joint_state_controller /robot2/mobile_base_controller
-          /robot3/joint_state_controller /robot3/mobile_base_controller
-          /robot4/joint_state_controller /robot4/mobile_base_controller
-          /robot5/joint_state_controller /robot5/mobile_base_controller">   
-  </node> -->
 
 </launch>
 
