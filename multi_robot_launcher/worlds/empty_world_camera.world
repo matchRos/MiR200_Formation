@@ -7,14 +7,7 @@
     <model name='camera1'>
       <static>true</static>
       <pose>-10 -10 10 0 0.78539816339  0.78539816339 </pose>
-      <link name='link'>
-        <visual name='visual'>
-          <geometry>
-            <box>
-              <size>0.1 0.1 0.1</size>
-            </box>
-          </geometry>
-        </visual>
+      <link name='link'>      
         <sensor name='camera1' type='camera'>
           <camera>
             <save enabled="true">
@@ -40,14 +33,7 @@
     <model name='camera2'>
       <static>true</static>
        <pose>-10 10 10 0 0.78539816339  -0.78539816339 </pose>
-      <link name='link'>
-        <visual name='visual'>
-          <geometry>
-            <box>
-              <size>0.1 0.1 0.1</size>
-            </box>
-          </geometry>
-        </visual>
+      <link name='link'>       
         <sensor name='camera2' type='camera'>
           <camera>
             <save enabled="true">
@@ -73,14 +59,7 @@
     <model name='camera3'>
       <static>true</static>
       <pose>10 10 10 3.1416 2.35619449019  0.78539816339  </pose>
-      <link name='link'>
-        <visual name='visual'>
-          <geometry>
-            <box>
-              <size>0.1 0.1 0.1</size>
-            </box>
-          </geometry>
-        </visual>
+       <link name='link'>        
         <sensor name='camera3' type='camera'>
           <camera>
             <save enabled="true">
@@ -106,18 +85,63 @@
     <model name='camera4'>
     <static>true</static>
      <pose>10 -10 10 3.1416 2.35619449019  -0.78539816339  </pose>
-      <link name='link'>
-        <visual name='visual'>
-          <geometry>
-            <box>
-              <size>0.1 0.1 0.1</size>
-            </box>
-          </geometry>
-        </visual>
+      <link name='link'>        
         <sensor name='camera4' type='camera'>
           <camera>
             <save enabled="true">
               <path>/tmp/camera4</path>
+            </save>
+            <horizontal_fov>1.1415</horizontal_fov>
+            <image>
+              <width>1920</width>
+              <height>1080</height>
+            </image>
+            <clip>
+              <near>0.1</near>
+              <far>100</far>
+            </clip>
+          </camera>
+          <visualize>true</visualize>
+          <always_on>1</always_on>
+          <update_rate>30</update_rate>
+        </sensor>
+      </link>
+    </model>
+
+  <model name='camera5'>
+    <static>false</static>
+     <pose>0 0 10 0.0 1.5707963  0.0  </pose>
+      <link name='link'>        
+        <sensor name='camera5' type='camera'>
+          <camera>
+            <save enabled="true">
+              <path>/tmp/camera5</path>
+            </save>
+            <horizontal_fov>1.1415</horizontal_fov>
+            <image>
+              <width>1920</width>
+              <height>1080</height>
+            </image>
+            <clip>
+              <near>0.1</near>
+              <far>100</far>
+            </clip>
+          </camera>
+          <visualize>true</visualize>
+          <always_on>1</always_on>
+          <update_rate>30</update_rate>
+        </sensor>
+      </link>
+    </model>
+
+     <model name='camera6'>
+    <static>false</static>
+     <pose>5 0 5 0.0 0.78539816339  3.1415  </pose>
+      <link name='link'>        
+        <sensor name='camera6' type='camera'>
+          <camera>
+            <save enabled="true">
+              <path>/tmp/camera6</path>
             </save>
             <horizontal_fov>1.1415</horizontal_fov>
             <image>

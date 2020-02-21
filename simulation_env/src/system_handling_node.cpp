@@ -183,7 +183,7 @@ void linkObject(ros::NodeHandle nh)
 
     gazebo_ros_link_attacher::Attach attach;
     attach.request.model_name_1=names[0];
-    attach.request.link_name_1="base_footprint";
+    attach.request.link_name_1=names[0]+"/base_footprint";
 
     attach.request.model_name_2="object";
     attach.request.link_name_2="plate_link";
@@ -193,14 +193,55 @@ void linkObject(ros::NodeHandle nh)
     attach_client.call(attach);     
 }
 
+void linkCamera(ros::NodeHandle nh)
+{
+    std::vector<std::string> names=getRobotNames(nh);
+    ros::ServiceClient attach_client=nh.serviceClient<gazebo_ros_link_attacher::Attach>("/link_attacher_node/attach");
+    attach_client.waitForExistence();
+
+    gazebo_ros_link_attacher::Attach attach;
+    attach.request.model_name_1=names[0];
+    attach.request.link_name_1=names[0]+"/base_footprint";
+
+    attach.request.model_name_2="camera5";
+    attach.request.link_name_2="link";
+
+    attach.request.joint_type="fixed";
+
+    attach_client.call(attach);
+
+    attach.request.model_name_1=names[0];
+    attach.request.link_name_1=names[0]+"/base_footprint";
+
+    attach.request.model_name_2="camera6";
+    attach.request.link_name_2="link";
+
+    attach.request.joint_type="fixed";
+
+    attach_client.call(attach);
+
+
+}
+
 int main(int argc, char** argv)
 {
     ros::init(argc,argv,"SystemHandler");
     ros::NodeHandle nh;
 
+    if(argc==1)
+    {
+        ROS_INFO_STREAM("Specifie arguments like: "<<std::endl
+                        <<"-link"<<std::endl
+                        <<"-plan"<<std::endl
+                        <<"-camera"<<std::endl
+                        <<"-reference"<<std::endl);
+        return 0;
+    }
+
     bool linkage=false;
     bool plan=false;
     bool set_references=false;
+    bool link_camera=false;
 
     std::vector<std::string> args(argv, argv+argc);
     for (size_t i = 1; i < args.size(); ++i) 
@@ -218,6 +259,10 @@ int main(int argc, char** argv)
         {
             set_references=true;
         }
+        else if(args[i]=="-camera")
+        {
+            link_camera=true;
+        }
     }
 
     if(set_references)
@@ -229,6 +274,11 @@ int main(int argc, char** argv)
     {
         ROS_INFO("Linking object to system!");
         linkObject(nh);
+    }
+    if(link_camera)
+    {
+        ROS_INFO("Linking camera to system!");
+        linkCamera(nh);
     }
     if(plan)
     {
