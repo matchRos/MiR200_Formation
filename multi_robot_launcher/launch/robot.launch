@@ -3,19 +3,19 @@
   <arg name="robot_x"   default="0.0" />
   <arg name="robot_y"   default="0.0" />
   <arg name="robot_yaw" default="0.0" />
-  <arg name="controller_name" default="my_controller" />
-  <arg name="prefix"    value="$(arg controller_name)/" />   <!-- this has to be "value", not "default", otherwise subst_value doesn't work -->
+  <arg name="robot_name" default="my_robot" />
+  <arg name="prefix"    value="$(arg robot_name)/" />   <!-- this has to be "value", not "default", otherwise subst_value doesn't work -->
   
   
   <!-- Load the robot describing urdf xacro with a given tf_prefix for getting propert frames-->  
-   <param name="robot_description" command="$(find xacro)/xacro --inorder $(find multi_robot_launcher)/urdf/mir_gazebo.urdf.xacro tf_prefix:=$(arg controller_name)"/>
+   <param name="robot_description" command="$(find xacro)/xacro --inorder $(find multi_robot_launcher)/urdf/mir_gazebo.urdf.xacro tf_prefix:=$(arg prefix) prefix:=$(arg prefix)"/>
 
 
   <!-- Spawn the robot into Gazebo -->
   <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" 
         args="-param robot_description 
               -urdf 
-              -model $(arg controller_name)
+              -model $(arg robot_name)
               -x $(arg robot_x) 
               -y $(arg robot_y) 
               -Y $(arg robot_yaw) ">
@@ -26,9 +26,9 @@
   <rosparam file="$(find multi_robot_launcher)/config/diffdrive_controller.yaml" command="load" subst_value="true"/>
 
   <!-- Start the controllers -->
-  <!-- <node name="controller_spawner" pkg="controller_manager" type="spawner" output="screen"
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" output="screen"
     args="joint_state_controller mobile_base_controller">   
-  </node> -->
+  </node>
 
 <!-- Add passive + mimic joints to joint_states topic  -->
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
@@ -37,8 +37,7 @@
   </node>
 
 <!-- Robot state publisher: This publisher  Calculates the kinematik of the mir platform--> 
-  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen">  
-  </node>
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen"/>  
  
 <!-- create combined scan topic (like on real MiR) -->
   <node pkg="topic_tools" type="relay" name="b_scan_relay" args="b_scan scan"/>

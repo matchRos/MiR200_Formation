@@ -22,7 +22,7 @@
         <arg name="robot_x"             value="$(arg robot_x)" />
         <arg name="robot_y"             value="$(arg robot_y)" />
         <arg name="robot_yaw"           value="$(arg robot_yaw)" />
-        <arg name="controller_name"     value="$(arg robot_name)" />
+        <arg name="robot_name"     value="$(arg robot_name)" />
     </include>  
   
     <node name="Controller" pkg="controller" type="slave_node" args="$(arg robot_name)" output="$(arg displ)"></node>
