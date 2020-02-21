@@ -7,24 +7,28 @@
   <arg name="prefix"    value="$(arg controller_name)/" />   <!-- this has to be "value", not "default", otherwise subst_value doesn't work -->
   
   
-  <!-- Load URDF -->  
+  <!-- Load the robot describing urdf xacro with a given tf_prefix for getting propert frames-->  
    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find multi_robot_launcher)/urdf/mir_gazebo.urdf.xacro tf_prefix:=$(arg controller_name)"/>
 
+
   <!-- Spawn the robot into Gazebo -->
-  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model $(arg controller_name)
-    -x $(arg robot_x) -y $(arg robot_y) -Y $(arg robot_yaw) "/>
-
-
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" 
+        args="-param robot_description 
+              -urdf 
+              -model $(arg controller_name)
+              -x $(arg robot_x) 
+              -y $(arg robot_y) 
+              -Y $(arg robot_yaw) ">
+  </node>
 
   <!-- Load ros_control controller configurations -->
   <rosparam file="$(find multi_robot_launcher)/config/joint_state_controller.yaml" command="load" subst_value="false"/>  
   <rosparam file="$(find multi_robot_launcher)/config/diffdrive_controller.yaml" command="load" subst_value="true"/>
 
   <!-- Start the controllers -->
-  <node name="controller_spawner" pkg="controller_manager" type="spawner" output="screen"
+  <!-- <node name="controller_spawner" pkg="controller_manager" type="spawner" output="screen"
     args="joint_state_controller mobile_base_controller">   
-  </node>
- 
+  </node> -->
 
 <!-- Add passive + mimic joints to joint_states topic  -->
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
@@ -34,7 +38,6 @@
 
 <!-- Robot state publisher: This publisher  Calculates the kinematik of the mir platform--> 
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen">  
-   <param name="tf_prefix" value="$(arg controller_name)"/>
   </node>
  
 <!-- create combined scan topic (like on real MiR) -->
@@ -45,4 +48,5 @@
   <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization_node" clear_params="true" output="screen">
     <rosparam file="$(find multi_robot_launcher)/config/ekf.yaml" command="load" subst_value="true"/>
   </node>
+  
 </launch>
