@@ -1,6 +1,0 @@
-formation_publisher:
-  publish_scans: false
-  publish_scans_clustered_: false
-  publish_combined: false
-  publish_seperated: false
-  publish_pose: false
