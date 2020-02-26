@@ -4,10 +4,10 @@ function make_video()
 }
 
 
-experiment_name='Test'
+experiment_name=$1
 path='/home/ros_match/Documents/Simulations'
 
-sleep 10 && rosrun simulation_env system_handling_node -plan -reference  
+sleep 10 && rosrun simulation_env system_handling_node -plan -reference -start -camera
 
 mkdir -p  $path/$experiment_name/Videos
 cp /home/ros_match/catkin_ws/src/multi_robot_system/multi_robot_launcher/config/formation.yaml $path/$experiment_name
