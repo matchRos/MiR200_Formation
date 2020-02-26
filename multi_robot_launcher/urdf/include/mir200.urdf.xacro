@@ -10,9 +10,9 @@
   <xacro:include filename="$(find mir_description)/urdf/include/mir_200.transmission.xacro" />
   <xacro:include filename="$(find mir_description)/urdf/include/sick_s300.urdf.xacro" />
 
-  <xacro:include filename="$(find multi_robot_launcher)/urdf/material_properties.urdf.xacro" />
-  <xacro:include filename="$(find multi_robot_launcher)/urdf/caster_wheel.urdf.xacro"/>
-  <xacro:include filename="$(find multi_robot_launcher)/urdf/actuated_wheel.urdf.xacro"/>
+  <xacro:include filename="$(find multi_robot_launcher)/urdf/include/material_properties.urdf.xacro" />
+  <xacro:include filename="$(find multi_robot_launcher)/urdf/include/caster_wheel.urdf.xacro"/>
+  <xacro:include filename="$(find multi_robot_launcher)/urdf/include/actuated_wheel.urdf.xacro"/>
 
 
   <xacro:macro name="mir_200" params="prefix">

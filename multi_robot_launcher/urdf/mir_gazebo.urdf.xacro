@@ -9,7 +9,7 @@
   <xacro:arg name="prefix" default=""/>
 
   <!-- MiR200 base -->
-  <xacro:include filename="$(find multi_robot_launcher)/urdf/mir200.urdf.xacro" />
+  <xacro:include filename="$(find multi_robot_launcher)/urdf/include/mir200.urdf.xacro" />
   <xacro:include filename="$(find mir_description)/urdf/include/common.gazebo.xacro" />
 
   <xacro:mir_200 prefix="$(arg prefix)"/>
