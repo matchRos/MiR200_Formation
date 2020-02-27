@@ -1,3 +1,8 @@
+#This skript sets up the necessary folder structure for the data acquise and runs the systsem handling node that initialises the simulation.
+#Skript one has to be executed beforhand since it launchs the simualtion infrastructure.
+#Yaml file and rosbags are copied into the proper folder and the movie is generated from the recoreded images. Afterwards the rosmaster is killed and therefore
+#the simulation stops.
+
 function make_video()
 {
 	avconv -framerate 30 -i $1/camera$3/default_camera$3_link_camera$3\($3\)-%04d.jpg -c:v libx264 $2/camera$3.mp4
@@ -5,19 +10,26 @@ function make_video()
 
 
 experiment_name=$1
-path='/home/ros_match/Documents/Simulations'
+path_target='/home/ros_match/Documents/Simulations'
+path_source="/home/ros_match/catkin_ws/src/multi_robot_system/multi_robot_launcher"
 
+#Execute the System handling node
 sleep 10 && rosrun simulation_env system_handling_node -plan -reference -start -camera
 
-mkdir -p  $path/$experiment_name/Videos
-cp /home/ros_match/catkin_ws/src/multi_robot_system/multi_robot_launcher/config/formation.yaml $path/$experiment_name
-cp /home/ros_match/catkin_ws/src/multi_robot_system/multi_robot_launcher/bag/$experiment_name.bag $path/$experiment_name
+#Create directories to store the data in
+mkdir -p  $path_target/$experiment_name/Videos
 
-make_video /tmp $path/$experiment_name/Videos $VARIABLE 
+#Copy the foamtion parameter file
+cp $path_source/config/formation.yaml $path_target/$experiment_name
 
-for VARIABLE in 1 2 3 4 5 6
-do
-	make_video /tmp $path/$experiment_name/Videos $VARIABLE 
+#Copy the corresponding rosbags
+for f in $path_source/bag/$experiment_name*.bag; do 
+	cp -v -- "$f" "$path_target/$experiment_name" 
+done
+
+#Create the videos from the corresponding images
+for VARIABLE in 1 2 3 4 5 6 do
+	make_video /tmp $path_target/$experiment_name/Videos $VARIABLE 
 done
 
 killall rosmaster
