@@ -15,7 +15,7 @@
 
 
     <xacro:macro name="transport_object" params="object_name x y z x_size y_size z_size">       
-        <xacro:include filename="$(find multi_robot_launcher)/urdf/objects/${object_name}.xacro"/>        
+        <xacro:include filename="$(find multi_robot_launcher)/urdf/objects/${object_name}.urdf.xacro"/>        
         <link name="plate_link">       
             <inertial>
                 <origin xyz="${x} ${y} ${z}" rpy="0 0 0" />

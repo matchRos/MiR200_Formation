@@ -1,0 +1,15 @@
+<?xml version="2.0" ?>
+<!-- Start a none recorded simulation without any planner-->
+<launch>  
+
+  <!-- Load the formation parameter file-->
+  <rosparam file="$(find multi_robot_launcher)/config/formation.yaml" command="load"></rosparam>
+
+  <include file="$(find multi_robot_launcher)/launch/gazebo.launch">
+    <arg name="world_name" value="$(find multi_robot_launcher)/worlds/empty_world.world"/>
+    <arg name="paused" value="true" />
+    <arg name="gui" value="true" />
+    <arg name="recording" value="false"/>
+  </include>
+
+</launch>
