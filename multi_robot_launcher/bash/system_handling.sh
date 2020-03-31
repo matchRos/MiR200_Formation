@@ -5,17 +5,20 @@
 set -e
 function make_video()
 {
-	avconv -framerate 30 -i $1/camera$3/default_camera$3_link_camera$3\($3\)-%04d.jpg -c:v libx264 $2/camera$3.mp4
+	# avconv -framerate 30 -i $1/camera$3/default_camera$3_link_camera$3\($3\)-%04d.jpg -c:v libx264 $2/camera$3.mp4
+	# ffmpeg -r 30 -pattern_type glob -i $1/camera$3/*.jpg -c:v libx264 test3.mp4
+	ffmpeg -r 30 -pattern_type glob -i $1/'camera'$3'/*.jpg' -c:v libx264 $2/camera$3.mp4
+
 }
 
 experiment_name=$1
 data_source='/tmp'
-config_source='/home/ros_match/catkin_ws/src/multi_robot_system/multi_robot_launcher/config'
+config_source='/home/rosmatch/catkin_ws/src/multi_robot_system/multi_robot_launcher/config'
 path_target='/tmp/simulation'
 
 # # rm $data_source/*
 sleep 3
-roslaunch multi_robot_launcher gazebo.launch world_name:=/home/ros_match/catkin_ws/src/multi_robot_system/multi_robot_launcher/worlds/empty_world_camera.world &
+roslaunch multi_robot_launcher gazebo.launch world_name:=/home/rosmatch/catkin_ws/src/multi_robot_system/multi_robot_launcher/worlds/empty_world_camera.world &
 sleep 10
 roslaunch multi_robot_launcher exe_record.launch filename:=$experiment_name &
 
@@ -31,7 +34,7 @@ fi
 #Execute the System handling node
 rosrun simulation_env system_handling_node -plan -reference -start -camera		#Without object
 # rosrun simulation_env system_handling_node -plan -reference -start -camera -link	#With Object but planned
-
+kilall rosmaster
 
 #Create directories to store the data in
 mkdir -p  $path_target/$experiment_name/Videos

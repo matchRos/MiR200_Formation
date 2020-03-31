@@ -43,7 +43,7 @@ namespace gazebo
   }
 
   bool GazeboRosLinkAttacher::attach(std::string model1, std::string link1,
-                                     std::string model2, std::string link2,std::string joint_type)
+                                     std::string model2, std::string link2)
   {
 
     // look for any previous instance of the joint first.
@@ -111,7 +111,7 @@ namespace gazebo
     ROS_DEBUG_STREAM("Links are: "  << l1->GetName() << " and " << l2->GetName());
 
     ROS_DEBUG_STREAM("Creating revolute joint on model: '" << model1 << "'");
-    j.joint = this->physics->CreateJoint(joint_type, m1);
+    j.joint = this->physics->CreateJoint("revolute", m1);
     this->joints.push_back(j);
 
     ROS_DEBUG_STREAM("Attach");
@@ -181,7 +181,7 @@ namespace gazebo
                     << "' using link: '" << req.link_name_1 << "' with model: '"
                     << req.model_name_2 << "' using link: '" <<  req.link_name_2 << "'");
     if (! this->attach(req.model_name_1, req.link_name_1,
-                       req.model_name_2, req.link_name_2,req.joint_type)){
+                       req.model_name_2, req.link_name_2)){
       ROS_ERROR_STREAM("Could not make the attach.");
       res.ok = false;
     }
