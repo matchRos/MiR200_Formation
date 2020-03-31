@@ -2,6 +2,7 @@
 #include <multi_robot_msgs/SetInitialPose.h>
 #include <gazebo_ros_link_attacher/Attach.h>
 #include <gazebo_msgs/SetModelState.h>
+#include <std_srvs/Empty.h>
 #include <tf/tf.h>
 #include <simulation_env/planner.h>
 
@@ -282,11 +283,16 @@ int main(int argc, char** argv)
     }
     if(plan)
     {
+        ros::ServiceClient pauseGazebo = nh.serviceClient<std_srvs::Empty>("/gazebo/unpause_physics");
+        std_srvs::Empty empty;
+        pauseGazebo.call(empty);        
         ROS_INFO("Starting system planner!");
-        startPlanner(nh);
+        startPlanner(nh); 
+       
     }
-   
 
     ros::spin();
     delete planner;
+
+  
 }

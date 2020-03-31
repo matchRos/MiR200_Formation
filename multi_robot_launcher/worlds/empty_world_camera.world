@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <sdf version='1.6'>
   <world name='default'>
-    <plugin name="ros_link_attacher_plugin" filename="libgazebo_ros_link_attacher.so"/>
+   
 
     
     <model name='camera1'>
@@ -11,7 +11,7 @@
         <sensor name='camera1' type='camera'>
           <camera>
             <save enabled="true">
-              <path>/tmp/camera1</path>
+              <path>/media/malte/3E0CFF1E0CFECFBF/tmp/camera1</path>
             </save>
             <horizontal_fov>1.1415</horizontal_fov>
             <image>
@@ -37,7 +37,7 @@
         <sensor name='camera2' type='camera'>
           <camera>
             <save enabled="true">
-              <path>/tmp/camera2</path>
+              <path>/media/malte/3E0CFF1E0CFECFBF/tmp/camera2</path>
             </save>
             <horizontal_fov>1.1415</horizontal_fov>
             <image>
@@ -63,7 +63,7 @@
         <sensor name='camera3' type='camera'>
           <camera>
             <save enabled="true">
-              <path>/tmp/camera3</path>
+              <path>/media/malte/3E0CFF1E0CFECFBF/tmp/camera3</path>
             </save>
             <horizontal_fov>1.1415</horizontal_fov>
             <image>
@@ -89,7 +89,7 @@
         <sensor name='camera4' type='camera'>
           <camera>
             <save enabled="true">
-              <path>/tmp/camera4</path>
+              <path>/media/malte/3E0CFF1E0CFECFBF/tmp/camera4</path>
             </save>
             <horizontal_fov>1.1415</horizontal_fov>
             <image>
@@ -115,7 +115,7 @@
         <sensor name='camera5' type='camera'>
           <camera>
             <save enabled="true">
-              <path>/tmp/camera5</path>
+              <path>/media/malte/3E0CFF1E0CFECFBF/tmp/camera5</path>
             </save>
             <horizontal_fov>1.1415</horizontal_fov>
             <image>
@@ -141,7 +141,7 @@
         <sensor name='camera6' type='camera'>
           <camera>
             <save enabled="true">
-              <path>/tmp/camera6</path>
+              <path>/media/malte/3E0CFF1E0CFECFBF/tmp/camera6</path>
             </save>
             <horizontal_fov>1.1415</horizontal_fov>
             <image>
@@ -280,6 +280,7 @@
         <projection_type>perspective</projection_type>
       </camera>
     </gui>
+   <plugin name="ros_link_attacher_plugin" filename="libgazebo_ros_link_attacher.so"/>
 
   </world>
 </sdf>
