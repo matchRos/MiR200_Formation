@@ -13,6 +13,7 @@ Controller::Controller( std::string name,
 
     //Setting up timer for execution;
     this->time_scope_ = nh.createTimer(ros::Duration(0.005),&Controller::execute,this);
+    this->time_old_=ros::Time();
     //Setting of controller name
     this->setName(name);
     //Loading parameter from parameter server

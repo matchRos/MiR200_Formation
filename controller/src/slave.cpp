@@ -52,7 +52,18 @@ void Slave::targetOdomCallback(nav_msgs::Odometry msg)
             tf::Vector3 rotational;
             rotational=ang.cross(rot*this->master_reference_.getOrigin());
             this->target_state_.velocity=rot*lin+rotational;
-            this->target_state_.angular_velocity=ang.z();
+            // this->target_state_.angular_velocity=ang.z();
+            tf::Vector3 acc;
+            if(this->time_old_.toSec()>msg.header.stamp.toSec())
+            {ROS_WARN("Error due time differentiation. Old time stap is newer then current");}
+            else
+            {
+                acc=(this->target_state_.velocity-this->target_state_old_.velocity)/(msg.header.stamp-this->time_old_).toSec();
+            }
+            tf::Vector3 vel=this->target_state_.velocity;
+            this->target_state_.angular_velocity=(vel.x()*acc.y()-vel.y()*acc.x())/(std::sqrt(std::pow(vel.x(),2)+std::pow(vel.y(),2)));
+            
+
             
             //Calculate position 
             this->target_state_.pose=trafo*this->master_reference_;
@@ -65,9 +76,10 @@ void Slave::targetOdomCallback(nav_msgs::Odometry msg)
             this->target_state_.velocity=lin;
             this->target_state_.angular_velocity=ang.z();
             break;
-        }
-       
-    }    
+        }       
+    }
+    this->target_state_old_=this->target_state_;
+    this->time_old_=msg.header.stamp;   
 }
 
 
