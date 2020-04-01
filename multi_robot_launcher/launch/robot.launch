@@ -37,7 +37,7 @@
   </node>
 
 <!-- Robot state publisher: This publisher  Calculates the kinematik of the mir platform--> 
-  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen"/>  
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen">   </node> 
  
 <!-- create combined scan topic (like on real MiR) -->
   <node pkg="topic_tools" type="relay" name="b_scan_relay" args="b_scan scan"/>

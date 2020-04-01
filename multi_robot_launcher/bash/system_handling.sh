@@ -11,10 +11,12 @@ function make_video()
 
 }
 
+killall gzserver || true
+killall gzclient || true
 experiment_name=$1
 data_source='/tmp'
 config_source='/home/rosmatch/catkin_ws/src/multi_robot_system/multi_robot_launcher/config'
-path_target='/tmp/simulation'
+path_target='/media/rosmatch/3E0CFF1E0CFECFBF'
 
 # # rm $data_source/*
 sleep 3
@@ -23,7 +25,7 @@ sleep 10
 roslaunch multi_robot_launcher exe_record.launch filename:=$experiment_name &
 
 #Check if gazebo has died
-sleep 40
+sleep 30
 if ! pgrep -x "gzserver" > /dev/null
 then
 	echo "Problem with Gazebo!"
@@ -34,7 +36,9 @@ fi
 #Execute the System handling node
 rosrun simulation_env system_handling_node -plan -reference -start -camera		#Without object
 # rosrun simulation_env system_handling_node -plan -reference -start -camera -link	#With Object but planned
-kilall rosmaster
+rosnode kill -a
+sleep 3
+killall rosmaster
 
 #Create directories to store the data in
 mkdir -p  $path_target/$experiment_name/Videos

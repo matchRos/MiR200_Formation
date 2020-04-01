@@ -283,8 +283,8 @@ tf::Quaternion LissajousPlanner::get_orientation(ros::Duration time)
 double LissajousPlanner::get_angular_velocity(ros::Duration time)
 {
     tf::Vector3 acc(this->get_acceleration(time));
-    tf::Vector3 scale(1.0/this->plan.omegax,1.0/(this->plan.omegax*this->plan.ratio),0.0);
-    return -std::pow(acc.dot(scale),2.0);
+    tf::Vector3 vel(this->get_velocity(time));
+    return (vel.x()*acc.y()-vel.y()*acc.x())/vel.length2();
 }
 
 

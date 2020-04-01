@@ -20,6 +20,6 @@
   <node name="record_system" pkg="rosbag" type="record" args="record -O /tmp/$(arg filename).bag -a"/>
 
   <!-- <node name="record_system_trajectories" pkg="rosbag" type="record" args="record -O  /media/malte/3E0CFF1E0CFECFBF/tmp/$(arg filename)_Trajectories.bag -e /trajectory_odom | /robot(.*)"/> -->
-  <node name="record_system_trajectories" pkg="rosbag" type="record" args="record -O  /tmp/$(arg filename)_Trajectories.bag -e /trajectory_odom | /robot(.*)"/>
+  <node name="record_system_trajectories" pkg="rosbag" type="record" args="record -O  /tmp/$(arg filename)_Trajectories.bag -e /trajectory_odom | /robot(.*) | /master(.*)"/>
 
 </launch>

@@ -273,10 +273,7 @@ int main(int argc, char** argv)
     }
     if(linkage)
     {
-        ros::ServiceClient pauseGazebo = nh.serviceClient<std_srvs::Empty>("/gazebo/unpause_physics");
-        std_srvs::Empty empty;
-        pauseGazebo.call(empty);        
-        
+       
         ROS_INFO("Linking object to system!");
         linkObject(nh);
     }
@@ -287,6 +284,9 @@ int main(int argc, char** argv)
     }
     if(plan)
     {
+        ros::ServiceClient pauseGazebo = nh.serviceClient<std_srvs::Empty>("/gazebo/unpause_physics");
+        std_srvs::Empty empty;
+        pauseGazebo.call(empty); 
         ROS_INFO("Starting system planner!");
         startPlanner(nh); 
        
