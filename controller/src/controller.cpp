@@ -12,7 +12,7 @@ Controller::Controller( std::string name,
     this->listener=new tf::TransformListener(nh_topics);
 
     //Setting up timer for execution;
-    this->time_scope_ = nh.createTimer(ros::Duration(0.07),&Controller::execute,this);
+    this->time_scope_ = nh.createTimer(ros::Duration(0.1),&Controller::execute,this);
     this->time_old_=ros::Time().toSec();
     //Setting of controller name
     this->setName(name);
