@@ -20,12 +20,12 @@ planner:
 
 #Names of formation memebers for parsing the formation parameters
 formation:
-  names: ["master","robot1","robot2","robot3","robot4","robot5"] #Names of the robots belonging to one formation
+  # names: ["master","robot1","robot2","robot3","robot4","robot5"] #Names of the robots belonging to one formation
   # names: ["master","robot1","robot2"] #Names of the robots belonging to one formation
-
+  names: ["master"] #Names of the robots belonging to one formation
 
 # Remaped, shared parameter for all the robots
-controller_type: 2                         # 1-> pseudo_invers 2->lyapov 3->angl_dist
+controller_type: 3                         # 1-> pseudo_invers 2->lyapov 3->angl_dist
 lyapunov: [7.0,12.0,2.0]               # parameter for lyapunov algorythm: kx,ky,kphi
 angle_distance: [5.0,4.0,0.3]   # parameter for angle distance algorythm: kl,kpsi,d  
 topic_current_odometry: "base_pose_ground_truth"  #Source of state estamination
@@ -45,29 +45,29 @@ robot1:
   controller:
     master: "master"
     reference: [1 , -1.5, 0, 0 ,0 ,0 ]    #X Y Z R P Y
-    topic_target_odometry:    "/master/base_pose_ground_truth"  
+    topic_target_odometry:        "/trajectory_odom"  
 
 robot2:      
   controller:
     master: "master"
     reference: [1 , 1.5, 0, 0 ,0 ,0 ]    #X Y Z R P Y
-    topic_target_odometry:    "/master/base_pose_ground_truth"   #topi  the target odometry of the robot is published at
+    topic_target_odometry:        "/trajectory_odom"   #topi  the target odometry of the robot is published at
 
 robot3:
   controller:
     master: "master"
     reference: [-2.5,1.5, 0, 0 ,0 ,0 ]    #X Y Z R P Y
-    topic_target_odometry:       "/master/base_pose_ground_truth"    #topi  the target odometry of the robot is published at
+    topic_target_odometry:        "/trajectory_odom"    #topi  the target odometry of the robot is published at
 
 robot4:  
   controller:
     master: "master"
     reference: [-2.5, -1.5, 0, 0 ,0 ,0 ]    #X Y Z R P Y
-    topic_target_odometry:    "/master/base_pose_ground_truth"       
+    topic_target_odometry:        "/trajectory_odom"       
 
 robot5:
   controller:
     master: "master"
     reference: [-1.5 , 0 , 0, 0 ,0 ,0 ]    #X Y Z R P Y
     publish_tf: true  
-    topic_target_odometry:         "/master/base_pose_ground_truth"   #topi  the target odometry of the robot is published at
+    topic_target_odometry:        "/trajectory_odom"    #topi  the target odometry of the robot is published at
