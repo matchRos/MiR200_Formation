@@ -31,10 +31,22 @@ void Slave::targetOdomCallback(nav_msgs::Odometry msg)
     VelocityCartesian vel;
     lin=tf::Vector3(vel_eul.v,0.0,0.0);
     
+
+    //Get the transformation for frames 
+    tf::StampedTransform trafo1;
+    try{
+        this->listener->lookupTransform(this->world_frame,msg.header.frame_id,ros::Time(0),trafo1);
+    }
+    catch(ros::Exception &ex)
+    {
+        ROS_WARN("%s",ex.what());
+    }
+
     //Filtering   
     if(std::abs(lin.x())<this->thresh_.x()){lin.setX(0.0);}
     if(std::abs(lin.y())<this->thresh_.y()){lin.setY(0.0);}
     if(std::abs(ang.z())<this->thresh_.z()){ang.setZ(0.0);}
+
     
     switch(this->type)
     {
@@ -44,6 +56,7 @@ void Slave::targetOdomCallback(nav_msgs::Odometry msg)
             //Get necessary transformations
             tf::Transform trafo;  
             tf::poseMsgToTF(msg.pose.pose,trafo);
+            trafo=trafo*trafo1;
             tf::Transform rot;
             rot.setRotation(trafo.getRotation());
             
@@ -52,20 +65,12 @@ void Slave::targetOdomCallback(nav_msgs::Odometry msg)
             tf::Vector3 rotational;
             rotational=ang.cross(rot*this->master_reference_.getOrigin());
             this->target_state_.velocity=rot*lin+rotational;
-            // this->target_state_.angular_velocity=ang.z();
+            
             tf::Vector3 acc;
-            if(this->time_old_.toSec()>msg.header.stamp.toSec())
-            {ROS_WARN("Error due time differentiation. Old time stap is newer then current");}
-            else
-            {
-                acc=(this->target_state_.velocity-this->target_state_old_.velocity)/(msg.header.stamp-this->time_old_).toSec();
-            }
-            tf::Vector3 vel=this->target_state_.velocity;
-            this->target_state_.angular_velocity=(vel.x()*acc.y()-vel.y()*acc.x())/(std::sqrt(std::pow(vel.x(),2)+std::pow(vel.y(),2)));
-            
+            acc=(this->target_state_.velocity-this->target_state_old_.velocity)/(this->time_old_-msg.header.stamp.toSec());
 
-            
-            //Calculate position 
+            tf::Vector3 vel=this->target_state_.velocity;            
+            this->target_state_.angular_velocity=(vel.x()*acc.y()-vel.y()*acc.x())/vel.length2();
             this->target_state_.pose=trafo*this->master_reference_;
             break;
         }
@@ -79,19 +84,13 @@ void Slave::targetOdomCallback(nav_msgs::Odometry msg)
         }       
     }
     this->target_state_old_=this->target_state_;
-    this->time_old_=msg.header.stamp;   
+    this->time_old_=msg.header.stamp.toSec();
+    // this->time_buffer_.push_back(msg.header.stamp.toSec());
+    // this->velocity_buffer_.push_back(target_state_.velocity);
 }
 
 
-Controller::ControlVector Slave::calcOptimalControl()
-{   
-    //Calculate controlvector
-    ControlVector ret;
-    double phi=tf::getYaw(this->current_state_.pose.getRotation());
-    ret.v=cos(phi)*this->target_state_.velocity.x()+sin(phi)*this->target_state_.velocity.y();
-    ret.omega=this->target_state_.angular_velocity;
-    return ret;
-}
+
 Controller::ControlVector Slave::calcAngleDistance(AngleDistanceParameter parameter,ControlState target, ControlState current)
 {
     float l12d=this->master_reference_.getOrigin().length();

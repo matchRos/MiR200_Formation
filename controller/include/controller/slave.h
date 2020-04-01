@@ -28,12 +28,7 @@ class Slave:public Controller{
                 ros::NodeHandle nh_parameters=ros::NodeHandle("~"));        
         void setMasterReference(tf::Pose pose);
     private:
-        /**
-         * @brief Calculates a Control vector by pseudo inverting the Jacobian of the Robot
-         * 
-         * @return ControlVector Calculated Control Vector
-         */
-        ControlVector calcOptimalControl();
+
 
         ControlVector calcAngleDistance(AngleDistanceParameter parameter,ControlState target, ControlState current);
        

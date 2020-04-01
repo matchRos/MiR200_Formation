@@ -1,5 +1,5 @@
 #include <controller/controller.h>
-
+#include<numeric>
 Controller::Controller( std::string name,
                         ros::NodeHandle nh,
                         ros::NodeHandle nh_topics,
@@ -12,8 +12,8 @@ Controller::Controller( std::string name,
     this->listener=new tf::TransformListener(nh_topics);
 
     //Setting up timer for execution;
-    this->time_scope_ = nh.createTimer(ros::Duration(0.005),&Controller::execute,this);
-    this->time_old_=ros::Time();
+    this->time_scope_ = nh.createTimer(ros::Duration(0.07),&Controller::execute,this);
+    this->time_old_=ros::Time().toSec();
     //Setting of controller name
     this->setName(name);
     //Loading parameter from parameter server
@@ -21,6 +21,7 @@ Controller::Controller( std::string name,
     //Initialize control difference
     control_dif_=tf::Transform(tf::createIdentityQuaternion(),tf::Vector3(0,0,0));
     this->srv_set_reference_frame_=this->controller_nh.advertiseService("set_reference_frame",&Controller::srvSetReferenceFrame,this);
+    this->acc_=tf::Vector3(0,0,0);
 } 
 
 Controller::~Controller()
@@ -253,6 +254,7 @@ void Controller::linkOutputControlData(std::string topic_name)
 ##################################################################################################################################################*/
 void Controller::currentOdomCallback(nav_msgs::Odometry msg)
 {
+   
     //Get the current pose defined in header frame
     tf::Pose pose;
     tf::poseMsgToTF(msg.pose.pose,pose);
@@ -297,7 +299,7 @@ void Controller::targetOdomCallback(nav_msgs::Odometry msg)
     VelocityCartesian vel;
     tf::vector3MsgToTF(msg.twist.twist.linear,vel);
 
-    float ang=msg.twist.twist.angular.z;
+    
 
     //Get the transformation for frames 
     tf::StampedTransform trafo;
@@ -308,6 +310,7 @@ void Controller::targetOdomCallback(nav_msgs::Odometry msg)
     {
         ROS_WARN("%s",ex.what());
     }
+    float ang=msg.twist.twist.angular.z;
 
     //Filtering   
     if(std::abs(vel.x())<this->thresh_.x()){vel.setX(0.0);}
@@ -320,6 +323,8 @@ void Controller::targetOdomCallback(nav_msgs::Odometry msg)
     pose=trafo*pose;
     vel=rot*vel;
 
+    // this->time_buffer_.push_back(msg.header.stamp.toSec());
+    // this->velocity_buffer_.push_back(target_state_.velocity);
     //Write to member
     this->target_state_.pose=pose;
     this->target_state_.velocity=vel;
@@ -443,8 +448,11 @@ Controller::ControlVector Controller::passVelocity()
 
 
 Controller::ControlVector Controller::calcOptimalControl()
-{
-    return this->passVelocity();
+{   
+    ControlVector ret;
+    ret.v=this->target_state_.velocity.length();
+    ret.omega=this->target_state_.angular_velocity;
+    return ret;
 }
 
 Controller::ControlVector Controller::calcAngleDistance(AngleDistanceParameter parameter,ControlState target, ControlState current)
@@ -453,7 +461,21 @@ Controller::ControlVector Controller::calcAngleDistance(AngleDistanceParameter p
 }
 
 void Controller::execute(const ros::TimerEvent &ev)
-{        
+{       
+    // if(velocity_buffer_.size()>2)
+    // {
+    //     tf::Vector3 mean_vel=std::accumulate(this->velocity_buffer_.begin(),this->velocity_buffer_.end(),tf::Vector3(0,0,0))/this->velocity_buffer_.size();
+    //     double mean_time=std::accumulate(this->time_buffer_.begin(),this->time_buffer_.end(),0)/this->time_buffer_.size();
+    //     this->acc_=(mean_vel-this->vel_old)/(mean_time-this->time_old_);
+    //     this->time_buffer_.clear();
+    //     this->velocity_buffer_.clear();
+    //     this->vel_old=mean_vel;
+    //     this->time_old_=mean_time;
+    // }
+    // else
+    // {
+    //     ROS_WARN("%s:To less velocity values for numerical differentaition off acceleration",ros::this_node::getName().c_str());
+    // }
     switch(this->type)
     {
         case ControllerType::disable:

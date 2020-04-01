@@ -354,8 +354,12 @@ class Controller{
         
         ControlState current_state_;                                ///<The current state of the robot
         ControlState target_state_;                                 ///<The target state of the robot
-        ControlState target_state_old_;                             ///<The target state of a timepstep backwards for numerical differentiaiton
-        ros::Time time_old_;                                        ///<Time of the old state
+        ControlState target_state_old_;
+        tf::Vector3 vel_old;                                         ///<The target state of a timepstep backwards for numerical differentiaiton
+        tf::Vector3 acc_;
+        std::vector<double> time_buffer_;                           ///<Buffer for time inputs
+        std::vector<tf::Vector3> velocity_buffer_;                  ///<Buffer for Velocity inputs
+        double time_old_;                                        ///<Time of the old state
         ControlDifference control_dif_;                             ///<Transformation from current configuration to target configuration
         ControlVector control_;                                     ///<The calculated control vector
 
