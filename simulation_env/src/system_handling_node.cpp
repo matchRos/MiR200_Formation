@@ -30,7 +30,7 @@ void setReferences(ros::NodeHandle nh)
     for(auto name:names)
     {
         tf::Pose world_pose,reference_frame,reference_master;
-        
+       
    
        
         std::vector<float> world_pose_rpy;
@@ -47,6 +47,23 @@ void setReferences(ros::NodeHandle nh)
             }
             world_pose=tf::Pose(tf::createQuaternionFromRPY(world_pose_rpy[3],world_pose_rpy[4],world_pose_rpy[5]),
                             tf::Vector3(world_pose_rpy[0],world_pose_rpy[1],world_pose_rpy[2]));
+
+
+             //Call the service for setting the controller pose
+            ros::ServiceClient set_reference_frame=nh.serviceClient<multi_robot_msgs::SetInitialPose>(name+"/controller/set_reference_frame");
+            set_reference_frame.waitForExistence();
+            multi_robot_msgs::SetInitialPose call_reference_frame;
+            tf::poseTFToMsg(world_pose,call_reference_frame.request.initial_pose);
+            set_reference_frame.call(call_reference_frame);
+
+            //Same with gazebo pose/
+            ros::ServiceClient set_model_state=nh.serviceClient<gazebo_msgs::SetModelState>("/gazebo/set_model_state");
+            set_model_state.waitForExistence();
+            gazebo_msgs::SetModelState state;
+            state.request.model_state.model_name=name;
+            state.request.model_state.reference_frame="/map";
+            tf::poseTFToMsg(world_pose, state.request.model_state.pose);
+            set_model_state.call(state);        
 
             std::string master_name;
             if(nh.getParam(name+"/controller/master",master_name)) //There is a master specification
@@ -70,16 +87,8 @@ void setReferences(ros::NodeHandle nh)
                     //Call the service for setting the slave pose relative to the master
                     ros::ServiceClient set_master_reference=nh.serviceClient<multi_robot_msgs::SetInitialPose>(name+"/controller/set__master_reference");
                     set_master_reference.waitForExistence();
-                    multi_robot_msgs::SetInitialPose call_master_reference;
-                    ROS_INFO("Calling with coordiantes of: %s relative to master to: %lf %lf %lf",   name.c_str(), 
-                                                                           master_pose.getOrigin().x(),
-                                                                            master_pose.getOrigin().y(),
-                                                                            master_pose.getOrigin().z());  
-                    ROS_INFO("Calling with coordiantes of: %s relative to master to: %lf %lf %lf",   name.c_str(), 
-                                                                        world_pose.getOrigin().x(),
-                                                                        world_pose.getOrigin().y(),
-                                                                        world_pose.getOrigin().z());  
 
+                    multi_robot_msgs::SetInitialPose call_master_reference;                    
                     tf::poseTFToMsg(master_pose.inverseTimes(world_pose),call_master_reference.request.initial_pose);
                     set_master_reference.call(call_master_reference);
                 }
@@ -88,21 +97,7 @@ void setReferences(ros::NodeHandle nh)
         }
 
         
-        //Call the service for setting the controller pose
-        ros::ServiceClient set_reference_frame=nh.serviceClient<multi_robot_msgs::SetInitialPose>(name+"/controller/set_reference_frame");
-        set_reference_frame.waitForExistence();
-        multi_robot_msgs::SetInitialPose call_reference_frame;
-        tf::poseTFToMsg(world_pose,call_reference_frame.request.initial_pose);
-        set_reference_frame.call(call_reference_frame);
-
-        //Same with gazebo pose/
-        ros::ServiceClient set_model_state=nh.serviceClient<gazebo_msgs::SetModelState>("/gazebo/set_model_state");
-        set_model_state.waitForExistence();
-        gazebo_msgs::SetModelState state;
-        state.request.model_state.model_name=name;
-        state.request.model_state.reference_frame="/map";
-        tf::poseTFToMsg(world_pose, state.request.model_state.pose);
-        set_model_state.call(state);        
+        
     }
 }
 
