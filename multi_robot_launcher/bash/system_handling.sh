@@ -18,7 +18,7 @@ data_source='/tmp'
 config_source='/home/rosmatch/catkin_ws/src/multi_robot_system/multi_robot_launcher/config'
 path_target='/media/rosmatch/3E0CFF1E0CFECFBF'
 
-# # rm $data_source/*
+rm -r $data_source/camera*
 sleep 3
 roslaunch multi_robot_launcher gazebo.launch world_name:=/home/rosmatch/catkin_ws/src/multi_robot_system/multi_robot_launcher/worlds/empty_world_camera.world &
 sleep 10
