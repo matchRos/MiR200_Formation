@@ -36,35 +36,21 @@ void Slave::targetOdomCallback(nav_msgs::Odometry msg)
     VelocityCartesian vel;
     lin=tf::Vector3(vel_eul.v,0.0,0.0);
     
-
-    //Get the transformation for frames 
-    tf::StampedTransform trafo1;
-    try{
-        this->listener->lookupTransform(this->world_frame,msg.header.frame_id,ros::Time(0),trafo1);
-    }
-    catch(ros::Exception &ex)
-    {
-        ROS_WARN("%s",ex.what());
-    }
-    
     //Filtering   
     if(std::abs(lin.x())<this->thresh_.x()){lin.setX(0.0);}
     if(std::abs(lin.y())<this->thresh_.y()){lin.setY(0.0);}
     if(std::abs(ang.z())<this->thresh_.z()){ang.setZ(0.0);}
-
-    //Get necessary transformations
-    tf::Transform trafo;  
-    tf::poseMsgToTF(msg.pose.pose,trafo);
-    trafo=trafo*trafo1;
-    tf::Transform rot;
-    rot.setRotation(trafo.getRotation());
     
     switch(this->type)
     {
         case ControllerType::lypanov:
         case ControllerType::pseudo_inverse:
         {
-            
+            //Get necessary transformations
+            tf::Transform trafo;  
+            tf::poseMsgToTF(msg.pose.pose,trafo);
+            tf::Transform rot;
+            rot.setRotation(trafo.getRotation());            
             
             
             //Calculate linear velocities
