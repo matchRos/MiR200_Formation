@@ -75,49 +75,49 @@
 </include>
 
 <!-- Setup a slave mobile robot-->
-<!-- <include file="$(find controller)/launch/slave.launch">
+<include file="$(find controller)/launch/slave.launch">
   <arg name="robot_name" value="robot1"/>
   <arg name="robot_x"   value="-1.5" />
   <arg name="robot_y"   value="1.5" />
   <arg name="robot_yaw" value="0" />
   <arg name="displ" value="screen"/>  
-</include> -->
+</include>
 
 <!-- Setup a slave mobile robot-->
-<!-- <include file="$(find controller)/launch/slave.launch">
+<include file="$(find controller)/launch/slave.launch">
   <arg name="robot_name" value="robot2"/>
   <arg name="robot_x"   value="-1.5" />
   <arg name="robot_y"   value="-1.5" />
   <arg name="robot_yaw" value="0" />
   <arg name="displ" value="screen"/>
-</include> -->
+</include>
 
 <!-- Setup a slave mobile robot-->
-<!-- <include file="$(find controller)/launch/slave.launch">
+<include file="$(find controller)/launch/slave.launch">
   <arg name="robot_name" value="robot3"/>
   <arg name="robot_x"   value="1.5" />
   <arg name="robot_y"   value="1.5" />
   <arg name="robot_yaw" value="0" />
   <arg name="displ" value="screen"/>  
-</include> -->
+</include>
 
 <!-- Setup a slave mobile robot-->
-<!-- <include file="$(find controller)/launch/slave.launch">
+<include file="$(find controller)/launch/slave.launch">
   <arg name="robot_name" value="robot4"/>
   <arg name="robot_x"   value="1.5" />
   <arg name="robot_y"   value="-1.5" />
   <arg name="robot_yaw" value="0" />
   <arg name="displ" value="screen"/>
-</include> -->
+</include>
 
 <!-- Setup a slave mobile robot-->
-<!-- <include file="$(find controller)/launch/slave.launch">
+<include file="$(find controller)/launch/slave.launch">
   <arg name="robot_name" value="robot5"/>
   <arg name="robot_x"   value="1.0" />  
   <arg name="robot_y"   value="0.0" />
   <arg name="robot_yaw" value="0" />
   <arg name="displ" value="screen"/>
-</include>  -->
+</include> 
 
 </launch>
 
