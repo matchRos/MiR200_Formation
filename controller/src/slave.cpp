@@ -6,6 +6,7 @@ Slave::Slave(   std::string name,
                 ros::NodeHandle nh_parameters):Controller(name,nh,nh_topics,nh_parameters)
 {
     this->srv_set_reference_=this->controller_nh.advertiseService("set__master_reference",&Slave::srvSetMasterReference,this);
+    this->buffer_=Buffer<tf::Vector3>(30);
 } 
 
 void Slave::setMasterReference(tf::Pose pose)
@@ -57,9 +58,20 @@ void Slave::targetOdomCallback(nav_msgs::Odometry msg)
             tf::Vector3 rotational;
             rotational=ang.cross(rot*this->master_reference_.getOrigin());
             this->target_state_.velocity=rot*lin+rotational;
+
             
+            std::vector<tf::Vector3> vec=this->buffer_.get();
+            tf::Vector3 old_vel=std::accumulate(vec.begin(),vec.end(),tf::Vector3(0.0,0.0,0.0))/vec.size(); 
+            this->buffer_.insert(target_state_.velocity);
+            vec=this->buffer_.get();
+            tf::Vector3 new_vel=std::accumulate(vec.begin(),vec.end(),tf::Vector3(0.0,0.0,0.0))/vec.size();
+
+
+            // tf::Vector3 acc;
+            // acc=(this->target_state_.velocity-this->target_state_old_.velocity)/(msg.header.stamp.toSec()-this->time_old_);
+
             tf::Vector3 acc;
-            acc=(this->target_state_.velocity-this->target_state_old_.velocity)/(msg.header.stamp.toSec()-this->time_old_);
+            acc=(new_vel-old_vel)/(msg.header.stamp.toSec()-this->time_old_);
 
             tf::Vector3 vel=this->target_state_.velocity;            
             this->target_state_.angular_velocity=(vel.x()*acc.y()-vel.y()*acc.x())/vel.length2();

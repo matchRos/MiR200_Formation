@@ -10,7 +10,7 @@
 
 #include <math.h>
 #include <stdio.h>
-
+#include <numeric>
 /**
  * @brief Class that implements a slave robot for multi robot formation control
  * 
