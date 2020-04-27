@@ -14,6 +14,9 @@
 #include <multi_robot_msgs/ControlVector.h>
 #include <multi_robot_msgs/ControlDifference.h>
 #include <multi_robot_msgs/SetInitialPose.h>
+#include <boost/accumulators/accumulators.hpp>
+#include <boost/accumulators/statistics/mean.hpp>
+
 
 #include <math.h>
 #include <stdio.h>
@@ -37,6 +40,7 @@
 #define PARAM_LYAPUNOV "lyapunov"
 #define PARAM_ANG_DIST "angle_distance"
 
+using namespace boost::accumulators;
 
 /**
  * @brief Provides a easy to use implementation of a generic mobile robot controller.
@@ -46,6 +50,7 @@ class Controller{
         typedef tf::Vector3 VelocityCartesian;                      ///<Defines VelocityCartesian wich is used to stores cartesian defined velocities
         typedef tf::Vector3 PositionCartesian;                      ///<Defines PositionCartesian wich is used to store a cartesian defined position
         typedef tf::Transform ControlDifference;                    ///<Defines ControlDifference wich is a transformation from the current state in the target state
+        
 
         /**
          * @brief Specifies the different implemented control laws
@@ -141,6 +146,44 @@ class Controller{
                 velocity=tf::Vector3(0.0,0.0,0.0);
                 angular_velocity=0.0;
             }
+        };
+        template <typename  T>
+        struct Buffer
+        {   
+            Buffer():size_(1),
+                    counter_(0)
+            {}
+            Buffer(int size):size_(size),
+                             counter_(0)
+            {};        
+            void insert(T element)
+            {
+            
+                if(counter_>=buffer_.size())
+                {
+                    buffer_.push_back(element);
+                }
+                else
+                {
+                    buffer_[counter_]=element;
+                }
+                if(counter_+1==size_)
+                {
+                    counter_=0;
+                }
+                else
+                {
+                    counter_++;
+                }               
+            }
+            std::vector<T> get()
+            {
+                return this->buffer_;
+            }
+            int size_;
+            int counter_;
+            std::vector<T> buffer_;
+
         };
 
 
@@ -357,9 +400,12 @@ class Controller{
         ControlState target_state_old_;
         tf::Vector3 vel_old;                                         ///<The target state of a timepstep backwards for numerical differentiaiton
         tf::Vector3 acc_;
+        Buffer<tf::Vector3> buffer_;
         std::vector<double> time_buffer_;                           ///<Buffer for time inputs
         std::vector<tf::Vector3> velocity_buffer_;                  ///<Buffer for Velocity inputs
         double time_old_;                                        ///<Time of the old state
+
+
         ControlDifference control_dif_;                             ///<Transformation from current configuration to target configuration
         ControlVector control_;                                     ///<The calculated control vector
 
@@ -380,8 +426,8 @@ class Controller{
 
         bool publish_tf_;
 
+       
       
-        
         LyapunovParameter lyapunov_parameter_;                        ///<Parameter set for lyapunov determinations
         AngleDistanceParameter angle_distance_parameter_;   ///<Parameter set for angle distance control law
        
