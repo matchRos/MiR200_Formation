@@ -20,8 +20,8 @@ planner:
 
 #Names of formation memebers for parsing the formation parameters
 formation:
-  names: ["master","robot1","robot2","robot3","robot4","robot5"] #Names of the robots belonging to one formation
-  # names: ["master","robot1","robot2"] #Names of the robots belonging to one formation
+  # names: ["master","robot1","robot2","robot3","robot4","robot5"] #Names of the robots belonging to one formation
+  names: ["master","robot1","robot2"] #Names of the robots belonging to one formation
   # names: ["master"] #Names of the robots belonging to one formation
 
 # Remaped, shared parameter for all the robots
