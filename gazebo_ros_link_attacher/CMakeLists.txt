@@ -80,7 +80,7 @@ install(TARGETS ${PROJECT_NAME}
 )
 
 
-foreach (dir launch worlds)
+foreach (dir launch)
   install(DIRECTORY ${dir}/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/${dir})
 endforeach(dir)
