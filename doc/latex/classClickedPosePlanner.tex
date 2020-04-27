@@ -1,0 +1,72 @@
+\hypertarget{classClickedPosePlanner}{}\section{Clicked\+Pose\+Planner Class Reference}
+\label{classClickedPosePlanner}\index{Clicked\+Pose\+Planner@{Clicked\+Pose\+Planner}}
+
+
+Inheritance diagram for Clicked\+Pose\+Planner\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=185pt]{classClickedPosePlanner__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Clicked\+Pose\+Planner\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=185pt]{classClickedPosePlanner__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Clicked\+Pose\+Planner} (ros\+::\+Node\+Handle \&\hyperlink{classPlanner_a9714d036f444a07ce90be8d135b9a40c}{nh}, std\+::string topic\+\_\+name)\hypertarget{classClickedPosePlanner_a74a3e5f887074f15a88c617c5269ff6f}{}\label{classClickedPosePlanner_a74a3e5f887074f15a88c617c5269ff6f}
+
+\item 
+tf\+::\+Vector3 {\bfseries get\+\_\+position} (ros\+::\+Duration time)\hypertarget{classClickedPosePlanner_afc1871c54217d03e9e324f01b6f237a0}{}\label{classClickedPosePlanner_afc1871c54217d03e9e324f01b6f237a0}
+
+\item 
+tf\+::\+Quaternion {\bfseries get\+\_\+orientation} (ros\+::\+Duration time)\hypertarget{classClickedPosePlanner_ad0dc3f1824a1e8127cdda0d933700dec}{}\label{classClickedPosePlanner_ad0dc3f1824a1e8127cdda0d933700dec}
+
+\item 
+tf\+::\+Vector3 {\bfseries get\+\_\+velocity} (ros\+::\+Duration time)\hypertarget{classClickedPosePlanner_acdbdcf7b2e811542ccd812b72534bcfb}{}\label{classClickedPosePlanner_acdbdcf7b2e811542ccd812b72534bcfb}
+
+\item 
+tf\+::\+Vector3 {\bfseries get\+\_\+acceleration} (ros\+::\+Duration time)\hypertarget{classClickedPosePlanner_ade095ec782bd78a10dc397d039c49df1}{}\label{classClickedPosePlanner_ade095ec782bd78a10dc397d039c49df1}
+
+\item 
+double {\bfseries get\+\_\+angular\+\_\+velocity} (ros\+::\+Duration time)\hypertarget{classClickedPosePlanner_a29ea1f54b9103ffcffb13867c654c550}{}\label{classClickedPosePlanner_a29ea1f54b9103ffcffb13867c654c550}
+
+\item 
+void {\bfseries check\+\_\+period} (ros\+::\+Duration time)\hypertarget{classClickedPosePlanner_afa168a05970471ef34bd5ba19bbe4a0b}{}\label{classClickedPosePlanner_afa168a05970471ef34bd5ba19bbe4a0b}
+
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void {\bfseries clicked\+Callback} (const geometry\+\_\+msgs\+::\+Pose\+Stamped\+Const\+Ptr msg)\hypertarget{classClickedPosePlanner_a14fd60114064f69a3d4569b10ce244d2}{}\label{classClickedPosePlanner_a14fd60114064f69a3d4569b10ce244d2}
+
+\item 
+void {\bfseries load\+Child} ()\hypertarget{classClickedPosePlanner_a8e8e18e8dc6e007bbd0ac40d5aba6076}{}\label{classClickedPosePlanner_a8e8e18e8dc6e007bbd0ac40d5aba6076}
+
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+ros\+::\+Subscriber {\bfseries sub\+\_\+}\hypertarget{classClickedPosePlanner_ae9909d554dfd56cdf729bc9dfa24565b}{}\label{classClickedPosePlanner_ae9909d554dfd56cdf729bc9dfa24565b}
+
+\item 
+tf\+::\+Pose {\bfseries pose\+\_\+}\hypertarget{classClickedPosePlanner_a0edb2f1c085b602791a08a1528fe3c27}{}\label{classClickedPosePlanner_a0edb2f1c085b602791a08a1528fe3c27}
+
+\item 
+tf\+::\+Vector3 {\bfseries direction\+\_\+}\hypertarget{classClickedPosePlanner_aa677a316251a6a88adcaa52b3c71ea4b}{}\label{classClickedPosePlanner_aa677a316251a6a88adcaa52b3c71ea4b}
+
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+simulation\+\_\+env/include/simulation\+\_\+env/planner.\+h\item 
+simulation\+\_\+env/src/planner.\+cpp\end{DoxyCompactItemize}

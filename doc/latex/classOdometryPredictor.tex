@@ -1,0 +1,44 @@
+\hypertarget{classOdometryPredictor}{}\section{Odometry\+Predictor Class Reference}
+\label{classOdometryPredictor}\index{Odometry\+Predictor@{Odometry\+Predictor}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Odometry\+Predictor} (ros\+::\+Node\+Handle \&nh)\hypertarget{classOdometryPredictor_a9b4cc16ef852f876d3628213e341d263}{}\label{classOdometryPredictor_a9b4cc16ef852f876d3628213e341d263}
+
+\item 
+{\bfseries Odometry\+Predictor} (ros\+::\+Node\+Handle \&nh, std\+::string topic\+\_\+name, tf\+::\+Transform initial\+\_\+trafo)\hypertarget{classOdometryPredictor_a18c088e85a802c82732fdc0f8dcbb961}{}\label{classOdometryPredictor_a18c088e85a802c82732fdc0f8dcbb961}
+
+\item 
+tf\+::\+Pose {\bfseries get\+Pose} ()\hypertarget{classOdometryPredictor_ac7c175fe97fec3d08c95be541c6551c9}{}\label{classOdometryPredictor_ac7c175fe97fec3d08c95be541c6551c9}
+
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void {\bfseries callback\+Odometry} (const nav\+\_\+msgs\+::\+Odometry\+Const\+Ptr msg)\hypertarget{classOdometryPredictor_abfa0a69c2ba018d53e7976853366b833}{}\label{classOdometryPredictor_abfa0a69c2ba018d53e7976853366b833}
+
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+ros\+::\+Node\+Handle {\bfseries nh\+\_\+}\hypertarget{classOdometryPredictor_a7f30f2dc41e540c0e22544ae08d4a793}{}\label{classOdometryPredictor_a7f30f2dc41e540c0e22544ae08d4a793}
+
+\item 
+ros\+::\+Subscriber {\bfseries odom\+\_\+sub\+\_\+}\hypertarget{classOdometryPredictor_a90649d9a1d3bfa1ee6a5bd0fee0a329c}{}\label{classOdometryPredictor_a90649d9a1d3bfa1ee6a5bd0fee0a329c}
+
+\item 
+std\+::string {\bfseries topic\+\_\+name\+\_\+}\hypertarget{classOdometryPredictor_a222da0dc75ff986e0105520cbf1a85d0}{}\label{classOdometryPredictor_a222da0dc75ff986e0105520cbf1a85d0}
+
+\item 
+tf\+::\+Transform {\bfseries initial\+\_\+trafo\+\_\+}\hypertarget{classOdometryPredictor_ab2d3f0deca499511a9b446d864a7ff66}{}\label{classOdometryPredictor_ab2d3f0deca499511a9b446d864a7ff66}
+
+\item 
+tf\+::\+Pose {\bfseries pose\+\_\+}\hypertarget{classOdometryPredictor_aae2765bb63f00d48860a50ff9b692910}{}\label{classOdometryPredictor_aae2765bb63f00d48860a50ff9b692910}
+
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+formation/include/formation/odometry\+\_\+predictor.\+h\item 
+formation/src/odometry\+\_\+predictor.\+cpp\end{DoxyCompactItemize}

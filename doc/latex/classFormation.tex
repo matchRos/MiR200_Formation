@@ -1,0 +1,601 @@
+\hypertarget{classFormation}{}\section{Formation Class Reference}
+\label{classFormation}\index{Formation@{Formation}}
+
+
+A Class for handeling basic mobile \hyperlink{structFormation_1_1Robot}{Robot} formation work. Properly adds Robots to a formation and provides basic interpretation tools as the adjacency matrix of the formation.  
+
+
+
+
+{\ttfamily \#include $<$formation.\+h$>$}
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structFormation_1_1Robot}{Robot}
+\begin{DoxyCompactList}\small\item\em Holds a robot to handle with formation member stuff. \end{DoxyCompactList}\item 
+struct \hyperlink{structFormation_1_1RobotProperties}{Robot\+Properties}
+\begin{DoxyCompactList}\small\item\em Defines Properties of a \hyperlink{structFormation_1_1Robot}{Robot}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum {\bfseries Pose\+Estamination} \{ {\bfseries by\+\_\+laser\+\_\+scanner}, 
+{\bfseries by\+\_\+odometry}, 
+{\bfseries by\+\_\+ekf}
+ \}\hypertarget{classFormation_a2717e351d4d88ac7eb481208ad072dfd}{}\label{classFormation_a2717e351d4d88ac7eb481208ad072dfd}
+
+\item 
+{\footnotesize template$<$typename T $>$ }\\using \hyperlink{classFormation_a227cd099c5171dd7a8f66cf010793e4e}{Matrix} = std\+::vector$<$ std\+::vector$<$ T $>$ $>$
+\begin{DoxyCompactList}\small\item\em Template for a generic matrix as std\+::vector of std\+::vectors. \end{DoxyCompactList}\item 
+typedef std\+::vector$<$ std\+::string $>$ \hyperlink{classFormation_a174a86b886bea3cb5d2c60526e73074d}{Neighbours}\hypertarget{classFormation_a174a86b886bea3cb5d2c60526e73074d}{}\label{classFormation_a174a86b886bea3cb5d2c60526e73074d}
+
+\begin{DoxyCompactList}\small\item\em Defines Neighbours as vector of robot names. \end{DoxyCompactList}\item 
+typedef std\+::shared\+\_\+ptr$<$ \hyperlink{classLaserPredictor}{Laser\+Predictor} $>$ \hyperlink{classFormation_a57c79726ce19c016f8cb19ebe1b7f379}{Laser\+Pointer}\hypertarget{classFormation_a57c79726ce19c016f8cb19ebe1b7f379}{}\label{classFormation_a57c79726ce19c016f8cb19ebe1b7f379}
+
+\begin{DoxyCompactList}\small\item\em Defines Laser\+Pointer as shared pointer to a \hyperlink{classLaserPredictor}{Laser\+Predictor}. \end{DoxyCompactList}\item 
+typedef std\+::shared\+\_\+ptr$<$ \hyperlink{classOdometryPredictor}{Odometry\+Predictor} $>$ {\bfseries Odom\+Pointer}\hypertarget{classFormation_a74a566bcc1caafd2ebda78f9dc104fd4}{}\label{classFormation_a74a566bcc1caafd2ebda78f9dc104fd4}
+
+\item 
+using \hyperlink{classFormation_ae679dc0b3c837ce510678f0fd98baf36}{Poses} = \hyperlink{classLaserPredictor_a6c7dc6bd4bfb6acd3d95e88e1b9b4be2}{Laser\+Predictor\+::\+Poses}\hypertarget{classFormation_ae679dc0b3c837ce510678f0fd98baf36}{}\label{classFormation_ae679dc0b3c837ce510678f0fd98baf36}
+
+\begin{DoxyCompactList}\small\item\em Brings Poses up to scope. \end{DoxyCompactList}\item 
+using \hyperlink{classFormation_a35557939fd09f70d86432bfb68f315e2}{Cloud} = \hyperlink{classLaserPredictor_ae6d64da5bf82f544a2ea8a421af5a677}{Laser\+Predictor\+::\+Cloud}\hypertarget{classFormation_a35557939fd09f70d86432bfb68f315e2}{}\label{classFormation_a35557939fd09f70d86432bfb68f315e2}
+
+\begin{DoxyCompactList}\small\item\em Brings Cloud up to scope. \end{DoxyCompactList}\item 
+typedef \hyperlink{classFormation}{Formation} \hyperlink{classFormation_ac849f4299770d0303d16a25b55f17a04}{Transformation}\hypertarget{classFormation_ac849f4299770d0303d16a25b55f17a04}{}\label{classFormation_ac849f4299770d0303d16a25b55f17a04}
+
+\begin{DoxyCompactList}\small\item\em Defines a Transformation between two Formations. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFormation_a60c3058dd353550d89183ec529909cb6}{Formation} ()\hypertarget{classFormation_a60c3058dd353550d89183ec529909cb6}{}\label{classFormation_a60c3058dd353550d89183ec529909cb6}
+
+\begin{DoxyCompactList}\small\item\em Construct a new \hyperlink{classFormation}{Formation} object. \end{DoxyCompactList}\item 
+int \hyperlink{classFormation_ae2112756bd93d96fe630f2ef03296cd8}{size} ()
+\begin{DoxyCompactList}\small\item\em Gets the number of Robots within the formation. \end{DoxyCompactList}\item 
+bool \hyperlink{classFormation_a9e7daefe97ed604263d43ecc1c60998e}{empty} ()
+\begin{DoxyCompactList}\small\item\em Checks wheather the formation doesnt contain any robot. \end{DoxyCompactList}\item 
+void \hyperlink{classFormation_a2e905a5a990cc2eb9a67f0af772c8437}{add\+Robot} (\hyperlink{structFormation_1_1RobotProperties}{Robot\+Properties} robot)
+\begin{DoxyCompactList}\small\item\em Adds a robot with given properties to the formation. \end{DoxyCompactList}\item 
+void \hyperlink{classFormation_a18eb5684d095d131c1df1df469bd9cc6}{modifie\+Pose} (std\+::string name, tf\+::\+Pose pose)
+\begin{DoxyCompactList}\small\item\em Modifies the pose of the ith robot within the \hyperlink{classFormation}{Formation}. \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::string $>$ \hyperlink{classFormation_a7eadb61f6058458c881e22cae4244f91}{get\+Names} ()
+\begin{DoxyCompactList}\small\item\em Get the Names object. \end{DoxyCompactList}\item 
+std\+::string \hyperlink{classFormation_aee68539f4d3557c8de6ddc47b0930145}{get\+Reference\+Frame} ()
+\begin{DoxyCompactList}\small\item\em Get the Reference Frame object. \end{DoxyCompactList}\item 
+\hyperlink{classFormation_ae679dc0b3c837ce510678f0fd98baf36}{Poses} \hyperlink{classFormation_a17f1290727f4dbbb5cb465ed7e71157d}{get\+Pose} ()
+\begin{DoxyCompactList}\small\item\em Gets a vector that contains every single robot pose. Estamination of pose is specified by the class type paramter. \end{DoxyCompactList}\item 
+\hyperlink{classFormation_ae679dc0b3c837ce510678f0fd98baf36}{Poses} \hyperlink{classFormation_af1dc98ac112955531616fd2bbc8e623e}{get\+Pose} (Pose\+Estamination type)
+\begin{DoxyCompactList}\small\item\em Get the Poses object. \end{DoxyCompactList}\item 
+tf\+::\+Pose \hyperlink{classFormation_a2499e2f4187c728a877f1a1ba819e218}{get\+Pose} (std\+::string name)
+\begin{DoxyCompactList}\small\item\em Get the Pose object of a specified robot. Estamination of pose is specified by the class type paramter. \end{DoxyCompactList}\item 
+tf\+::\+Pose \hyperlink{classFormation_a29a211b4b563b671ff459e743220b4ca}{get\+Pose} (std\+::string name, Pose\+Estamination type)
+\begin{DoxyCompactList}\small\item\em Get the Poses object of a specified robot. \end{DoxyCompactList}\item 
+\hyperlink{classFormation_a35557939fd09f70d86432bfb68f315e2}{Cloud} \hyperlink{classFormation_ad14f504d5804ed58a4654ea876b3c200}{get\+Scan} ()
+\begin{DoxyCompactList}\small\item\em Get the Scanner data from all of the formation robots. \end{DoxyCompactList}\item 
+\hyperlink{classFormation_a35557939fd09f70d86432bfb68f315e2}{Cloud} \hyperlink{classFormation_a58d09fdb11d737bd50a5e6c77eaf5597}{get\+Scan} (std\+::string name)
+\begin{DoxyCompactList}\small\item\em Get the Scan data from a specific robot. \end{DoxyCompactList}\item 
+\hyperlink{classFormation_a35557939fd09f70d86432bfb68f315e2}{Cloud} \hyperlink{classFormation_a1335fe18a276370833fd44554b1bdcf5}{get\+Clustered\+Scan} ()
+\begin{DoxyCompactList}\small\item\em Get the clustered scanner data for every robot within the formation. \end{DoxyCompactList}\item 
+\hyperlink{classFormation_a35557939fd09f70d86432bfb68f315e2}{Cloud} \hyperlink{classFormation_a11b9cc80dc3eff6c83cfaf0147637891}{get\+Clustered\+Scan} (std\+::string name)
+\begin{DoxyCompactList}\small\item\em Get the Clustered Scan data for a specific robot. \end{DoxyCompactList}\item 
+\hyperlink{classFormation_ae679dc0b3c837ce510678f0fd98baf36}{Poses} \hyperlink{classFormation_af0ecd22c0998609569ad33c0f93de39e}{get\+Scanned\+Pose} ()
+\begin{DoxyCompactList}\small\item\em Get the Scanned Poses object. \end{DoxyCompactList}\item 
+\hyperlink{classFormation_ae679dc0b3c837ce510678f0fd98baf36}{Poses} \hyperlink{classFormation_a3cc2889276bd6847bd1bec115b6e58ac}{get\+Scanned\+Pose} (std\+::string name)
+\begin{DoxyCompactList}\small\item\em Get the Scanned Poses object. \end{DoxyCompactList}\item 
+void \hyperlink{classFormation_ab5ed22754d944ab340b1b41090239369}{start\+Prediction} (double frequenzy)
+\begin{DoxyCompactList}\small\item\em Starts the prediciton algorithms within the formation. \end{DoxyCompactList}\item 
+\hyperlink{classFormation_a227cd099c5171dd7a8f66cf010793e4e}{Formation\+::\+Matrix}$<$ double $>$ \hyperlink{classFormation_ac02154b202da99f2752c617cc2afc8b0}{get\+Adjacency} ()
+\begin{DoxyCompactList}\small\item\em Calculates and returns the Adjacency matrix of the formation. \end{DoxyCompactList}\item 
+\hyperlink{classFormation_a227cd099c5171dd7a8f66cf010793e4e}{Formation\+::\+Matrix}$<$ bool $>$ \hyperlink{classFormation_ae94d8ce0717f1f1288236f21b49b6df1}{get\+Connectivity} ()
+\begin{DoxyCompactList}\small\item\em Calculates and returns the Connectivity matrix of the formation. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+tf\+::\+Pose \hyperlink{classFormation_a58f07e7658e834f031b41d43c69bf105}{get\+Pose\+By\+Laser} (std\+::string name)
+\begin{DoxyCompactList}\small\item\em Calcualte the robot pose from the laserscanner data. \end{DoxyCompactList}\item 
+tf\+::\+Pose \hyperlink{classFormation_a51658d7a848dd8281d78391b50c17c07}{get\+Pose\+By\+Odom} (std\+::string name)
+\begin{DoxyCompactList}\small\item\em Calcualte the robot pose from the odomotry data. \end{DoxyCompactList}\item 
+tf\+::\+Pose \hyperlink{classFormation_ac02aaa23f0736c5ebc396f598f24ffda}{get\+Pose\+By\+Ekf} (std\+::string name)
+\begin{DoxyCompactList}\small\item\em Calcualte the robot pose from the kalman filtered data. \end{DoxyCompactList}\item 
+\hyperlink{classFormation_ae679dc0b3c837ce510678f0fd98baf36}{Poses} \hyperlink{classFormation_a84a8884d35fd3b2b0a2d13a524813582}{get\+Pose\+By\+Laser} ()
+\begin{DoxyCompactList}\small\item\em Calcualte the robot poses from the laserscanner data. \end{DoxyCompactList}\item 
+\hyperlink{classFormation_ae679dc0b3c837ce510678f0fd98baf36}{Poses} \hyperlink{classFormation_a65f7219eae228db0bca8929192e17e6d}{get\+Pose\+By\+Odom} ()
+\begin{DoxyCompactList}\small\item\em Calcualte the robot poses from the odometry data. \end{DoxyCompactList}\item 
+\hyperlink{classFormation_ae679dc0b3c837ce510678f0fd98baf36}{Poses} \hyperlink{classFormation_aa1abf9f7770254bfe43fa030c2557d3c}{get\+Pose\+By\+Ekf} ()
+\begin{DoxyCompactList}\small\item\em Calcualte the robot poses from the kalman filtered data. \end{DoxyCompactList}\item 
+\hyperlink{classFormation_a227cd099c5171dd7a8f66cf010793e4e}{Matrix}$<$ bool $>$ \hyperlink{classFormation_a9ce3e6dbf7316f44796db86eb65e328c}{determine\+Connectivity} ()
+\begin{DoxyCompactList}\small\item\em Determines the connectivity matrix of the formation. \end{DoxyCompactList}\item 
+\hyperlink{classFormation_a227cd099c5171dd7a8f66cf010793e4e}{Matrix}$<$ double $>$ \hyperlink{classFormation_a0d72674a06fab2a9e262bdb89d75e294}{determine\+Adjacency} ()
+\begin{DoxyCompactList}\small\item\em Determines the adjacency matrix of the formation. \end{DoxyCompactList}\item 
+tf\+::\+Transform {\bfseries transform\+Between\+Robots} (\hyperlink{structFormation_1_1Robot}{Robot} robot1, \hyperlink{structFormation_1_1Robot}{Robot} robot2)\hypertarget{classFormation_a63efd039220b02244325b6d9bce84217}{}\label{classFormation_a63efd039220b02244325b6d9bce84217}
+
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::string \hyperlink{classFormation_aded9be036260714976d7b2344343aa36}{reference\+\_\+frame\+\_\+}\hypertarget{classFormation_aded9be036260714976d7b2344343aa36}{}\label{classFormation_aded9be036260714976d7b2344343aa36}
+
+\begin{DoxyCompactList}\small\item\em Name of the referece frame formation geometries are defined in. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{classFormation_a37afd22fcc314d948dfdf1012ee8e0b5}{number\+\_\+of\+\_\+robots\+\_\+}\hypertarget{classFormation_a37afd22fcc314d948dfdf1012ee8e0b5}{}\label{classFormation_a37afd22fcc314d948dfdf1012ee8e0b5}
+
+\begin{DoxyCompactList}\small\item\em Contains the number of robots within the formation. \end{DoxyCompactList}\item 
+std\+::map$<$ std\+::string, \hyperlink{structFormation_1_1Robot}{Robot} $>$ \hyperlink{classFormation_a97b2e99a4484d35efb628a8c1856fce1}{formation\+\_\+map\+\_\+}\hypertarget{classFormation_a97b2e99a4484d35efb628a8c1856fce1}{}\label{classFormation_a97b2e99a4484d35efb628a8c1856fce1}
+
+\begin{DoxyCompactList}\small\item\em Maps a special robot name to its correspondence \hyperlink{structFormation_1_1Robot}{Robot}. \end{DoxyCompactList}\item 
+std\+::map$<$ std\+::string, unsigned int $>$ \hyperlink{classFormation_a828cdf6334de77b7858687066c107610}{index\+\_\+map\+\_\+}\hypertarget{classFormation_a828cdf6334de77b7858687066c107610}{}\label{classFormation_a828cdf6334de77b7858687066c107610}
+
+\begin{DoxyCompactList}\small\item\em Maps a special idex of a robot to its name. \end{DoxyCompactList}\item 
+\hyperlink{classFormation_a227cd099c5171dd7a8f66cf010793e4e}{Matrix}$<$ double $>$ \hyperlink{classFormation_a4381913dde85c784c452c38782c88c3d}{adjacency\+\_\+}\hypertarget{classFormation_a4381913dde85c784c452c38782c88c3d}{}\label{classFormation_a4381913dde85c784c452c38782c88c3d}
+
+\begin{DoxyCompactList}\small\item\em contains the adjacence matrice of the formation \end{DoxyCompactList}\item 
+\hyperlink{classFormation_a227cd099c5171dd7a8f66cf010793e4e}{Matrix}$<$ bool $>$ \hyperlink{classFormation_aa33f8090d7ed17b5a70eed9156db713a}{connectivity\+\_\+}\hypertarget{classFormation_aa33f8090d7ed17b5a70eed9156db713a}{}\label{classFormation_aa33f8090d7ed17b5a70eed9156db713a}
+
+\begin{DoxyCompactList}\small\item\em contains the connectivity matrice of the formation \end{DoxyCompactList}\item 
+Pose\+Estamination {\bfseries type\+\_\+}\hypertarget{classFormation_a1753db68c71fb1cfc25462dd3e67986e}{}\label{classFormation_a1753db68c71fb1cfc25462dd3e67986e}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A Class for handeling basic mobile \hyperlink{structFormation_1_1Robot}{Robot} formation work. Properly adds Robots to a formation and provides basic interpretation tools as the adjacency matrix of the formation. 
+
+\subsection{Member Typedef Documentation}
+\index{Formation@{Formation}!Matrix@{Matrix}}
+\index{Matrix@{Matrix}!Formation@{Formation}}
+\subsubsection[{\texorpdfstring{Matrix}{Matrix}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ using {\bf Formation\+::\+Matrix} =  std\+::vector$<$std\+::vector$<$T$>$ $>$}\hypertarget{classFormation_a227cd099c5171dd7a8f66cf010793e4e}{}\label{classFormation_a227cd099c5171dd7a8f66cf010793e4e}
+
+
+Template for a generic matrix as std\+::vector of std\+::vectors. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & type of the matrix values \\
+\hline
+\end{DoxyTemplParams}
+
+
+\subsection{Member Function Documentation}
+\index{Formation@{Formation}!add\+Robot@{add\+Robot}}
+\index{add\+Robot@{add\+Robot}!Formation@{Formation}}
+\subsubsection[{\texorpdfstring{add\+Robot(\+Robot\+Properties robot)}{addRobot(RobotProperties robot)}}]{\setlength{\rightskip}{0pt plus 5cm}void Formation\+::add\+Robot (
+\begin{DoxyParamCaption}
+\item[{{\bf Formation\+::\+Robot\+Properties}}]{robot\+\_\+properties}
+\end{DoxyParamCaption}
+)}\hypertarget{classFormation_a2e905a5a990cc2eb9a67f0af772c8437}{}\label{classFormation_a2e905a5a990cc2eb9a67f0af772c8437}
+
+
+Adds a robot with given properties to the formation. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em robot} & Properties of the added robot \\
+\hline
+\end{DoxyParams}
+\index{Formation@{Formation}!determine\+Adjacency@{determine\+Adjacency}}
+\index{determine\+Adjacency@{determine\+Adjacency}!Formation@{Formation}}
+\subsubsection[{\texorpdfstring{determine\+Adjacency()}{determineAdjacency()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Formation\+::\+Matrix}$<$ double $>$ Formation\+::determine\+Adjacency (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFormation_a0d72674a06fab2a9e262bdb89d75e294}{}\label{classFormation_a0d72674a06fab2a9e262bdb89d75e294}
+
+
+Determines the adjacency matrix of the formation. 
+
+\begin{DoxyReturn}{Returns}
+Matrix$<$double$>$ Adjacency matrix 
+\end{DoxyReturn}
+\index{Formation@{Formation}!determine\+Connectivity@{determine\+Connectivity}}
+\index{determine\+Connectivity@{determine\+Connectivity}!Formation@{Formation}}
+\subsubsection[{\texorpdfstring{determine\+Connectivity()}{determineConnectivity()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Formation\+::\+Matrix}$<$ bool $>$ Formation\+::determine\+Connectivity (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFormation_a9ce3e6dbf7316f44796db86eb65e328c}{}\label{classFormation_a9ce3e6dbf7316f44796db86eb65e328c}
+
+
+Determines the connectivity matrix of the formation. 
+
+\begin{DoxyReturn}{Returns}
+Matrix$<$bool$>$ Connectivity matrix 
+\end{DoxyReturn}
+\index{Formation@{Formation}!empty@{empty}}
+\index{empty@{empty}!Formation@{Formation}}
+\subsubsection[{\texorpdfstring{empty()}{empty()}}]{\setlength{\rightskip}{0pt plus 5cm}bool Formation\+::empty (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classFormation_a9e7daefe97ed604263d43ecc1c60998e}{}\label{classFormation_a9e7daefe97ed604263d43ecc1c60998e}
+
+
+Checks wheather the formation doesnt contain any robot. 
+
+\begin{DoxyReturn}{Returns}
+true \hyperlink{classFormation}{Formation} is empty 
+
+false \hyperlink{classFormation}{Formation} contains at least one robot 
+\end{DoxyReturn}
+\index{Formation@{Formation}!get\+Adjacency@{get\+Adjacency}}
+\index{get\+Adjacency@{get\+Adjacency}!Formation@{Formation}}
+\subsubsection[{\texorpdfstring{get\+Adjacency()}{getAdjacency()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Formation\+::\+Matrix}$<$ double $>$ Formation\+::get\+Adjacency (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classFormation_ac02154b202da99f2752c617cc2afc8b0}{}\label{classFormation_ac02154b202da99f2752c617cc2afc8b0}
+
+
+Calculates and returns the Adjacency matrix of the formation. 
+
+\begin{DoxyReturn}{Returns}
+std\+::vector$<$std\+::vector$<$double$>$ $>$ adjacency matrix 
+\end{DoxyReturn}
+\index{Formation@{Formation}!get\+Clustered\+Scan@{get\+Clustered\+Scan}}
+\index{get\+Clustered\+Scan@{get\+Clustered\+Scan}!Formation@{Formation}}
+\subsubsection[{\texorpdfstring{get\+Clustered\+Scan()}{getClusteredScan()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Formation\+::\+Cloud} Formation\+::get\+Clustered\+Scan (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classFormation_a1335fe18a276370833fd44554b1bdcf5}{}\label{classFormation_a1335fe18a276370833fd44554b1bdcf5}
+
+
+Get the clustered scanner data for every robot within the formation. 
+
+\begin{DoxyReturn}{Returns}
+\hyperlink{classLaserPredictor_ae6d64da5bf82f544a2ea8a421af5a677}{Laser\+Predictor\+::\+Cloud} 
+\end{DoxyReturn}
+\index{Formation@{Formation}!get\+Clustered\+Scan@{get\+Clustered\+Scan}}
+\index{get\+Clustered\+Scan@{get\+Clustered\+Scan}!Formation@{Formation}}
+\subsubsection[{\texorpdfstring{get\+Clustered\+Scan(std\+::string name)}{getClusteredScan(std::string name)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Formation\+::\+Cloud} Formation\+::get\+Clustered\+Scan (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{name}
+\end{DoxyParamCaption}
+)}\hypertarget{classFormation_a11b9cc80dc3eff6c83cfaf0147637891}{}\label{classFormation_a11b9cc80dc3eff6c83cfaf0147637891}
+
+
+Get the Clustered Scan data for a specific robot. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & Name of the robot to get data from \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Cloud Data from the robots laserscanner 
+\end{DoxyReturn}
+\index{Formation@{Formation}!get\+Connectivity@{get\+Connectivity}}
+\index{get\+Connectivity@{get\+Connectivity}!Formation@{Formation}}
+\subsubsection[{\texorpdfstring{get\+Connectivity()}{getConnectivity()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Formation\+::\+Matrix}$<$ bool $>$ Formation\+::get\+Connectivity (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classFormation_ae94d8ce0717f1f1288236f21b49b6df1}{}\label{classFormation_ae94d8ce0717f1f1288236f21b49b6df1}
+
+
+Calculates and returns the Connectivity matrix of the formation. 
+
+\begin{DoxyReturn}{Returns}
+\hyperlink{classFormation_a227cd099c5171dd7a8f66cf010793e4e}{Formation\+::\+Matrix$<$bool$>$} 
+\end{DoxyReturn}
+\index{Formation@{Formation}!get\+Names@{get\+Names}}
+\index{get\+Names@{get\+Names}!Formation@{Formation}}
+\subsubsection[{\texorpdfstring{get\+Names()}{getNames()}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::vector$<$ std\+::string $>$ Formation\+::get\+Names (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classFormation_a7eadb61f6058458c881e22cae4244f91}{}\label{classFormation_a7eadb61f6058458c881e22cae4244f91}
+
+
+Get the Names object. 
+
+\begin{DoxyReturn}{Returns}
+std\+::vector$<$std\+::string$>$ Names of all robots within the formation 
+\end{DoxyReturn}
+\index{Formation@{Formation}!get\+Pose@{get\+Pose}}
+\index{get\+Pose@{get\+Pose}!Formation@{Formation}}
+\subsubsection[{\texorpdfstring{get\+Pose()}{getPose()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Formation\+::\+Poses} Formation\+::get\+Pose (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classFormation_a17f1290727f4dbbb5cb465ed7e71157d}{}\label{classFormation_a17f1290727f4dbbb5cb465ed7e71157d}
+
+
+Gets a vector that contains every single robot pose. Estamination of pose is specified by the class type paramter. 
+
+\begin{DoxyReturn}{Returns}
+std\+::vector$<$tf\+::\+Pose$>$ Vector of the robot poses 
+\end{DoxyReturn}
+\index{Formation@{Formation}!get\+Pose@{get\+Pose}}
+\index{get\+Pose@{get\+Pose}!Formation@{Formation}}
+\subsubsection[{\texorpdfstring{get\+Pose(\+Pose\+Estamination type)}{getPose(PoseEstamination type)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Formation\+::\+Poses} Formation\+::get\+Pose (
+\begin{DoxyParamCaption}
+\item[{Pose\+Estamination}]{type}
+\end{DoxyParamCaption}
+)}\hypertarget{classFormation_af1dc98ac112955531616fd2bbc8e623e}{}\label{classFormation_af1dc98ac112955531616fd2bbc8e623e}
+
+
+Get the Poses object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em type} & type of estamination to be used \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Poses Estaminated poses 
+\end{DoxyReturn}
+\index{Formation@{Formation}!get\+Pose@{get\+Pose}}
+\index{get\+Pose@{get\+Pose}!Formation@{Formation}}
+\subsubsection[{\texorpdfstring{get\+Pose(std\+::string name)}{getPose(std::string name)}}]{\setlength{\rightskip}{0pt plus 5cm}tf\+::\+Pose Formation\+::get\+Pose (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{name}
+\end{DoxyParamCaption}
+)}\hypertarget{classFormation_a2499e2f4187c728a877f1a1ba819e218}{}\label{classFormation_a2499e2f4187c728a877f1a1ba819e218}
+
+
+Get the Pose object of a specified robot. Estamination of pose is specified by the class type paramter. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & Name of the robot to get the pose from \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+tf\+::\+Pose pose of the robot 
+\end{DoxyReturn}
+\index{Formation@{Formation}!get\+Pose@{get\+Pose}}
+\index{get\+Pose@{get\+Pose}!Formation@{Formation}}
+\subsubsection[{\texorpdfstring{get\+Pose(std\+::string name, Pose\+Estamination type)}{getPose(std::string name, PoseEstamination type)}}]{\setlength{\rightskip}{0pt plus 5cm}tf\+::\+Pose Formation\+::get\+Pose (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{name, }
+\item[{Pose\+Estamination}]{type}
+\end{DoxyParamCaption}
+)}\hypertarget{classFormation_a29a211b4b563b671ff459e743220b4ca}{}\label{classFormation_a29a211b4b563b671ff459e743220b4ca}
+
+
+Get the Poses object of a specified robot. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & Name of the robot \\
+\hline
+{\em type} & type of pose estamination \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+tf\+::\+Pose Pose of the robot 
+\end{DoxyReturn}
+\index{Formation@{Formation}!get\+Pose\+By\+Ekf@{get\+Pose\+By\+Ekf}}
+\index{get\+Pose\+By\+Ekf@{get\+Pose\+By\+Ekf}!Formation@{Formation}}
+\subsubsection[{\texorpdfstring{get\+Pose\+By\+Ekf(std\+::string name)}{getPoseByEkf(std::string name)}}]{\setlength{\rightskip}{0pt plus 5cm}tf\+::\+Pose Formation\+::get\+Pose\+By\+Ekf (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{name}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFormation_ac02aaa23f0736c5ebc396f598f24ffda}{}\label{classFormation_ac02aaa23f0736c5ebc396f598f24ffda}
+
+
+Calcualte the robot pose from the kalman filtered data. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & Name of the robot to get the pose of \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+tf\+::\+Pose Pose of the robot specified by name 
+\end{DoxyReturn}
+\index{Formation@{Formation}!get\+Pose\+By\+Ekf@{get\+Pose\+By\+Ekf}}
+\index{get\+Pose\+By\+Ekf@{get\+Pose\+By\+Ekf}!Formation@{Formation}}
+\subsubsection[{\texorpdfstring{get\+Pose\+By\+Ekf()}{getPoseByEkf()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Formation\+::\+Poses} Formation\+::get\+Pose\+By\+Ekf (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFormation_aa1abf9f7770254bfe43fa030c2557d3c}{}\label{classFormation_aa1abf9f7770254bfe43fa030c2557d3c}
+
+
+Calcualte the robot poses from the kalman filtered data. 
+
+\begin{DoxyReturn}{Returns}
+Poses Poses of the robots 
+\end{DoxyReturn}
+\index{Formation@{Formation}!get\+Pose\+By\+Laser@{get\+Pose\+By\+Laser}}
+\index{get\+Pose\+By\+Laser@{get\+Pose\+By\+Laser}!Formation@{Formation}}
+\subsubsection[{\texorpdfstring{get\+Pose\+By\+Laser(std\+::string name)}{getPoseByLaser(std::string name)}}]{\setlength{\rightskip}{0pt plus 5cm}tf\+::\+Pose Formation\+::get\+Pose\+By\+Laser (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{name}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFormation_a58f07e7658e834f031b41d43c69bf105}{}\label{classFormation_a58f07e7658e834f031b41d43c69bf105}
+
+
+Calcualte the robot pose from the laserscanner data. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & Name of the robot to get the pose of \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+tf\+::\+Pose Pose of the robot specified by name 
+\end{DoxyReturn}
+\index{Formation@{Formation}!get\+Pose\+By\+Laser@{get\+Pose\+By\+Laser}}
+\index{get\+Pose\+By\+Laser@{get\+Pose\+By\+Laser}!Formation@{Formation}}
+\subsubsection[{\texorpdfstring{get\+Pose\+By\+Laser()}{getPoseByLaser()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Formation\+::\+Poses} Formation\+::get\+Pose\+By\+Laser (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFormation_a84a8884d35fd3b2b0a2d13a524813582}{}\label{classFormation_a84a8884d35fd3b2b0a2d13a524813582}
+
+
+Calcualte the robot poses from the laserscanner data. 
+
+\begin{DoxyReturn}{Returns}
+Poses Poses of the robots 
+\end{DoxyReturn}
+\index{Formation@{Formation}!get\+Pose\+By\+Odom@{get\+Pose\+By\+Odom}}
+\index{get\+Pose\+By\+Odom@{get\+Pose\+By\+Odom}!Formation@{Formation}}
+\subsubsection[{\texorpdfstring{get\+Pose\+By\+Odom(std\+::string name)}{getPoseByOdom(std::string name)}}]{\setlength{\rightskip}{0pt plus 5cm}tf\+::\+Pose Formation\+::get\+Pose\+By\+Odom (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{name}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFormation_a51658d7a848dd8281d78391b50c17c07}{}\label{classFormation_a51658d7a848dd8281d78391b50c17c07}
+
+
+Calcualte the robot pose from the odomotry data. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & Name of the robot to get the pose of \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+tf\+::\+Pose Pose of the robot specified by name 
+\end{DoxyReturn}
+\index{Formation@{Formation}!get\+Pose\+By\+Odom@{get\+Pose\+By\+Odom}}
+\index{get\+Pose\+By\+Odom@{get\+Pose\+By\+Odom}!Formation@{Formation}}
+\subsubsection[{\texorpdfstring{get\+Pose\+By\+Odom()}{getPoseByOdom()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Formation\+::\+Poses} Formation\+::get\+Pose\+By\+Odom (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFormation_a65f7219eae228db0bca8929192e17e6d}{}\label{classFormation_a65f7219eae228db0bca8929192e17e6d}
+
+
+Calcualte the robot poses from the odometry data. 
+
+\begin{DoxyReturn}{Returns}
+Poses Poses of the robots 
+\end{DoxyReturn}
+\index{Formation@{Formation}!get\+Reference\+Frame@{get\+Reference\+Frame}}
+\index{get\+Reference\+Frame@{get\+Reference\+Frame}!Formation@{Formation}}
+\subsubsection[{\texorpdfstring{get\+Reference\+Frame()}{getReferenceFrame()}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::string Formation\+::get\+Reference\+Frame (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classFormation_aee68539f4d3557c8de6ddc47b0930145}{}\label{classFormation_aee68539f4d3557c8de6ddc47b0930145}
+
+
+Get the Reference Frame object. 
+
+\begin{DoxyReturn}{Returns}
+std\+::string Name of the reference frame formation wide geometry is defined in 
+\end{DoxyReturn}
+\index{Formation@{Formation}!get\+Scan@{get\+Scan}}
+\index{get\+Scan@{get\+Scan}!Formation@{Formation}}
+\subsubsection[{\texorpdfstring{get\+Scan()}{getScan()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Formation\+::\+Cloud} Formation\+::get\+Scan (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classFormation_ad14f504d5804ed58a4654ea876b3c200}{}\label{classFormation_ad14f504d5804ed58a4654ea876b3c200}
+
+
+Get the Scanner data from all of the formation robots. 
+
+\begin{DoxyReturn}{Returns}
+Cloud Data from the laser scanners 
+\end{DoxyReturn}
+\index{Formation@{Formation}!get\+Scan@{get\+Scan}}
+\index{get\+Scan@{get\+Scan}!Formation@{Formation}}
+\subsubsection[{\texorpdfstring{get\+Scan(std\+::string name)}{getScan(std::string name)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Formation\+::\+Cloud} Formation\+::get\+Scan (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{name}
+\end{DoxyParamCaption}
+)}\hypertarget{classFormation_a58d09fdb11d737bd50a5e6c77eaf5597}{}\label{classFormation_a58d09fdb11d737bd50a5e6c77eaf5597}
+
+
+Get the Scan data from a specific robot. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & name of the robot \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Cloud data from its laser scanners 
+\end{DoxyReturn}
+\index{Formation@{Formation}!get\+Scanned\+Pose@{get\+Scanned\+Pose}}
+\index{get\+Scanned\+Pose@{get\+Scanned\+Pose}!Formation@{Formation}}
+\subsubsection[{\texorpdfstring{get\+Scanned\+Pose()}{getScannedPose()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Formation\+::\+Poses} Formation\+::get\+Scanned\+Pose (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classFormation_af0ecd22c0998609569ad33c0f93de39e}{}\label{classFormation_af0ecd22c0998609569ad33c0f93de39e}
+
+
+Get the Scanned Poses object. 
+
+\begin{DoxyReturn}{Returns}
+Poses Poses of the identified neighbours of the robot 
+\end{DoxyReturn}
+\index{Formation@{Formation}!get\+Scanned\+Pose@{get\+Scanned\+Pose}}
+\index{get\+Scanned\+Pose@{get\+Scanned\+Pose}!Formation@{Formation}}
+\subsubsection[{\texorpdfstring{get\+Scanned\+Pose(std\+::string name)}{getScannedPose(std::string name)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Formation\+::\+Poses} Formation\+::get\+Scanned\+Pose (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{name}
+\end{DoxyParamCaption}
+)}\hypertarget{classFormation_a3cc2889276bd6847bd1bec115b6e58ac}{}\label{classFormation_a3cc2889276bd6847bd1bec115b6e58ac}
+
+
+Get the Scanned Poses object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & Name of the robot to get the scanned poses of its neighbours from \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Poses Poses of the identified neighbours of the robot 
+\end{DoxyReturn}
+\index{Formation@{Formation}!modifie\+Pose@{modifie\+Pose}}
+\index{modifie\+Pose@{modifie\+Pose}!Formation@{Formation}}
+\subsubsection[{\texorpdfstring{modifie\+Pose(std\+::string name, tf\+::\+Pose pose)}{modifiePose(std::string name, tf::Pose pose)}}]{\setlength{\rightskip}{0pt plus 5cm}void Formation\+::modifie\+Pose (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{name, }
+\item[{tf\+::\+Pose}]{pose}
+\end{DoxyParamCaption}
+)}\hypertarget{classFormation_a18eb5684d095d131c1df1df469bd9cc6}{}\label{classFormation_a18eb5684d095d131c1df1df469bd9cc6}
+
+
+Modifies the pose of the ith robot within the \hyperlink{classFormation}{Formation}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & Index of the robot to be modified \\
+\hline
+{\em pose} & modified Pose of the robot \\
+\hline
+\end{DoxyParams}
+\index{Formation@{Formation}!size@{size}}
+\index{size@{size}!Formation@{Formation}}
+\subsubsection[{\texorpdfstring{size()}{size()}}]{\setlength{\rightskip}{0pt plus 5cm}int Formation\+::size (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classFormation_ae2112756bd93d96fe630f2ef03296cd8}{}\label{classFormation_ae2112756bd93d96fe630f2ef03296cd8}
+
+
+Gets the number of Robots within the formation. 
+
+\begin{DoxyReturn}{Returns}
+int Number of Robots 
+\end{DoxyReturn}
+\index{Formation@{Formation}!start\+Prediction@{start\+Prediction}}
+\index{start\+Prediction@{start\+Prediction}!Formation@{Formation}}
+\subsubsection[{\texorpdfstring{start\+Prediction(double frequenzy)}{startPrediction(double frequenzy)}}]{\setlength{\rightskip}{0pt plus 5cm}void Formation\+::start\+Prediction (
+\begin{DoxyParamCaption}
+\item[{double}]{frequenzy}
+\end{DoxyParamCaption}
+)}\hypertarget{classFormation_ab5ed22754d944ab340b1b41090239369}{}\label{classFormation_ab5ed22754d944ab340b1b41090239369}
+
+
+Starts the prediciton algorithms within the formation. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em frequenzy} & Frequenzy at wich a prediction should be calculated \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+formation/include/formation/formation.\+h\item 
+formation/src/formation.\+cpp\end{DoxyCompactItemize}

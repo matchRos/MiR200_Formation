@@ -1,0 +1,98 @@
+\hypertarget{classFormationPublisher}{}\section{Formation\+Publisher Class Reference}
+\label{classFormationPublisher}\index{Formation\+Publisher@{Formation\+Publisher}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFormationPublisher_a5ce149496bdaebcaac0989a0db61530a}{Formation\+Publisher} ()\hypertarget{classFormationPublisher_a5ce149496bdaebcaac0989a0db61530a}{}\label{classFormationPublisher_a5ce149496bdaebcaac0989a0db61530a}
+
+\begin{DoxyCompactList}\small\item\em Construct a new \hyperlink{classFormation}{Formation} Publisher object. \end{DoxyCompactList}\item 
+\hyperlink{classFormationPublisher_abad14f3b8d260c25ff13389b6b598c83}{Formation\+Publisher} (\hyperlink{classFormation}{Formation} $\ast$formation)
+\begin{DoxyCompactList}\small\item\em Construct a new \hyperlink{classFormation}{Formation} Publisher object for a given formation. \end{DoxyCompactList}\item 
+void {\bfseries publish\+Poses} ()\hypertarget{classFormationPublisher_a10fc32146697d23385516d9419951b62}{}\label{classFormationPublisher_a10fc32146697d23385516d9419951b62}
+
+\item 
+void \hyperlink{classFormationPublisher_a07b3b18afbd63e7def97631ad594bd93}{publish\+Laser\+Scans} ()\hypertarget{classFormationPublisher_a07b3b18afbd63e7def97631ad594bd93}{}\label{classFormationPublisher_a07b3b18afbd63e7def97631ad594bd93}
+
+\begin{DoxyCompactList}\small\item\em Publishs the laser scan data of the hole formation. \end{DoxyCompactList}\item 
+void \hyperlink{classFormationPublisher_a6062b9c79aa0a9503a7b58615db027dc}{publish\+Clustered\+Laser\+Scans} ()\hypertarget{classFormationPublisher_a6062b9c79aa0a9503a7b58615db027dc}{}\label{classFormationPublisher_a6062b9c79aa0a9503a7b58615db027dc}
+
+\begin{DoxyCompactList}\small\item\em Publishs the clustered laser scan data of the hole formation. \end{DoxyCompactList}\item 
+void \hyperlink{classFormationPublisher_a58a0b41ef89c603710aa9babac2d222a}{publish\+Scan\+Poses} ()\hypertarget{classFormationPublisher_a58a0b41ef89c603710aa9babac2d222a}{}\label{classFormationPublisher_a58a0b41ef89c603710aa9babac2d222a}
+
+\begin{DoxyCompactList}\small\item\em Publishs the Poses wich are predicted by the laser scanner data. \end{DoxyCompactList}\item 
+void \hyperlink{classFormationPublisher_a36f8a9d87cc5be6d8d01ee146c7339a9}{publish\+Seperated\+Laser\+Scans} ()\hypertarget{classFormationPublisher_a36f8a9d87cc5be6d8d01ee146c7339a9}{}\label{classFormationPublisher_a36f8a9d87cc5be6d8d01ee146c7339a9}
+
+\begin{DoxyCompactList}\small\item\em Publishs the Laser scanner data of the formation. \end{DoxyCompactList}\item 
+void \hyperlink{classFormationPublisher_a7b69ef4f03e3c9b15d504e4129f7c677}{publish\+Seperated\+Cluster\+Scans} ()\hypertarget{classFormationPublisher_a7b69ef4f03e3c9b15d504e4129f7c677}{}\label{classFormationPublisher_a7b69ef4f03e3c9b15d504e4129f7c677}
+
+\begin{DoxyCompactList}\small\item\em Publishs the clustered Laser scanner data of the formation. \end{DoxyCompactList}\item 
+void \hyperlink{classFormationPublisher_a0a01cba2ee701b66ea4bdc3a8d020da9}{publish\+Seperated\+Scanned\+Poses} ()\hypertarget{classFormationPublisher_a0a01cba2ee701b66ea4bdc3a8d020da9}{}\label{classFormationPublisher_a0a01cba2ee701b66ea4bdc3a8d020da9}
+
+\begin{DoxyCompactList}\small\item\em Publish the Poses wich are determined from the lasser scanner data within the formation. \end{DoxyCompactList}\item 
+void \hyperlink{classFormationPublisher_a4559382249eb3e051ac899d54bb0a1f0}{publish} ()\hypertarget{classFormationPublisher_a4559382249eb3e051ac899d54bb0a1f0}{}\label{classFormationPublisher_a4559382249eb3e051ac899d54bb0a1f0}
+
+\begin{DoxyCompactList}\small\item\em Publishs all the formation data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::shared\+\_\+ptr$<$ \hyperlink{classFormation}{Formation} $>$ {\bfseries formation\+\_\+}\hypertarget{classFormationPublisher_afde74a05d76fab172a5fe082b3c2a29f}{}\label{classFormationPublisher_afde74a05d76fab172a5fe082b3c2a29f}
+
+\item 
+ros\+::\+Node\+Handle {\bfseries nh\+\_\+}\hypertarget{classFormationPublisher_a313cced4558ac58574ae4035d0021211}{}\label{classFormationPublisher_a313cced4558ac58574ae4035d0021211}
+
+\item 
+ros\+::\+Publisher {\bfseries scan\+\_\+pub\+\_\+}\hypertarget{classFormationPublisher_aeeb45b5bfefbec155b6f54c935de1526}{}\label{classFormationPublisher_aeeb45b5bfefbec155b6f54c935de1526}
+
+\item 
+ros\+::\+Publisher {\bfseries cluster\+\_\+scan\+\_\+pub\+\_\+}\hypertarget{classFormationPublisher_ac55c81247dd40c31c91ac9b64c106b2d}{}\label{classFormationPublisher_ac55c81247dd40c31c91ac9b64c106b2d}
+
+\item 
+std\+::map$<$ std\+::string, ros\+::\+Publisher $>$ {\bfseries pose\+\_\+pub\+\_\+list\+\_\+}\hypertarget{classFormationPublisher_a160136dc8ed728bc79c9c381cb75cfbc}{}\label{classFormationPublisher_a160136dc8ed728bc79c9c381cb75cfbc}
+
+\item 
+std\+::map$<$ std\+::string, ros\+::\+Publisher $>$ {\bfseries scan\+\_\+pub\+\_\+list\+\_\+}\hypertarget{classFormationPublisher_ace72a0374b23fb91205368981d997adb}{}\label{classFormationPublisher_ace72a0374b23fb91205368981d997adb}
+
+\item 
+std\+::map$<$ std\+::string, ros\+::\+Publisher $>$ {\bfseries cluster\+\_\+scan\+\_\+pub\+\_\+list\+\_\+}\hypertarget{classFormationPublisher_aaa63016387f2b55740539d0925ce4b28}{}\label{classFormationPublisher_aaa63016387f2b55740539d0925ce4b28}
+
+\item 
+bool {\bfseries publish\+\_\+pose\+\_\+}\hypertarget{classFormationPublisher_a171f25755f77eb6e260fc710d5436bbf}{}\label{classFormationPublisher_a171f25755f77eb6e260fc710d5436bbf}
+
+\item 
+bool {\bfseries publish\+\_\+scans\+\_\+}\hypertarget{classFormationPublisher_aed48f7676e4307e91aaa00d71aacf100}{}\label{classFormationPublisher_aed48f7676e4307e91aaa00d71aacf100}
+
+\item 
+bool {\bfseries publish\+\_\+scans\+\_\+clustered\+\_\+}\hypertarget{classFormationPublisher_a7a7e4f0716d4f32a00aef2f483a42170}{}\label{classFormationPublisher_a7a7e4f0716d4f32a00aef2f483a42170}
+
+\item 
+bool {\bfseries publish\+\_\+seperated\+\_\+}\hypertarget{classFormationPublisher_ae975048bad266dd8322aacdc5b3da747}{}\label{classFormationPublisher_ae975048bad266dd8322aacdc5b3da747}
+
+\item 
+bool {\bfseries publish\+\_\+combined\+\_\+}\hypertarget{classFormationPublisher_acc3da7045fe3dd5a5fe52f4a608645f5}{}\label{classFormationPublisher_acc3da7045fe3dd5a5fe52f4a608645f5}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Formation\+Publisher@{Formation\+Publisher}!Formation\+Publisher@{Formation\+Publisher}}
+\index{Formation\+Publisher@{Formation\+Publisher}!Formation\+Publisher@{Formation\+Publisher}}
+\subsubsection[{\texorpdfstring{Formation\+Publisher(\+Formation $\ast$formation)}{FormationPublisher(Formation *formation)}}]{\setlength{\rightskip}{0pt plus 5cm}Formation\+Publisher\+::\+Formation\+Publisher (
+\begin{DoxyParamCaption}
+\item[{{\bf Formation} $\ast$}]{formation}
+\end{DoxyParamCaption}
+)}\hypertarget{classFormationPublisher_abad14f3b8d260c25ff13389b6b598c83}{}\label{classFormationPublisher_abad14f3b8d260c25ff13389b6b598c83}
+
+
+Construct a new \hyperlink{classFormation}{Formation} Publisher object for a given formation. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em formation} & pointer to the formation wich data should be published \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+formation/include/formation/formation\+\_\+publisher.\+h\item 
+formation/src/formation\+\_\+publisher.\+cpp\end{DoxyCompactItemize}

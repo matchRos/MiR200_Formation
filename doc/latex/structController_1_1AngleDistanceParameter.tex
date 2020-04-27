@@ -1,0 +1,82 @@
+\hypertarget{structController_1_1AngleDistanceParameter}{}\section{Controller\+:\+:Angle\+Distance\+Parameter Struct Reference}
+\label{structController_1_1AngleDistanceParameter}\index{Controller\+::\+Angle\+Distance\+Parameter@{Controller\+::\+Angle\+Distance\+Parameter}}
+
+
+Specifies the Parameters of the angle distance based control law.  
+
+
+
+
+{\ttfamily \#include $<$controller.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structController_1_1AngleDistanceParameter_a13a71741708edb6c837fe7ff40840dde}{Angle\+Distance\+Parameter} ()\hypertarget{structController_1_1AngleDistanceParameter_a13a71741708edb6c837fe7ff40840dde}{}\label{structController_1_1AngleDistanceParameter_a13a71741708edb6c837fe7ff40840dde}
+
+\begin{DoxyCompactList}\small\item\em Construct a new Angle Distance Parameter object, with default parameters. \end{DoxyCompactList}\item 
+\hyperlink{structController_1_1AngleDistanceParameter_a07d302639f766797f8dd427935c882c2}{Angle\+Distance\+Parameter} (float \hyperlink{structController_1_1AngleDistanceParameter_ac2bab50d5c5f357d05632e3abc463dbf}{angular\+\_\+gain}, float \hyperlink{structController_1_1AngleDistanceParameter_a519dfcbf82e3e44a9a315b91964fa7de}{linear\+\_\+gain}, float \hyperlink{structController_1_1AngleDistanceParameter_a360e632b14647dce7dbadf168901880c}{d})
+\begin{DoxyCompactList}\small\item\em Construct a new Angle Distance Parameter with given parameters. \end{DoxyCompactList}\item 
+\hyperlink{structController_1_1AngleDistanceParameter_ab77c9431c35886760e7a2fb659008ab2}{Angle\+Distance\+Parameter} (std\+::vector$<$ float $>$ param)
+\begin{DoxyCompactList}\small\item\em Construct a new Angle Distance Parameter from a given vector of parameters. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+float \hyperlink{structController_1_1AngleDistanceParameter_ac2bab50d5c5f357d05632e3abc463dbf}{angular\+\_\+gain}\hypertarget{structController_1_1AngleDistanceParameter_ac2bab50d5c5f357d05632e3abc463dbf}{}\label{structController_1_1AngleDistanceParameter_ac2bab50d5c5f357d05632e3abc463dbf}
+
+\begin{DoxyCompactList}\small\item\em Control gain in phi direction. \end{DoxyCompactList}\item 
+float \hyperlink{structController_1_1AngleDistanceParameter_a519dfcbf82e3e44a9a315b91964fa7de}{linear\+\_\+gain}\hypertarget{structController_1_1AngleDistanceParameter_a519dfcbf82e3e44a9a315b91964fa7de}{}\label{structController_1_1AngleDistanceParameter_a519dfcbf82e3e44a9a315b91964fa7de}
+
+\begin{DoxyCompactList}\small\item\em Control gain in l direction. \end{DoxyCompactList}\item 
+float \hyperlink{structController_1_1AngleDistanceParameter_a360e632b14647dce7dbadf168901880c}{d}\hypertarget{structController_1_1AngleDistanceParameter_a360e632b14647dce7dbadf168901880c}{}\label{structController_1_1AngleDistanceParameter_a360e632b14647dce7dbadf168901880c}
+
+\begin{DoxyCompactList}\small\item\em parameter for collision avoidance \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Specifies the Parameters of the angle distance based control law. 
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Controller\+::\+Angle\+Distance\+Parameter@{Controller\+::\+Angle\+Distance\+Parameter}!Angle\+Distance\+Parameter@{Angle\+Distance\+Parameter}}
+\index{Angle\+Distance\+Parameter@{Angle\+Distance\+Parameter}!Controller\+::\+Angle\+Distance\+Parameter@{Controller\+::\+Angle\+Distance\+Parameter}}
+\subsubsection[{\texorpdfstring{Angle\+Distance\+Parameter(float angular\+\_\+gain, float linear\+\_\+gain, float d)}{AngleDistanceParameter(float angular_gain, float linear_gain, float d)}}]{\setlength{\rightskip}{0pt plus 5cm}Controller\+::\+Angle\+Distance\+Parameter\+::\+Angle\+Distance\+Parameter (
+\begin{DoxyParamCaption}
+\item[{float}]{angular\+\_\+gain, }
+\item[{float}]{linear\+\_\+gain, }
+\item[{float}]{d}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{structController_1_1AngleDistanceParameter_a07d302639f766797f8dd427935c882c2}{}\label{structController_1_1AngleDistanceParameter_a07d302639f766797f8dd427935c882c2}
+
+
+Construct a new Angle Distance Parameter with given parameters. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em angular\+\_\+gain} & ///$<$Gain in Angular direction (phi/psi direction) \\
+\hline
+{\em linear\+\_\+gain} & ///$<$Gain in linear direction (distance direction) \\
+\hline
+{\em d} & ///$<$Collision avoidance paramtere \\
+\hline
+\end{DoxyParams}
+\index{Controller\+::\+Angle\+Distance\+Parameter@{Controller\+::\+Angle\+Distance\+Parameter}!Angle\+Distance\+Parameter@{Angle\+Distance\+Parameter}}
+\index{Angle\+Distance\+Parameter@{Angle\+Distance\+Parameter}!Controller\+::\+Angle\+Distance\+Parameter@{Controller\+::\+Angle\+Distance\+Parameter}}
+\subsubsection[{\texorpdfstring{Angle\+Distance\+Parameter(std\+::vector$<$ float $>$ param)}{AngleDistanceParameter(std::vector< float > param)}}]{\setlength{\rightskip}{0pt plus 5cm}Controller\+::\+Angle\+Distance\+Parameter\+::\+Angle\+Distance\+Parameter (
+\begin{DoxyParamCaption}
+\item[{std\+::vector$<$ float $>$}]{param}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{structController_1_1AngleDistanceParameter_ab77c9431c35886760e7a2fb659008ab2}{}\label{structController_1_1AngleDistanceParameter_ab77c9431c35886760e7a2fb659008ab2}
+
+
+Construct a new Angle Distance Parameter from a given vector of parameters. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em param} & vector that must contain the three parameters of the object \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+controller/include/controller/controller.\+h\end{DoxyCompactItemize}

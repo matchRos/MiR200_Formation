@@ -1,0 +1,82 @@
+\hypertarget{structController_1_1LyapunovParameter}{}\section{Controller\+:\+:Lyapunov\+Parameter Struct Reference}
+\label{structController_1_1LyapunovParameter}\index{Controller\+::\+Lyapunov\+Parameter@{Controller\+::\+Lyapunov\+Parameter}}
+
+
+Specifies the parameters needed for the lyapunov based control law.  
+
+
+
+
+{\ttfamily \#include $<$controller.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structController_1_1LyapunovParameter_ae0d081687dfc7637bfbce3fe4cc2d9dd}{Lyapunov\+Parameter} ()\hypertarget{structController_1_1LyapunovParameter_ae0d081687dfc7637bfbce3fe4cc2d9dd}{}\label{structController_1_1LyapunovParameter_ae0d081687dfc7637bfbce3fe4cc2d9dd}
+
+\begin{DoxyCompactList}\small\item\em Construct a new Lyapunov Parameter object with default Parameter. \end{DoxyCompactList}\item 
+\hyperlink{structController_1_1LyapunovParameter_acca8d24226201cd98caa44ccd4ddc4ac}{Lyapunov\+Parameter} (float \hyperlink{structController_1_1LyapunovParameter_a4183bf21c97669dc44d4f67cb9a0d26c}{kx}, float \hyperlink{structController_1_1LyapunovParameter_a4cde698202cddb2fb3971fcc0f0804ca}{ky}, float \hyperlink{structController_1_1LyapunovParameter_a4ffd5e85451097367940acc6536d2a4c}{kphi})
+\begin{DoxyCompactList}\small\item\em Construct a new Lyapunov Parameter object with given parameters. \end{DoxyCompactList}\item 
+\hyperlink{structController_1_1LyapunovParameter_a5c8cfc9a6c9168848ddce0d15f17ec02}{Lyapunov\+Parameter} (std\+::vector$<$ float $>$ param)
+\begin{DoxyCompactList}\small\item\em Construct a new Lyapunov Parameter object with given parameters by vector. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+float \hyperlink{structController_1_1LyapunovParameter_a4183bf21c97669dc44d4f67cb9a0d26c}{kx}\hypertarget{structController_1_1LyapunovParameter_a4183bf21c97669dc44d4f67cb9a0d26c}{}\label{structController_1_1LyapunovParameter_a4183bf21c97669dc44d4f67cb9a0d26c}
+
+\begin{DoxyCompactList}\small\item\em Control gain in x-\/direction. \end{DoxyCompactList}\item 
+float \hyperlink{structController_1_1LyapunovParameter_a4cde698202cddb2fb3971fcc0f0804ca}{ky}\hypertarget{structController_1_1LyapunovParameter_a4cde698202cddb2fb3971fcc0f0804ca}{}\label{structController_1_1LyapunovParameter_a4cde698202cddb2fb3971fcc0f0804ca}
+
+\begin{DoxyCompactList}\small\item\em Control gain in y-\/direction. \end{DoxyCompactList}\item 
+float \hyperlink{structController_1_1LyapunovParameter_a4ffd5e85451097367940acc6536d2a4c}{kphi}\hypertarget{structController_1_1LyapunovParameter_a4ffd5e85451097367940acc6536d2a4c}{}\label{structController_1_1LyapunovParameter_a4ffd5e85451097367940acc6536d2a4c}
+
+\begin{DoxyCompactList}\small\item\em Control gain in theta-\/direction. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Specifies the parameters needed for the lyapunov based control law. 
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Controller\+::\+Lyapunov\+Parameter@{Controller\+::\+Lyapunov\+Parameter}!Lyapunov\+Parameter@{Lyapunov\+Parameter}}
+\index{Lyapunov\+Parameter@{Lyapunov\+Parameter}!Controller\+::\+Lyapunov\+Parameter@{Controller\+::\+Lyapunov\+Parameter}}
+\subsubsection[{\texorpdfstring{Lyapunov\+Parameter(float kx, float ky, float kphi)}{LyapunovParameter(float kx, float ky, float kphi)}}]{\setlength{\rightskip}{0pt plus 5cm}Controller\+::\+Lyapunov\+Parameter\+::\+Lyapunov\+Parameter (
+\begin{DoxyParamCaption}
+\item[{float}]{kx, }
+\item[{float}]{ky, }
+\item[{float}]{kphi}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{structController_1_1LyapunovParameter_acca8d24226201cd98caa44ccd4ddc4ac}{}\label{structController_1_1LyapunovParameter_acca8d24226201cd98caa44ccd4ddc4ac}
+
+
+Construct a new Lyapunov Parameter object with given parameters. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em kx} & ///$<$ Gain in kartesian x direction \\
+\hline
+{\em ky} & ///$<$Gain in kartesian y direction \\
+\hline
+{\em kphi} & ///$<$Gain in phi direction (around the z axis) \\
+\hline
+\end{DoxyParams}
+\index{Controller\+::\+Lyapunov\+Parameter@{Controller\+::\+Lyapunov\+Parameter}!Lyapunov\+Parameter@{Lyapunov\+Parameter}}
+\index{Lyapunov\+Parameter@{Lyapunov\+Parameter}!Controller\+::\+Lyapunov\+Parameter@{Controller\+::\+Lyapunov\+Parameter}}
+\subsubsection[{\texorpdfstring{Lyapunov\+Parameter(std\+::vector$<$ float $>$ param)}{LyapunovParameter(std::vector< float > param)}}]{\setlength{\rightskip}{0pt plus 5cm}Controller\+::\+Lyapunov\+Parameter\+::\+Lyapunov\+Parameter (
+\begin{DoxyParamCaption}
+\item[{std\+::vector$<$ float $>$}]{param}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{structController_1_1LyapunovParameter_a5c8cfc9a6c9168848ddce0d15f17ec02}{}\label{structController_1_1LyapunovParameter_a5c8cfc9a6c9168848ddce0d15f17ec02}
+
+
+Construct a new Lyapunov Parameter object with given parameters by vector. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em param} & vector that must contain the three object parameters \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+controller/include/controller/controller.\+h\end{DoxyCompactItemize}
