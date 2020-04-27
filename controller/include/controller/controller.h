@@ -74,8 +74,24 @@ class Controller{
             float ky;           ///< Control gain in y-direction  
             float kphi;         ///< Control gain in theta-direction
 
+            /**
+             * @brief Construct a new Lyapunov Parameter object with default Parameter
+             * 
+             */
             LyapunovParameter(){kx=0.0;ky=0.0;kphi=0.0;};
+            /**
+             * @brief Construct a new Lyapunov Parameter object with given parameters
+             * 
+             * @param kx    ///< Gain in kartesian x direction
+             * @param ky    ///<Gain in kartesian y direction
+             * @param kphi  ///<Gain in phi direction (around the z axis)
+             */
             LyapunovParameter(float kx,float ky,float kphi){this->kx=kx;this->ky=ky;this->kphi=kphi;}
+            /**
+             * @brief Construct a new Lyapunov Parameter object with given parameters by vector
+             * 
+             * @param param vector that must contain the three object parameters
+             */
             LyapunovParameter(std::vector<float> param)
             {
                 if(param.size()!=3)
@@ -100,10 +116,25 @@ class Controller{
         {
             float angular_gain; ///< Control gain in phi direction  
             float linear_gain;  ///< Control gain in l direction   
-            float d; 
-
+            float d;    ///< parameter for collision avoidance
+            /**
+             * @brief Construct a new Angle Distance Parameter object, with default parameters
+             * 
+             */
             AngleDistanceParameter(){angular_gain=0.0;linear_gain=0.0;d=0.0;};
+            /**
+             * @brief Construct a new Angle Distance Parameter with given parameters
+             * 
+             * @param angular_gain  ///<Gain in Angular direction (phi/psi direction)
+             * @param linear_gain   ///<Gain in linear direction (distance direction)
+             * @param d     ///<Collision avoidance paramtere
+             */
             AngleDistanceParameter(float angular_gain,float linear_gain,float d){this->angular_gain=angular_gain;this->linear_gain=linear_gain;this->d=d;}
+            /**
+             * @brief Construct a new Angle Distance Parameter from a given vector of parameters
+             * 
+             * @param param vector that must contain the three parameters of the object
+             */
             AngleDistanceParameter(std::vector<float> param)
             {
                 if(param.size()!=3)
@@ -127,6 +158,10 @@ class Controller{
         {
             double v;                   ///<Linear velocity
             double omega;               ///<Angular velocity
+            /**
+             * @brief Construct a new Control Vector object with default parameters
+             * 
+             */
             ControlVector(){v=0.0;omega=0.0;}
         };
         typedef ControlVector VelocityEulerian;                     ///<Defines VelocityEulerian wich is used to store Velocities wich are defined locally in the moved base system
@@ -140,6 +175,10 @@ class Controller{
             tf::Pose pose;                  ///<Complete pose of the robot in 3 dimensional space
             VelocityCartesian velocity;     ///<Velocity in cartesian space
             double angular_velocity;        ///<Angular velocity around z-axis
+            /**
+             * @brief Construct a new Control State object with default memebers
+             * 
+             */
             ControlState()
             {
                 pose=tf::Pose(tf::createIdentityQuaternion(),tf::Vector3(0.0,0.0,0.0));
@@ -147,15 +186,34 @@ class Controller{
                 angular_velocity=0.0;
             }
         };
+        /**
+         * @brief Template for a buffer of a given size and a given type
+         * 
+         * @tparam T type if the values to be buffered
+         */
         template <typename  T>
         struct Buffer
         {   
+            /**
+             * @brief Construct a new Buffer object with default size
+             * 
+             */
             Buffer():size_(1),
                     counter_(0)
             {}
+            /**
+             * @brief Construct a new Buffer object of given size
+             * 
+             * @param size size of the buffer (number of values to be buffered)
+             */
             Buffer(int size):size_(size),
                              counter_(0)
-            {};        
+            {}; 
+            /**
+             * @brief Insert an element into the buffer
+             * 
+             * @param element Element of type T to be buffered
+             */
             void insert(T element)
             {
             
@@ -176,13 +234,18 @@ class Controller{
                     counter_++;
                 }               
             }
+            /**
+             * @brief Get all currently buffered values
+             * 
+             * @return std::vector<T> vector of values within the buffer
+             */
             std::vector<T> get()
             {
                 return this->buffer_;
             }
-            int size_;
-            int counter_;
-            std::vector<T> buffer_;
+            int size_;      ///<Size of the buffer
+            int counter_;   ///<Current insert index
+            std::vector<T> buffer_; ///<Buffered values
 
         };
 
@@ -191,10 +254,13 @@ class Controller{
         ##################################################################################################################################################*/
        
 
-         /**
-         * @brief Construct a new Controller object
+        /**
+         * @brief Create the Controller object with given parameters
          * 
-         * @param nh Ros nodehandle for managing namespaces and ros functionality within the controller object
+         * @param name Name of the controller
+         * @param nh Global nodehandle
+         * @param nh_topics Nodehandle to handle topic namepsaces
+         * @param nh_parameters Nodehandle to handle parameter namepaces
          */
         Controller( std::string name,
                     ros::NodeHandle nh=ros::NodeHandle("~"),
@@ -386,8 +452,8 @@ class Controller{
         
     protected:
         ros::NodeHandle nh;                                         ///<Node Handle
-        ros::NodeHandle robot_nh_;
-        ros::NodeHandle controller_nh;
+        ros::NodeHandle robot_nh_;      ///< Nodehandle of the robot
+        ros::NodeHandle controller_nh;  ///< Nodehandle of the controller
 
         tf::TransformListener* listener;                            ///<Listener for any transformation
         tf::TransformBroadcaster broadcaster_;                      ///<Broadcaster for broadcasting transformations
@@ -397,10 +463,10 @@ class Controller{
         
         ControlState current_state_;                                ///<The current state of the robot
         ControlState target_state_;                                 ///<The target state of the robot
-        ControlState target_state_old_;
+        ControlState target_state_old_;                             ///<Old target state
         tf::Vector3 vel_old;                                         ///<The target state of a timepstep backwards for numerical differentiaiton
-        tf::Vector3 acc_;
-        Buffer<tf::Vector3> buffer_;
+        tf::Vector3 acc_;                                            ///<Actual acceleration
+        Buffer<tf::Vector3> buffer_;                                ///<Buffer object for using filters
         std::vector<double> time_buffer_;                           ///<Buffer for time inputs
         std::vector<tf::Vector3> velocity_buffer_;                  ///<Buffer for Velocity inputs
         double time_old_;                                        ///<Time of the old state
@@ -424,7 +490,7 @@ class Controller{
         ros::ServiceServer srv_set_reference_frame_;     ///<Service for setting the initial pose
         ros::Timer time_scope_;                                      ///<Timer for control scope
 
-        bool publish_tf_;
+        bool publish_tf_;   ///<Flag if baselink should be published by the controller
 
        
       
@@ -440,31 +506,60 @@ class Controller{
          * 
          */
         void publishReferenceFrame();
-
+        /**
+         * @brief Method for publishing the metadata of the conroller (current, target and difference states)
+         * 
+         */
         void publishControlMetaData();
 
+        /**
+         * @brief Method for publishing the cmd_vel
+         * 
+         */
         void publishVelocityCommand();
 
+        /**
+         * @brief Method for publishing the baselink
+         * 
+         */
         void publishBaseLink();
 
 
         /*Calculations and executions ####################################################################################################################
         ##################################################################################################################################################*/
        
-        /**
-        * @brief 
+       /**
+        * @brief Algorithm for use with lyapunov based control law
         * 
-        * @param parameter Set of lyapunov parameter for calculating the control vector
-        * @param desired Desired velocities in eulerian description (moved base). Contains angular and linear velocity
-        * @param relative Transformation from current to target state
-        * @return ControlVector 
+        * @param parameter Parameters of the controllaw
+        * @param target   Target state that should be reached by control
+        * @param current    Current state of the robot
+        * @return ControlVector Conrol command calculated by the control law
         */
         ControlVector calcLyapunov(LyapunovParameter parameter,ControlState target, ControlState current);
-
+ 
+        /**
+         * @brief Law for calculate the control vector in use with the angle distance control law
+         * 
+         * @param parameter Parameters of the control law
+         * @param target    Target state that should be reached by control 
+         * @param current   Current state of the robot
+         * @return ControlVector ControlVector Conrol command calculated by the control law
+         */
         virtual ControlVector calcAngleDistance(AngleDistanceParameter parameter,ControlState target, ControlState current);
 
+        /**
+         * @brief Calculates the feed-forward of velocities
+         * 
+         * @return ControlVector Control Vector for the robot
+         */
         virtual ControlVector calcOptimalControl();
 
+        /**
+         * @brief Pass input velocity to output
+         * 
+         * @return ControlVector Input velocity given to output
+         */
         ControlVector passVelocity();
 
         

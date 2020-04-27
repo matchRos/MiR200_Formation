@@ -115,14 +115,22 @@ Collaboration diagram for Controller:</div>
 <div class="dyncontent">
 <div class="center"><img src="classController__coll__graph.png" border="0" usemap="#Controller_coll__map" alt="Collaboration graph"/></div>
 <map name="Controller_coll__map" id="Controller_coll__map">
-<area shape="rect" id="node2" href="structController_1_1ControlState.html" title="Holds the System state combined by the pose of the system, the cartesian velocity and the angular vel..." alt="" coords="5,5,164,32"/>
-<area shape="rect" id="node3" href="structController_1_1ControlVector.html" title="A struct that holds linear and angular velocity of the Robot since this are the control variable for ..." alt="" coords="188,5,355,32"/>
-<area shape="rect" id="node4" href="structController_1_1LyapunovParameter.html" title="Specifies the parameters needed for the lyapunov based control law. " alt="" coords="379,5,582,32"/>
+<area shape="rect" id="node2" href="structController_1_1ControlState.html" title="Holds the System state combined by the pose of the system, the cartesian velocity and the angular vel..." alt="" coords="27,31,186,57"/>
+<area shape="rect" id="node3" href="structController_1_1AngleDistanceParameter.html" title="Specifies the Parameters of the angle distance based control law. " alt="" coords="21,82,192,123"/>
+<area shape="rect" id="node4" href="structController_1_1ControlVector.html" title="A struct that holds linear and angular velocity of the Robot since this are the control variable for ..." alt="" coords="23,148,190,175"/>
+<area shape="rect" id="node5" href="structController_1_1LyapunovParameter.html" title="Specifies the parameters needed for the lyapunov based control law. " alt="" coords="5,199,208,225"/>
+<area shape="rect" id="node6" href="structController_1_1Buffer.html" title="Controller::Buffer\l\&lt; tf::Vector3 \&gt;" alt="" coords="46,250,167,291"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structController_1_1AngleDistanceParameter.html">AngleDistanceParameter</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies the Parameters of the angle distance based control law.  <a href="structController_1_1AngleDistanceParameter.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structController_1_1Buffer.html">Buffer</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Template for a buffer of a given size and a given type.  <a href="structController_1_1Buffer.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structController_1_1ControlState.html">ControlState</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds the System state combined by the pose of the system, the cartesian velocity and the angular velocity.  <a href="structController_1_1ControlState.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -135,7 +143,8 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:aa6d956c4c220461a4152415ffa78690a"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#aa6d956c4c220461a4152415ffa78690a">ControllerType</a> { <a class="el" href="classController.html#aa6d956c4c220461a4152415ffa78690aad2e9073ef821965020410686a3c89483">pseudo_inverse</a> =1, 
+<tr class="memitem:aa6d956c4c220461a4152415ffa78690a"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#aa6d956c4c220461a4152415ffa78690a">ControllerType</a> { <b>disable</b> =0, 
+<a class="el" href="classController.html#aa6d956c4c220461a4152415ffa78690aad2e9073ef821965020410686a3c89483">pseudo_inverse</a> =1, 
 <a class="el" href="classController.html#aa6d956c4c220461a4152415ffa78690aaed0e850e561d54619d85f32c37f5bfab">lypanov</a> =2, 
 <a class="el" href="classController.html#aa6d956c4c220461a4152415ffa78690aa7ab0ee34114a951d4491d6eb73500cdc">angle_distance</a> =3
  }<tr class="memdesc:aa6d956c4c220461a4152415ffa78690a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies the different implemented control laws.  <a href="classController.html#aa6d956c4c220461a4152415ffa78690a">More...</a><br /></td></tr>
@@ -160,9 +169,9 @@ typedef <a class="el" href="structController_1_1ControlVector.html">ControlVecto
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a7341f9092e1977cdd2a1492c4422c019"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a7341f9092e1977cdd2a1492c4422c019">Controller</a> (ros::NodeHandle &amp;<a class="el" href="classController.html#a24e3d3c2536f6ed29018bad1fd53dae2">nh</a>)</td></tr>
-<tr class="memdesc:a7341f9092e1977cdd2a1492c4422c019"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new <a class="el" href="classController.html" title="Provides a easy to use implementation of a generic mobile robot controller. ">Controller</a> object.  <a href="#a7341f9092e1977cdd2a1492c4422c019">More...</a><br /></td></tr>
-<tr class="separator:a7341f9092e1977cdd2a1492c4422c019"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc6aa82751ca6ddaa0152b6496c55478"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#acc6aa82751ca6ddaa0152b6496c55478">Controller</a> (std::string <a class="el" href="classController.html#af81f22d8b64d915769acfb8e8d89e0c8">name</a>, ros::NodeHandle <a class="el" href="classController.html#a24e3d3c2536f6ed29018bad1fd53dae2">nh</a>=ros::NodeHandle(&quot;~&quot;), ros::NodeHandle nh_topics=ros::NodeHandle(&quot;~&quot;), ros::NodeHandle nh_parameters=ros::NodeHandle(&quot;~&quot;))</td></tr>
+<tr class="memdesc:acc6aa82751ca6ddaa0152b6496c55478"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create the <a class="el" href="classController.html" title="Provides a easy to use implementation of a generic mobile robot controller. ">Controller</a> object with given parameters.  <a href="#acc6aa82751ca6ddaa0152b6496c55478">More...</a><br /></td></tr>
+<tr class="separator:acc6aa82751ca6ddaa0152b6496c55478"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ab87934c4f7a266cfdb86e0f36bc1b5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0ab87934c4f7a266cfdb86e0f36bc1b5"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a0ab87934c4f7a266cfdb86e0f36bc1b5">~Controller</a> ()</td></tr>
 <tr class="memdesc:a0ab87934c4f7a266cfdb86e0f36bc1b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the <a class="el" href="classController.html" title="Provides a easy to use implementation of a generic mobile robot controller. ">Controller</a> object. <br /></td></tr>
@@ -170,31 +179,21 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a177d0d6cd7cdb7784ae9c506debfa2c6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a177d0d6cd7cdb7784ae9c506debfa2c6">setName</a> (std::string <a class="el" href="classController.html#af81f22d8b64d915769acfb8e8d89e0c8">name</a>)</td></tr>
 <tr class="memdesc:a177d0d6cd7cdb7784ae9c506debfa2c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the name of object.  <a href="#a177d0d6cd7cdb7784ae9c506debfa2c6">More...</a><br /></td></tr>
 <tr class="separator:a177d0d6cd7cdb7784ae9c506debfa2c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7d989fe559c8e852eedb464b4a006748"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a7d989fe559c8e852eedb464b4a006748">setReference</a> (tf::Pose pose)</td></tr>
-<tr class="memdesc:a7d989fe559c8e852eedb464b4a006748"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the Reference pose.  <a href="#a7d989fe559c8e852eedb464b4a006748">More...</a><br /></td></tr>
-<tr class="separator:a7d989fe559c8e852eedb464b4a006748"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a156a66bd7cd6340106accbb982b6238b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a156a66bd7cd6340106accbb982b6238b">setReference</a> (double x, double y, double z, double angle)</td></tr>
-<tr class="memdesc:a156a66bd7cd6340106accbb982b6238b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the reference of the mobile robot to be controlled from a global frame.  <a href="#a156a66bd7cd6340106accbb982b6238b">More...</a><br /></td></tr>
-<tr class="separator:a156a66bd7cd6340106accbb982b6238b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae86ed49c452a9e94568312ef743aa082"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#ae86ed49c452a9e94568312ef743aa082">setReference</a> (std::vector&lt; double &gt; coord, double angle)</td></tr>
-<tr class="memdesc:ae86ed49c452a9e94568312ef743aa082"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the reference of the mobile robot to be controlled from a global frame.  <a href="#ae86ed49c452a9e94568312ef743aa082">More...</a><br /></td></tr>
-<tr class="separator:ae86ed49c452a9e94568312ef743aa082"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf25339eadd9b31bc1d6b3e47395942e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#adf25339eadd9b31bc1d6b3e47395942e">setWorldFrame</a> (std::string frame)</td></tr>
 <tr class="memdesc:adf25339eadd9b31bc1d6b3e47395942e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the world frame name all references are given in.  <a href="#adf25339eadd9b31bc1d6b3e47395942e">More...</a><br /></td></tr>
 <tr class="separator:adf25339eadd9b31bc1d6b3e47395942e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4126517e3218037342ce613180d3f16e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a4126517e3218037342ce613180d3f16e">setReferenceFrame</a> (tf::Pose pose)</td></tr>
+<tr class="memdesc:a4126517e3218037342ce613180d3f16e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the Reference pose.  <a href="#a4126517e3218037342ce613180d3f16e">More...</a><br /></td></tr>
+<tr class="separator:a4126517e3218037342ce613180d3f16e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25202c469ad65696761242dce4e28d76"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a25202c469ad65696761242dce4e28d76">setType</a> (<a class="el" href="classController.html#aa6d956c4c220461a4152415ffa78690a">Controller::ControllerType</a> <a class="el" href="classController.html#a17792cff397dc69baca568c7d03f2fc8">type</a>)</td></tr>
 <tr class="memdesc:a25202c469ad65696761242dce4e28d76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the type of the used control law.  <a href="#a25202c469ad65696761242dce4e28d76">More...</a><br /></td></tr>
 <tr class="separator:a25202c469ad65696761242dce4e28d76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abda96416fab439c188ef494a2b2a0c8e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#abda96416fab439c188ef494a2b2a0c8e">setLyapunov</a> (<a class="el" href="structController_1_1LyapunovParameter.html">Controller::LyapunovParameter</a> param)</td></tr>
-<tr class="memdesc:abda96416fab439c188ef494a2b2a0c8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the parameter of the lyapunov control law.  <a href="#abda96416fab439c188ef494a2b2a0c8e">More...</a><br /></td></tr>
-<tr class="separator:abda96416fab439c188ef494a2b2a0c8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f77caed7a7951ca2f4cf7928f88669d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a1f77caed7a7951ca2f4cf7928f88669d">setLyapunov</a> (std::vector&lt; float &gt; param)</td></tr>
-<tr class="memdesc:a1f77caed7a7951ca2f4cf7928f88669d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the parameter of the lyapunov control law.  <a href="#a1f77caed7a7951ca2f4cf7928f88669d">More...</a><br /></td></tr>
-<tr class="separator:a1f77caed7a7951ca2f4cf7928f88669d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a59e60885d5307979faf477435507069a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a59e60885d5307979faf477435507069a"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a59e60885d5307979faf477435507069a">loadParameter</a> ()</td></tr>
-<tr class="memdesc:a59e60885d5307979faf477435507069a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loading parameter for a specified <a class="el" href="classController.html" title="Provides a easy to use implementation of a generic mobile robot controller. ">Controller</a>. Empty for <a class="el" href="classController.html" title="Provides a easy to use implementation of a generic mobile robot controller. ">Controller</a> base class and implemented in inheriting classes. <br /></td></tr>
-<tr class="separator:a59e60885d5307979faf477435507069a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa3d88792852e78dd0c68c0cafc0c736"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#afa3d88792852e78dd0c68c0cafc0c736">setControlParameter</a> (<a class="el" href="structController_1_1LyapunovParameter.html">Controller::LyapunovParameter</a> param)</td></tr>
+<tr class="memdesc:afa3d88792852e78dd0c68c0cafc0c736"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the Control Parameter object.  <a href="#afa3d88792852e78dd0c68c0cafc0c736">More...</a><br /></td></tr>
+<tr class="separator:afa3d88792852e78dd0c68c0cafc0c736"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae214988d47b9ca5999b6a689139a4cec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#ae214988d47b9ca5999b6a689139a4cec">setControlParameter</a> (<a class="el" href="structController_1_1AngleDistanceParameter.html">Controller::AngleDistanceParameter</a> param)</td></tr>
+<tr class="memdesc:ae214988d47b9ca5999b6a689139a4cec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the Control Parameter object.  <a href="#ae214988d47b9ca5999b6a689139a4cec">More...</a><br /></td></tr>
+<tr class="separator:ae214988d47b9ca5999b6a689139a4cec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55c77d2e41634c9b21543647f74eec4c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a55c77d2e41634c9b21543647f74eec4c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a55c77d2e41634c9b21543647f74eec4c">load</a> ()</td></tr>
 <tr class="memdesc:a55c77d2e41634c9b21543647f74eec4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loading of ROS parameterset for this controller. <br /></td></tr>
@@ -217,8 +216,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a77f138b6a3699c21cf904041e7e19820"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a77f138b6a3699c21cf904041e7e19820">targetOdomCallback</a> (nav_msgs::Odometry msg)</td></tr>
 <tr class="memdesc:a77f138b6a3699c21cf904041e7e19820"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback for incoming state data for the target odometry of the robot. This is overloaded by child classes.  <a href="#a77f138b6a3699c21cf904041e7e19820">More...</a><br /></td></tr>
 <tr class="separator:a77f138b6a3699c21cf904041e7e19820"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5342dd66c1228e651e569d9b1c31d82e"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structController_1_1ControlVector.html">ControlVector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a5342dd66c1228e651e569d9b1c31d82e">calcLyapunov</a> (<a class="el" href="structController_1_1LyapunovParameter.html">LyapunovParameter</a> parameter, <a class="el" href="classController.html#a6849bee332c04d67ac6f3052cccd2669">VelocityEulerian</a> desired, tf::Transform relative)</td></tr>
-<tr class="separator:a5342dd66c1228e651e569d9b1c31d82e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe0a6e0155a0b159efe425e635d3ae76"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abe0a6e0155a0b159efe425e635d3ae76"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#abe0a6e0155a0b159efe425e635d3ae76">execute</a> (const ros::TimerEvent &amp;ev)</td></tr>
 <tr class="memdesc:abe0a6e0155a0b159efe425e635d3ae76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scope of the controller that is called in control frequence. <br /></td></tr>
@@ -230,9 +227,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a140aa1ee895337d776f88682640c0746"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a140aa1ee895337d776f88682640c0746">srvReset</a> (std_srvs::EmptyRequest &amp;req, std_srvs::EmptyResponse &amp;res)</td></tr>
 <tr class="memdesc:a140aa1ee895337d776f88682640c0746"><td class="mdescLeft">&#160;</td><td class="mdescRight">Service procedure for resetting the <a class="el" href="classController.html" title="Provides a easy to use implementation of a generic mobile robot controller. ">Controller</a>.  <a href="#a140aa1ee895337d776f88682640c0746">More...</a><br /></td></tr>
 <tr class="separator:a140aa1ee895337d776f88682640c0746"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2845a1e4b0c146206d4a03b757e82d5b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a2845a1e4b0c146206d4a03b757e82d5b">srvSetInitial</a> (multi_robot_msgs::SetInitialPoseRequest &amp;req, multi_robot_msgs::SetInitialPoseResponse &amp;res)</td></tr>
-<tr class="memdesc:a2845a1e4b0c146206d4a03b757e82d5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Service for setting the initial Pose of the controller.  <a href="#a2845a1e4b0c146206d4a03b757e82d5b">More...</a><br /></td></tr>
-<tr class="separator:a2845a1e4b0c146206d4a03b757e82d5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1564849c5f896db6e7f5e5fda42fcc3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#ab1564849c5f896db6e7f5e5fda42fcc3">srvSetReferenceFrame</a> (multi_robot_msgs::SetInitialPoseRequest &amp;req, multi_robot_msgs::SetInitialPoseResponse &amp;res)</td></tr>
+<tr class="memdesc:ab1564849c5f896db6e7f5e5fda42fcc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Service for setting the initial Pose of the controller.  <a href="#ab1564849c5f896db6e7f5e5fda42fcc3">More...</a><br /></td></tr>
+<tr class="separator:ab1564849c5f896db6e7f5e5fda42fcc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a753fe3680abc7c9ba3040f6fcb638ac2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a753fe3680abc7c9ba3040f6fcb638ac2">controlState2controlStateMsg</a> (<a class="el" href="structController_1_1ControlState.html">ControlState</a> &amp;state, multi_robot_msgs::ControlState &amp;msg)</td></tr>
 <tr class="memdesc:a753fe3680abc7c9ba3040f6fcb638ac2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts <a class="el" href="structController_1_1ControlState.html" title="Holds the System state combined by the pose of the system, the cartesian velocity and the angular vel...">ControlState</a> struct to a COntrol state message.  <a href="#a753fe3680abc7c9ba3040f6fcb638ac2">More...</a><br /></td></tr>
 <tr class="separator:a753fe3680abc7c9ba3040f6fcb638ac2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -249,6 +246,14 @@ Protected Attributes</h2></td></tr>
 ros::NodeHandle&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a24e3d3c2536f6ed29018bad1fd53dae2">nh</a></td></tr>
 <tr class="memdesc:a24e3d3c2536f6ed29018bad1fd53dae2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Node Handle. <br /></td></tr>
 <tr class="separator:a24e3d3c2536f6ed29018bad1fd53dae2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6d96943491ef49575f81375f0b20dce"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa6d96943491ef49575f81375f0b20dce"></a>
+ros::NodeHandle&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#aa6d96943491ef49575f81375f0b20dce">robot_nh_</a></td></tr>
+<tr class="memdesc:aa6d96943491ef49575f81375f0b20dce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Nodehandle of the robot. <br /></td></tr>
+<tr class="separator:aa6d96943491ef49575f81375f0b20dce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad08bfebfb2c09f1e827d36b0aee24532"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad08bfebfb2c09f1e827d36b0aee24532"></a>
+ros::NodeHandle&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#ad08bfebfb2c09f1e827d36b0aee24532">controller_nh</a></td></tr>
+<tr class="memdesc:ad08bfebfb2c09f1e827d36b0aee24532"><td class="mdescLeft">&#160;</td><td class="mdescRight">Nodehandle of the controller. <br /></td></tr>
+<tr class="separator:ad08bfebfb2c09f1e827d36b0aee24532"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afea373f808d583e4ad613f119439a8f5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afea373f808d583e4ad613f119439a8f5"></a>
 tf::TransformListener *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#afea373f808d583e4ad613f119439a8f5">listener</a></td></tr>
 <tr class="memdesc:afea373f808d583e4ad613f119439a8f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Listener for any transformation. <br /></td></tr>
@@ -261,6 +266,10 @@ tf::TransformBroadcaster&#160;</td><td class="memItemRight" valign="bottom"><a c
 std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#ae01171e69d9b735e44964662275fc77c">world_frame</a></td></tr>
 <tr class="memdesc:ae01171e69d9b735e44964662275fc77c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of the world frame. <br /></td></tr>
 <tr class="separator:ae01171e69d9b735e44964662275fc77c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af81f22d8b64d915769acfb8e8d89e0c8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af81f22d8b64d915769acfb8e8d89e0c8"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#af81f22d8b64d915769acfb8e8d89e0c8">name</a></td></tr>
+<tr class="memdesc:af81f22d8b64d915769acfb8e8d89e0c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of the node respective <a class="el" href="classController.html" title="Provides a easy to use implementation of a generic mobile robot controller. ">Controller</a>. <br /></td></tr>
+<tr class="separator:af81f22d8b64d915769acfb8e8d89e0c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaca736f25e7da33272ded507e0c8057f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaca736f25e7da33272ded507e0c8057f"></a>
 <a class="el" href="structController_1_1ControlState.html">ControlState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#aaca736f25e7da33272ded507e0c8057f">current_state_</a></td></tr>
 <tr class="memdesc:aaca736f25e7da33272ded507e0c8057f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The current state of the robot. <br /></td></tr>
@@ -269,6 +278,34 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <a class="el" href="structController_1_1ControlState.html">ControlState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a8412c8448970cf820f932cff02d69d33">target_state_</a></td></tr>
 <tr class="memdesc:a8412c8448970cf820f932cff02d69d33"><td class="mdescLeft">&#160;</td><td class="mdescRight">The target state of the robot. <br /></td></tr>
 <tr class="separator:a8412c8448970cf820f932cff02d69d33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9980fe18d872ac0522a2323346b3f6b2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9980fe18d872ac0522a2323346b3f6b2"></a>
+<a class="el" href="structController_1_1ControlState.html">ControlState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a9980fe18d872ac0522a2323346b3f6b2">target_state_old_</a></td></tr>
+<tr class="memdesc:a9980fe18d872ac0522a2323346b3f6b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Old target state. <br /></td></tr>
+<tr class="separator:a9980fe18d872ac0522a2323346b3f6b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af857eab2b9db0c337681acd6be5c6fd4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af857eab2b9db0c337681acd6be5c6fd4"></a>
+tf::Vector3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#af857eab2b9db0c337681acd6be5c6fd4">vel_old</a></td></tr>
+<tr class="memdesc:af857eab2b9db0c337681acd6be5c6fd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The target state of a timepstep backwards for numerical differentiaiton. <br /></td></tr>
+<tr class="separator:af857eab2b9db0c337681acd6be5c6fd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ccb2e10f9ed3ae1da1e7dbc080e5e9e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9ccb2e10f9ed3ae1da1e7dbc080e5e9e"></a>
+tf::Vector3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a9ccb2e10f9ed3ae1da1e7dbc080e5e9e">acc_</a></td></tr>
+<tr class="memdesc:a9ccb2e10f9ed3ae1da1e7dbc080e5e9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Actual acceleration. <br /></td></tr>
+<tr class="separator:a9ccb2e10f9ed3ae1da1e7dbc080e5e9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a083a491c9125ddd99270d9b2101e6de3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a083a491c9125ddd99270d9b2101e6de3"></a>
+<a class="el" href="structController_1_1Buffer.html">Buffer</a>&lt; tf::Vector3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a083a491c9125ddd99270d9b2101e6de3">buffer_</a></td></tr>
+<tr class="memdesc:a083a491c9125ddd99270d9b2101e6de3"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structController_1_1Buffer.html" title="Template for a buffer of a given size and a given type. ">Buffer</a> object for using filters. <br /></td></tr>
+<tr class="separator:a083a491c9125ddd99270d9b2101e6de3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41679248f2691ac40f8865c2137c5a32"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a41679248f2691ac40f8865c2137c5a32"></a>
+std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a41679248f2691ac40f8865c2137c5a32">time_buffer_</a></td></tr>
+<tr class="memdesc:a41679248f2691ac40f8865c2137c5a32"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structController_1_1Buffer.html" title="Template for a buffer of a given size and a given type. ">Buffer</a> for time inputs. <br /></td></tr>
+<tr class="separator:a41679248f2691ac40f8865c2137c5a32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08513e7d1801a986d4ae826b5f904f57"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a08513e7d1801a986d4ae826b5f904f57"></a>
+std::vector&lt; tf::Vector3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a08513e7d1801a986d4ae826b5f904f57">velocity_buffer_</a></td></tr>
+<tr class="memdesc:a08513e7d1801a986d4ae826b5f904f57"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structController_1_1Buffer.html" title="Template for a buffer of a given size and a given type. ">Buffer</a> for Velocity inputs. <br /></td></tr>
+<tr class="separator:a08513e7d1801a986d4ae826b5f904f57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a627138c4aa6b58672c50b8b85b1cdc3b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a627138c4aa6b58672c50b8b85b1cdc3b"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a627138c4aa6b58672c50b8b85b1cdc3b">time_old_</a></td></tr>
+<tr class="memdesc:a627138c4aa6b58672c50b8b85b1cdc3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time of the old state. <br /></td></tr>
+<tr class="separator:a627138c4aa6b58672c50b8b85b1cdc3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe3b54c59a80046661f0030a573539d7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afe3b54c59a80046661f0030a573539d7"></a>
 <a class="el" href="classController.html#a75a1e2f93842f65d1263f7d3c2fd8898">ControlDifference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#afe3b54c59a80046661f0030a573539d7">control_dif_</a></td></tr>
 <tr class="memdesc:afe3b54c59a80046661f0030a573539d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transformation from current configuration to target configuration. <br /></td></tr>
@@ -277,10 +314,18 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <a class="el" href="structController_1_1ControlVector.html">ControlVector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#aaafcd892e9e6080e839a1348a7ef40db">control_</a></td></tr>
 <tr class="memdesc:aaafcd892e9e6080e839a1348a7ef40db"><td class="mdescLeft">&#160;</td><td class="mdescRight">The calculated control vector. <br /></td></tr>
 <tr class="separator:aaafcd892e9e6080e839a1348a7ef40db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa713beca2ef8152d273bbc6fc38f7fc8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa713beca2ef8152d273bbc6fc38f7fc8"></a>
-tf::Transform&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#aa713beca2ef8152d273bbc6fc38f7fc8">world2reference_</a></td></tr>
-<tr class="memdesc:aa713beca2ef8152d273bbc6fc38f7fc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transformation from a world to the controllers refrence frame. <br /></td></tr>
-<tr class="separator:aa713beca2ef8152d273bbc6fc38f7fc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada0f971f21eddc8b7ad18afa369dc8de"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ada0f971f21eddc8b7ad18afa369dc8de"></a>
+tf::Transform&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#ada0f971f21eddc8b7ad18afa369dc8de">reference_frame_</a></td></tr>
+<tr class="memdesc:ada0f971f21eddc8b7ad18afa369dc8de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transformation from a world to the controllers refrence frame. <br /></td></tr>
+<tr class="separator:ada0f971f21eddc8b7ad18afa369dc8de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17792cff397dc69baca568c7d03f2fc8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a17792cff397dc69baca568c7d03f2fc8"></a>
+<a class="el" href="classController.html#aa6d956c4c220461a4152415ffa78690a">ControllerType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a17792cff397dc69baca568c7d03f2fc8">type</a></td></tr>
+<tr class="memdesc:a17792cff397dc69baca568c7d03f2fc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of control algorythm that is used. <br /></td></tr>
+<tr class="separator:a17792cff397dc69baca568c7d03f2fc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6b198e73b4cd806e0bf5c7b724c35bc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab6b198e73b4cd806e0bf5c7b724c35bc"></a>
+<a class="el" href="classController.html#a7ab3d947ee649f6bac652de6a00e8148">VelocityCartesian</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#ab6b198e73b4cd806e0bf5c7b724c35bc">thresh_</a></td></tr>
+<tr class="memdesc:ab6b198e73b4cd806e0bf5c7b724c35bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Threshold velocity. Values smaller then thresh are interpreted as zero. <br /></td></tr>
+<tr class="separator:ab6b198e73b4cd806e0bf5c7b724c35bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -288,10 +333,34 @@ Private Member Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#ae6859e3a43be2fa31cb82ace3954e746">publish</a> ()</td></tr>
 <tr class="memdesc:ae6859e3a43be2fa31cb82ace3954e746"><td class="mdescLeft">&#160;</td><td class="mdescRight">Publish all outgoing data. <br /></td></tr>
 <tr class="separator:ae6859e3a43be2fa31cb82ace3954e746"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8509c67c73d26e981ef0972f44dc73ca"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8509c67c73d26e981ef0972f44dc73ca"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a8509c67c73d26e981ef0972f44dc73ca">publish_refrence</a> ()</td></tr>
-<tr class="memdesc:a8509c67c73d26e981ef0972f44dc73ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adding the world frame. Broadcastes a world frame respectiveliy the robot reference frame expressed in world coordinates. <br /></td></tr>
-<tr class="separator:a8509c67c73d26e981ef0972f44dc73ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83ae87fa8558c5feb6875d1b49b18309"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a83ae87fa8558c5feb6875d1b49b18309"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a83ae87fa8558c5feb6875d1b49b18309">publishReferenceFrame</a> ()</td></tr>
+<tr class="memdesc:a83ae87fa8558c5feb6875d1b49b18309"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adding the world frame. Broadcastes a world frame respectiveliy the robot reference frame expressed in world coordinates. <br /></td></tr>
+<tr class="separator:a83ae87fa8558c5feb6875d1b49b18309"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3653ce8173f3eb07e4e395bcb8f3b58c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3653ce8173f3eb07e4e395bcb8f3b58c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a3653ce8173f3eb07e4e395bcb8f3b58c">publishControlMetaData</a> ()</td></tr>
+<tr class="memdesc:a3653ce8173f3eb07e4e395bcb8f3b58c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method for publishing the metadata of the conroller (current, target and difference states) <br /></td></tr>
+<tr class="separator:a3653ce8173f3eb07e4e395bcb8f3b58c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3814e75cd4ffbae93750c9d5270029be"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3814e75cd4ffbae93750c9d5270029be"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a3814e75cd4ffbae93750c9d5270029be">publishVelocityCommand</a> ()</td></tr>
+<tr class="memdesc:a3814e75cd4ffbae93750c9d5270029be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method for publishing the cmd_vel. <br /></td></tr>
+<tr class="separator:a3814e75cd4ffbae93750c9d5270029be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1dd78ce080b1797d5df67b3ebd6aa4f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae1dd78ce080b1797d5df67b3ebd6aa4f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#ae1dd78ce080b1797d5df67b3ebd6aa4f">publishBaseLink</a> ()</td></tr>
+<tr class="memdesc:ae1dd78ce080b1797d5df67b3ebd6aa4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method for publishing the baselink. <br /></td></tr>
+<tr class="separator:ae1dd78ce080b1797d5df67b3ebd6aa4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c8fcf9bb21482d1178d5aa68b8a1fc1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structController_1_1ControlVector.html">ControlVector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a0c8fcf9bb21482d1178d5aa68b8a1fc1">calcLyapunov</a> (<a class="el" href="structController_1_1LyapunovParameter.html">LyapunovParameter</a> parameter, <a class="el" href="structController_1_1ControlState.html">ControlState</a> target, <a class="el" href="structController_1_1ControlState.html">ControlState</a> current)</td></tr>
+<tr class="memdesc:a0c8fcf9bb21482d1178d5aa68b8a1fc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Algorithm for use with lyapunov based control law.  <a href="#a0c8fcf9bb21482d1178d5aa68b8a1fc1">More...</a><br /></td></tr>
+<tr class="separator:a0c8fcf9bb21482d1178d5aa68b8a1fc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19dcbffe4b05d8204041cec4bed44fa9"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="structController_1_1ControlVector.html">ControlVector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a19dcbffe4b05d8204041cec4bed44fa9">calcAngleDistance</a> (<a class="el" href="structController_1_1AngleDistanceParameter.html">AngleDistanceParameter</a> parameter, <a class="el" href="structController_1_1ControlState.html">ControlState</a> target, <a class="el" href="structController_1_1ControlState.html">ControlState</a> current)</td></tr>
+<tr class="memdesc:a19dcbffe4b05d8204041cec4bed44fa9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Law for calculate the control vector in use with the angle distance control law.  <a href="#a19dcbffe4b05d8204041cec4bed44fa9">More...</a><br /></td></tr>
+<tr class="separator:a19dcbffe4b05d8204041cec4bed44fa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacfbe4579c4a50ec84c825bfd12a4a84"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="structController_1_1ControlVector.html">ControlVector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#aacfbe4579c4a50ec84c825bfd12a4a84">calcOptimalControl</a> ()</td></tr>
+<tr class="memdesc:aacfbe4579c4a50ec84c825bfd12a4a84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the feed-forward of velocities.  <a href="#aacfbe4579c4a50ec84c825bfd12a4a84">More...</a><br /></td></tr>
+<tr class="separator:aacfbe4579c4a50ec84c825bfd12a4a84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3dcef265387b08402bcafd83bf05e67"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structController_1_1ControlVector.html">ControlVector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#ab3dcef265387b08402bcafd83bf05e67">passVelocity</a> ()</td></tr>
+<tr class="memdesc:ab3dcef265387b08402bcafd83bf05e67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pass input velocity to output.  <a href="#ab3dcef265387b08402bcafd83bf05e67">More...</a><br /></td></tr>
+<tr class="separator:ab3dcef265387b08402bcafd83bf05e67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -319,30 +388,26 @@ ros::Subscriber&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 ros::ServiceServer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a06c03b4a779d0c6cfcacef97eb36c6bd">srv_reset</a></td></tr>
 <tr class="memdesc:a06c03b4a779d0c6cfcacef97eb36c6bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Service for resetting the controller. <br /></td></tr>
 <tr class="separator:a06c03b4a779d0c6cfcacef97eb36c6bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64d3c8a18c05e8d4ab47598875a09bc1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a64d3c8a18c05e8d4ab47598875a09bc1"></a>
-ros::ServiceServer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a64d3c8a18c05e8d4ab47598875a09bc1">srv_set_initial</a></td></tr>
-<tr class="memdesc:a64d3c8a18c05e8d4ab47598875a09bc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Service for setting the initial pose. <br /></td></tr>
-<tr class="separator:a64d3c8a18c05e8d4ab47598875a09bc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6d4e4893dfa04d1d4c26e2610a55536"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa6d4e4893dfa04d1d4c26e2610a55536"></a>
+ros::ServiceServer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#aa6d4e4893dfa04d1d4c26e2610a55536">srv_set_reference_frame_</a></td></tr>
+<tr class="memdesc:aa6d4e4893dfa04d1d4c26e2610a55536"><td class="mdescLeft">&#160;</td><td class="mdescRight">Service for setting the initial pose. <br /></td></tr>
+<tr class="separator:aa6d4e4893dfa04d1d4c26e2610a55536"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96e34ca6ebe5b7c8035982ff98270f4b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a96e34ca6ebe5b7c8035982ff98270f4b"></a>
 ros::Timer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a96e34ca6ebe5b7c8035982ff98270f4b">time_scope_</a></td></tr>
 <tr class="memdesc:a96e34ca6ebe5b7c8035982ff98270f4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Timer for control scope. <br /></td></tr>
 <tr class="separator:a96e34ca6ebe5b7c8035982ff98270f4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af81f22d8b64d915769acfb8e8d89e0c8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af81f22d8b64d915769acfb8e8d89e0c8"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#af81f22d8b64d915769acfb8e8d89e0c8">name</a></td></tr>
-<tr class="memdesc:af81f22d8b64d915769acfb8e8d89e0c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of the node respective <a class="el" href="classController.html" title="Provides a easy to use implementation of a generic mobile robot controller. ">Controller</a>. <br /></td></tr>
-<tr class="separator:af81f22d8b64d915769acfb8e8d89e0c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8069db2319ff64d65607b1aa897d3069"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8069db2319ff64d65607b1aa897d3069"></a>
-<a class="el" href="structController_1_1LyapunovParameter.html">LyapunovParameter</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a8069db2319ff64d65607b1aa897d3069">lyapunov_parameter</a></td></tr>
-<tr class="memdesc:a8069db2319ff64d65607b1aa897d3069"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parameter set for lyapunov determinations. <br /></td></tr>
-<tr class="separator:a8069db2319ff64d65607b1aa897d3069"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a17792cff397dc69baca568c7d03f2fc8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a17792cff397dc69baca568c7d03f2fc8"></a>
-<a class="el" href="classController.html#aa6d956c4c220461a4152415ffa78690a">ControllerType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a17792cff397dc69baca568c7d03f2fc8">type</a></td></tr>
-<tr class="memdesc:a17792cff397dc69baca568c7d03f2fc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of control algorythm that is used. <br /></td></tr>
-<tr class="separator:a17792cff397dc69baca568c7d03f2fc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e0e569456498e5670a48244c22cafc9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4e0e569456498e5670a48244c22cafc9"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a4e0e569456498e5670a48244c22cafc9">loaded_parameter</a></td></tr>
-<tr class="memdesc:a4e0e569456498e5670a48244c22cafc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag if parameter were loaded from the parameter server. <br /></td></tr>
-<tr class="separator:a4e0e569456498e5670a48244c22cafc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6868c645d9ede6af828f392d3f68f48a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6868c645d9ede6af828f392d3f68f48a"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a6868c645d9ede6af828f392d3f68f48a">publish_tf_</a></td></tr>
+<tr class="memdesc:a6868c645d9ede6af828f392d3f68f48a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag if baselink should be published by the controller. <br /></td></tr>
+<tr class="separator:a6868c645d9ede6af828f392d3f68f48a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4c22820ec1b8043a126a5c64048ec97"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae4c22820ec1b8043a126a5c64048ec97"></a>
+<a class="el" href="structController_1_1LyapunovParameter.html">LyapunovParameter</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#ae4c22820ec1b8043a126a5c64048ec97">lyapunov_parameter_</a></td></tr>
+<tr class="memdesc:ae4c22820ec1b8043a126a5c64048ec97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parameter set for lyapunov determinations. <br /></td></tr>
+<tr class="separator:ae4c22820ec1b8043a126a5c64048ec97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a139044e195ddf6a1378311e1b08c14bb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a139044e195ddf6a1378311e1b08c14bb"></a>
+<a class="el" href="structController_1_1AngleDistanceParameter.html">AngleDistanceParameter</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classController.html#a139044e195ddf6a1378311e1b08c14bb">angle_distance_parameter_</a></td></tr>
+<tr class="memdesc:a139044e195ddf6a1378311e1b08c14bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parameter set for angle distance control law. <br /></td></tr>
+<tr class="separator:a139044e195ddf6a1378311e1b08c14bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Provides a easy to use implementation of a generic mobile robot controller. </p>
@@ -373,52 +438,33 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a7341f9092e1977cdd2a1492c4422c019"></a>
+<a class="anchor" id="acc6aa82751ca6ddaa0152b6496c55478"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">Controller::Controller </td>
           <td>(</td>
-          <td class="paramtype">ros::NodeHandle &amp;&#160;</td>
-          <td class="paramname"><em>nh</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Construct a new <a class="el" href="classController.html" title="Provides a easy to use implementation of a generic mobile robot controller. ">Controller</a> object. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">nh</td><td>Ros nodehandle for managing namespaces and ros functionality within the controller object </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a5342dd66c1228e651e569d9b1c31d82e"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structController_1_1ControlVector.html">Controller::ControlVector</a> Controller::calcLyapunov </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structController_1_1LyapunovParameter.html">LyapunovParameter</a>&#160;</td>
-          <td class="paramname"><em>parameter</em>, </td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classController.html#a6849bee332c04d67ac6f3052cccd2669">VelocityEulerian</a>&#160;</td>
-          <td class="paramname"><em>desired</em>, </td>
+          <td class="paramtype">ros::NodeHandle&#160;</td>
+          <td class="paramname"><em>nh</em> = <code>ros::NodeHandle(&quot;~&quot;)</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">tf::Transform&#160;</td>
-          <td class="paramname"><em>relative</em>&#160;</td>
+          <td class="paramtype">ros::NodeHandle&#160;</td>
+          <td class="paramname"><em>nh_topics</em> = <code>ros::NodeHandle(&quot;~&quot;)</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ros::NodeHandle&#160;</td>
+          <td class="paramname"><em>nh_parameters</em> = <code>ros::NodeHandle(&quot;~&quot;)</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -427,15 +473,148 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Create the <a class="el" href="classController.html" title="Provides a easy to use implementation of a generic mobile robot controller. ">Controller</a> object with given parameters. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">parameter</td><td>Set of lyapunov parameter for calculating the control vector </td></tr>
-    <tr><td class="paramname">desired</td><td>Desired velocities in eulerian description (moved base). Contains angular and linear velocity </td></tr>
-    <tr><td class="paramname">relative</td><td>Transformation from current to target state </td></tr>
+    <tr><td class="paramname">name</td><td>Name of the controller </td></tr>
+    <tr><td class="paramname">nh</td><td>Global nodehandle </td></tr>
+    <tr><td class="paramname">nh_topics</td><td>Nodehandle to handle topic namepsaces </td></tr>
+    <tr><td class="paramname">nh_parameters</td><td>Nodehandle to handle parameter namepaces </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structController_1_1ControlVector.html" title="A struct that holds linear and angular velocity of the Robot since this are the control variable for ...">ControlVector</a> </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a19dcbffe4b05d8204041cec4bed44fa9"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structController_1_1ControlVector.html">Controller::ControlVector</a> Controller::calcAngleDistance </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structController_1_1AngleDistanceParameter.html">AngleDistanceParameter</a>&#160;</td>
+          <td class="paramname"><em>parameter</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structController_1_1ControlState.html">ControlState</a>&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structController_1_1ControlState.html">ControlState</a>&#160;</td>
+          <td class="paramname"><em>current</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Law for calculate the control vector in use with the angle distance control law. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">parameter</td><td>Parameters of the control law </td></tr>
+    <tr><td class="paramname">target</td><td>Target state that should be reached by control </td></tr>
+    <tr><td class="paramname">current</td><td>Current state of the robot </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structController_1_1ControlVector.html" title="A struct that holds linear and angular velocity of the Robot since this are the control variable for ...">ControlVector</a> <a class="el" href="structController_1_1ControlVector.html" title="A struct that holds linear and angular velocity of the Robot since this are the control variable for ...">ControlVector</a> Conrol command calculated by the control law </dd></dl>
+
+<p>Reimplemented in <a class="el" href="classSlave.html#aff62cbae878cd268bccd6313294bd348">Slave</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a0c8fcf9bb21482d1178d5aa68b8a1fc1"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structController_1_1ControlVector.html">Controller::ControlVector</a> Controller::calcLyapunov </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structController_1_1LyapunovParameter.html">LyapunovParameter</a>&#160;</td>
+          <td class="paramname"><em>parameter</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structController_1_1ControlState.html">ControlState</a>&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structController_1_1ControlState.html">ControlState</a>&#160;</td>
+          <td class="paramname"><em>current</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Algorithm for use with lyapunov based control law. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">parameter</td><td>Parameters of the controllaw </td></tr>
+    <tr><td class="paramname">target</td><td>Target state that should be reached by control </td></tr>
+    <tr><td class="paramname">current</td><td>Current state of the robot </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structController_1_1ControlVector.html" title="A struct that holds linear and angular velocity of the Robot since this are the control variable for ...">ControlVector</a> Conrol command calculated by the control law </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aacfbe4579c4a50ec84c825bfd12a4a84"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structController_1_1ControlVector.html">Controller::ControlVector</a> Controller::calcOptimalControl </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Calculates the feed-forward of velocities. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structController_1_1ControlVector.html" title="A struct that holds linear and angular velocity of the Robot since this are the control variable for ...">ControlVector</a> Control Vector for the robot </dd></dl>
 
 </div>
 </div>
@@ -673,12 +852,38 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a class="anchor" id="abda96416fab439c188ef494a2b2a0c8e"></a>
+<a class="anchor" id="ab3dcef265387b08402bcafd83bf05e67"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structController_1_1ControlVector.html">Controller::ControlVector</a> Controller::passVelocity </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pass input velocity to output. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structController_1_1ControlVector.html" title="A struct that holds linear and angular velocity of the Robot since this are the control variable for ...">ControlVector</a> Input velocity given to output </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="afa3d88792852e78dd0c68c0cafc0c736"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Controller::setLyapunov </td>
+          <td class="memname">void Controller::setControlParameter </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structController_1_1LyapunovParameter.html">Controller::LyapunovParameter</a>&#160;</td>
           <td class="paramname"><em>param</em></td><td>)</td>
@@ -687,34 +892,34 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
       </table>
 </div><div class="memdoc">
 
-<p>Sets the parameter of the lyapunov control law. </p>
+<p>Set the Control Parameter object. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">param</td><td>Parameterset as defined in lyapunov struct </td></tr>
+    <tr><td class="paramname">param</td><td>Lyapunov parameters </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a class="anchor" id="a1f77caed7a7951ca2f4cf7928f88669d"></a>
+<a class="anchor" id="ae214988d47b9ca5999b6a689139a4cec"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Controller::setLyapunov </td>
+          <td class="memname">void Controller::setControlParameter </td>
           <td>(</td>
-          <td class="paramtype">std::vector&lt; float &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="structController_1_1AngleDistanceParameter.html">Controller::AngleDistanceParameter</a>&#160;</td>
           <td class="paramname"><em>param</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Sets the parameter of the lyapunov control law. </p>
+<p>Set the Control Parameter object. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">param</td><td>vector of given parameters [kx,ky,ktheta,vd,omega] </td></tr>
+    <tr><td class="paramname">param</td><td>Angle Distance Parameters </td></tr>
   </table>
   </dd>
 </dl>
@@ -745,12 +950,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a class="anchor" id="a7d989fe559c8e852eedb464b4a006748"></a>
+<a class="anchor" id="a4126517e3218037342ce613180d3f16e"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Controller::setReference </td>
+          <td class="memname">void Controller::setReferenceFrame </td>
           <td>(</td>
           <td class="paramtype">tf::Pose&#160;</td>
           <td class="paramname"><em>pose</em></td><td>)</td>
@@ -763,90 +968,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">pose</td><td>pose to be set </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a class="anchor" id="a156a66bd7cd6340106accbb982b6238b"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Controller::setReference </td>
-          <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>x</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>y</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>z</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>angle</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set the reference of the mobile robot to be controlled from a global frame. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">x</td><td>X-position of robot </td></tr>
-    <tr><td class="paramname">y</td><td>Y-position of robot </td></tr>
-    <tr><td class="paramname">z</td><td>Z-position of robot </td></tr>
-    <tr><td class="paramname">angle</td><td>Angular-position of robot </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a class="anchor" id="ae86ed49c452a9e94568312ef743aa082"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Controller::setReference </td>
-          <td>(</td>
-          <td class="paramtype">std::vector&lt; double &gt;&#160;</td>
-          <td class="paramname"><em>coord</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>angle</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set the reference of the mobile robot to be controlled from a global frame. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">coord</td><td>vector of the robot position [x,y,z] </td></tr>
-    <tr><td class="paramname">angle</td><td>angel of the robot </td></tr>
   </table>
   </dd>
 </dl>
@@ -939,12 +1060,12 @@ false not succeeded </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="a2845a1e4b0c146206d4a03b757e82d5b"></a>
+<a class="anchor" id="ab1564849c5f896db6e7f5e5fda42fcc3"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool Controller::srvSetInitial </td>
+          <td class="memname">bool Controller::srvSetReferenceFrame </td>
           <td>(</td>
           <td class="paramtype">multi_robot_msgs::SetInitialPoseRequest &amp;&#160;</td>
           <td class="paramname"><em>req</em>, </td>

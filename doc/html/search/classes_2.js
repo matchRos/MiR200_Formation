@@ -1,7 +1,9 @@
 var searchData=
 [
-  ['formation',['Formation',['../classFormation.html',1,'']]],
-  ['formationpublisher',['FormationPublisher',['../classFormationPublisher.html',1,'']]],
-  ['formationsubscriber',['FormationSubscriber',['../classFormationSubscriber.html',1,'']]],
-  ['frames',['Frames',['../structLaserPredictor_1_1Frames.html',1,'LaserPredictor']]]
+  ['circleplan',['CirclePlan',['../structCirclePlanner_1_1CirclePlan.html',1,'CirclePlanner']]],
+  ['circleplanner',['CirclePlanner',['../classCirclePlanner.html',1,'']]],
+  ['clickedposeplanner',['ClickedPosePlanner',['../classClickedPosePlanner.html',1,'']]],
+  ['controller',['Controller',['../classController.html',1,'']]],
+  ['controlstate',['ControlState',['../structController_1_1ControlState.html',1,'Controller']]],
+  ['controlvector',['ControlVector',['../structController_1_1ControlVector.html',1,'Controller']]]
 ];

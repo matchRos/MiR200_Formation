@@ -1,5 +1,7 @@
 <map id="Controller" name="Controller">
-<area shape="rect" id="node2" href="$structController_1_1ControlState.html" title="Holds the System state combined by the pose of the system, the cartesian velocity and the angular vel..." alt="" coords="5,5,164,32"/>
-<area shape="rect" id="node3" href="$structController_1_1ControlVector.html" title="A struct that holds linear and angular velocity of the Robot since this are the control variable for ..." alt="" coords="188,5,355,32"/>
-<area shape="rect" id="node4" href="$structController_1_1LyapunovParameter.html" title="Specifies the parameters needed for the lyapunov based control law. " alt="" coords="379,5,582,32"/>
+<area shape="rect" id="node2" href="$structController_1_1ControlState.html" title="Holds the System state combined by the pose of the system, the cartesian velocity and the angular vel..." alt="" coords="27,31,186,57"/>
+<area shape="rect" id="node3" href="$structController_1_1AngleDistanceParameter.html" title="Specifies the Parameters of the angle distance based control law. " alt="" coords="21,82,192,123"/>
+<area shape="rect" id="node4" href="$structController_1_1ControlVector.html" title="A struct that holds linear and angular velocity of the Robot since this are the control variable for ..." alt="" coords="23,148,190,175"/>
+<area shape="rect" id="node5" href="$structController_1_1LyapunovParameter.html" title="Specifies the parameters needed for the lyapunov based control law. " alt="" coords="5,199,208,225"/>
+<area shape="rect" id="node6" href="$structController_1_1Buffer.html" title="Controller::Buffer\l\&lt; tf::Vector3 \&gt;" alt="" coords="46,250,167,291"/>
 </map>

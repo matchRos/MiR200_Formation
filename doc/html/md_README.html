@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.11"/>
-<title>Multi-Robot-System: Possible problems</title>
+<title>Multi-Robot-System: Definition of launchfiles:</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -77,10 +77,24 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">Possible problems </div>  </div>
+<div class="title">Definition of launchfiles: </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>tf tree is not closed: Check if the prefix of left_wheel_joint and right_wheel_joint in mir_description/config/diffdrive_controller.yaml is deleted and enable odometry. </p>
+<div class="textblock"><p>Launchfiles for launching the implemented functionalities are given in /multi_robot_launcher/launch</p><ol type="1">
+<li>exe_demo.launch: Executes a demo environment within basic funcitonalities of the robot formation can be shown.</li>
+<li>exe_navigation.launch: Executes an environment within the robot formation can be used in combination with the navigation_stack.</li>
+<li>exe_transport.launch: Executes an environment within the robot formation is carrying a transport object.</li>
+<li>formation.launch: This is one of the importants launchfiles for using mobile robot formation. It launchs the robots for the formation and does the nescessary remaping for member parameters.</li>
+<li>gazebo. launch: Just launches the gazeob environment.</li>
+<li>robot.launch: This launches the hole robot stuff. Eg. The robot state publisher the localisation node for extended kalman filter and loads parameter for these modules. This file does NOT load the Foramtion controller since this is located within the controller package!</li>
+<li>simulation.launch: Prepares simulations from skript files (see bash).</li>
+<li>spawn_transport_object.launch A launch files that is used to spawn generic transport object</li>
+</ol>
+<h1>How to start a simple formation:</h1>
+<ol type="1">
+<li>Execute exe_demo.launch</li>
+<li>Execute the system handling node <code>roslaunch multi_robot_launcher exe_demo.launch</code> wait til everything is setup <code>rosrun simulation_env system_handling_node -plan -reference</code> if necessary click on simulation pasued within gazebo. </li>
+</ol>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

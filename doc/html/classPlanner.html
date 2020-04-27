@@ -108,6 +108,7 @@ Inheritance diagram for Planner:</div>
 <area shape="rect" id="node3" href="classClickedPosePlanner.html" title="ClickedPosePlanner" alt="" coords="129,80,269,107"/>
 <area shape="rect" id="node4" href="classLissajousPlanner.html" title="LissajousPlanner" alt="" coords="293,80,415,107"/>
 <area shape="rect" id="node5" href="classSpiralplanner.html" title="Spiralplanner" alt="" coords="439,80,536,107"/>
+<area shape="rect" id="node6" href="classStepResposePlanner.html" title="StepResposePlanner" alt="" coords="560,80,705,107"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -128,12 +129,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlanner.html#a400f2aefad591e55a62e0fb13cb02521">pause</a> ()</td></tr>
 <tr class="memdesc:a400f2aefad591e55a62e0fb13cb02521"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pauses the planner. <br /></td></tr>
 <tr class="separator:a400f2aefad591e55a62e0fb13cb02521"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acaf55e0e250d6f3ba14bfcf3c4f06ffb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acaf55e0e250d6f3ba14bfcf3c4f06ffb"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_start_pose</b> (tf::Pose pose)</td></tr>
-<tr class="separator:acaf55e0e250d6f3ba14bfcf3c4f06ffb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af10d045ffe58c7d2149156567dc8b10a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af10d045ffe58c7d2149156567dc8b10a"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>load</b> ()=0</td></tr>
-<tr class="separator:af10d045ffe58c7d2149156567dc8b10a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aded03846e91b52e042545c947da63644"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aded03846e91b52e042545c947da63644"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setStartPose</b> (tf::Pose pose)</td></tr>
+<tr class="separator:aded03846e91b52e042545c947da63644"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a935f2412dc213ffa0144032722c8ead0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a935f2412dc213ffa0144032722c8ead0"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>load</b> ()</td></tr>
+<tr class="separator:a935f2412dc213ffa0144032722c8ead0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7b6fdf2a9ffb8669e5154f83b264f72"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad7b6fdf2a9ffb8669e5154f83b264f72"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>loadChild</b> ()=0</td></tr>
+<tr class="separator:ad7b6fdf2a9ffb8669e5154f83b264f72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -159,10 +163,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>plan</b> (const ros::
 <tr class="memitem:aa8937e0a808cebc224393438941515e4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa8937e0a808cebc224393438941515e4"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>publish</b> ()</td></tr>
 <tr class="separator:aa8937e0a808cebc224393438941515e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a311803ff0901b953c4ff9db7a3f5bb01"><td class="memItemLeft" align="right" valign="top">tf::Transform&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlanner.html#a311803ff0901b953c4ff9db7a3f5bb01">get_transform</a> (tf::Pose pose)</td></tr>
-<tr class="separator:a311803ff0901b953c4ff9db7a3f5bb01"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ce8028259452e2e17ed07bbb0c8463a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlanner.html#a0ce8028259452e2e17ed07bbb0c8463a">transform_values</a> (tf::Transform trafo)</td></tr>
-<tr class="separator:a0ce8028259452e2e17ed07bbb0c8463a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5f9bfe3632ea59ffeafb53f51df6516"><td class="memItemLeft" align="right" valign="top">tf::Transform&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlanner.html#ac5f9bfe3632ea59ffeafb53f51df6516">getTransform</a> (tf::Pose pose)</td></tr>
+<tr class="separator:ac5f9bfe3632ea59ffeafb53f51df6516"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed84dce7b2e6e4e4408ac28f3069eb70"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlanner.html#aed84dce7b2e6e4e4408ac28f3069eb70">transformValues</a> (tf::Transform trafo)</td></tr>
+<tr class="separator:aed84dce7b2e6e4e4408ac28f3069eb70"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2a6a50634353cf10b7e4d0e1266c55b7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlanner.html#a2a6a50634353cf10b7e4d0e1266c55b7">srv_start</a> (std_srvs::EmptyRequest &amp;req, std_srvs::EmptyResponse &amp;res)</td></tr>
 <tr class="separator:a2a6a50634353cf10b7e4d0e1266c55b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65994104a9915ef59dd2360008bb24f0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPlanner.html#a65994104a9915ef59dd2360008bb24f0">srv_stop</a> (std_srvs::EmptyRequest &amp;req, std_srvs::EmptyResponse &amp;res)</td></tr>
@@ -176,6 +180,9 @@ virtual tf::Quaternion&#160;</td><td class="memItemRight" valign="bottom"><b>get
 <tr class="memitem:a02af8b9ab29a19bd82c1cc35afcf2cc5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a02af8b9ab29a19bd82c1cc35afcf2cc5"></a>
 virtual tf::Vector3&#160;</td><td class="memItemRight" valign="bottom"><b>get_velocity</b> (ros::Duration time)=0</td></tr>
 <tr class="separator:a02af8b9ab29a19bd82c1cc35afcf2cc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a123a163e7fe3a7547c784cbfd2bd398d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a123a163e7fe3a7547c784cbfd2bd398d"></a>
+virtual tf::Vector3&#160;</td><td class="memItemRight" valign="bottom"><b>get_acceleration</b> (ros::Duration time)=0</td></tr>
+<tr class="separator:a123a163e7fe3a7547c784cbfd2bd398d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5c6ec661acf83b1f095ba404dc4c958"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab5c6ec661acf83b1f095ba404dc4c958"></a>
 virtual double&#160;</td><td class="memItemRight" valign="bottom"><b>get_angular_velocity</b> (ros::Duration time)=0</td></tr>
 <tr class="separator:ab5c6ec661acf83b1f095ba404dc4c958"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -259,7 +266,7 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>ang_vel</b></td></t
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a311803ff0901b953c4ff9db7a3f5bb01"></a>
+<a class="anchor" id="ac5f9bfe3632ea59ffeafb53f51df6516"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -267,7 +274,7 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>ang_vel</b></td></t
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">tf::Transform Planner::get_transform </td>
+          <td class="memname">tf::Transform Planner::getTransform </td>
           <td>(</td>
           <td class="paramtype">tf::Pose&#160;</td>
           <td class="paramname"><em>pose</em></td><td>)</td>
@@ -371,7 +378,7 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>ang_vel</b></td></t
 
 </div>
 </div>
-<a class="anchor" id="a0ce8028259452e2e17ed07bbb0c8463a"></a>
+<a class="anchor" id="aed84dce7b2e6e4e4408ac28f3069eb70"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -379,7 +386,7 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>ang_vel</b></td></t
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Planner::transform_values </td>
+          <td class="memname">void Planner::transformValues </td>
           <td>(</td>
           <td class="paramtype">tf::Transform&#160;</td>
           <td class="paramname"><em>trafo</em></td><td>)</td>

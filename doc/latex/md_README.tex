@@ -1,1 +1,19 @@
-tf tree is not closed\+: Check if the prefix of left\+\_\+wheel\+\_\+joint and right\+\_\+wheel\+\_\+joint in mir\+\_\+description/config/diffdrive\+\_\+controller.\+yaml is deleted and enable odometry. 
+Launchfiles for launching the implemented functionalities are given in /multi\+\_\+robot\+\_\+launcher/launch
+\begin{DoxyEnumerate}
+\item exe\+\_\+demo.\+launch\+: Executes a demo environment within basic funcitonalities of the robot formation can be shown.
+\item exe\+\_\+navigation.\+launch\+: Executes an environment within the robot formation can be used in combination with the navigation\+\_\+stack.
+\item exe\+\_\+transport.\+launch\+: Executes an environment within the robot formation is carrying a transport object.
+\item formation.\+launch\+: This is one of the importants launchfiles for using mobile robot formation. It launchs the robots for the formation and does the nescessary remaping for member parameters.
+\item gazebo. launch\+: Just launches the gazeob environment.
+\item robot.\+launch\+: This launches the hole robot stuff. Eg. The robot state publisher the localisation node for extended kalman filter and loads parameter for these modules. This file does N\+OT load the Foramtion controller since this is located within the controller package!
+\item simulation.\+launch\+: Prepares simulations from skript files (see bash).
+\item spawn\+\_\+transport\+\_\+object.\+launch A launch files that is used to spawn generic transport object
+\end{DoxyEnumerate}
+
+\section*{How to start a simple formation\+:}
+
+
+\begin{DoxyEnumerate}
+\item Execute exe\+\_\+demo.\+launch
+\item Execute the system handling node {\ttfamily roslaunch multi\+\_\+robot\+\_\+launcher exe\+\_\+demo.\+launch} wait til everything is setup {\ttfamily rosrun simulation\+\_\+env system\+\_\+handling\+\_\+node -\/plan -\/reference} if necessary click on simulation pasued within gazebo. 
+\end{DoxyEnumerate}
