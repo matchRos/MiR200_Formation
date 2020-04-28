@@ -21,3 +21,8 @@ A launch files that is used to spawn generic transport object
 1. Execute exe_demo.launch `$roslaunch multi_robot_launcher exe_demo.launch`
 2. Wait til everything is setup
 3. Execute the system handling node `$rosrun simulation_env system_handling_node -plan -reference`
+
+# How to modifie formation parameters:
+1. Goto foramtion.yaml in the multi_robot_launcher package
+2. Change the parameter within the file
+2a) If you change the number or names of formation memebers make sure that you do the same in the formation.launch file in mutli_robot_launcher package
