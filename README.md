@@ -7,7 +7,7 @@ Executes an environment within the robot formation can be used in combination wi
 3. exe_transport.launch:
 Executes an environment within the robot formation is carrying a transport object.
 4. formation.launch:
-This is one of the importants launchfiles for using mobile robot formation. It launchs the robots for the formation and does the nescessary remaping for member parameters.
+This is one of the most important launchfiles for using mobile robot formation. It launchs the robots for the formation and does the nescessary remaping for member parameters.
 5. gazebo. launch:
 Just launches the gazeob environment.
 6. robot.launch:
