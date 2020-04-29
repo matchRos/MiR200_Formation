@@ -1,0 +1,20 @@
+body 
+{
+  background-color: LightSlateGrey;
+}
+h1{
+	margin-top:30pt;
+	color:Black;
+	font-family: Arial, Helvetica, sans-serif;
+}
+h2{
+	margin-top:30pt;
+	color:Black;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+p 
+{
+	color:Black;
+	font-family: Arial, Helvetica, sans-serif;
+} 
