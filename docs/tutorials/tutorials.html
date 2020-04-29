@@ -1,0 +1,68 @@
+<HTML>
+<HEAD> 
+    <TITLE>Welcome to mobile robot system package</TITLE>
+    <link rel="stylesheet" type="text/css" href="../mystyle.css">
+    <link rel="stylesheet" type="text/css" href="../sidebar.css">
+</HEAD>
+<BODY>
+
+<!-- Side navigation -->
+<div class="sidenav">
+    <a href=../html/index.html>Doc</a>
+    <a href="https://github.com/ibMH/multi_robot_system">Source</a>
+    <a href="#">How to start</a>
+    <a href="#">Contact</a>
+  </div>
+
+
+<div class="main">
+    <h1>Tutorials for starting up with the package</h1>
+    <h2>Launching a basic formation in gazebo </h2>
+<div class="content">
+Corresponding files:
+<ul>
+  <li>multi_robot_launcher/launch/exe_demo.launch</li>
+  <li>simulation_environment/src/system_handling_node.cpp</li>
+</ul>
+To launch a simple formation you can simply use the exe_demo.launch. This can be done by:
+<div class="listing" >$roslaunch multi_robot_launcher exe_demo.launch</div>
+This pice of code starts the gazebo simulation environment and launches a formation defined by the formation.launch file.
+ Since the controller are not initialised yet one has to execute the system handling procedure by:
+ <div class="listing" >$rosrun simulation_environment system_handling_node -reference -plan</div>
+ The flag -reference sets the references of all specified controllers while -plan starts the planner for the formation's trajectory. This procedure is shown within the following clip:
+<div class=video>
+<video width="320" height="240" controls>
+  <source src="./DemoLaunch.mp4" type="video/mp4">
+  <source src="./DemoLaunch.ogg" type="video/ogg">
+  Your browser does not support the video tag.
+</video>
+</div>
+</div>
+
+
+<h2>Changing configuration of formation (adding robots)</h2>
+<div class="content">
+Corresponding files:
+<ul>
+    <li>multi_robot_launcher/launch/exe_demo.launch</li>
+    <li>simulation_environment/src/system_handling_node.cpp</li> 
+    <li>multi_robot_launcher/launch/formation.launch</li>
+    <li>multi_robot_launcher/config/formation.yaml</li>
+</ul>
+If you'd like to change the formation since you want to have more or less robots within the formation you have to modifie configuration and launch files.
+Let's say you want to go from 3 to 5 mobile robots. You have to change the formation.launch file and add further slave robots (within the video they are prepared and just uncommented).
+If you have done this the "hardware spawning" is modified and the new amount of robots would be spawned within gazebo by formation. launch. This ist really just for the simulation. We further need to 
+modifie the formation.yaml file since the system_handling_node from previous tutorial need to know our modifications too. Here we change the list of names since we added robots with new names and we bring up blocks for theri parameter
+nameppaces like they are already given in the video. If we modified the formation.launch correctly and added the names within the formation.yaml wen can execute as described within the previous tutorial.
+<div class=video>
+  <video width="320" height="240" controls>
+    <source src="./Configuration.mp4" type="video/mp4">
+    <source src="./Configuration.ogg" type="video/ogg">
+    Your browser does not support the video tag.
+  </video>
+</div>
+</div>
+</div>
+
+</Body>
+</HTML>
