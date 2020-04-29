@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['angledistanceparameter',['AngleDistanceParameter',['../structController_1_1AngleDistanceParameter.html',1,'Controller']]]
+  ['angledistanceparameter',['AngleDistanceParameter',['../d5/d97/structController_1_1AngleDistanceParameter.html',1,'Controller']]]
 ];

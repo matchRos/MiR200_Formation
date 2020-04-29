@@ -1,0 +1,5 @@
+<map id="LaserPredictor" name="LaserPredictor">
+<area shape="rect" id="node2" href="$d6/d09/structLaserPredictor_1_1Transforms.html" title="Holds all necessary transformations. " alt="" coords="5,5,185,32"/>
+<area shape="rect" id="node3" href="$d1/d8b/structLaserPredictor_1_1Frames.html" title="Holds the names of all the necessary frames for the prediction class. " alt="" coords="209,5,368,32"/>
+<area shape="rect" id="node4" href="$de/d78/structLaserPredictor_1_1Data.html" title="Holds all the data used within the predictor. " alt="" coords="392,5,535,32"/>
+</map>

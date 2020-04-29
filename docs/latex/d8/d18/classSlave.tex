@@ -1,0 +1,140 @@
+\hypertarget{classSlave}{}\section{Slave Class Reference}
+\label{classSlave}\index{Slave@{Slave}}
+
+
+Class that implements a slave robot for multi robot formation control.  
+
+
+
+
+{\ttfamily \#include $<$slave.\+h$>$}
+
+
+
+Inheritance diagram for Slave\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=139pt]{de/ddb/classSlave__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Slave\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{dc/d76/classSlave__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classSlave_ae5467a93850f38e147869ab60d63e60d}{Slave} (std\+::string \hyperlink{classController_af81f22d8b64d915769acfb8e8d89e0c8}{name}, ros\+::\+Node\+Handle \hyperlink{classController_a24e3d3c2536f6ed29018bad1fd53dae2}{nh}=ros\+::\+Node\+Handle(\char`\"{}$\sim$\char`\"{}), ros\+::\+Node\+Handle nh\+\_\+topics=ros\+::\+Node\+Handle(\char`\"{}$\sim$\char`\"{}), ros\+::\+Node\+Handle nh\+\_\+parameters=ros\+::\+Node\+Handle(\char`\"{}$\sim$\char`\"{}))
+\begin{DoxyCompactList}\small\item\em Construct a new \hyperlink{classSlave}{Slave} object. \end{DoxyCompactList}\item 
+void {\bfseries set\+Master\+Reference} (tf\+::\+Pose pose)\hypertarget{classSlave_a1ce8f5533f6b40e881b57dbf3bcef88c}{}\label{classSlave_a1ce8f5533f6b40e881b57dbf3bcef88c}
+
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structController_1_1ControlVector}{Control\+Vector} \hyperlink{classSlave_aff62cbae878cd268bccd6313294bd348}{calc\+Angle\+Distance} (\hyperlink{structController_1_1AngleDistanceParameter}{Angle\+Distance\+Parameter} parameter, \hyperlink{structController_1_1ControlState}{Control\+State} target, \hyperlink{structController_1_1ControlState}{Control\+State} current)
+\begin{DoxyCompactList}\small\item\em Law for calculate the control vector in use with the angle distance control law. \end{DoxyCompactList}\item 
+void \hyperlink{classSlave_a2f80eae9dc8e4e20037c1a371f9b8189}{target\+Odom\+Callback} (nav\+\_\+msgs\+::\+Odometry msg)
+\begin{DoxyCompactList}\small\item\em Overloads the target odometry callback and expands it with transformation needed for slave robots. \end{DoxyCompactList}\item 
+bool {\bfseries srv\+Set\+Master\+Reference} (multi\+\_\+robot\+\_\+msgs\+::\+Set\+Initial\+Pose\+Request \&req, multi\+\_\+robot\+\_\+msgs\+::\+Set\+Initial\+Pose\+Response \&res)\hypertarget{classSlave_a1ee0fbdc59ba96cd43789a8472642700}{}\label{classSlave_a1ee0fbdc59ba96cd43789a8472642700}
+
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+ros\+::\+Service\+Server \hyperlink{classSlave_af2d09cda800ce6844f8734e484f38084}{srv\+\_\+set\+\_\+reference\+\_\+}\hypertarget{classSlave_af2d09cda800ce6844f8734e484f38084}{}\label{classSlave_af2d09cda800ce6844f8734e484f38084}
+
+\begin{DoxyCompactList}\small\item\em Service for setting the reference pose. \end{DoxyCompactList}\item 
+tf\+::\+Transform {\bfseries master\+\_\+reference\+\_\+}\hypertarget{classSlave_ae1f6ae8475022de445ba05d872b95e99}{}\label{classSlave_ae1f6ae8475022de445ba05d872b95e99}
+
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Class that implements a slave robot for multi robot formation control. 
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Slave@{Slave}!Slave@{Slave}}
+\index{Slave@{Slave}!Slave@{Slave}}
+\subsubsection[{\texorpdfstring{Slave(std\+::string name, ros\+::\+Node\+Handle nh=ros\+::\+Node\+Handle(""$\sim$""), ros\+::\+Node\+Handle nh\+\_\+topics=ros\+::\+Node\+Handle(""$\sim$""), ros\+::\+Node\+Handle nh\+\_\+parameters=ros\+::\+Node\+Handle(""$\sim$""))}{Slave(std::string name, ros::NodeHandle nh=ros::NodeHandle("~"), ros::NodeHandle nh_topics=ros::NodeHandle("~"), ros::NodeHandle nh_parameters=ros::NodeHandle("~"))}}]{\setlength{\rightskip}{0pt plus 5cm}Slave\+::\+Slave (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{name, }
+\item[{ros\+::\+Node\+Handle}]{nh = {\ttfamily ros\+:\+:NodeHandle(\char`\"{}$\sim$\char`\"{})}, }
+\item[{ros\+::\+Node\+Handle}]{nh\+\_\+topics = {\ttfamily ros\+:\+:NodeHandle(\char`\"{}$\sim$\char`\"{})}, }
+\item[{ros\+::\+Node\+Handle}]{nh\+\_\+parameters = {\ttfamily ros\+:\+:NodeHandle(\char`\"{}$\sim$\char`\"{})}}
+\end{DoxyParamCaption}
+)}\hypertarget{classSlave_ae5467a93850f38e147869ab60d63e60d}{}\label{classSlave_ae5467a93850f38e147869ab60d63e60d}
+
+
+Construct a new \hyperlink{classSlave}{Slave} object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em nh} & Node\+Handle \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\index{Slave@{Slave}!calc\+Angle\+Distance@{calc\+Angle\+Distance}}
+\index{calc\+Angle\+Distance@{calc\+Angle\+Distance}!Slave@{Slave}}
+\subsubsection[{\texorpdfstring{calc\+Angle\+Distance(\+Angle\+Distance\+Parameter parameter, Control\+State target, Control\+State current)}{calcAngleDistance(AngleDistanceParameter parameter, ControlState target, ControlState current)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Controller\+::\+Control\+Vector} Slave\+::calc\+Angle\+Distance (
+\begin{DoxyParamCaption}
+\item[{{\bf Angle\+Distance\+Parameter}}]{parameter, }
+\item[{{\bf Control\+State}}]{target, }
+\item[{{\bf Control\+State}}]{current}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [virtual]}}\hypertarget{classSlave_aff62cbae878cd268bccd6313294bd348}{}\label{classSlave_aff62cbae878cd268bccd6313294bd348}
+
+
+Law for calculate the control vector in use with the angle distance control law. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em parameter} & Parameters of the control law \\
+\hline
+{\em target} & Target state that should be reached by control \\
+\hline
+{\em current} & Current state of the robot \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Control\+Vector Control\+Vector Conrol command calculated by the control law 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{classController_a19dcbffe4b05d8204041cec4bed44fa9}{Controller}.
+
+\index{Slave@{Slave}!target\+Odom\+Callback@{target\+Odom\+Callback}}
+\index{target\+Odom\+Callback@{target\+Odom\+Callback}!Slave@{Slave}}
+\subsubsection[{\texorpdfstring{target\+Odom\+Callback(nav\+\_\+msgs\+::\+Odometry msg)}{targetOdomCallback(nav_msgs::Odometry msg)}}]{\setlength{\rightskip}{0pt plus 5cm}void Slave\+::target\+Odom\+Callback (
+\begin{DoxyParamCaption}
+\item[{nav\+\_\+msgs\+::\+Odometry}]{msg}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [virtual]}}\hypertarget{classSlave_a2f80eae9dc8e4e20037c1a371f9b8189}{}\label{classSlave_a2f80eae9dc8e4e20037c1a371f9b8189}
+
+
+Overloads the target odometry callback and expands it with transformation needed for slave robots. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & Incoming message at the target odometry topic \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{classController_a77f138b6a3699c21cf904041e7e19820}{Controller}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+controller/include/controller/slave.\+h\item 
+controller/src/slave.\+cpp\end{DoxyCompactItemize}

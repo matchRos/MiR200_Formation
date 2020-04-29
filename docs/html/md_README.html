@@ -25,7 +25,7 @@
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Multi-Robot-System
    </div>
-   <div id="projectbrief">Thisprojectcontainslibrariesandexecuteablesforhandlingmultirobotsystemsincaseofcollaborativetaskhandling.</div>
+   <div id="projectbrief">This project contains libraries and executeables for handling multi robot systems in case of collaborative task handling.</div>
   </td>
  </tr>
  </tbody>
@@ -84,7 +84,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>exe_demo.launch: Executes a demo environment within basic funcitonalities of the robot formation can be shown.</li>
 <li>exe_navigation.launch: Executes an environment within the robot formation can be used in combination with the navigation_stack.</li>
 <li>exe_transport.launch: Executes an environment within the robot formation is carrying a transport object.</li>
-<li>formation.launch: This is one of the importants launchfiles for using mobile robot formation. It launchs the robots for the formation and does the nescessary remaping for member parameters.</li>
+<li>formation.launch: This is one of the most important launchfiles for using mobile robot formation. It launchs the robots for the formation and does the nescessary remaping for member parameters.</li>
 <li>gazebo. launch: Just launches the gazeob environment.</li>
 <li>robot.launch: This launches the hole robot stuff. Eg. The robot state publisher the localisation node for extended kalman filter and loads parameter for these modules. This file does NOT load the Foramtion controller since this is located within the controller package!</li>
 <li>simulation.launch: Prepares simulations from skript files (see bash).</li>
@@ -92,8 +92,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </ol>
 <h1>How to start a simple formation:</h1>
 <ol type="1">
-<li>Execute exe_demo.launch</li>
-<li>Execute the system handling node <code>roslaunch multi_robot_launcher exe_demo.launch</code> wait til everything is setup <code>rosrun simulation_env system_handling_node -plan -reference</code> if necessary click on simulation pasued within gazebo. </li>
+<li>Execute exe_demo.launch <code>$roslaunch multi_robot_launcher exe_demo.launch</code></li>
+<li>Wait til everything is setup</li>
+<li>Execute the system handling node <code>$rosrun simulation_env system_handling_node -plan -reference</code></li>
+</ol>
+<h1>How to modifie formation parameters:</h1>
+<ol type="1">
+<li>Goto foramtion.yaml in the multi_robot_launcher package</li>
+<li>Change the parameter within the file 2a) If you change the number or names of formation memebers make sure that you do the same in the formation.launch file in mutli_robot_launcher package </li>
 </ol>
 </div></div><!-- contents -->
 <!-- start footer part -->

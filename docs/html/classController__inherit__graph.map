@@ -1,4 +1,0 @@
-<map id="Controller" name="Controller">
-<area shape="rect" id="node2" href="$classMaster.html" title="Class that implements a master robot for multi robot formation control. " alt="" coords="5,80,68,107"/>
-<area shape="rect" id="node3" href="$classSlave.html" title="Class that implements a slave robot for multi robot formation control. " alt="" coords="92,80,147,107"/>
-</map>

@@ -1,0 +1,393 @@
+\hypertarget{classLaserPredictor}{}\section{Laser\+Predictor Class Reference}
+\label{classLaserPredictor}\index{Laser\+Predictor@{Laser\+Predictor}}
+
+
+A class for predictings neighbour robots from the laser scanner data of another robot.  
+
+
+
+
+{\ttfamily \#include $<$laser\+\_\+predictor.\+h$>$}
+
+
+
+Collaboration diagram for Laser\+Predictor\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{db/d2d/classLaserPredictor__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structLaserPredictor_1_1Data}{Data}
+\begin{DoxyCompactList}\small\item\em Holds all the data used within the predictor. \end{DoxyCompactList}\item 
+struct \hyperlink{structLaserPredictor_1_1Frames}{Frames}
+\begin{DoxyCompactList}\small\item\em Holds the names of all the necessary frames for the prediction class. \end{DoxyCompactList}\item 
+struct \hyperlink{structLaserPredictor_1_1Transforms}{Transforms}
+\begin{DoxyCompactList}\small\item\em Holds all necessary transformations. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef std\+::vector$<$ tf\+::\+Pose $>$ \hyperlink{classLaserPredictor_a6c7dc6bd4bfb6acd3d95e88e1b9b4be2}{Poses}\hypertarget{classLaserPredictor_a6c7dc6bd4bfb6acd3d95e88e1b9b4be2}{}\label{classLaserPredictor_a6c7dc6bd4bfb6acd3d95e88e1b9b4be2}
+
+\begin{DoxyCompactList}\small\item\em Defines Poses as a std\+::vector of tf\+::\+Poses. \end{DoxyCompactList}\item 
+typedef std\+::vector$<$ tf\+::\+Point $>$ \hyperlink{classLaserPredictor_ae2e95d6f06a21cf4a0b0bb0e369270b4}{Points}\hypertarget{classLaserPredictor_ae2e95d6f06a21cf4a0b0bb0e369270b4}{}\label{classLaserPredictor_ae2e95d6f06a21cf4a0b0bb0e369270b4}
+
+\begin{DoxyCompactList}\small\item\em Defines Points as a std\+::vector of tf\+::\+Points. \end{DoxyCompactList}\item 
+typedef sensor\+\_\+msgs\+::\+Point\+Cloud \hyperlink{classLaserPredictor_ae6d64da5bf82f544a2ea8a421af5a677}{Cloud}\hypertarget{classLaserPredictor_ae6d64da5bf82f544a2ea8a421af5a677}{}\label{classLaserPredictor_ae6d64da5bf82f544a2ea8a421af5a677}
+
+\begin{DoxyCompactList}\small\item\em Defines Cloud as sensor\+\_\+msgs\+::\+Point\+Cloud. \end{DoxyCompactList}\item 
+typedef \hyperlink{structLaserPredictor_1_1Frames}{Frames} \hyperlink{classLaserPredictor_a3d60b85935a522f854a8f0a34bb7b3ca}{Topics}\hypertarget{classLaserPredictor_a3d60b85935a522f854a8f0a34bb7b3ca}{}\label{classLaserPredictor_a3d60b85935a522f854a8f0a34bb7b3ca}
+
+\begin{DoxyCompactList}\small\item\em Defines Topics as \hyperlink{structLaserPredictor_1_1Frames}{Frames}. Topics holds simmilare names as \hyperlink{structLaserPredictor_1_1Frames}{Frames} but for topics not for frames. \end{DoxyCompactList}\item 
+typedef std\+::vector$<$ sensor\+\_\+msgs\+::\+Point\+Cloud $>$ \hyperlink{classLaserPredictor_ab05e971dfcde2d9abbabe861681a541c}{Clusters}\hypertarget{classLaserPredictor_ab05e971dfcde2d9abbabe861681a541c}{}\label{classLaserPredictor_ab05e971dfcde2d9abbabe861681a541c}
+
+\begin{DoxyCompactList}\small\item\em Defines Clusters as vector of Point\+Clouds. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classLaserPredictor_a8a1c3d15f619d2b4114ffa2907cddbfb}{Laser\+Predictor} (ros\+::\+Node\+Handle \&nh, \hyperlink{structLaserPredictor_1_1Frames}{Frames} frames, \hyperlink{classLaserPredictor_a3d60b85935a522f854a8f0a34bb7b3ca}{Topics} topic)
+\begin{DoxyCompactList}\small\item\em Construct a new Laser Predictor object. \end{DoxyCompactList}\item 
+int \hyperlink{classLaserPredictor_a9634b4a17a0fbef515cd95c7aab5832f}{get\+Number\+Of\+Predictions} ()
+\begin{DoxyCompactList}\small\item\em Get the Number Of Predictions object. \end{DoxyCompactList}\item 
+\hyperlink{classLaserPredictor_a6c7dc6bd4bfb6acd3d95e88e1b9b4be2}{Poses} \hyperlink{classLaserPredictor_a91056be74cceed6f4fa79154118b69c0}{get\+Poses} ()
+\begin{DoxyCompactList}\small\item\em Get the predicted Poses. \end{DoxyCompactList}\item 
+tf\+::\+Pose \hyperlink{classLaserPredictor_a3d5fcd96bfdb75a0ad582b14ff2e04dd}{get\+Pose} (int i)
+\begin{DoxyCompactList}\small\item\em Get one of the Pose objects. \end{DoxyCompactList}\item 
+\hyperlink{classLaserPredictor_ae6d64da5bf82f544a2ea8a421af5a677}{Cloud} \hyperlink{classLaserPredictor_aafd0b92c01204d5b6ce494944e1ff381}{get\+Registered\+Points} ()
+\begin{DoxyCompactList}\small\item\em Get the combination of front and back laser data. \end{DoxyCompactList}\item 
+\hyperlink{classLaserPredictor_ae6d64da5bf82f544a2ea8a421af5a677}{Cloud} \hyperlink{classLaserPredictor_a665b9b39107726f46c5258908fc0abe4}{get\+Clustered\+Points} ()
+\begin{DoxyCompactList}\small\item\em Get the combinaton of front and back laser data with cluster signature. \end{DoxyCompactList}\item 
+void \hyperlink{classLaserPredictor_aa43afd04407b1a92d1ea722cc8d6d4bc}{guess} (\hyperlink{classLaserPredictor_a6c7dc6bd4bfb6acd3d95e88e1b9b4be2}{Poses} values)
+\begin{DoxyCompactList}\small\item\em Give a guess where cluster(robots) are with respect to the base link frame. \end{DoxyCompactList}\item 
+void \hyperlink{classLaserPredictor_a5e9c2c66bd54512e480bbc1c88d2c13d}{start\+Clustering} (double frequenzy)
+\begin{DoxyCompactList}\small\item\em Starts the cluster algorithm. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{classLaserPredictor_ae6d64da5bf82f544a2ea8a421af5a677}{Cloud} \hyperlink{classLaserPredictor_a10a142e38f04a4459aa6d6783c87f1cd}{combine\+Data} (\hyperlink{classLaserPredictor_ae6d64da5bf82f544a2ea8a421af5a677}{Cloud} front, \hyperlink{classLaserPredictor_ae6d64da5bf82f544a2ea8a421af5a677}{Cloud} back)
+\begin{DoxyCompactList}\small\item\em Combines the data front and back together. \end{DoxyCompactList}\item 
+static void \hyperlink{classLaserPredictor_a06751e2996c1021bb8f4e4952b6286a4}{transform\+Cloud} (\hyperlink{classLaserPredictor_ae6d64da5bf82f544a2ea8a421af5a677}{Cloud} \&cloud, tf\+::\+Transform trafo)
+\begin{DoxyCompactList}\small\item\em Applies the transform trafo to each point in the cloud. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classLaserPredictor_a5f7f9dadce39c6060951ffefe590e834}{clustering} (const ros\+::\+Timer\+Event \&event)
+\begin{DoxyCompactList}\small\item\em Timer callback to execute the cluster algorithm. \end{DoxyCompactList}\item 
+\hyperlink{classLaserPredictor_ab05e971dfcde2d9abbabe861681a541c}{Clusters} \hyperlink{classLaserPredictor_aa1ba5f881fb2b50827bf6ef0802e596b}{k\+Means} (\hyperlink{classLaserPredictor_ae6d64da5bf82f544a2ea8a421af5a677}{Cloud} \&data, \hyperlink{classLaserPredictor_ae2e95d6f06a21cf4a0b0bb0e369270b4}{Points} \&centers)
+\begin{DoxyCompactList}\small\item\em Executes k-\/means clustering at the data with respect to the guessed cluster ceneters centers. \end{DoxyCompactList}\item 
+\hyperlink{classLaserPredictor_ab05e971dfcde2d9abbabe861681a541c}{Clusters} \hyperlink{classLaserPredictor_ab7fde5a32b1ac2dadc62aff4202a0456}{k\+Means} (\hyperlink{classLaserPredictor_ae6d64da5bf82f544a2ea8a421af5a677}{Cloud} \&data, \hyperlink{classLaserPredictor_a6c7dc6bd4bfb6acd3d95e88e1b9b4be2}{Poses} \&centers)
+\begin{DoxyCompactList}\small\item\em Executes k-\/means clustering at the data with respect to the guessed cluster ceneters centers. \end{DoxyCompactList}\item 
+void \hyperlink{classLaserPredictor_a58641b51a4d1120f6242b34def65d837}{subscriber\+Front\+Callback} (const sensor\+\_\+msgs\+::\+Laser\+Scan\+Const\+Ptr msg)
+\begin{DoxyCompactList}\small\item\em Callback for the front laser scanner subscribtion. \end{DoxyCompactList}\item 
+void \hyperlink{classLaserPredictor_a33365cf376510441f49e19588674ead2}{subscriber\+Back\+Callback} (const sensor\+\_\+msgs\+::\+Laser\+Scan\+Const\+Ptr msg)
+\begin{DoxyCompactList}\small\item\em Callback for the back laser scanner subscribtion. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+ros\+::\+Node\+Handle \hyperlink{classLaserPredictor_a9535842866b44234078f0f69bbeb8539}{nh\+\_\+}\hypertarget{classLaserPredictor_a9535842866b44234078f0f69bbeb8539}{}\label{classLaserPredictor_a9535842866b44234078f0f69bbeb8539}
+
+\begin{DoxyCompactList}\small\item\em Nodehandle for handling namespaces and ros functionality. \end{DoxyCompactList}\item 
+ros\+::\+Subscriber \hyperlink{classLaserPredictor_a0cce21a3c340df330f68c4bdc91562f8}{sub\+\_\+front\+\_\+}\hypertarget{classLaserPredictor_a0cce21a3c340df330f68c4bdc91562f8}{}\label{classLaserPredictor_a0cce21a3c340df330f68c4bdc91562f8}
+
+\begin{DoxyCompactList}\small\item\em Subscriber for front laser scanner. \end{DoxyCompactList}\item 
+ros\+::\+Subscriber \hyperlink{classLaserPredictor_a3ba0934ebaf60999f241314955038fbf}{sub\+\_\+back\+\_\+}\hypertarget{classLaserPredictor_a3ba0934ebaf60999f241314955038fbf}{}\label{classLaserPredictor_a3ba0934ebaf60999f241314955038fbf}
+
+\begin{DoxyCompactList}\small\item\em Subscriber for back laser scanner. \end{DoxyCompactList}\item 
+ros\+::\+Timer \hyperlink{classLaserPredictor_a304d7c60e689819cc6e6398bee80a891}{cluster\+\_\+scope\+\_\+}\hypertarget{classLaserPredictor_a304d7c60e689819cc6e6398bee80a891}{}\label{classLaserPredictor_a304d7c60e689819cc6e6398bee80a891}
+
+\begin{DoxyCompactList}\small\item\em Timer for the clustering scope. \end{DoxyCompactList}\item 
+laser\+\_\+geometry\+::\+Laser\+Projection \hyperlink{classLaserPredictor_a02d304374282c92530ffce61fa31dc31}{projector\+\_\+}\hypertarget{classLaserPredictor_a02d304374282c92530ffce61fa31dc31}{}\label{classLaserPredictor_a02d304374282c92530ffce61fa31dc31}
+
+\begin{DoxyCompactList}\small\item\em Is yoused to project the laser scanner data into cartesian space. \end{DoxyCompactList}\item 
+\hyperlink{structLaserPredictor_1_1Transforms}{Transforms} \hyperlink{classLaserPredictor_a462937a6b7f66cb731f53659fa69c215}{trafos\+\_\+}\hypertarget{classLaserPredictor_a462937a6b7f66cb731f53659fa69c215}{}\label{classLaserPredictor_a462937a6b7f66cb731f53659fa69c215}
+
+\begin{DoxyCompactList}\small\item\em Holds the trasnformatiosn from base to the laser links. \end{DoxyCompactList}\item 
+\hyperlink{structLaserPredictor_1_1Frames}{Frames} \hyperlink{classLaserPredictor_a381370876c2606b7aa690959490237f9}{frames\+\_\+}\hypertarget{classLaserPredictor_a381370876c2606b7aa690959490237f9}{}\label{classLaserPredictor_a381370876c2606b7aa690959490237f9}
+
+\begin{DoxyCompactList}\small\item\em Holds the names of the links of the base and the laser links. \end{DoxyCompactList}\item 
+\hyperlink{structLaserPredictor_1_1Data}{Data} \hyperlink{classLaserPredictor_a897df6d3a3d9a810ef7b586f83415046}{data\+\_\+}\hypertarget{classLaserPredictor_a897df6d3a3d9a810ef7b586f83415046}{}\label{classLaserPredictor_a897df6d3a3d9a810ef7b586f83415046}
+
+\begin{DoxyCompactList}\small\item\em Holds all pointcloud data. \end{DoxyCompactList}\item 
+\hyperlink{classLaserPredictor_a6c7dc6bd4bfb6acd3d95e88e1b9b4be2}{Poses} \hyperlink{classLaserPredictor_a0cffbd5cd61e29cd1e137854935d0072}{poses\+\_\+}\hypertarget{classLaserPredictor_a0cffbd5cd61e29cd1e137854935d0072}{}\label{classLaserPredictor_a0cffbd5cd61e29cd1e137854935d0072}
+
+\begin{DoxyCompactList}\small\item\em Holds all estaminated poses of the robots. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A class for predictings neighbour robots from the laser scanner data of another robot. 
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Laser\+Predictor@{Laser\+Predictor}!Laser\+Predictor@{Laser\+Predictor}}
+\index{Laser\+Predictor@{Laser\+Predictor}!Laser\+Predictor@{Laser\+Predictor}}
+\subsubsection[{\texorpdfstring{Laser\+Predictor(ros\+::\+Node\+Handle \&nh, Frames frames, Topics topic)}{LaserPredictor(ros::NodeHandle &nh, Frames frames, Topics topic)}}]{\setlength{\rightskip}{0pt plus 5cm}Laser\+Predictor\+::\+Laser\+Predictor (
+\begin{DoxyParamCaption}
+\item[{ros\+::\+Node\+Handle \&}]{nh, }
+\item[{{\bf Frames}}]{frames, }
+\item[{{\bf Topics}}]{topic}
+\end{DoxyParamCaption}
+)}\hypertarget{classLaserPredictor_a8a1c3d15f619d2b4114ffa2907cddbfb}{}\label{classLaserPredictor_a8a1c3d15f619d2b4114ffa2907cddbfb}
+
+
+Construct a new Laser Predictor object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em nh} & Node handle to handle namespaces and ros fucntionality \\
+\hline
+{\em frames} & Holds all the nescessary frames for the predictor \\
+\hline
+{\em topic} & Holds all the nescessary topics for the predictor \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\index{Laser\+Predictor@{Laser\+Predictor}!clustering@{clustering}}
+\index{clustering@{clustering}!Laser\+Predictor@{Laser\+Predictor}}
+\subsubsection[{\texorpdfstring{clustering(const ros\+::\+Timer\+Event \&event)}{clustering(const ros::TimerEvent &event)}}]{\setlength{\rightskip}{0pt plus 5cm}void Laser\+Predictor\+::clustering (
+\begin{DoxyParamCaption}
+\item[{const ros\+::\+Timer\+Event \&}]{event}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classLaserPredictor_a5f7f9dadce39c6060951ffefe590e834}{}\label{classLaserPredictor_a5f7f9dadce39c6060951ffefe590e834}
+
+
+Timer callback to execute the cluster algorithm. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em event} & Ros timer event \\
+\hline
+\end{DoxyParams}
+\index{Laser\+Predictor@{Laser\+Predictor}!combine\+Data@{combine\+Data}}
+\index{combine\+Data@{combine\+Data}!Laser\+Predictor@{Laser\+Predictor}}
+\subsubsection[{\texorpdfstring{combine\+Data(\+Cloud front, Cloud back)}{combineData(Cloud front, Cloud back)}}]{\setlength{\rightskip}{0pt plus 5cm}sensor\+\_\+msgs\+::\+Point\+Cloud Laser\+Predictor\+::combine\+Data (
+\begin{DoxyParamCaption}
+\item[{{\bf Cloud}}]{front, }
+\item[{{\bf Cloud}}]{back}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{classLaserPredictor_a10a142e38f04a4459aa6d6783c87f1cd}{}\label{classLaserPredictor_a10a142e38f04a4459aa6d6783c87f1cd}
+
+
+Combines the data front and back together. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em front} & First Cloud to combine \\
+\hline
+{\em back} & Second Cloud to combine \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Cloud Combined cloud 
+\end{DoxyReturn}
+\index{Laser\+Predictor@{Laser\+Predictor}!get\+Clustered\+Points@{get\+Clustered\+Points}}
+\index{get\+Clustered\+Points@{get\+Clustered\+Points}!Laser\+Predictor@{Laser\+Predictor}}
+\subsubsection[{\texorpdfstring{get\+Clustered\+Points()}{getClusteredPoints()}}]{\setlength{\rightskip}{0pt plus 5cm}sensor\+\_\+msgs\+::\+Point\+Cloud Laser\+Predictor\+::get\+Clustered\+Points (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classLaserPredictor_a665b9b39107726f46c5258908fc0abe4}{}\label{classLaserPredictor_a665b9b39107726f46c5258908fc0abe4}
+
+
+Get the combinaton of front and back laser data with cluster signature. 
+
+\begin{DoxyReturn}{Returns}
+Cloud \hyperlink{structLaserPredictor_1_1Data}{Data} wich holds a channel for the cluster number 
+\end{DoxyReturn}
+\index{Laser\+Predictor@{Laser\+Predictor}!get\+Number\+Of\+Predictions@{get\+Number\+Of\+Predictions}}
+\index{get\+Number\+Of\+Predictions@{get\+Number\+Of\+Predictions}!Laser\+Predictor@{Laser\+Predictor}}
+\subsubsection[{\texorpdfstring{get\+Number\+Of\+Predictions()}{getNumberOfPredictions()}}]{\setlength{\rightskip}{0pt plus 5cm}int Laser\+Predictor\+::get\+Number\+Of\+Predictions (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classLaserPredictor_a9634b4a17a0fbef515cd95c7aab5832f}{}\label{classLaserPredictor_a9634b4a17a0fbef515cd95c7aab5832f}
+
+
+Get the Number Of Predictions object. 
+
+\begin{DoxyReturn}{Returns}
+int Number of Predictions 
+\end{DoxyReturn}
+\index{Laser\+Predictor@{Laser\+Predictor}!get\+Pose@{get\+Pose}}
+\index{get\+Pose@{get\+Pose}!Laser\+Predictor@{Laser\+Predictor}}
+\subsubsection[{\texorpdfstring{get\+Pose(int i)}{getPose(int i)}}]{\setlength{\rightskip}{0pt plus 5cm}tf\+::\+Pose Laser\+Predictor\+::get\+Pose (
+\begin{DoxyParamCaption}
+\item[{int}]{i}
+\end{DoxyParamCaption}
+)}\hypertarget{classLaserPredictor_a3d5fcd96bfdb75a0ad582b14ff2e04dd}{}\label{classLaserPredictor_a3d5fcd96bfdb75a0ad582b14ff2e04dd}
+
+
+Get one of the Pose objects. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & Index of the Pose to get \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+tf\+::\+Pose Pose at this index 
+\end{DoxyReturn}
+\index{Laser\+Predictor@{Laser\+Predictor}!get\+Poses@{get\+Poses}}
+\index{get\+Poses@{get\+Poses}!Laser\+Predictor@{Laser\+Predictor}}
+\subsubsection[{\texorpdfstring{get\+Poses()}{getPoses()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Laser\+Predictor\+::\+Poses} Laser\+Predictor\+::get\+Poses (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classLaserPredictor_a91056be74cceed6f4fa79154118b69c0}{}\label{classLaserPredictor_a91056be74cceed6f4fa79154118b69c0}
+
+
+Get the predicted Poses. 
+
+\begin{DoxyReturn}{Returns}
+Poses Predicted Poses 
+\end{DoxyReturn}
+\index{Laser\+Predictor@{Laser\+Predictor}!get\+Registered\+Points@{get\+Registered\+Points}}
+\index{get\+Registered\+Points@{get\+Registered\+Points}!Laser\+Predictor@{Laser\+Predictor}}
+\subsubsection[{\texorpdfstring{get\+Registered\+Points()}{getRegisteredPoints()}}]{\setlength{\rightskip}{0pt plus 5cm}sensor\+\_\+msgs\+::\+Point\+Cloud Laser\+Predictor\+::get\+Registered\+Points (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classLaserPredictor_aafd0b92c01204d5b6ce494944e1ff381}{}\label{classLaserPredictor_aafd0b92c01204d5b6ce494944e1ff381}
+
+
+Get the combination of front and back laser data. 
+
+\begin{DoxyReturn}{Returns}
+Cloud The combination of front and back laser data 
+\end{DoxyReturn}
+\index{Laser\+Predictor@{Laser\+Predictor}!guess@{guess}}
+\index{guess@{guess}!Laser\+Predictor@{Laser\+Predictor}}
+\subsubsection[{\texorpdfstring{guess(\+Poses values)}{guess(Poses values)}}]{\setlength{\rightskip}{0pt plus 5cm}void Laser\+Predictor\+::guess (
+\begin{DoxyParamCaption}
+\item[{{\bf Poses}}]{values}
+\end{DoxyParamCaption}
+)}\hypertarget{classLaserPredictor_aa43afd04407b1a92d1ea722cc8d6d4bc}{}\label{classLaserPredictor_aa43afd04407b1a92d1ea722cc8d6d4bc}
+
+
+Give a guess where cluster(robots) are with respect to the base link frame. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em values} & each tf\+::\+Pose specifies a possible robot and is used as start value for clustering algorithms \\
+\hline
+\end{DoxyParams}
+\index{Laser\+Predictor@{Laser\+Predictor}!k\+Means@{k\+Means}}
+\index{k\+Means@{k\+Means}!Laser\+Predictor@{Laser\+Predictor}}
+\subsubsection[{\texorpdfstring{k\+Means(\+Cloud \&data, Points \&centers)}{kMeans(Cloud &data, Points &centers)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Laser\+Predictor\+::\+Clusters} Laser\+Predictor\+::k\+Means (
+\begin{DoxyParamCaption}
+\item[{{\bf Cloud} \&}]{data, }
+\item[{{\bf Points} \&}]{centers}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classLaserPredictor_aa1ba5f881fb2b50827bf6ef0802e596b}{}\label{classLaserPredictor_aa1ba5f881fb2b50827bf6ef0802e596b}
+
+
+Executes k-\/means clustering at the data with respect to the guessed cluster ceneters centers. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & \hyperlink{structLaserPredictor_1_1Data}{Data} wich are modified during the clustering process \\
+\hline
+{\em centers} & Centers wich are modified during the clustering process \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Points Final cluster centers 
+\end{DoxyReturn}
+\index{Laser\+Predictor@{Laser\+Predictor}!k\+Means@{k\+Means}}
+\index{k\+Means@{k\+Means}!Laser\+Predictor@{Laser\+Predictor}}
+\subsubsection[{\texorpdfstring{k\+Means(\+Cloud \&data, Poses \&centers)}{kMeans(Cloud &data, Poses &centers)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Laser\+Predictor\+::\+Clusters} Laser\+Predictor\+::k\+Means (
+\begin{DoxyParamCaption}
+\item[{{\bf Cloud} \&}]{data, }
+\item[{{\bf Poses} \&}]{centers}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classLaserPredictor_ab7fde5a32b1ac2dadc62aff4202a0456}{}\label{classLaserPredictor_ab7fde5a32b1ac2dadc62aff4202a0456}
+
+
+Executes k-\/means clustering at the data with respect to the guessed cluster ceneters centers. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & \hyperlink{structLaserPredictor_1_1Data}{Data} wich are modified during the clustering process \\
+\hline
+{\em centers} & Centers wich are modified during the clustering process \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Points Final cluster centers 
+\end{DoxyReturn}
+\index{Laser\+Predictor@{Laser\+Predictor}!start\+Clustering@{start\+Clustering}}
+\index{start\+Clustering@{start\+Clustering}!Laser\+Predictor@{Laser\+Predictor}}
+\subsubsection[{\texorpdfstring{start\+Clustering(double frequenzy)}{startClustering(double frequenzy)}}]{\setlength{\rightskip}{0pt plus 5cm}void Laser\+Predictor\+::start\+Clustering (
+\begin{DoxyParamCaption}
+\item[{double}]{frequenzy}
+\end{DoxyParamCaption}
+)}\hypertarget{classLaserPredictor_a5e9c2c66bd54512e480bbc1c88d2c13d}{}\label{classLaserPredictor_a5e9c2c66bd54512e480bbc1c88d2c13d}
+
+
+Starts the cluster algorithm. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em frequenzy} & Frequenzy how often the algorithm should be executed \\
+\hline
+\end{DoxyParams}
+\index{Laser\+Predictor@{Laser\+Predictor}!subscriber\+Back\+Callback@{subscriber\+Back\+Callback}}
+\index{subscriber\+Back\+Callback@{subscriber\+Back\+Callback}!Laser\+Predictor@{Laser\+Predictor}}
+\subsubsection[{\texorpdfstring{subscriber\+Back\+Callback(const sensor\+\_\+msgs\+::\+Laser\+Scan\+Const\+Ptr msg)}{subscriberBackCallback(const sensor_msgs::LaserScanConstPtr msg)}}]{\setlength{\rightskip}{0pt plus 5cm}void Laser\+Predictor\+::subscriber\+Back\+Callback (
+\begin{DoxyParamCaption}
+\item[{const sensor\+\_\+msgs\+::\+Laser\+Scan\+Const\+Ptr}]{msg}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classLaserPredictor_a33365cf376510441f49e19588674ead2}{}\label{classLaserPredictor_a33365cf376510441f49e19588674ead2}
+
+
+Callback for the back laser scanner subscribtion. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & data at the laser scanner topic \\
+\hline
+\end{DoxyParams}
+\index{Laser\+Predictor@{Laser\+Predictor}!subscriber\+Front\+Callback@{subscriber\+Front\+Callback}}
+\index{subscriber\+Front\+Callback@{subscriber\+Front\+Callback}!Laser\+Predictor@{Laser\+Predictor}}
+\subsubsection[{\texorpdfstring{subscriber\+Front\+Callback(const sensor\+\_\+msgs\+::\+Laser\+Scan\+Const\+Ptr msg)}{subscriberFrontCallback(const sensor_msgs::LaserScanConstPtr msg)}}]{\setlength{\rightskip}{0pt plus 5cm}void Laser\+Predictor\+::subscriber\+Front\+Callback (
+\begin{DoxyParamCaption}
+\item[{const sensor\+\_\+msgs\+::\+Laser\+Scan\+Const\+Ptr}]{msg}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classLaserPredictor_a58641b51a4d1120f6242b34def65d837}{}\label{classLaserPredictor_a58641b51a4d1120f6242b34def65d837}
+
+
+Callback for the front laser scanner subscribtion. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & data at the laser scanner topic \\
+\hline
+\end{DoxyParams}
+\index{Laser\+Predictor@{Laser\+Predictor}!transform\+Cloud@{transform\+Cloud}}
+\index{transform\+Cloud@{transform\+Cloud}!Laser\+Predictor@{Laser\+Predictor}}
+\subsubsection[{\texorpdfstring{transform\+Cloud(\+Cloud \&cloud, tf\+::\+Transform trafo)}{transformCloud(Cloud &cloud, tf::Transform trafo)}}]{\setlength{\rightskip}{0pt plus 5cm}void Laser\+Predictor\+::transform\+Cloud (
+\begin{DoxyParamCaption}
+\item[{{\bf Cloud} \&}]{cloud, }
+\item[{tf\+::\+Transform}]{trafo}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{classLaserPredictor_a06751e2996c1021bb8f4e4952b6286a4}{}\label{classLaserPredictor_a06751e2996c1021bb8f4e4952b6286a4}
+
+
+Applies the transform trafo to each point in the cloud. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cloud} & cloud to be transformed \\
+\hline
+{\em trafo} & trafo to be applied \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+formation/include/formation/laser\+\_\+predictor.\+h\item 
+formation/src/laser\+\_\+predictor.\+cpp\end{DoxyCompactItemize}

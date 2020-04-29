@@ -3,7 +3,7 @@ Launchfiles for launching the implemented functionalities are given in /multi\+\
 \item exe\+\_\+demo.\+launch\+: Executes a demo environment within basic funcitonalities of the robot formation can be shown.
 \item exe\+\_\+navigation.\+launch\+: Executes an environment within the robot formation can be used in combination with the navigation\+\_\+stack.
 \item exe\+\_\+transport.\+launch\+: Executes an environment within the robot formation is carrying a transport object.
-\item formation.\+launch\+: This is one of the importants launchfiles for using mobile robot formation. It launchs the robots for the formation and does the nescessary remaping for member parameters.
+\item formation.\+launch\+: This is one of the most important launchfiles for using mobile robot formation. It launchs the robots for the formation and does the nescessary remaping for member parameters.
 \item gazebo. launch\+: Just launches the gazeob environment.
 \item robot.\+launch\+: This launches the hole robot stuff. Eg. The robot state publisher the localisation node for extended kalman filter and loads parameter for these modules. This file does N\+OT load the Foramtion controller since this is located within the controller package!
 \item simulation.\+launch\+: Prepares simulations from skript files (see bash).
@@ -14,6 +14,15 @@ Launchfiles for launching the implemented functionalities are given in /multi\+\
 
 
 \begin{DoxyEnumerate}
-\item Execute exe\+\_\+demo.\+launch
-\item Execute the system handling node {\ttfamily roslaunch multi\+\_\+robot\+\_\+launcher exe\+\_\+demo.\+launch} wait til everything is setup {\ttfamily rosrun simulation\+\_\+env system\+\_\+handling\+\_\+node -\/plan -\/reference} if necessary click on simulation pasued within gazebo. 
+\item Execute exe\+\_\+demo.\+launch {\ttfamily \$roslaunch multi\+\_\+robot\+\_\+launcher exe\+\_\+demo.\+launch}
+\item Wait til everything is setup
+\item Execute the system handling node {\ttfamily \$rosrun simulation\+\_\+env system\+\_\+handling\+\_\+node -\/plan -\/reference}
+\end{DoxyEnumerate}
+
+\section*{How to modifie formation parameters\+:}
+
+
+\begin{DoxyEnumerate}
+\item Goto foramtion.\+yaml in the multi\+\_\+robot\+\_\+launcher package
+\item Change the parameter within the file 2a) If you change the number or names of formation memebers make sure that you do the same in the formation.\+launch file in mutli\+\_\+robot\+\_\+launcher package 
 \end{DoxyEnumerate}

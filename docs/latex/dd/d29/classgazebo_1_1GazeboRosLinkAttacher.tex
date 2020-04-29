@@ -1,0 +1,82 @@
+\hypertarget{classgazebo_1_1GazeboRosLinkAttacher}{}\section{gazebo\+:\+:Gazebo\+Ros\+Link\+Attacher Class Reference}
+\label{classgazebo_1_1GazeboRosLinkAttacher}\index{gazebo\+::\+Gazebo\+Ros\+Link\+Attacher@{gazebo\+::\+Gazebo\+Ros\+Link\+Attacher}}
+
+
+Inheritance diagram for gazebo\+:\+:Gazebo\+Ros\+Link\+Attacher\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=241pt]{d9/d98/classgazebo_1_1GazeboRosLinkAttacher__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for gazebo\+:\+:Gazebo\+Ros\+Link\+Attacher\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=241pt]{dc/da6/classgazebo_1_1GazeboRosLinkAttacher__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structgazebo_1_1GazeboRosLinkAttacher_1_1fixedJoint}{fixed\+Joint}
+\begin{DoxyCompactList}\small\item\em Internal representation of a fixed joint. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classgazebo_1_1GazeboRosLinkAttacher_a78371f65eeba823c1ba2d9afa1ec6947}{Gazebo\+Ros\+Link\+Attacher} ()\hypertarget{classgazebo_1_1GazeboRosLinkAttacher_a78371f65eeba823c1ba2d9afa1ec6947}{}\label{classgazebo_1_1GazeboRosLinkAttacher_a78371f65eeba823c1ba2d9afa1ec6947}
+
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+virtual \hyperlink{classgazebo_1_1GazeboRosLinkAttacher_a11bae998a168b982dbe92789904570db}{$\sim$\+Gazebo\+Ros\+Link\+Attacher} ()\hypertarget{classgazebo_1_1GazeboRosLinkAttacher_a11bae998a168b982dbe92789904570db}{}\label{classgazebo_1_1GazeboRosLinkAttacher_a11bae998a168b982dbe92789904570db}
+
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+void \hyperlink{classgazebo_1_1GazeboRosLinkAttacher_a11e7446b442f0cdbde9ca5d7947868c6}{Load} (physics\+::\+World\+Ptr \+\_\+world, sdf\+::\+Element\+Ptr)\hypertarget{classgazebo_1_1GazeboRosLinkAttacher_a11e7446b442f0cdbde9ca5d7947868c6}{}\label{classgazebo_1_1GazeboRosLinkAttacher_a11e7446b442f0cdbde9ca5d7947868c6}
+
+\begin{DoxyCompactList}\small\item\em Load the controller. \end{DoxyCompactList}\item 
+bool \hyperlink{classgazebo_1_1GazeboRosLinkAttacher_aa78798706ecdfe0dcbf905efbfc810fe}{attach} (std\+::string model1, std\+::string link1, std\+::string model2, std\+::string link2, std\+::string joint\+\_\+type)\hypertarget{classgazebo_1_1GazeboRosLinkAttacher_aa78798706ecdfe0dcbf905efbfc810fe}{}\label{classgazebo_1_1GazeboRosLinkAttacher_aa78798706ecdfe0dcbf905efbfc810fe}
+
+\begin{DoxyCompactList}\small\item\em Attach with a revolute joint. \end{DoxyCompactList}\item 
+bool \hyperlink{classgazebo_1_1GazeboRosLinkAttacher_a83db223615f28836f6f3cdc6590ed2c7}{detach} (std\+::string model1, std\+::string link1, std\+::string model2, std\+::string link2)\hypertarget{classgazebo_1_1GazeboRosLinkAttacher_a83db223615f28836f6f3cdc6590ed2c7}{}\label{classgazebo_1_1GazeboRosLinkAttacher_a83db223615f28836f6f3cdc6590ed2c7}
+
+\begin{DoxyCompactList}\small\item\em Detach. \end{DoxyCompactList}\item 
+bool {\bfseries get\+Joint} (std\+::string model1, std\+::string link1, std\+::string model2, std\+::string link2, \hyperlink{structgazebo_1_1GazeboRosLinkAttacher_1_1fixedJoint}{fixed\+Joint} \&joint)\hypertarget{classgazebo_1_1GazeboRosLinkAttacher_ac894e753858bc9037956bc164970dea1}{}\label{classgazebo_1_1GazeboRosLinkAttacher_ac894e753858bc9037956bc164970dea1}
+
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool {\bfseries attach\+\_\+callback} (gazebo\+\_\+ros\+\_\+link\+\_\+attacher\+::\+Attach\+::\+Request \&req, gazebo\+\_\+ros\+\_\+link\+\_\+attacher\+::\+Attach\+::\+Response \&res)\hypertarget{classgazebo_1_1GazeboRosLinkAttacher_a77b58d1c8f8f9887c4eacdbae33dbbc2}{}\label{classgazebo_1_1GazeboRosLinkAttacher_a77b58d1c8f8f9887c4eacdbae33dbbc2}
+
+\item 
+bool {\bfseries detach\+\_\+callback} (gazebo\+\_\+ros\+\_\+link\+\_\+attacher\+::\+Attach\+::\+Request \&req, gazebo\+\_\+ros\+\_\+link\+\_\+attacher\+::\+Attach\+::\+Response \&res)\hypertarget{classgazebo_1_1GazeboRosLinkAttacher_a63e93b7efb7c97e80bab07ea0a0a0fb6}{}\label{classgazebo_1_1GazeboRosLinkAttacher_a63e93b7efb7c97e80bab07ea0a0a0fb6}
+
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+ros\+::\+Node\+Handle {\bfseries nh\+\_\+}\hypertarget{classgazebo_1_1GazeboRosLinkAttacher_aa9f2e548b0d54e7654f5d695465c35d8}{}\label{classgazebo_1_1GazeboRosLinkAttacher_aa9f2e548b0d54e7654f5d695465c35d8}
+
+\item 
+ros\+::\+Service\+Server {\bfseries attach\+\_\+service\+\_\+}\hypertarget{classgazebo_1_1GazeboRosLinkAttacher_a0ad42302b9f911db4c4ee4575da1b21b}{}\label{classgazebo_1_1GazeboRosLinkAttacher_a0ad42302b9f911db4c4ee4575da1b21b}
+
+\item 
+ros\+::\+Service\+Server {\bfseries detach\+\_\+service\+\_\+}\hypertarget{classgazebo_1_1GazeboRosLinkAttacher_ac367ec2e6d4586a0b0012691c1eb9b9e}{}\label{classgazebo_1_1GazeboRosLinkAttacher_ac367ec2e6d4586a0b0012691c1eb9b9e}
+
+\item 
+std\+::vector$<$ \hyperlink{structgazebo_1_1GazeboRosLinkAttacher_1_1fixedJoint}{fixed\+Joint} $>$ {\bfseries joints}\hypertarget{classgazebo_1_1GazeboRosLinkAttacher_a923603dd1f79d61db2eb00deab94b84f}{}\label{classgazebo_1_1GazeboRosLinkAttacher_a923603dd1f79d61db2eb00deab94b84f}
+
+\item 
+physics\+::\+Physics\+Engine\+Ptr \hyperlink{classgazebo_1_1GazeboRosLinkAttacher_a123418ffa0ed6705f100fe4c2ede7a03}{physics}\hypertarget{classgazebo_1_1GazeboRosLinkAttacher_a123418ffa0ed6705f100fe4c2ede7a03}{}\label{classgazebo_1_1GazeboRosLinkAttacher_a123418ffa0ed6705f100fe4c2ede7a03}
+
+\begin{DoxyCompactList}\small\item\em The physics engine. \end{DoxyCompactList}\item 
+physics\+::\+World\+Ptr \hyperlink{classgazebo_1_1GazeboRosLinkAttacher_a5f6e8a6b84a0f04ff9a39bf53ff651fe}{world}\hypertarget{classgazebo_1_1GazeboRosLinkAttacher_a5f6e8a6b84a0f04ff9a39bf53ff651fe}{}\label{classgazebo_1_1GazeboRosLinkAttacher_a5f6e8a6b84a0f04ff9a39bf53ff651fe}
+
+\begin{DoxyCompactList}\small\item\em Pointer to the world. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+gazebo\+\_\+ros\+\_\+link\+\_\+attacher/include/gazebo\+\_\+ros\+\_\+link\+\_\+attacher.\+h\item 
+gazebo\+\_\+ros\+\_\+link\+\_\+attacher/src/gazebo\+\_\+ros\+\_\+link\+\_\+attacher.\+cpp\end{DoxyCompactItemize}
