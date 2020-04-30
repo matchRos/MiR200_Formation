@@ -20,14 +20,14 @@ planner:
 
 #Names of formation memebers for parsing the formation parameters
 formation:
-  # names: ["master","robot1","robot2","robot3","robot4","robot5"] #Names of the robots belonging to one formation
-  names: ["master","robot1","robot2"] #Names of the robots belonging to one formation
+  names: ["master","robot1","robot2","robot3","robot4"] #Names of the robots belonging to one formation
+  # names: ["master","robot1","robot2"] #Names of the robots belonging to one formation
 
 # Remaped, shared parameter for all the robots
 controller_type: 2                         # 1-> pseudo_invers 2->lyapov 3->angl_dist
 lyapunov: [7.0,12.0,2.0]                   # parameter for lyapunov algorythm: kx,ky,kphi
 angle_distance: [7.0,2.0,0.3]              # parameter for angle distance algorythm: kl,kpsi,d  
-topic_current_odometry: "odometry/filtered"  #Source of state estamination
+topic_current_odometry: "base_pose_ground_truth"  #Source of state estamination
 publish_tf: true  #Should be published at tf?
 world_frame: "/map" #Name of the map frame
 thresh: [0.0, 0.0, 0.0] #Thresholds for stopping motion. If velocities are below thresh the robot stops (Prevents oszillation)
@@ -43,30 +43,30 @@ master:
 robot1:  
   controller:
     master: "master"
-    reference: [1 , -1.5, 0, 0 ,0 ,0 ]    #X Y Z R P Y
-    topic_target_odometry:       "/master/odometry/filtered" 
+    reference: [0 , -2.75, 0, 0 ,0 ,0 ]    #X Y Z R P Y
+    topic_target_odometry:       "/master/base_pose_ground_truth" 
 
 robot2:      
   controller:
     master: "master"
-    reference: [1 , 1.5, 0, 0 ,0 ,0 ]    #X Y Z R P Y
-    topic_target_odometry:         "/master/odometry/filtered"   #topi  the target odometry of the robot is published at
+    reference: [0 ,2.75, 0, 0 ,0 ,0 ]    #X Y Z R P Y
+    topic_target_odometry:         "/master/base_pose_ground_truth"    #topi  the target odometry of the robot is published at
 
 robot3:
   controller:
     master: "master"
-    reference: [-2.5,1.5, 0, 0 ,0 ,0 ]    #X Y Z R P Y
-    topic_target_odometry:         "/master/odometry/filtered"     #topi  the target odometry of the robot is published at
+    reference: [0,1.25, 0, 0 ,0 ,0 ]    #X Y Z R P Y
+    topic_target_odometry:         "/master/base_pose_ground_truth"      #topi  the target odometry of the robot is published at
 
 robot4:  
   controller:
     master: "master"
-    reference: [-2.5, -1.5, 0, 0 ,0 ,0 ]    #X Y Z R P Y
-    topic_target_odometry:         "/master/odometry/filtered"       
+    reference: [0, -1.25, 0, 0 ,0 ,0 ]    #X Y Z R P Y
+    topic_target_odometry:         "/master/base_pose_ground_truth"        
 
 robot5:
   controller:
     master: "master"
     reference: [-1.5 , 0 , 0, 0 ,0 ,0 ]    #X Y Z R P Y
     publish_tf: true  
-    topic_target_odometry:        "/master/odometry/filtered"    #topi  the target odometry of the robot is published at
+    topic_target_odometry:        "/master/base_pose_ground_truth"     #topi  the target odometry of the robot is published at
