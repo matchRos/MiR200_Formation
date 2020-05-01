@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
     <param name="block_description" 
-        command="$(find xacro)/xacro --inorder $(find multi_robot_launcher)/urdf/transport_object.urdf.xacro object_name:=turbine x:=0.0 y:=0.0 z:=0.4 x_size:=5.0 y_size:=3.0 z_size:=0.1"/>
+        command="$(find xacro)/xacro --inorder $(find multi_robot_launcher)/urdf/transport_object.urdf.xacro object_name:=car x:=0.0 y:=0.0 z:=0.4 x_size:=5.0 y_size:=3.0 z_size:=0.1"/>
 
     <!-- <node name="box_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" args="robot_description:=box_description" /> -->
 
