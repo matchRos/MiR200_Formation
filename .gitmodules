@@ -1,3 +1,4 @@
 [submodule "multi_robot_launcher/gazebo_ros_link_attacher"]
 	path = multi_robot_launcher/gazebo_ros_link_attacher
 	url = https://github.com/ibMH/gazebo_ros_link_attacher.git
+	branch= melodic-devel
