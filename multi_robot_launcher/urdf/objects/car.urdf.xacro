@@ -8,14 +8,13 @@
                 <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
             </inertial>   
             <visual>
-                <origin xyz="-2.0 -1.0 0.0" rpy="1.57 0.0 1.57" />
+                <origin xyz="-2.0 -0.9 0.0" rpy="1.57 0.0 1.57" />
                 <geometry>      
                     <mesh filename="package://multi_robot_launcher/urdf/meshes/Mcqueen_Car.stl" scale="0.025 0.025 0.025"/>
                 </geometry>
             </visual>
         </link> 
         <gazebo reference="${link_name}">
-            <material>Gazebo/Orange</material>
         </gazebo>
     </xacro:macro>
 </robot>
