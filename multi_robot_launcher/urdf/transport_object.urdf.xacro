@@ -34,7 +34,7 @@
         </gazebo>
 
         <joint name="fixed_joint" type="fixed">
-            <origin xyz="${x} ${y} ${z}" rpy="0.0 0.0 0.0" />
+            <origin xyz="${x} ${y} ${z+z_size}" rpy="0.0 0.0 0.0" />
             <parent link="plate_link" />
             <child link="object_link" />
         </joint>
