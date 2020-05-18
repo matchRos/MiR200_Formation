@@ -38,7 +38,6 @@
             <parent link="plate_link" />
             <child link="object_link" />
         </joint>
-
         <xacro:object link_name="object_link"/>
     </xacro:macro>
 

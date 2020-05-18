@@ -1,12 +1,13 @@
 <?xml version="1.0"?>
 <launch>
+    <arg name="object_name" default="car"/>
     <param name="block_description" 
-        command="$(find xacro)/xacro --inorder $(find multi_robot_launcher)/urdf/transport_object.urdf.xacro object_name:=car x:=0.0 y:=0.0 z:=0.4 x_size:=.001 y_size:=.001 z_size:=0.001"/>
+        command="$(find xacro)/xacro --inorder $(find multi_robot_launcher)/urdf/transport_object.urdf.xacro object_name:=$(arg object_name) x:=0.0 y:=0.0 z:=0.4 x_size:=0.0001 y_size:=0.00001 z_size:=0.00001"/>
 
     <!-- <node name="box_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" args="robot_description:=box_description" /> -->
 
     <!--Spawn the MiR plattform into Gazebo-->
     <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" 
         args="-urdf -param block_description -model object -x 0.0 -y 0.0 -Y 0.0 -z 0.0" 
-        respawn="false" output="screen"/>          
+        respawn="false" output="screen"/>         
 </launch>

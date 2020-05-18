@@ -4,19 +4,21 @@
 
  <!-- Load the formation parameter file-->
   <rosparam file="$(find multi_robot_launcher)/config/formation.yaml" command="load"></rosparam>
-<!-- 
+
   <include file="$(find multi_robot_launcher)/launch/gazebo.launch">
     <arg name="world_name" value="$(find multi_robot_launcher)/worlds/empty_world.world"/>
     <arg name="paused" value="true" />
     <arg name="gui" value="true" />
     <arg name="recording" value="false"/>
-  </include> -->
+  </include>
 
   <!-- Setting up the Formation of robots -->
   <include file="$(find multi_robot_launcher)/launch/formation.launch"></include>
 
   <!-- Setting up the transport object -->
-  <include file="$(find multi_robot_launcher)/launch/spawn_transport_object.launch"></include>
+  <include file="$(find multi_robot_launcher)/launch/spawn_transport_object.launch">
+    <arg name="object_name" value="car2"/>
+  </include>
 
   <node name="rviz" pkg="rviz" type="rviz"   args="-d $(find multi_robot_launcher)/rviz/system.rviz" />
 

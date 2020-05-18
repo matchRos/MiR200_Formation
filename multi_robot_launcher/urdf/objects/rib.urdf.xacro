@@ -10,7 +10,7 @@
             <visual>
                 <origin xyz="0.1 -4.0 0.075" rpy="0 0.0 1.57" />
                 <geometry>      
-                    <mesh filename="package://multi_robot_launcher/urdf/meshes/Rib.stl" scale="0.01 0.01 0.01"/>
+                    <mesh filename="package://multi_robot_launcher/urdf/meshes/rib.stl" scale="0.01 0.01 0.01"/>
                 </geometry>
             </visual>
         </link> 

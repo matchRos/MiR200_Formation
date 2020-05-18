@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:macro name="object" params="link_name">
+        <link name="${link_name}">       
+            <inertial>
+                <origin xyz="0.0 0 0.0" rpy="0 0.0 0" />
+                <mass value="1"/>
+                <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+            </inertial>   
+            <visual>
+                <origin xyz="0.1 -2.0 0.025" rpy="0 0.0 1.57" />
+                <geometry>      
+                    <mesh filename="package://multi_robot_launcher/urdf/meshes/rib.stl" scale="0.005 0.005 0.005"/>
+                </geometry>
+            </visual>
+        </link> 
+        <gazebo reference="${link_name}">
+            <material>Gazebo/Grey</material>
+        </gazebo>
+    </xacro:macro>
+</robot>
