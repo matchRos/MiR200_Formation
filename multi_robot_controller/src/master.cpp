@@ -1,4 +1,4 @@
-#include <controller/master.h>
+#include <multi_robot_controller/master.h>
 
 Master::Master( std::string name,
                 ros::NodeHandle nh,

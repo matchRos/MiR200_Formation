@@ -1,6 +1,6 @@
 #include <ros/ros.h>
 #include <geometry_msgs/Twist.h>
-#include <controller/controller.h>
+#include <multi_robot_controller/controller.h>
 
 
 /**

@@ -1,4 +1,4 @@
-#include <controller/slave.h>
+#include <multi_robot_controller/slave.h>
 
 int main (int argc,char** argv)
 {

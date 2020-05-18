@@ -1,4 +1,4 @@
-#include <controller/master.h>
+#include <multi_robot_controller/master.h>
 
 int main(int argc, char **argv)
 {

@@ -1,4 +1,4 @@
-#include <controller/controller.h>
+#include <multi_robot_controller/controller.h>
 #include<numeric>
 Controller::Controller( std::string name,
                         ros::NodeHandle nh,

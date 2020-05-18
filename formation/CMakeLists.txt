@@ -110,7 +110,7 @@ find_package(Eigen3 REQUIRED)
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES formation
-#  CATKIN_DEPENDS controller nav_msgs roscpp
+#  CATKIN_DEPENDS multi_robot_controller nav_msgs roscpp
   DEPENDS EIGEN
 )
 

@@ -4,7 +4,7 @@
 #include <geometry_msgs/Twist.h>
 #include <nav_msgs/Odometry.h>
 #include <tf/transform_listener.h>
-#include <controller/controller.h>
+#include <multi_robot_controller/controller.h>
 
 
 

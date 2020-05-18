@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(controller)
+project(multi_robot_controller)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 add_compile_options(-std=c++11)
@@ -113,9 +113,9 @@ find_package(Eigen REQUIRED)
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include
-  LIBRARIES controller
+  LIBRARIES multi_robot_controller
 #  CATKIN_DEPENDS geometry_msgs nav_msgs roscpp multi_robot_msgs
-  DEPENDS EIGEN
+#  DEPENDS EIGEN
 )
 
 ###########
@@ -130,22 +130,20 @@ include_directories(
   ${Eigen_INCLUDE_DIRS}
 )
 ## Declare a C++ library
-add_library(controller
+add_library(multi_robot_controller
 
-  include/controller/controller.h
+  include/multi_robot_controller/controller.h
   src/controller.cpp
 
-  include/controller/master.h
+  include/multi_robot_controller/master.h
   src/master.cpp
 
-  include/controller/slave.h
+  include/multi_robot_controller/slave.h
   src/slave.cpp
 )
+add_dependencies(multi_robot_controller ${catkin_EXPORTED_TARGETS})
 
-## Add cmake target dependencies of the library
-## as an example, code may need to be generated before libraries
-## either from message generation or dynamic reconfigure
-add_dependencies(controller ${catkin_EXPORTED_TARGETS})
+
 
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
@@ -164,16 +162,15 @@ add_executable(master_node src/master_node.cpp)
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(controller
-  ${Eigen_LIBRARIES}
+target_link_libraries(multi_robot_controller
   ${catkin_LIBRARIES}
 )
 target_link_libraries(slave_node
-  controller
+  multi_robot_controller
   ${catkin_LIBRARIES}
 )
 target_link_libraries(master_node
-  controller
+  multi_robot_controller
   ${catkin_LIBRARIES}
 )
 
@@ -227,7 +224,7 @@ target_link_libraries(master_node
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_controller.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_multi_robot_controller.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

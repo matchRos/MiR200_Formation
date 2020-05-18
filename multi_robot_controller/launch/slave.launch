@@ -25,7 +25,7 @@
         <arg name="robot_name"     value="$(arg robot_name)" />
     </include>  
   
-    <node name="Controller" pkg="controller" type="slave_node" args="$(arg robot_name)" output="$(arg displ)"></node>
+    <node name="Controller" pkg="multi_robot_controller" type="slave_node" args="$(arg robot_name)" output="$(arg displ)"></node>
 </group> 
 </launch>
 
