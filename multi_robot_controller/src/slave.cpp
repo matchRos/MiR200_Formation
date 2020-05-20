@@ -28,6 +28,8 @@ void Slave::targetOdomCallback(nav_msgs::Odometry msg)
     //Transform msg to tf
     tf::Vector3 ang;
     tf::vector3MsgToTF(msg.twist.twist.angular,ang);
+    ang.setX(0.0);
+    ang.setY(0.0);
     tf::Vector3 lin;
  
     //Get the current velocity
@@ -51,31 +53,34 @@ void Slave::targetOdomCallback(nav_msgs::Odometry msg)
             tf::Transform trafo;  
             tf::poseMsgToTF(msg.pose.pose,trafo);
             tf::Transform rot;
-            rot.setRotation(trafo.getRotation());            
-            
+            rot.setRotation(trafo.getRotation());   
+              
+              
             
             //Calculate linear velocities
             tf::Vector3 rotational;
-            rotational=ang.cross(rot*this->master_reference_.getOrigin());
-            this->target_state_.velocity=rot*lin+rotational;
 
-            
+            rotational=ang.cross(rot*this->master_reference_.getOrigin());
+            this->target_state_.velocity=lin+rotational;
+
+
+            //Mean filter for Velocity data            
             std::vector<tf::Vector3> vec=this->buffer_.get();
             tf::Vector3 old_vel=std::accumulate(vec.begin(),vec.end(),tf::Vector3(0.0,0.0,0.0))/vec.size(); 
             this->buffer_.insert(target_state_.velocity);
             vec=this->buffer_.get();
             tf::Vector3 new_vel=std::accumulate(vec.begin(),vec.end(),tf::Vector3(0.0,0.0,0.0))/vec.size();
-
-
-            // tf::Vector3 acc;
-            // acc=(this->target_state_.velocity-this->target_state_old_.velocity)/(msg.header.stamp.toSec()-this->time_old_);
-
+            
+            
+            //Calculation of acceleration by numeric derivation
             tf::Vector3 acc;
             acc=(new_vel-old_vel)/(msg.header.stamp.toSec()-this->time_old_);
 
             tf::Vector3 vel=this->target_state_.velocity;            
             this->target_state_.angular_velocity=(vel.x()*acc.y()-vel.y()*acc.x())/vel.length2();
             this->target_state_.pose=trafo*this->master_reference_;
+
+            
             break;
         }
         
