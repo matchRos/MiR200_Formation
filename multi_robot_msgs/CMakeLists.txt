@@ -49,14 +49,13 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate messages in the 'msg' folder
 add_message_files(
   FILES
+  Array.msg
+  ArrayOfArrays.msg
   ControlVector.msg
   ControlState.msg
   ControlData.msg
   ControlDifference.msg
-  Array.msg
-  ArrayOfArrays.msg
   Formation.msg
-
 )
 
 ## Generate services in the 'srv' folder
