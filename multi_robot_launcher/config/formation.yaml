@@ -3,7 +3,7 @@ planner:
   type: 0        #0->lissajous 1->circle 2->clickedPose 3->spiral 4->StepResponse
   pause: false
   iterations: 1
-  reference:  [0.75 , 0.7 , 0, 0 ,0 ,0 ]    #X Y Z R P Y
+  reference:  [0.0 , -0.6 , 0, 0 ,0 ,0 ]    #X Y Z R P Y
   
   growth: 0.33 
   r0: 3
@@ -24,8 +24,9 @@ formation:
   # names: ["master","robot1"] #Names of the robots belonging to one formation
 
 # Remaped, shared parameter for all the robots
-controller_type: 2                         # 1-> pseudo_invers 2->lyapov 3->angl_dist
-lyapunov: [7.0,12.0,2.0]                   # parameter for lyapunov algorythm: kx,ky,kphi
+controller_type: 2                        # 1-> pseudo_invers 2->lyapov 3->angl_dist
+# lyapunov: [36.0,80.0,2.0]                   # parameter for lyapunov algorythm: kx,ky,kphi
+lyapunov: [7.0,12.0,2.0]  
 angle_distance: [7.0,2.0,0.3]              # parameter for angle distance algorythm: kl,kpsi,d  
 topic_current_odometry: "base_pose_ground_truth"  #Source of state estamination
 publish_tf: true  #Should be published at tf?
@@ -36,32 +37,32 @@ thresh: [0.0, 0.0, 0.0] #Thresholds for stopping motion. If velocities are below
 #Formation member specification
 master:      
   controller: 
-    controller_type: 2
-    reference: [0.0 , -0.6 , 0, 0 ,0 ,0 ]    #X Y Z R P Y given in the world frame
+    controller_type: 0  
+    reference: [0.0 , -0 , 0, 0 ,0 ,0 ]    #X Y Z R P Y given in the world frame
     topic_target_odometry:      "/trajectory_odom"  #Topic where the target position/velocities are given at
 
 robot1:  
   controller:
     master: "master"
-    reference: [0.0 , 0.6 , 0, 0 ,0 ,0 ]    #X Y Z R P Y
+    reference: [0,-1.5 , 0, 0 ,0 ,0 ]    #X Y Z R P Y
     topic_target_odometry:       "/master/base_pose_ground_truth" 
 
 robot2:      
   controller:
     master: "master"
-    reference: [-2, -0.6, 0, 0 ,0 ,0 ]    #X Y Z R P Y
+    reference: [0,-3, 0, 0 ,0 ,0 ]    #X Y Z R P Y
     topic_target_odometry:         "/master/base_pose_ground_truth"    #topi  the target odometry of the robot is published at
 
 robot3:
   controller:
     master: "master"
-    reference: [-2, 0.6, 0, 0 ,0 ,0 ]    #X Y Z R P Y
+    reference: [0,-4.5,0, 0 ,0 ,0 ]    #X Y Z R P Y
     topic_target_odometry:         "/master/base_pose_ground_truth"      #topi  the target odometry of the robot is published at
 
 robot4:  
   controller:
     master: "master"
-    reference: [0.0, 1.5, 0, 0 ,0 ,0 ]    #X Y Z R P Y
+    reference: [0,0.0, 1.5, 0, 0 ,0 ,0 ]    #X Y Z R P Y
     topic_target_odometry:         "/master/base_pose_ground_truth"        
 
 robot5:

@@ -14,6 +14,7 @@
 #include <multi_robot_msgs/ControlVector.h>
 #include <multi_robot_msgs/ControlDifference.h>
 #include <multi_robot_msgs/SetInitialPose.h>
+#include <multi_robot_msgs/SetParameter.h>
 #include <boost/accumulators/accumulators.hpp>
 #include <boost/accumulators/statistics/mean.hpp>
 
@@ -419,6 +420,15 @@ class Controller{
          */
         bool srvSetReferenceFrame(multi_robot_msgs::SetInitialPoseRequest &req,multi_robot_msgs::SetInitialPoseResponse &res);
 
+        /**
+         * @brief Service for setting the control laws parameters
+         * 
+         * @param req Request that contains the parameters
+         * @param res 
+         * @return true Succeded
+         * @return false Not Succeded
+         */
+        bool srvSetParameter(multi_robot_msgs::SetParameterRequest &req,multi_robot_msgs::SetParameterResponse &res);
 
         //###################################################################################################################################
         //###################################################################################################################################
@@ -488,6 +498,7 @@ class Controller{
 
         ros::ServiceServer srv_reset;                                ///<Service for resetting the controller
         ros::ServiceServer srv_set_reference_frame_;     ///<Service for setting the initial pose
+        ros::ServiceServer srv_set_parameter_;      ///<Service for setting the control parameters
         ros::Timer time_scope_;                                      ///<Timer for control scope
 
         bool publish_tf_;   ///<Flag if baselink should be published by the controller

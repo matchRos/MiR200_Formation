@@ -21,6 +21,7 @@ Controller::Controller( std::string name,
     //Initialize control difference
     control_dif_=tf::Transform(tf::createIdentityQuaternion(),tf::Vector3(0,0,0));
     this->srv_set_reference_frame_=this->controller_nh.advertiseService("set_reference_frame",&Controller::srvSetReferenceFrame,this);
+    this->srv_set_parameter_=this->controller_nh.advertiseService("set_parameter",&Controller::srvSetParameter,this);
     this->acc_=tf::Vector3(0,0,0);
 } 
 
@@ -280,7 +281,7 @@ void Controller::currentOdomCallback(nav_msgs::Odometry msg)
     rot.setRotation(trafo.getRotation());
     //Transfor pose and velocity
     pose=trafo*pose;
-    vel=tf::Transform(pose.getRotation(),tf::Vector3(0.0,0.0,0.0))*vel;
+    vel=rot*vel;
            
 
     //Write to member
@@ -323,16 +324,13 @@ void Controller::targetOdomCallback(nav_msgs::Odometry msg)
     pose=trafo*pose;
     vel=rot*vel;
 
-    // this->time_buffer_.push_back(msg.header.stamp.toSec());
-    // this->velocity_buffer_.push_back(target_state_.velocity);
     //Write to member
     this->target_state_.pose=pose;
     this->target_state_.velocity=vel;
     this->target_state_.angular_velocity=msg.twist.twist.angular.z;
 }
 /*Service routines ####################################################################################################################
-##################################################################################################################################################*/
-       
+##################################################################################################################################################*/     
 
 bool Controller::srvReset(std_srvs::EmptyRequest &req, std_srvs::EmptyResponse &res)
 {
@@ -347,6 +345,24 @@ bool Controller::srvSetReferenceFrame(multi_robot_msgs::SetInitialPoseRequest &r
     this->setReferenceFrame(pose);
     res.succeded=true;   
     return true;
+}
+
+bool Controller::srvSetParameter(multi_robot_msgs::SetParameterRequest &req,multi_robot_msgs::SetParameterResponse &res)
+{
+    std::vector<float> param=req.parameter;
+    switch(this->type)
+    {
+        case ControllerType::lypanov:
+        {
+            this->setControlParameter(LyapunovParameter(param));
+            break;
+        }           
+        case ControllerType::angle_distance: 
+        {
+            this->setControlParameter(AngleDistanceParameter(param));
+            break;
+        }            
+    }
 }
 
 /*Publishsing procedures####################################################################################################################
@@ -369,7 +385,7 @@ void Controller::publishReferenceFrame()
     geometry_msgs::TransformStamped msg2;
     msg2.header.stamp = ros::Time::now();
     msg2.header.frame_id =this->world_frame ;
-    msg2.child_frame_id=this->robot_nh_.resolveName("reference");
+    msg2.child_frame_id=this->robot_nh_.resolveName("odom_comb");
     tf::transformTFToMsg(this->reference_frame_,msg2.transform);
     this->broadcaster_.sendTransform(msg2); 
 }
@@ -402,7 +418,7 @@ void Controller::publishBaseLink()
     //Publish base_link
     tf::StampedTransform base_link( this->reference_frame_.inverseTimes(this->current_state_.pose),
                                     ros::Time::now(),
-                                    robot_nh_.resolveName("reference"),
+                                    robot_nh_.resolveName("odom_comb"),
                                     robot_nh_.resolveName("base_footprint"));
     this->broadcaster_.sendTransform(base_link);
 }
@@ -420,18 +436,12 @@ Controller::ControlVector Controller::calcLyapunov(LyapunovParameter parameter,C
     double x=relative.getOrigin().getX();
     double y=relative.getOrigin().getY();
     double phid;
-    if(this->target_state_.velocity.length()>0.01)
-    {
-        phid=std::atan2(this->target_state_.velocity.y(),this->target_state_.velocity.x());
-    }
-    else
-    {
-       phid=tf::getYaw(this->target_state_.pose.getRotation());
-    }
+    phid=tf::getYaw(this->target_state_.pose.getRotation());
     
     
     double phi=tf::getYaw(this->current_state_.pose.getRotation());
     phi=phid-phi;
+
    
     ControlVector output;
     output.v=parameter.kx*x+v*cos(phi);
@@ -464,20 +474,6 @@ Controller::ControlVector Controller::calcAngleDistance(AngleDistanceParameter p
 
 void Controller::execute(const ros::TimerEvent &ev)
 {       
-    // if(velocity_buffer_.size()>2)
-    // {
-    //     tf::Vector3 mean_vel=std::accumulate(this->velocity_buffer_.begin(),this->velocity_buffer_.end(),tf::Vector3(0,0,0))/this->velocity_buffer_.size();
-    //     double mean_time=std::accumulate(this->time_buffer_.begin(),this->time_buffer_.end(),0)/this->time_buffer_.size();
-    //     this->acc_=(mean_vel-this->vel_old)/(mean_time-this->time_old_);
-    //     this->time_buffer_.clear();
-    //     this->velocity_buffer_.clear();
-    //     this->vel_old=mean_vel;
-    //     this->time_old_=mean_time;
-    // }
-    // else
-    // {
-    //     ROS_WARN("%s:To less velocity values for numerical differentaition off acceleration",ros::this_node::getName().c_str());
-    // }
     switch(this->type)
     {
         case ControllerType::disable:
@@ -498,6 +494,6 @@ void Controller::execute(const ros::TimerEvent &ev)
             break;            
         default: 
             break;
-    }
-    
+    }    
 }
+ 
