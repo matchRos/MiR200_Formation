@@ -31,14 +31,19 @@ void Slave::targetOdomCallback(nav_msgs::Odometry msg)
     ang.setX(0.0);
     ang.setY(0.0);
     tf::Vector3 lin;
- 
+
+    //Get necessary transformations
+    tf::Transform trafo;  
+    tf::poseMsgToTF(msg.pose.pose,trafo);
+    tf::Transform rot(trafo.getRotation(),tf::Vector3(0.0,0.0,0.0));
+    
+
     //Get the current velocity
     VelocityEulerian vel_eul;
     //Project to x axis since sometimes odometry velocity is given in parent framen not in child
     vel_eul.v=std::sqrt(std::pow(msg.twist.twist.linear.x,2)+std::pow(msg.twist.twist.linear.y,2)+std::pow(msg.twist.twist.linear.z,2));    //Nessescarry since ros is not consistent with odom msg. Sometimes its lagrangian sometimes eulerian
-    VelocityCartesian vel;
-    lin=tf::Vector3(vel_eul.v,0.0,0.0);
-    
+    lin=rot*tf::Vector3(vel_eul.v,0.0,0.0); //Proper cartesian velocity
+
     //Filtering   
     if(std::abs(lin.x())<this->thresh_.x()){lin.setX(0.0);}
     if(std::abs(lin.y())<this->thresh_.y()){lin.setY(0.0);}
@@ -49,13 +54,6 @@ void Slave::targetOdomCallback(nav_msgs::Odometry msg)
         case ControllerType::lypanov:
         case ControllerType::pseudo_inverse:
         {
-            //Get necessary transformations
-            tf::Transform trafo;  
-            tf::poseMsgToTF(msg.pose.pose,trafo);
-            tf::Transform rot;
-            rot.setRotation(trafo.getRotation());   
-              
-              
             
             //Calculate linear velocities
             tf::Vector3 rotational;
@@ -81,7 +79,7 @@ void Slave::targetOdomCallback(nav_msgs::Odometry msg)
             double angle=std::atan2(new_vel.y(),new_vel.x());
             if(angle<0.0){angle+=2*M_PI;}
             this->target_state_.pose.setRotation(tf::createQuaternionFromYaw(angle));          
-            this->target_state_.angular_velocity=(new_vel.x()*acc.y()-new_vel.y()*acc.x())/new_vel.length2();
+            this->target_state_.angular_velocity=(this->target_state_.velocity.x()*acc.y()-this->target_state_.velocity.y()*acc.x())/this->target_state_.velocity.length2();
             break;
         }
         

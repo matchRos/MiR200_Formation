@@ -432,23 +432,16 @@ Controller::ControlVector Controller::calcLyapunov(LyapunovParameter parameter,C
     double omega=target.angular_velocity;
     double v=sqrt(pow(target.velocity.getX(),2)+pow(target.velocity.getY(),2)); 
     
-    tf::Transform relative=current.pose.inverseTimes(target.pose);
-    double x=relative.getOrigin().getX();
-    double y=relative.getOrigin().getY();
-    double phid;
-    phid=tf::getYaw(this->target_state_.pose.getRotation());    
-    
-    double phi=tf::getYaw(this->current_state_.pose.getRotation());
-    phi=phid-phi;
-    
+    this->control_dif_=current.pose.inverseTimes(target.pose);
+    double x=this->control_dif_.getOrigin().getX();
+    double y=this->control_dif_.getOrigin().getY();
+    double phi=tf::getYaw(this->control_dif_.getRotation());
 
    
     ControlVector output;
     output.v=parameter.kx*x+v*cos(phi);
     output.omega=omega+parameter.ky*v*y+parameter.kphi*sin(phi);
 
-    this->control_dif_.setRotation(tf::createQuaternionFromYaw(phi));
-    this->control_dif_.setOrigin(tf::Vector3(x,y,0.0));
     return output;
 }
 
