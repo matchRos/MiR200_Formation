@@ -21,7 +21,7 @@ Careful: Just works if /master/controller/controller_type is the correct path (n
 
 <!-- Start map stuff -->
 <node name="static_map_server" pkg="map_server" type="map_server"
-  args="$(find mir_gazebo)/maps/test.yaml" output="screen">
+  args="$(find multi_robot_launcher)/maps/empty_hall.yaml" output="log">
   <param name="frame_id" type="string" value="map"/>
 </node>
 
