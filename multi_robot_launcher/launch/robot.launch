@@ -8,7 +8,7 @@
   
   
   <!-- Load the robot describing urdf xacro with a given tf_prefix for getting propert frames-->  
-   <param name="robot_description" command="$(find xacro)/xacro --inorder $(find multi_robot_launcher)/urdf/mir_gazebo.urdf.xacro tf_prefix:=$(arg prefix) prefix:=$(arg prefix)"/>
+   <param name="robot_description" command="$(find xacro)/xacro --inorder $(find multi_robot_launcher)/urdf/mir_gazebo.urdf.xacro tf_prefix:=$(arg robot_name) prefix:=$(arg prefix)"/>
 
 
   <!-- Spawn the robot into Gazebo -->

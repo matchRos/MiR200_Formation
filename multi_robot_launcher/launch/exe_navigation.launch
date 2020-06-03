@@ -13,23 +13,26 @@
     <arg name="recording" value="false"/>
   </include>
 
-<!-- Setting up the Formation of robots -->
-<param name="/robot_master/controller/controller_type" type="int" value="0"/> 
+<!-- Setting up the Formation of robots --><!--forcing the master controller to be disabled. 
+Careful: Just works if /master/controller/controller_type is the correct path (nothing modified)-->
+<param name="/master/controller/controller_type" type="int" value="0"/> 
 <include file="$(find multi_robot_launcher)/launch/formation.launch"></include>
 
 
-<!-- Start navigation stuff -->
+<!-- Start map stuff -->
 <node name="static_map_server" pkg="map_server" type="map_server"
-  args="$(find mir_gazebo)/maps/empty_cost.yaml" ns="/" output="screen">
-  <param name="frame_id" type="string" value="/map"/>
+  args="$(find multi_robot_launcher)/maps/empty_hall.yaml" output="log">
+  <param name="frame_id" type="string" value="map"/>
 </node>
 
+<!-- Start navigation stuff for the master-->
 <group ns="master">
-  <include file="$(find mir_navigation)/launch/mir_nav/move_base.xml">
-    <arg name="local_planner" value="dwa"/>
-  </include>
+<include file="$(find mir_navigation)/launch/mir_nav/move_base.xml">
+  <arg name="prefix" value="master/"/>
+  <arg name="local_planner" value="dwa"/>
+</include>
 </group>
 
-<node name="rviz" pkg="rviz" type="rviz"   args="-d $(find multi_robot_launcher)/rviz/system.rviz" />
+<node name="rviz" pkg="rviz" type="rviz"   args="-d $(find multi_robot_launcher)/rviz/navigation.rviz" />
 
 </launch>

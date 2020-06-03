@@ -71,7 +71,7 @@
   <arg name="robot_x"   value="-1.0" />  
   <arg name="robot_y"   value="0.0" />
   <arg name="robot_yaw" value="0" />
-  <arg name="displ" value="screen"/>
+  <arg name="displ" value="log"/>
 </include>
 
 <!-- Setup a slave mobile robot-->
@@ -80,7 +80,7 @@
   <arg name="robot_x"   value="-1.5" />
   <arg name="robot_y"   value="1.5" />
   <arg name="robot_yaw" value="0" />
-  <arg name="displ" value="screen"/>  
+  <arg name="displ" value="log"/>  
 </include>
 
 <!-- Setup a slave mobile robot-->
@@ -89,7 +89,7 @@
   <arg name="robot_x"   value="-1.5" />
   <arg name="robot_y"   value="-1.5" />
   <arg name="robot_yaw" value="0" />
-  <arg name="displ" value="screen"/>
+  <arg name="displ" value="log"/>
 </include>
 
 <!-- Setup a slave mobile robot-->
