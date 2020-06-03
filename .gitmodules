@@ -1,3 +1,6 @@
-[submodule "gazebo_ros_link_attacher"]
-	path = gazebo_ros_link_attacher
+[submodule "submodules/gazebo_ros_link_attacher"]
+	path = submodules/gazebo_ros_link_attacher
 	url = https://github.com/ibMH/gazebo_ros_link_attacher.git
+[submodule "submodules/mir_200"]
+	path = submodules/mir_200
+	url = https://github.com/matchRos/MiR200_Sim.git
