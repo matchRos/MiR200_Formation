@@ -41,6 +41,7 @@ void Controller::controlState2controlStateMsg(Controller::ControlState &state,mu
     tf::poseTFToMsg(state.pose,msg.pose);
     msg.angle=tf::getYaw(state.pose.getRotation());
     msg.angular_velocity=state.angular_velocity;
+    msg.linear_velocity=std::sqrt(std::pow(state.velocity.x(),2)+std::pow(state.velocity.y(),2));
     tf::vector3TFToMsg(state.velocity,msg.velocity);
 }
 void Controller::controlDifference2controlDifferenceMsg(ControlDifference &difference,multi_robot_msgs::ControlDifference &msg)
@@ -276,11 +277,12 @@ void Controller::currentOdomCallback(nav_msgs::Odometry msg)
     {
         ROS_WARN("%s",ex.what());
     }
-    //Get the rotation part
-    tf::Transform rot;
-    rot.setRotation(trafo.getRotation());
-    //Transfor pose and velocity
+    //Transform the robot pose to proper frame
     pose=trafo*pose;
+    //Get rotational part
+    tf::Transform rot(pose.getRotation(),tf::Vector3(0.0,0.0,0.0));
+    
+    //Transform eulerian velocity    
     vel=rot*vel;
            
 
@@ -396,12 +398,10 @@ void Controller::publishControlMetaData()
     multi_robot_msgs::ControlData msg;
     msg.header.frame_id=this->world_frame;
     msg.header.stamp=ros::Time::now();
-    // controlDifference2controlDifferenceMsg(this->control_dif_,msg.difference);
+    controlDifference2controlDifferenceMsg(this->control_dif_,msg.difference);
     controlState2controlStateMsg(this->current_state_,msg.current);
     controlState2controlStateMsg(this->target_state_,msg.target);
     controlVector2controlVectorMsg(this->control_,msg.control);
-    msg.difference.angle=tf::getYaw(this->control_dif_.getRotation());
-    tf::vector3TFToMsg(this->control_dif_.getOrigin(),msg.difference.translation);
     this->pub_control_data.publish(msg);
 }
 
@@ -436,17 +436,19 @@ Controller::ControlVector Controller::calcLyapunov(LyapunovParameter parameter,C
     double x=relative.getOrigin().getX();
     double y=relative.getOrigin().getY();
     double phid;
-    phid=tf::getYaw(this->target_state_.pose.getRotation());
-    
+    phid=tf::getYaw(this->target_state_.pose.getRotation());    
     
     double phi=tf::getYaw(this->current_state_.pose.getRotation());
     phi=phid-phi;
+    
 
    
     ControlVector output;
     output.v=parameter.kx*x+v*cos(phi);
     output.omega=omega+parameter.ky*v*y+parameter.kphi*sin(phi);
 
+    this->control_dif_.setRotation(tf::createQuaternionFromYaw(phi));
+    this->control_dif_.setOrigin(tf::Vector3(x,y,0.0));
     return output;
 }
 

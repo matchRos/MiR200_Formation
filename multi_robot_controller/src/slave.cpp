@@ -76,11 +76,12 @@ void Slave::targetOdomCallback(nav_msgs::Odometry msg)
             tf::Vector3 acc;
             acc=(new_vel-old_vel)/(msg.header.stamp.toSec()-this->time_old_);
 
-            tf::Vector3 vel=this->target_state_.velocity;            
-            this->target_state_.angular_velocity=(vel.x()*acc.y()-vel.y()*acc.x())/vel.length2();
+            tf::Vector3 vel=this->target_state_.velocity;  
             this->target_state_.pose=trafo*this->master_reference_;
-
-            
+            double angle=std::atan2(new_vel.y(),new_vel.x());
+            if(angle<0.0){angle+=2*M_PI;}
+            this->target_state_.pose.setRotation(tf::createQuaternionFromYaw(angle));          
+            this->target_state_.angular_velocity=(new_vel.x()*acc.y()-new_vel.y()*acc.x())/new_vel.length2();
             break;
         }
         
@@ -94,8 +95,6 @@ void Slave::targetOdomCallback(nav_msgs::Odometry msg)
     }
     this->target_state_old_=this->target_state_;
     this->time_old_=msg.header.stamp.toSec();
-    // this->time_buffer_.push_back(msg.header.stamp.toSec());
-    // this->velocity_buffer_.push_back(target_state_.velocity);
 }
 
 
