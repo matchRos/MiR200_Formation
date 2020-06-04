@@ -3,7 +3,6 @@
 <launch>  
 
  <!-- Load the formation parameter file-->
-<!-- Load the formation parameter file-->
   <rosparam file="$(find multi_robot_launcher)/config/formation.yaml" command="load"></rosparam>
 
   <include file="$(find multi_robot_launcher)/launch/gazebo.launch">
@@ -13,9 +12,10 @@
     <arg name="recording" value="false"/>
   </include>
 
-<!-- Setting up the Formation of robots --><!--forcing the master controller to be disabled. 
+<!--forcing the master controller to be disabled. 
 Careful: Just works if /master/controller/controller_type is the correct path (nothing modified)-->
 <param name="/master/controller/controller_type" type="int" value="0"/> 
+<!-- Setting up the Formation of robots -->
 <include file="$(find multi_robot_launcher)/launch/formation.launch"></include>
 
 
@@ -33,6 +33,7 @@ Careful: Just works if /master/controller/controller_type is the correct path (n
 </include>
 </group>
 
+<!-- Some visualisation stuff-->
 <node name="rviz" pkg="rviz" type="rviz"   args="-d $(find multi_robot_launcher)/rviz/navigation.rviz" />
 
 </launch>

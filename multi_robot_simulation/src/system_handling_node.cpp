@@ -4,7 +4,7 @@
 #include <gazebo_msgs/SetModelState.h>
 #include <std_srvs/Empty.h>
 #include <tf/tf.h>
-#include <simulation_env/planner.h>
+#include <multi_robot_simulation/planner.h>
 
 Planner* planner;
 tf::Pose reference;
