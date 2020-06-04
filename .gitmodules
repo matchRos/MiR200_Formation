@@ -1,3 +1,8 @@
-[submodule "submodules/mir_200"]
-	path = submodules/mir_200
+[submodule "submodules/gazebo_ros_link_attacher"]
+	path = submodules/gazebo_ros_link_attacher
+	url = https://github.com/ibMH/gazebo_ros_link_attacher.git
+	branch = master
+[submodule "submodules/mir200_sim"]
+	path = submodules/mir200_sim
 	url = https://github.com/matchRos/MiR200_Sim.git
+	branch = master
