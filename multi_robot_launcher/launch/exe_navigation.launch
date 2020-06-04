@@ -29,7 +29,7 @@ Careful: Just works if /master/controller/controller_type is the correct path (n
 <group ns="master">
 <include file="$(find mir_navigation)/launch/mir_nav/move_base.xml">
   <arg name="prefix" value="master/"/>
-  <arg name="local_planner" value="dwa"/>
+  <arg name="local_planner" value="dwa_formation"/>
 </include>
 </group>
 
