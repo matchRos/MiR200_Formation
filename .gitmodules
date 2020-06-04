@@ -2,3 +2,6 @@
 	path = submodules/gazebo_ros_link_attacher
 	url = https://github.com/ibMH/gazebo_ros_link_attacher.git
 	branch = melodic-devel
+[submodule "submodules/mir_200"]
+	path = submodules/mir_200
+	url = https://github.com/matchRos/MiR200_Sim.git

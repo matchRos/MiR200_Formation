@@ -10,7 +10,7 @@
             <visual>
                 <origin xyz="-2.0 -0.9 0.0" rpy="1.57 0.0 1.57" />
                 <geometry>      
-                    <mesh filename="package://multi_robot_launcher/urdf/meshes/Mcqueen_Car.stl" scale="0.025 0.025 0.025"/>
+                    <mesh filename="package://multi_robot_launcher/urdf/meshes/car.stl" scale="0.025 0.025 0.025"/>
                 </geometry>
             </visual>
         </link> 

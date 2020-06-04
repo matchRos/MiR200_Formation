@@ -265,12 +265,14 @@ int main(int argc, char** argv)
     {
         ROS_INFO("Setting system references!");
         setReferences(nh);
+        ROS_INFO("Setting system references done!");
     }
     if(linkage)
     {
        
         ROS_INFO("Linking object to system!");
         linkObject(nh);
+         ROS_INFO("Linking object to system done!");
     }
     if(link_camera)
     {
