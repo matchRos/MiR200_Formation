@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>simulation_env</name>
+  <name>multi_robot_simulation</name>
   <version>0.0.0</version>
-  <description>The simulation_env package</description>
+  <description>The multi_robot_simulation package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
@@ -54,15 +54,14 @@
   <depend>sensor_msgs</depend>
   <depend>formation</depend>
 
-
-  <build_depend>controller</build_depend>
+  <build_depend>multi_robot_controller</build_depend>
   <build_depend>nav_msgs</build_depend>  
   <build_depend>roscpp</build_depend>
-   <build_depend>laser_geometry</build_depend>
-  <build_export_depend>controller</build_export_depend>
+  <build_depend>laser_geometry</build_depend>
+  <build_export_depend>multi_robot_controller</build_export_depend>
   <build_export_depend>nav_msgs</build_export_depend>
   <build_export_depend>roscpp</build_export_depend>
-  <exec_depend>controller</exec_depend>
+  <exec_depend>multi_robot_controller</exec_depend>
   <exec_depend>nav_msgs</exec_depend>
   <exec_depend>roscpp</exec_depend>
 

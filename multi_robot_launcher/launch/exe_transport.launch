@@ -5,6 +5,7 @@
  <!-- Load the formation parameter file-->
   <rosparam file="$(find multi_robot_launcher)/config/formation.yaml" command="load"></rosparam>
 
+  <!--Load the simulation environment-->
   <include file="$(find multi_robot_launcher)/launch/gazebo.launch">
     <arg name="world_name" value="$(find multi_robot_launcher)/worlds/empty_world.world"/>
     <arg name="paused" value="true" />
@@ -20,6 +21,7 @@
     <arg name="object_name" value="car2"/>
   </include>
 
+  <!-- Setting up some visualisation stuff-->
   <node name="rviz" pkg="rviz" type="rviz"   args="-d $(find multi_robot_launcher)/rviz/system.rviz" />
 
 </launch>

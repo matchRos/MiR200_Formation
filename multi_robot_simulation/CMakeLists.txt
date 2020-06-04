@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(simulation_env)
+project(multi_robot_simulation)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 add_compile_options(-std=c++11)
@@ -118,7 +118,7 @@ find_package(Eigen REQUIRED)
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include
-  LIBRARIES simulation_env
+  LIBRARIES multi_robot_simulation
 #  CATKIN_DEPENDS controller nav_msgs roscpp
   DEPENDS EIGEN
 )
@@ -242,7 +242,7 @@ add_dependencies(system_handling_node ${catkin_EXPORTED_TARGETS})
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_simulation_env.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_multi_robot_simulation.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
