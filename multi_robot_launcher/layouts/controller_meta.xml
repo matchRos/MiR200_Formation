@@ -1,97 +1,99 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <root version="2.3.8">
  <tabbed_widget parent="main_window" name="Main Window">
-  <plotmatrix tab_name="plot" rows="5" columns="3">
+  <plotmatrix rows="5" tab_name="plot" columns="3">
    <plot col="0" row="0">
-    <range right="60.000000" bottom="0.669661" left="0.000000" top="5.645634"/>
+    <range bottom="-1.562709" right="127.875000" left="0.000000" top="21.433656"/>
     <limitY/>
-    <curve R="241" G="76" B="193" name="/robot3/control_data/current/pose/position/x" custom_transform="noTransform"/>
-    <curve R="26" G="201" B="56" name="/robot3/control_data/target/pose/position/x" custom_transform="noTransform"/>
+    <curve custom_transform="noTransform" G="76" B="193" R="241" name="/robot3/control_data/current/pose/position/x"/>
+    <curve custom_transform="noTransform" G="201" B="56" R="26" name="/robot3/control_data/target/pose/position/x"/>
     <transform value="noTransform"/>
    </plot>
    <plot col="0" row="1">
-    <range right="60.000000" bottom="-1.720222" left="0.000000" top="4.773867"/>
+    <range bottom="-2.254575" right="127.875000" left="0.000000" top="27.196751"/>
     <limitY/>
-    <curve R="148" G="103" B="189" name="/robot3/control_data/current/pose/position/y" custom_transform="noTransform"/>
-    <curve R="255" G="127" B="14" name="/robot3/control_data/target/pose/position/y" custom_transform="noTransform"/>
+    <curve custom_transform="noTransform" G="103" B="189" R="148" name="/robot3/control_data/current/pose/position/y"/>
+    <curve custom_transform="noTransform" G="127" B="14" R="255" name="/robot3/control_data/target/pose/position/y"/>
     <transform value="noTransform"/>
    </plot>
    <plot col="0" row="2">
-    <range right="60.000000" bottom="-3.298165" left="0.000000" top="3.290511"/>
+    <range bottom="-3.098442" right="127.875000" left="0.000000" top="3.213634"/>
     <limitY/>
-    <curve R="26" G="201" B="56" name="/robot3/control_data/current/angle" custom_transform="noTransform"/>
-    <curve R="255" G="127" B="14" name="/robot3/control_data/target/angle" custom_transform="noTransform"/>
+    <curve custom_transform="noTransform" G="201" B="56" R="26" name="/robot3/control_data/current/angle"/>
+    <curve custom_transform="noTransform" G="127" B="14" R="255" name="/robot3/control_data/target/angle"/>
     <transform value="noTransform"/>
    </plot>
    <plot col="0" row="3">
-    <range right="60.000000" bottom="-1.605719" left="0.000000" top="1.196331"/>
+    <range bottom="-9.623890" right="127.875000" left="0.000000" top="17.820667"/>
     <limitY/>
-    <curve R="241" G="76" B="193" name="/robot3/control_data/current/angular_velocity" custom_transform="noTransform"/>
-    <curve R="255" G="127" B="14" name="/robot3/control_data/target/angular_velocity" custom_transform="noTransform"/>
+    <curve custom_transform="noTransform" G="76" B="193" R="241" name="/robot3/control_data/current/angular_velocity"/>
+    <curve custom_transform="noTransform" G="127" B="14" R="255" name="/robot3/control_data/target/angular_velocity"/>
     <transform value="noTransform"/>
    </plot>
    <plot col="0" row="4">
-    <range right="60.000000" bottom="-0.012566" left="0.000000" top="1.079444"/>
+    <range bottom="-0.022780" right="127.875000" left="0.000000" top="0.934043"/>
     <limitY/>
-    <curve R="148" G="103" B="189" name="/robot3/control_data/current/linear_velocity" custom_transform="noTransform"/>
-    <curve R="31" G="119" B="180" name="/robot3/control_data/target/linear_velocity" custom_transform="noTransform"/>
+    <curve custom_transform="noTransform" G="103" B="189" R="148" name="/robot3/control_data/current/linear_velocity"/>
+    <curve custom_transform="noTransform" G="119" B="180" R="31" name="/robot3/control_data/target/linear_velocity"/>
     <transform value="noTransform"/>
    </plot>
    <plot col="1" row="0">
-    <range right="60.000000" bottom="-0.054388" left="0.000000" top="0.202295"/>
+    <range bottom="-0.040227" right="127.875000" left="0.000000" top="0.042755"/>
     <limitY/>
-    <curve R="23" G="190" B="207" name="/robot3/control_data/difference/translation/x" custom_transform="noTransform"/>
+    <curve custom_transform="noTransform" G="190" B="207" R="23" name="/robot3/control_data/difference/translation/x"/>
     <transform value="noTransform"/>
    </plot>
    <plot col="1" row="1">
-    <range right="60.000000" bottom="-0.877514" left="0.000000" top="0.186010"/>
+    <range bottom="-0.106355" right="127.875000" left="0.000000" top="0.114537"/>
     <limitY/>
-    <curve R="188" G="189" B="34" name="/robot3/control_data/difference/translation/y" custom_transform="noTransform"/>
+    <curve custom_transform="noTransform" G="189" B="34" R="188" name="/robot3/control_data/difference/translation/y"/>
     <transform value="noTransform"/>
    </plot>
    <plot col="1" row="2">
-    <range right="60.000000" bottom="-3.288538" left="0.000000" top="3.297955"/>
+    <range bottom="-0.789524" right="127.875000" left="0.000000" top="2.376100"/>
     <limitY/>
-    <curve R="31" G="119" B="180" name="/robot3/control_data/difference/angle" custom_transform="noTransform"/>
+    <curve custom_transform="noTransform" G="119" B="180" R="31" name="/robot3/control_data/difference/angle"/>
     <transform value="noTransform"/>
    </plot>
    <plot col="1" row="3">
-    <range right="60.000000" bottom="-1.013689" left="0.000000" top="0.876784"/>
+    <range bottom="-0.150494" right="127.875000" left="0.000000" top="0.889001"/>
     <limitY/>
-    <curve R="255" G="127" B="14" name="/robot3/control_data/current/velocity/x" custom_transform="noTransform"/>
-    <curve R="214" G="39" B="40" name="/robot3/control_data/target/velocity/x" custom_transform="noTransform"/>
+    <curve custom_transform="noTransform" G="127" B="14" R="255" name="/robot3/control_data/current/velocity/x"/>
+    <curve custom_transform="noTransform" G="39" B="40" R="214" name="/robot3/control_data/target/velocity/x"/>
     <transform value="noTransform"/>
    </plot>
    <plot col="1" row="4">
-    <range right="-10.236000" bottom="0.000000" left="-11.236000" top="1.000000"/>
+    <range bottom="-0.359915" right="127.875000" left="0.000000" top="1.119316"/>
     <limitY/>
+    <curve custom_transform="noTransform" G="39" B="40" R="214" name="/robot3/control_data/control/linear"/>
     <transform value="noTransform"/>
    </plot>
    <plot col="2" row="0">
-    <range right="-10.236000" bottom="0.000000" left="-11.236000" top="1.000000"/>
+    <range bottom="0.000000" right="-26.707000" left="-27.707000" top="1.000000"/>
     <limitY/>
     <transform value="noTransform"/>
    </plot>
    <plot col="2" row="1">
-    <range right="-10.236000" bottom="0.000000" left="-11.236000" top="1.000000"/>
+    <range bottom="0.000000" right="-26.707000" left="-27.707000" top="1.000000"/>
     <limitY/>
     <transform value="noTransform"/>
    </plot>
    <plot col="2" row="2">
-    <range right="-10.236000" bottom="0.000000" left="-11.236000" top="1.000000"/>
+    <range bottom="0.000000" right="-26.707000" left="-27.707000" top="1.000000"/>
     <limitY/>
     <transform value="noTransform"/>
    </plot>
    <plot col="2" row="3">
-    <range right="60.000000" bottom="-0.819887" left="0.000000" top="0.790752"/>
+    <range bottom="-0.471373" right="127.875000" left="0.000000" top="0.732493"/>
     <limitY/>
-    <curve R="241" G="76" B="193" name="/robot3/control_data/current/velocity/y" custom_transform="noTransform"/>
-    <curve R="26" G="201" B="56" name="/robot3/control_data/target/velocity/y" custom_transform="noTransform"/>
+    <curve custom_transform="noTransform" G="76" B="193" R="241" name="/robot3/control_data/current/velocity/y"/>
+    <curve custom_transform="noTransform" G="201" B="56" R="26" name="/robot3/control_data/target/velocity/y"/>
     <transform value="noTransform"/>
    </plot>
    <plot col="2" row="4">
-    <range right="-10.236000" bottom="0.000000" left="-11.236000" top="1.000000"/>
-    <limitY/>
+    <range bottom="-2.000000" right="127.875000" left="0.000000" top="2.000000"/>
+    <limitY max="2" min="-2"/>
+    <curve custom_transform="noTransform" G="201" B="56" R="26" name="/robot3/control_data/control/angular"/>
     <transform value="noTransform"/>
    </plot>
   </plotmatrix>
@@ -117,11 +119,22 @@
    <discard_large_arrays value="true"/>
    <max_array_size value="100"/>
   </plugin>
-  <plugin status="idle" ID="ROS /rosout Visualization"/>
-  <plugin status="idle" ID="ROS Topic Re-Publisher"/>
+  <plugin ID="ROS /rosout Visualization" status="idle"/>
+  <plugin ID="ROS Topic Re-Publisher" status="idle"/>
  </Plugins>
  <!-- - - - - - - - - - - - - - - -->
- <previouslyLoaded_Datafiles/>
+ <previouslyLoaded_Datafiles>
+  <fileInfo filename="/tmp/test_Controller.bag" prefix="">
+   <selected_datasources value="/robot3/control_data"/>
+   <plugin ID="DataLoad ROS bags">
+    <use_header_stamp value="false"/>
+    <use_renaming_rules value="true"/>
+    <discard_large_arrays value="true"/>
+    <max_array_size value="100"/>
+   </plugin>
+  </fileInfo>
+ </previouslyLoaded_Datafiles>
+ <previouslyLoaded_Streamer name="ROS Topic Subscriber"/>
  <!-- - - - - - - - - - - - - - - -->
  <customMathEquations/>
  <snippets>
