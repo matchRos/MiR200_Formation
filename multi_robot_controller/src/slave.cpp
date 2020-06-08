@@ -6,7 +6,8 @@ Slave::Slave(   std::string name,
                 ros::NodeHandle nh_parameters):Controller(name,nh,nh_topics,nh_parameters)
 {
     this->srv_set_reference_=this->controller_nh.advertiseService("set__master_reference",&Slave::srvSetMasterReference,this);
-    this->buffer_=Buffer<tf::Vector3>(30);
+    this->buffer_=Buffer<tf::Vector3>(20);
+    this->old_angle_=0.0;
 } 
 
 void Slave::setMasterReference(tf::Pose pose)
@@ -37,6 +38,16 @@ void Slave::targetOdomCallback(nav_msgs::Odometry msg)
     tf::poseMsgToTF(msg.pose.pose,trafo);
     tf::Transform rot(trafo.getRotation(),tf::Vector3(0.0,0.0,0.0));
     
+    //Get the transformation for frames 
+    tf::StampedTransform trafo_frames;
+    try{
+        this->listener->lookupTransform(this->world_frame,msg.header.frame_id,ros::Time(0),trafo_frames);
+    }
+    catch(ros::Exception &ex)
+    {
+        ROS_WARN("%s",ex.what());
+    }
+    trafo=trafo_frames*trafo;
 
     //Get the current velocity
     VelocityEulerian vel_eul;
@@ -76,10 +87,36 @@ void Slave::targetOdomCallback(nav_msgs::Odometry msg)
 
             tf::Vector3 vel=this->target_state_.velocity;  
             this->target_state_.pose=trafo*this->master_reference_;
-            double angle=std::atan2(new_vel.y(),new_vel.x());
-            if(angle<0.0){angle+=2*M_PI;}
-            this->target_state_.pose.setRotation(tf::createQuaternionFromYaw(angle));          
-            this->target_state_.angular_velocity=(this->target_state_.velocity.x()*acc.y()-this->target_state_.velocity.y()*acc.x())/this->target_state_.velocity.length2();
+
+            if(this->target_state_.velocity.length2()>0.01)
+            {
+                double angle=std::atan2(new_vel.y(),new_vel.x());
+                this->target_state_.pose.setRotation(tf::createQuaternionFromYaw(angle)); 
+                double delta_angle=angle-this->old_angle_;    
+                if(delta_angle>0.9*2*M_PI){delta_angle=delta_angle-2*M_PI;}
+                if(delta_angle<-0.9*2*M_PI){delta_angle=delta_angle+2*M_PI;}
+                this->target_state_.angular_velocity=delta_angle/(msg.header.stamp.toSec()-this->time_old_);
+                this->old_angle_=angle; 
+            }
+            else
+            {
+                this->target_state_.angular_velocity=0.0;
+            }
+            
+           
+            
+          
+            
+            // if(this->target_state_.velocity.length2()>0.01)  
+            // {
+            //     this->target_state_.angular_velocity=(this->target_state_.velocity.x()*acc.y()-this->target_state_.velocity.y()*acc.x())/this->target_state_.velocity.length2();
+            // } 
+            // else
+            // {
+            //     this->target_state_.angular_velocity=0.0;
+            // }
+            
+            
             break;
         }
         
