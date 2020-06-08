@@ -63,9 +63,9 @@ publish_acceleration: false
 
 # map_frame: map                   # Defaults to "map" if unspecifie
 map_frame: map                   # Defaults to "map" if unspecified
-odom_frame:  $(arg prefix)reference            # Defaults to "odom" if unspecified
+odom_frame:  $(arg prefix)odom_comb           # Defaults to "odom" if unspecified
 base_link_frame:  $(arg prefix)base_footprint  # Defaults to "base_link" if unspecified
-world_frame:  $(arg prefix)reference           # Defaults to the value of odom_frame if unspecified
+world_frame:  $(arg prefix)odom_comb          # Defaults to the value of odom_frame if unspecified
 
 # The filter accepts an arbitrary number of inputs from each input message type (nav_msgs/Odometry,
 # geometry_msgs/PoseWithCovarianceStamped, geometry_msgs/TwistWithCovarianceStamped,
