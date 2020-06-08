@@ -1,0 +1,45 @@
+<?xml version="2.0" ?>
+<!-- Start a none recorded simulation without any planner-->
+<launch>  
+  <arg name="filename" default="test"/>
+
+ <!-- Load the formation parameter file-->
+  <rosparam file="$(find multi_robot_launcher)/config/formation.yaml" command="load"></rosparam>
+
+  <include file="$(find multi_robot_launcher)/launch/gazebo.launch">
+    <arg name="world_name" value="$(find multi_robot_launcher)/worlds/empty_world.world"/>
+    <arg name="paused" value="true" />
+    <arg name="gui" value="true" />
+    <arg name="recording" value="false"/>
+  </include>
+
+<!--forcing the master controller to be disabled. 
+Careful: Just works if /master/controller/controller_type is the correct path (nothing modified)-->
+<param name="/master/controller/controller_type" type="int" value="0"/> 
+<!-- Setting up the Formation of robots -->
+<include file="$(find multi_robot_launcher)/launch/formation.launch"></include>
+
+
+<!-- Start map stuff -->
+<node name="static_map_server" pkg="map_server" type="map_server"
+  args="$(find multi_robot_launcher)/maps/empty_hall.yaml" output="log">
+  <param name="frame_id" type="string" value="map"/>
+</node>
+
+<!-- Start navigation stuff for the master-->
+<group ns="master">
+<include file="$(find mir_navigation)/launch/mir_nav/move_base.xml">
+  <arg name="prefix" value="master/"/>
+  <arg name="local_planner" value="dwa_formation"/>
+</include>
+</group>
+
+<!-- Some visualisation stuff-->
+<node name="rviz" pkg="rviz" type="rviz"   args="-d $(find multi_robot_launcher)/rviz/navigation.rviz" />
+
+<!-- Recording data-->
+<include file="$(find multi_robot_launcher)/launch/record.launch">
+  <arg name="filename" value="$(arg filename)"/>
+</include>
+
+</launch>
