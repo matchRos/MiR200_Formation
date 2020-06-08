@@ -1,3 +1,5 @@
+# Formation control with multi_robot_system package
+Since there are some large advantages of using multi robot system in case of e.g. object transportation this package implements functionalities for this purpose. Therfore it contains ros nodes, configuration files and launch files for using multiple mobile robots (differential driven) as a formation. The package contains two different control laws, implemented within the multi_robot_controller. For using this the multi_robot_launcher gives some configurations and launch files for simulating formations of robots within the gazebo simualtion environment. Further a multi_robot_simulation package occures which contains helper functions for the initialisation of controllers and for planning some test trajectories. A detailed description and a quick start for the multi_robot_system package can be found in the following.
 # Definition of launchfiles:
 Launchfiles for launching the implemented functionalities are given in /multi_robot_launcher/launch
 1. exe_demo.launch:
@@ -19,8 +21,8 @@ A launch files that is used to spawn generic transport object
 
 # How to start a simple formation: 
 1. Execute exe_demo.launch `$roslaunch multi_robot_launcher exe_demo.launch`
-2. Wait til everything is setup
-3. Execute the system handling node `$rosrun simulation_env system_handling_node -plan -reference`
+2. Wait until everything is setup
+3. Execute the system handling node `$rosrun multi_robot_simualtion system_handling_node -plan -reference`
 
 # How to modifie formation parameters:
 1. Goto foramtion.yaml in the multi_robot_launcher package
