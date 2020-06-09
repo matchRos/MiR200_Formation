@@ -18,7 +18,6 @@ find_package(
   tf  
 )
 find_package(cmake_modules REQUIRED)
-find_package(Eigen REQUIRED)
 
 
 
@@ -127,7 +126,6 @@ catkin_package(
 include_directories(
  include
   ${catkin_INCLUDE_DIRS}
-  ${Eigen_INCLUDE_DIRS}
 )
 ## Declare a C++ library
 add_library(multi_robot_controller

@@ -28,7 +28,7 @@ class Slave:public Controller{
                 ros::NodeHandle nh_parameters=ros::NodeHandle("~"));        
         void setMasterReference(tf::Pose pose);
     private:
-
+        double old_angle_;
 
         ControlVector calcAngleDistance(AngleDistanceParameter parameter,ControlState target, ControlState current);
        

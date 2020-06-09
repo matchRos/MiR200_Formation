@@ -133,12 +133,12 @@ void Planner::load()
 {
     if(!this->nh.getParam(PARAM_ITERATION,this->iterations))
     {
-        ROS_WARN("Could not load %",this->nh.resolveName(PARAM_ITERATION));
+        ROS_WARN("Could not load %s",this->nh.resolveName(PARAM_ITERATION).c_str());
     }
     std::vector<float> ref_rpy;
     if(!this->nh.getParam(PARAM_REFERENCE,ref_rpy))
     {
-        ROS_WARN("Could not load %",this->nh.resolveName(PARAM_REFERENCE));
+        ROS_WARN("Could not load %s",this->nh.resolveName(PARAM_REFERENCE).c_str());
     }
     else
     {
