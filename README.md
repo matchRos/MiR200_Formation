@@ -38,6 +38,6 @@ A launch files that is used to spawn generic transport object
 3. Execute the system handling node `$rosrun multi_robot_simualtion system_handling_node -plan -reference`
 
 # How to modifie formation parameters:
-1. Goto foramtion.yaml in the multi_robot_launcher package
-2. Change the parameter within the file
-2a) If you change the number or names of formation memebers make sure that you do the same in the formation.launch file in mutli_robot_launcher package
+1. Goto [formation.yaml](./multi_robot_launcher/config/formation.yaml)
+2. Change parameter in formation namespace
+3. If you change the number or names of formation members, make sure to modify the [formation.launch](./multi_robot_launcher/launch/formation.launch) 
