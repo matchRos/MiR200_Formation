@@ -1,5 +1,18 @@
 # Formation control with multi_robot_system package
 Since there are some large advantages of using multi robot system in case of e.g. object transportation this package implements functionalities for this purpose. Therfore it contains ros nodes, configuration files and launch files for using multiple mobile robots (differential driven) as a formation. The package contains two different control laws, implemented within the multi_robot_controller. For using this the multi_robot_launcher gives some configurations and launch files for simulating formations of robots within the gazebo simualtion environment. Further a multi_robot_simulation package occures which contains helper functions for the initialisation of controllers and for planning some test trajectories. A detailed description and a quick start for the multi_robot_system package can be found in the following.
+# How to install
+Since this package depends on some submodules (see [submodules](../submodules)) the buidl by source is a little different from other repositories.
+1. Clone the repository in the common way (substitute X by the gazebo version you use):
+  * `$ git clone -b gazeboX  https://github.com/matchRos/MiR200_Formation.git`
+2. This is just used if you want to get the content form the submodules
+  2a. Get all submodules: 
+    * `git submodule init`
+    * `git submodule update`\
+  2b. Get just the gazebo_ros_link_attacher:
+    * `git submodule init`
+    * `git submodule update submodules/gazebo_ros_link_attacher`\
+3. Build with your build tools (e.g catkin_make)
+
 # Definition of launchfiles:
 Launchfiles for launching the implemented functionalities are given in /multi_robot_launcher/launch
 1. exe_demo.launch:
