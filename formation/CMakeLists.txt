@@ -111,7 +111,7 @@ catkin_package(
   INCLUDE_DIRS include
   LIBRARIES formation
 #  CATKIN_DEPENDS multi_robot_controller nav_msgs roscpp
-  DEPENDS EIGEN
+# DEPENDS Eigen3
 )
 
 ###########
@@ -123,7 +123,7 @@ catkin_package(
 include_directories(
   include
   ${catkin_INCLUDE_DIRS}
-  ${Eigen_INCLUDE_DIRS}
+  ${EIGEN3_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library

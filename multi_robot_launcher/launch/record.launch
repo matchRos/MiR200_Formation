@@ -1,0 +1,15 @@
+<launch>  
+  <arg name="filename" default="test"/>
+  <node name="record_system_trajectories" pkg="rosbag" type="record" args="record -O  /tmp/$(arg filename)_Trajectories.bag 
+                                                                        -e 
+                                                                        /robot(.*)/mobile_base_controller/odom |
+                                                                        /robot(.*)/odometry/filtered |
+                                                                        /robot(.*)/base_pose_ground_truth |
+                                                                        /master/mobile_base_controller/odom |
+                                                                        /master/odometry/filtered |
+                                                                        /master/base_pose_ground_truth"/>
+<node name="record_system_controller" pkg="rosbag" type="record" args="record -O  /tmp/$(arg filename)_Controller.bag 
+                                                                        -e 
+                                                                        /robot(.*)/control_data |                                                                    
+                                                                        /master/control_data"/>
+</launch>

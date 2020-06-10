@@ -8,8 +8,9 @@ add_compile_options(-std=c++11)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(
-  catkin REQUIRED  cmake_modules
-
+  catkin REQUIRED  
+  cmake_modules
+  
   COMPONENTS
   roscpp  
   tf
@@ -19,13 +20,9 @@ find_package(
   geometry_msgs
   sensor_msgs
   multi_robot_msgs
-
   formation 
-  
-  
+  gazebo_ros_link_attacher   
 )
-find_package(cmake_modules REQUIRED)
-find_package(Eigen REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -120,7 +117,7 @@ catkin_package(
   INCLUDE_DIRS include
   LIBRARIES multi_robot_simulation
 #  CATKIN_DEPENDS controller nav_msgs roscpp
-  DEPENDS EIGEN
+  # DEPENDS Eigen3
 )
 
 ###########
@@ -132,7 +129,6 @@ catkin_package(
 include_directories(
  include
   ${catkin_INCLUDE_DIRS}
-  ${Eigen_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -181,9 +177,8 @@ target_link_libraries(spiral_node
 )
 
 target_link_libraries(measurement_node
-  formation
+  planner
   ${catkin_LIBRARIES}
-  ${Eigen_LIBRARIES}
 )
 
 target_link_libraries(system_handling_node
@@ -191,8 +186,6 @@ target_link_libraries(system_handling_node
   ${catkin_LIBRARIES}
 )
 
-
-add_dependencies(formation ${catkin_EXPORTED_TARGETS})
 add_dependencies(system_handling_node ${catkin_EXPORTED_TARGETS})
 
 #############

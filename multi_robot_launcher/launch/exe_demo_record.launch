@@ -17,7 +17,7 @@
   <include file="$(find multi_robot_launcher)/launch/formation.launch"></include>
 
   <!-- Setting up the record system-->
-  <node name="record_system" pkg="rosbag" type="record" args="record -O /tmp/$(arg filename).bag -a"/>
+  <!-- <node name="record_system" pkg="rosbag" type="record" args="record -O /tmp/$(arg filename).bag -a"/> -->
   <node name="record_system_trajectories" pkg="rosbag" type="record" args="record -O  /tmp/$(arg filename)_Trajectories.bag -e /trajectory_odom | /robot(.*) | /master(.*)"/>
 
 </launch>
