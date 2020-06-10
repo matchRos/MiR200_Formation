@@ -3,14 +3,14 @@ Since there are some large advantages of using multi robot system in case of e.g
 # How to install
 Since this package depends on some submodules (see [submodules](./submodules)) the build by source is a little different from other repositories:
 * Clone the repository in the common way (substitute X by the gazebo version you use):
-  ** `$ git clone -b gazeboX  https://github.com/matchRos/MiR200_Formation.git`
+** `$ git clone -b gazeboX  https://github.com/matchRos/MiR200_Formation.git`
 * This is just used if you want to get the content form the submodules
- ** Get all submodules: 
-   *** `git submodule init`
-   *** `git submodule update`
- ** Get just the gazebo_ros_link_attacher:
-   *** `git submodule init`
-   *** `git submodule update submodules/gazebo_ros_link_attacher`
+** Get all submodules: 
+*** `git submodule init`
+*** `git submodule update`
+** Get just the gazebo_ros_link_attacher:
+*** `git submodule init`
+*** `git submodule update submodules/gazebo_ros_link_attacher`
 * Build with your build tools (e.g catkin_make)
 
 # Definition of launchfiles:
