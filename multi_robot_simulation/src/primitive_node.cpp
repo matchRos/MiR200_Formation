@@ -6,6 +6,8 @@
 #include <geometry_msgs/Twist.h>
 #include <multi_robot_msgs/PathVelocities.h>
 #include <multi_robot_simulation/planner.h>
+#include <multi_robot_simulation/circle_primitive.h>
+#include <multi_robot_simulation/line_primitive.h>
 #include <tf/tf.h>
 int main(int argc, char** argv)
 {
@@ -17,7 +19,7 @@ int main(int argc, char** argv)
     nav_msgs::Path path;
     multi_robot_msgs::PathVelocities path_velocities;
     
-    PrimitivePlanner::CirclePrimitive primitive(0.2,10.0,3,1.57);
+    CirclePrimitive primitive(0.2,10.0,3,1.57);
     primitive.start_point_=tf::Transform(tf::createQuaternionFromYaw(0),tf::Vector3(0.0,0.0,0.0));
     primitive.start_vel_=0.0;
     if(!primitive.interpolate(0.1))

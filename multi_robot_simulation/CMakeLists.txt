@@ -135,8 +135,15 @@ include_directories(
 add_library(planner
   include/${PROJECT_NAME}/planner.h
   src/planner.cpp
+  include/${PROJECT_NAME}/primitive_base.h 
+  src/primitive_base.cpp
+  include/${PROJECT_NAME}/line_primitive.h 
+  src/line_primitive.cpp
+  include/${PROJECT_NAME}/circle_primitive.h 
+  src/circle_primitive.cpp
   include/${PROJECT_NAME}/primitive_planner.h 
   src/primitive_planner.cpp
+ 
 )
 
 
@@ -169,6 +176,9 @@ add_executable(primitive_node src/primitive_node.cpp)
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
+target_link_libraries(planner
+  ${catkin_LIBRARIES}
+)
 
 target_link_libraries(planner_node
   planner
