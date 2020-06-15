@@ -8,6 +8,7 @@
 #include <multi_robot_simulation/planner.h>
 #include <multi_robot_simulation/circle_primitive.h>
 #include <multi_robot_simulation/line_primitive.h>
+#include <multi_robot_simulation/clothoid_primitive.h>
 #include <tf/tf.h>
 int main(int argc, char** argv)
 {
@@ -19,10 +20,12 @@ int main(int argc, char** argv)
     nav_msgs::Path path;
     multi_robot_msgs::PathVelocities path_velocities;
     
-    CirclePrimitive primitive(0.2,10.0,3,1.57);
-    primitive.start_point_=tf::Transform(tf::createQuaternionFromYaw(0),tf::Vector3(0.0,0.0,0.0));
-    primitive.start_vel_=0.0;
-    if(!primitive.interpolate(0.1))
+    // CirclePrimitive primitive(0.2,10.0,3,1.57);
+    // primitive.start_point_=tf::Transform(tf::createQuaternionFromYaw(0),tf::Vector3(0.0,0.0,0.0));
+    // primitive.start_vel_=0.0;
+    ClothoidPrimitive primitive(1.0,10.0);
+    primitive.start_point_=tf::Transform(tf::createQuaternionFromYaw(0),tf::Vector3(3.0,0.0,0.0));
+    if(!primitive.interpolate(0.001))
     {
         ROS_WARN("Error due interpolation");
     }
@@ -45,7 +48,7 @@ int main(int argc, char** argv)
 
     PrimitivePlanner planner(nh);
     planner.start();    
-    ros::spin();
+    // ros::spin();
     ros::Rate rate(10);
     while(ros::ok())
     {

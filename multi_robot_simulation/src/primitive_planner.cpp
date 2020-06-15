@@ -5,14 +5,15 @@
 
 PrimitivePlanner::PrimitivePlanner(ros::NodeHandle &nh):Planner(nh),time_offset_(0.0),index_of_primitive_(0)
 {
-    this->list_of_primitives_.push_back(new LinePrimitive(0.1,0.5,4));
+    this->list_of_primitives_.push_back(new LinePrimitive(0.1,0.5,2));
+    this->list_of_primitives_.push_back(new ClothoidPrimitive(1.0,3.0));
     this->list_of_primitives_.push_back(new CirclePrimitive(0.1,0.5,3,1.57));    
-    this->list_of_primitives_.push_back(new LinePrimitive(0.1,0.5,4));
-    this->list_of_primitives_.push_back(new CirclePrimitive(0.1,0.5,3,1.57));    
-    this->list_of_primitives_.push_back(new LinePrimitive(0.1,0.5,4));
-    this->list_of_primitives_.push_back(new CirclePrimitive(0.1,0.5,3,1.57));    
-    this->list_of_primitives_.push_back(new LinePrimitive(0.1,0.5,4));
-    this->list_of_primitives_.push_back(new CirclePrimitive(0.1,0.5,3,1.57));   
+    // this->list_of_primitives_.push_back(new LinePrimitive(0.1,0.5,4));
+    // this->list_of_primitives_.push_back(new CirclePrimitive(0.1,0.5,3,1.57));    
+    // this->list_of_primitives_.push_back(new LinePrimitive(0.1,0.5,4));
+    // this->list_of_primitives_.push_back(new CirclePrimitive(0.1,0.5,3,1.57));    
+    // this->list_of_primitives_.push_back(new LinePrimitive(0.1,0.5,4));
+    // this->list_of_primitives_.push_back(new CirclePrimitive(0.1,0.5,3,1.57));   
 
     this->current_it_=this->list_of_primitives_.begin();
     this->current_primitive_=*(this->current_it_);

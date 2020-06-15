@@ -141,6 +141,8 @@ add_library(planner
   src/line_primitive.cpp
   include/${PROJECT_NAME}/circle_primitive.h 
   src/circle_primitive.cpp
+  include/${PROJECT_NAME}/clothoid_primitive.h 
+  src/clothoid_primitive.cpp
   include/${PROJECT_NAME}/primitive_planner.h 
   src/primitive_planner.cpp
  

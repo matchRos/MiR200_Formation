@@ -4,6 +4,7 @@
 #include <multi_robot_simulation/planner.h>
 #include <multi_robot_simulation/circle_primitive.h>
 #include <multi_robot_simulation/line_primitive.h>
+#include <multi_robot_simulation/clothoid_primitive.h>
 
 //Primitive############################################################################################################################################
 //###################################################################################################################################################
@@ -11,51 +12,6 @@ class PrimitivePlanner:public Planner{
     public:
         PrimitivePlanner(ros::NodeHandle &nh);
         ~PrimitivePlanner();
-        // class Primitive
-        // {
-        //     public:
-        //         Primitive();
-               
-        //         tf::Transform start_point_;
-        //         double start_vel_;
-        //         double start_ang_vel_;
-        //         double time_;
-
-        //         std::vector<tf::Transform> positions_;
-        //         std::vector<tf::Vector3> velocities_;
-        //         std::vector<double> angular_velocities_;
-        //         std::vector<tf::Vector3> accelerations_;     
-                
-                   
-        //         std::vector<tf::Transform> getPosition();    
-        //         std::vector<tf::Vector3> getVelocity();  
-        //         std::vector<double> getAngularVelocity();
-        //         std::vector<tf::Vector3> getAccecleration();
-                
-        //         int getTime();
-        //         int getSize(); 
-
-        //         virtual bool interpolate(double linspace)=0;      
-        // };
-        // class LinePrimitive: public Primitive
-        // {
-        //     public:
-        //         LinePrimitive(double accel,double vel_max,double length);
-        //         double accel_;
-        //         double vel_max_; 
-        //         double length_;                    
-        //         bool interpolate(double linspace);    
-        // };
-        // class CirclePrimitive: public Primitive
-        // {
-        //     public:
-        //         CirclePrimitive(double accel, double vel_max, double radius, double angle);
-        //         double angle_;
-        //         double radius_;
-        //         double accel_;
-        //         double vel_max_;
-        //         bool interpolate(double linspace);                  
-        // };
 
         struct PrimitivePlan
         {  
