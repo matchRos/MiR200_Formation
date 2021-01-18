@@ -37,7 +37,7 @@ A launch files that is used to spawn generic transport object
 # How to start a simple formation: 
 1. Execute exe_demo.launch `$roslaunch multi_robot_launcher exe_demo.launch`
 2. Wait until everything is setup
-3. Execute the system handling node `$rosrun multi_robot_simualtion system_handling_node -plan -reference`
+3. Execute the system handling node `$rosrun multi_robot_simulation system_handling_node -plan -reference`
 
 # How to modifie formation parameters:
 1. Goto [formation.yaml](./multi_robot_launcher/config/formation.yaml)
